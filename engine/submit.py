@@ -1,4 +1,4 @@
-import json,subprocess,os,sys,re,time
+import json,subprocess,os,sys,re,time,hashlib
 from pathlib import Path
 from settings import ROOT,CFG,PROJECT
 from heygen_read import get
@@ -11,6 +11,7 @@ for j in a:
  if j.get('id'):continue
  assert j['status']=='prepared', 'Needs manual reconciliation: '+j['title']
  assert len(Path(j['file']).read_text().strip())<=4500
+ assert hashlib.sha256(Path(j['file']).read_bytes()).hexdigest()==j['sha256'], 'Source changed after preparation'
  # Never automatically repeat a submission whose outcome is ambiguous.
  j['status']='submitting';save(a)
  logfile=root/'verification'/f"submit-{j['language']}-{j['part']:02d}.log"

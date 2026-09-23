@@ -1,5 +1,5 @@
 """Adapt OSWork authorial content or import a reviewed scene JSON without truncation."""
-import json,runpy,re,shutil,hashlib,subprocess
+import json,runpy,re,shutil,hashlib,subprocess,ast
 from pathlib import Path
 from bs4 import BeautifulSoup
 from settings import CFG,ROOT,REPO,PROJECT,LANGUAGES
@@ -20,6 +20,7 @@ def excerpt(text,limit=230):
 
 def oswork():
  data=runpy.run_path(str(REPO/'conteudo/modulos.py'));scenes=[];coverage=[]
+ tree=ast.parse((REPO/'scripts/build.py').read_text());snippets=next(ast.literal_eval(n.value) for n in tree.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='SNIPPETS' for t in n.targets))
  def add(title,chapter,speech,labels,source,svg=None):
   speech=re.sub(r'\s+',' ',speech).strip()
   scenes.append(dict(title=title,chapter=chapter,speech=speech,labels=labels,source=source,svg=svg,kind='diagram' if svg else 'steps',takeaway=title if any('\n' in x for x in labels) else (labels[-1] if labels else title)))
@@ -39,6 +40,7 @@ def oswork():
    add('Na prática: '+t['title'],chapter,f"Vamos a um exemplo. {t['example']} Agora é sua vez. {t['action']}",['Exemplo\n'+excerpt(t['example']), 'Sua ação\n'+excerpt(t['action'])],source)
    coverage.append({'module':mi+1,'topic':ti,'title':t['title'],'scenes':[len(scenes)-1,len(scenes)],'fields':['what','why','keys','example','action']})
   add(m['lab'],chapter,'Vamos ao laboratório. '+m['lab']+'. '+' '.join(f"Passo {i+1}. {x}" for i,x in enumerate(m['steps'])),['Prepare a entrada','Execute na pasta de treino','Compare com os critérios'],source)
+  scenes[-1]['code']=snippets[mi][1]
   add('Confira o que aprendeu',chapter,f"Antes de avançar, pense nesta pergunta. {m['check']} A resposta é: {m['answer']} Se você consegue explicar isso com suas palavras e mostrar o resultado do exercício, pode seguir para a próxima etapa.",['Pergunta de revisão','Evidência do exercício','Explique com suas palavras'],source)
  add('Seu sistema, funcionando','OSWORK · PRÓXIMOS PASSOS','Concluímos os oito módulos. Você percorreu modelos, interfaces, terminal, organização de arquivos, instruções, habilidades, memória, Git, GitHub, Telegram e operação em servidor. O próximo passo é escolher uma tarefa pequena, definir entrada e saída, executar, conferir e registrar o que aprendeu. Volte aos módulos e aos materiais sempre que precisar. O sistema melhora quando você registra as decisões e corrige o ponto certo.', ['Uma tarefa pequena','Uma saída verificável','Um registro para retomar'],'index.html')
  assert len(coverage)==48

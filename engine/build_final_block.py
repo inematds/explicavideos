@@ -4,6 +4,7 @@ import ast,json,html,re,difflib,unicodedata,shutil,sys
 from settings import ROOT,REPO,CFG,LANGUAGES
 E=html.escape
 def visual(s):
+ if s.get('code'):return '<pre class="code-demo item">'+E(s['code'])+'</pre>'
  if s.get('svg'):return '<div class="diagram item">'+s['svg']+'</div>'
  return '<div class="nodes-flow">'+''.join(f'<div class="node item"><b>{i+1:02d}</b>{E(x)}</div>' for i,x in enumerate(s.get('labels',[])))+'</div>'
 def norm(s):return re.sub(r'[^a-z0-9]','',unicodedata.normalize('NFKD',s.lower()).encode('ascii','ignore').decode())
@@ -35,7 +36,7 @@ def build(lang,part,preview=False):
  if not preview and not target.exists():target.symlink_to(ROOT/'assets'/f'nei-{key}.mp4')
  shutil.copy2(ROOT/'hyperframes.json',dest/'hyperframes.json');shutil.copy2(ROOT/'package.json',dest/'package.json')
  css=(ROOT/'assets/style.css').read_text()+'''
-:root{--accent:#efbe69}.diagram{width:100%;height:440px;display:flex;align-items:center;justify-content:center}.diagram svg{width:100%;height:100%;color:#f7f1e7}.diagram text{opacity:1}.nodes-flow .node{font-size:26px;padding:16px 20px;line-height:1.35}.main-title{font-size:58px;letter-spacing:-1px}.takeaway{font-size:25px!important}
+:root{--accent:#efbe69}.code-demo{background:#101419;border:2px solid #56616c;border-radius:14px;padding:22px;font:22px/1.4 Data,monospace;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}.diagram{width:100%;height:440px;display:flex;align-items:center;justify-content:center}.diagram svg{width:100%;height:100%;color:#f7f1e7}.diagram text{opacity:1}.nodes-flow .node{font-size:26px;padding:16px 20px;line-height:1.35}.main-title{font-size:58px;letter-spacing:-1px}.takeaway{font-size:25px!important}
 
 .avatar-video{position:absolute;left:1398px;top:181px;width:450px;height:254px;object-fit:cover;border:2px solid #56616c;border-radius:18px;z-index:3}
 .avatar-panel{padding-top:254px}.avatar-desc{font-size:23px}.takeaway{bottom:192px;font-size:29px}.footer{bottom:20px;font-size:19px}

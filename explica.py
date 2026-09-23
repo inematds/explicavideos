@@ -9,6 +9,13 @@ def run(script,*args):subprocess.run([sys.executable,str(ROOT/'engine'/script),*
 if a.command=='prepare':run('prepare.py');run('build_scene_templates.py')
 elif a.command=='preview':run('build_final_block.py','pt','1','--preview')
 elif a.command=='start':
+ if subprocess.run(['xdpyinfo','-display',':99'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode:
+  subprocess.run(['systemd-run','--user','--collect','--unit=explicavideos-display','/usr/bin/Xvfb',':99','-screen','0','1920x1080x24','-nolisten','tcp'],check=True)
+  import time
+  for _ in range(20):
+   if subprocess.run(['xdpyinfo','-display',':99'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0:break
+   time.sleep(.25)
+  else:raise RuntimeError('Virtual display did not start')
  for stage,script in [('submit','submit.py'),('monitor','monitor.py'),('render','produce_blocks.py'),('assemble','wait_assembly.py'),('publish','wait_publication.py')]:
   unit=f"explica-{cfg['id']}-{stage}"
   if subprocess.run(['systemctl','--user','is-active','--quiet',unit]).returncode==0:continue
