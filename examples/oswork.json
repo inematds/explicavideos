@@ -1,0 +1,15 @@
+{
+  "id": "oswork-completo",
+  "title": "OSWork completo",
+  "source_repo": "/home/nmaldaner/projetos/oswork",
+  "output": "/home/nmaldaner/projetos/output/oswork-completo",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/oswork",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.66"
+}
