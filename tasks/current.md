@@ -3,4 +3,5 @@
 - [x] Preparar roteiro completo
 - [x] Verificar todos os layouts
 - [x] Publicar projeto e portal
-- [ ] Concluir vídeo, verificar e notificar bot v3
+- [x] Concluir vídeo e verificar publicação
+- [ ] Conferir recibo do aviso no bot v3

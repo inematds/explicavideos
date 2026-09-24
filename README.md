@@ -58,3 +58,8 @@ Pipeline adaptado de astrabasico e oswork-quick. Fontes locais de layout: Montse
 python3 -m unittest discover -s tests -v
 python3 -m compileall -q engine
 ```
+
+
+## Entrega OSWork
+
+[Assistir ao vídeo completo](https://inematds.github.io/oswork/videos/). Recibo de publicação em docs/video-publication.json.
