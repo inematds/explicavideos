@@ -1,11 +1,16 @@
 import time,json,subprocess,sys
-from settings import ROOT,PROJECT,LANGUAGES
+from settings import ROOT,PROJECT,LANGUAGES,CFG
 from publish_finished import publish
 from finalize_project import finalize
 def report_problem():
  if not (ROOT/'verification/telegram-problem.json').exists():subprocess.run(['node',str(PROJECT/'engine/send_final_v3.mjs'),'--problem'],check=True)
 
 for attempt in range(720):
+ manifest=json.loads((ROOT/'blocos/manifest.json').read_text())
+ if any(not b.get('id') for b in manifest):
+  unit=f"explica-{CFG['id']}-submit"
+  if subprocess.run(['systemctl','--user','is-active','--quiet',unit]).returncode:
+   report_problem();raise RuntimeError('Submission service stopped with unsent blocks')
  for relative in ['blocos/manifest.json','verification/production.json','verification/blocos-downloads.json']:
   f=ROOT/relative
   if not f.exists():continue

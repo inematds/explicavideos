@@ -1,4 +1,5 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-09-23 | Timeout de consulta HeyGen interrompeu fila após bloco 12 | Retry somente do GET, reconciliar ID baixado e retomar blocos 13–14 | infra |
 | 2026-09-23 | Guia excedeu 390px por comandos e navegação | Permitir quebra de comandos e wrap da navegação | prompt |
 | 2026-09-23 | Placeholder composto permaneceu na hero | Preencher o título e validar ausência de chaves duplas | prompt |
 | 2026-09-23 | Fonte forçada alargou texto do SVG | Preservar fonte original dos diagramas | prompt |

@@ -16,8 +16,13 @@ for j in a:
  j['status']='submitting';save(a)
  logfile=root/'verification'/f"submit-{j['language']}-{j['part']:02d}.log"
  cmd=['node',str(PROJECT/'engine/heygen-studio.mjs'),'--titulo',j['title'],'--fala-arquivo',j['file'],'--perfil',CFG['profile'],'--template',CFG['template']]
- with logfile.open('w') as log:
-  p=subprocess.run(cmd,env={**os.environ,'DISPLAY':':99'},stdout=log,stderr=subprocess.STDOUT,timeout=300)
+ try:
+  with logfile.open('w') as log:
+   p=subprocess.run(cmd,env={**os.environ,'DISPLAY':':99'},stdout=log,stderr=subprocess.STDOUT,timeout=300)
+ except subprocess.TimeoutExpired:
+  ids=re.findall(r'create-v4/([a-f0-9]{32})',logfile.read_text())
+  if ids:j['id']=ids[-1]
+  j['status']='needs_review';save(a);raise SystemExit('Browser timed out; reconcile existing job before retry')
  raw=logfile.read_text();ids=re.findall(r'create-v4/([a-f0-9]{32})',raw)
  if ids:j['id']=ids[-1];save(a)
  if p.returncode or not ids:
