@@ -1,0 +1,786 @@
+{
+ "block": "pt-b07",
+ "scenes": {
+  "54": {
+   "takeaway": "Compartilhe a **estrutura** (.env.example), nunca o **acesso** (.env).",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Segredos não são",
+     "text": "Segredo **não é** conhecimento compartilhável"
+    },
+    {
+     "type": "terminal",
+     "at": "Um arquivo .env",
+     "title": ".env",
+     "lines": [
+      {
+       "type": "out",
+       "text": "TELEGRAM_BOT_TOKEN=••••••••",
+       "at": "TELEGRAM_BOT_TOKEN"
+      },
+      {
+       "type": "out",
+       "text": "DATABASE_URL=••••••••",
+       "at": "DATABASE_URL"
+      },
+      {
+       "type": "err",
+       "text": "não é criptografado",
+       "at": "não é criptografado"
+      },
+      {
+       "type": "comment",
+       "text": "quem acessa o arquivo, lê",
+       "at": "qualquer pessoa"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Use permissões adequadas",
+     "title": "VALOR REAL: NUNCA EM",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Permissões **adequadas**",
+       "icon": "lock",
+       "at": "Use permissões adequadas"
+      },
+      {
+       "text": "Screenshots",
+       "icon": "image",
+       "at": "screenshots"
+      },
+      {
+       "text": "Exemplos de curso",
+       "icon": "book",
+       "at": "exemplos de curso"
+      },
+      {
+       "text": "Arquivos para a IA",
+       "icon": "ai",
+       "at": "arquivos enviados"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Credenciais permitem",
+     "text": "Credencial = **agir em nome** da conta"
+    },
+    {
+     "type": "compare",
+     "at": "Separar o modelo",
+     "left": {
+      "title": ".env.example",
+      "tone": "good",
+      "at": "Separar o modelo",
+      "lines": [
+       {
+        "text": "nomes, **sem valores reais**",
+        "at": "sem valores reais"
+       }
+      ]
+     },
+     "right": {
+      "title": ".env local",
+      "tone": "neutral",
+      "at": "do .env local",
+      "lines": [
+       {
+        "text": "fica **só na sua máquina**",
+        "at": "do .env local"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Estrutura sim, **acesso não**",
+      "at": "sem distribuir acesso"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Variável",
+       "icon": "code",
+       "at": "Variável"
+      },
+      {
+       "text": "Segredo",
+       "icon": "key",
+       "at": "segredo"
+      },
+      {
+       "text": ".env.example",
+       "icon": "doc",
+       "at": ".env.example"
+      },
+      {
+       "text": "Leitura na execução",
+       "icon": "play",
+       "at": "leitura em tempo"
+      }
+     ]
+    }
+   ]
+  },
+  "55": {
+   "takeaway": "O kit traz só o **nome** da variável; o valor fica na sua cópia.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "kit/.env.example",
+     "lines": [
+      {
+       "type": "out",
+       "text": "TELEGRAM_BOT_TOKEN=preencha_localmente",
+       "at": "TELEGRAM_BOT_TOKEN=preencha_localmente"
+      },
+      {
+       "type": "comment",
+       "text": "troque só na sua cópia privada",
+       "at": "cópia privada"
+      },
+      {
+       "type": "comment",
+       "text": "nenhum bot fica autenticado",
+       "at": "Nenhum bot"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Crie **.env.example** fictício",
+       "icon": "doc",
+       "at": "Crie .env.example"
+      },
+      {
+       "text": ".env **fora** do repositório",
+       "icon": "lock",
+       "at": "fora do repositório"
+      },
+      {
+       "text": "**Nunca** cole a chave no chat",
+       "icon": "x",
+       "at": "nunca cole"
+      }
+     ]
+    }
+   ]
+  },
+  "56": {
+   "takeaway": "Ignore **antes** do commit; se vazou, **revogue** na origem.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Ignore antes do",
+     "text": "Ignore **antes** do primeiro commit"
+    },
+    {
+     "type": "terminal",
+     "at": "O .gitignore lista",
+     "title": "meu-projeto",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "cat .gitignore",
+       "at": "O .gitignore lista"
+      },
+      {
+       "type": "comment",
+       "text": "ignora o que ainda não é rastreado",
+       "at": "ainda não são rastreados"
+      },
+      {
+       "type": "out",
+       "text": ".env",
+       "at": "Inclua .env"
+      },
+      {
+       "type": "out",
+       "text": ".env.*",
+       "at": "variantes privadas"
+      },
+      {
+       "type": "out",
+       "text": "tmp/",
+       "at": "pastas temporárias"
+      },
+      {
+       "type": "out",
+       "text": "!.env.example",
+       "at": "exceção explícita"
+      },
+      {
+       "type": "cmd",
+       "text": "git status",
+       "at": "examine git status"
+      },
+      {
+       "type": "out",
+       "text": "novos: .gitignore  .env.example",
+       "at": "examine git status"
+      },
+      {
+       "type": "comment",
+       "text": ".env não aparece: confira os preparados",
+       "at": "arquivos preparados"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Ignorar depois",
+     "text": "Ignorar depois **não apaga** o segredo do histórico"
+    },
+    {
+     "type": "compare",
+     "at": "Se a chave vazou",
+     "left": {
+      "title": "Revogar na origem",
+      "tone": "good",
+      "at": "revogar ou rotacionar",
+      "lines": [
+       {
+        "text": "chave antiga **para de valer**",
+        "at": "revogar ou rotacionar"
+       }
+      ]
+     },
+     "right": {
+      "title": "Apagar a linha",
+      "tone": "bad",
+      "at": "apagar a linha",
+      "lines": [
+       {
+        "text": "cópia já vista **continua válida**",
+        "at": "não invalida"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Arquivos rastreados",
+       "icon": "git",
+       "at": "Arquivos rastreados"
+      },
+      {
+       "text": "Padrões de exclusão",
+       "icon": "list",
+       "at": "padrões de exclusão"
+      },
+      {
+       "text": "Revisão de alterações",
+       "icon": "eye",
+       "at": "revisão de alterações"
+      },
+      {
+       "text": "Revogação",
+       "icon": "key",
+       "at": "revogação"
+      }
+     ]
+    }
+   ]
+  },
+  "57": {
+   "takeaway": ".gitignore **antes** do git add; confira com **check-ignore**.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": ".gitignore",
+     "lines": [
+      {
+       "type": "out",
+       "text": ".env",
+       "at": "Padrões úteis"
+      },
+      {
+       "type": "out",
+       "text": ".env.*",
+       "at": ".env#2"
+      },
+      {
+       "type": "out",
+       "text": "!.env.example",
+       "at": "!.env.example"
+      },
+      {
+       "type": "out",
+       "text": "__pycache__/",
+       "at": "__pycache__/"
+      },
+      {
+       "type": "cmd",
+       "text": "git check-ignore -v .env",
+       "at": "git check-ignore"
+      },
+      {
+       "type": "out",
+       "text": ".gitignore:1:.env    .env",
+       "at": "check-ignore -v"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Copie materiais/gitignore.txt",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Copie **gitignore.txt**",
+       "icon": "doc",
+       "at": "Copie materiais/gitignore.txt"
+      },
+      {
+       "text": "**Antes** do git add",
+       "icon": "clock",
+       "at": "antes de git add"
+      },
+      {
+       "text": "**.env.example** disponível",
+       "icon": "check",
+       "at": "continua disponível"
+      },
+      {
+       "text": "**.env** fora dos novos",
+       "icon": "eye",
+       "at": "não aparece"
+      }
+     ]
+    }
+   ]
+  },
+  "58": {
+   "takeaway": "Diga **o que ler**; memória antiga pode atrapalhar.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Faça uma limpeza",
+     "text": "A IA lê ~~todo Markdown~~",
+     "strike_at": "não lê automaticamente",
+     "then": {
+      "at": "Diga quais documentos",
+      "text": "A IA lê ++o que você indicar++"
+     }
+    },
+    {
+     "type": "flow",
+     "at": "mantenha referências",
+     "nodes": [
+      {
+       "id": "a",
+       "label": "AGENTS.md",
+       "icon": "list",
+       "col": 0,
+       "row": 1,
+       "at": "no AGENTS.md"
+      },
+      {
+       "id": "r",
+       "label": "README.md",
+       "icon": "doc",
+       "col": 2,
+       "row": 0,
+       "at": "quando forem"
+      },
+      {
+       "id": "d",
+       "label": "decisoes.md",
+       "icon": "flag",
+       "col": 2,
+       "row": 2,
+       "at": "quando forem"
+      },
+      {
+       "id": "i",
+       "label": "IA",
+       "icon": "ai",
+       "col": 4,
+       "row": 1,
+       "at": "forem necessárias"
+      }
+     ],
+     "edges": [
+      {
+       "from": "a",
+       "to": "r",
+       "at": "quando forem"
+      },
+      {
+       "from": "a",
+       "to": "d",
+       "at": "quando forem"
+      },
+      {
+       "from": "r",
+       "to": "i",
+       "at": "forem necessárias"
+      },
+      {
+       "from": "d",
+       "to": "i",
+       "at": "forem necessárias"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Antes de uma tarefa",
+     "title": "ANTES DA TAREFA",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Remova dados **irrelevantes**",
+       "icon": "x",
+       "at": "remova dados irrelevantes"
+      },
+      {
+       "text": "Atualize decisões **vencidas**",
+       "icon": "refresh",
+       "at": "atualize decisões vencidas"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Memória útil",
+      "tone": "good",
+      "at": "Memória útil",
+      "lines": [
+       {
+        "text": "é **encontrada**",
+        "at": "ser encontrada"
+       },
+       {
+        "text": "está **correta**",
+        "at": "estar correta"
+       }
+      ]
+     },
+     "right": {
+      "title": "Arquivo antigo",
+      "tone": "bad",
+      "at": "Um arquivo antigo",
+      "lines": [
+       {
+        "text": "endereço de serviço **velho**",
+        "at": "endereço de serviço"
+       },
+       {
+        "text": "processo que **já mudou**",
+        "at": "já mudou"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Antigo pode ser **pior que nada**",
+      "at": "já mudou"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Seleção de contexto",
+       "icon": "target",
+       "at": "Seleção de contexto"
+      },
+      {
+       "text": "Data",
+       "icon": "calendar",
+       "at": "data"
+      },
+      {
+       "text": "Fonte de verdade",
+       "icon": "shield",
+       "at": "fonte de verdade"
+      },
+      {
+       "text": "Revisão periódica",
+       "icon": "refresh",
+       "at": "revisão periódica"
+      }
+     ]
+    }
+   ]
+  },
+  "59": {
+   "takeaway": "Peça leitura **do que importa**, não da pasta inteira.",
+   "shots": [
+    {
+     "type": "chat",
+     "at": "Vamos a um exemplo",
+     "title": "Início do relatório",
+     "messages": [
+      {
+       "role": "user",
+       "text": "Leia o **README.md** e a **decisão sobre formato**.",
+       "at": "peça leitura"
+      },
+      {
+       "role": "note",
+       "text": "contatos e credenciais: **não carregar**",
+       "at": "Não carregue"
+      },
+      {
+       "role": "note",
+       "text": "mesma pasta **não é motivo** para ler",
+       "at": "na mesma pasta"
+      }
+     ]
+    },
+    {
+     "type": "fields",
+     "at": "Agora é sua vez",
+     "title": "README.md · Leia primeiro",
+     "fields": [
+      {
+       "label": "Decisão",
+       "value": "config/decisoes.md",
+       "at": "três caminhos"
+      },
+      {
+       "label": "Entrada",
+       "value": "entradas/pauta.md",
+       "at": "caminhos reais"
+      },
+      {
+       "label": "Modelo",
+       "value": "materiais/modelo.md",
+       "at": "Abra cada caminho"
+      }
+     ],
+     "stamp": {
+      "text": "conferido",
+      "at": "confira se descreve"
+     }
+    }
+   ]
+  },
+  "60": {
+   "takeaway": "Cada arquivo com **um papel** e **nenhum segredo** nos documentos.",
+   "shots": [
+    {
+     "type": "steps",
+     "at": "Vamos ao laboratório",
+     "goal": "Segundo cérebro operacional",
+     "steps": [
+      {
+       "title": "Crie **config** e **meu-primeiro-projeto** em projetos",
+       "at": "Passo 1"
+      },
+      {
+       "title": "config: **memoria · falhas · dicas · decisoes**",
+       "at": "Passo 2"
+      },
+      {
+       "title": "Projeto: **README · AGENTS · .gitignore**",
+       "at": "Passo 3"
+      },
+      {
+       "title": "Revise: **um papel** por arquivo, **nenhum segredo**",
+       "at": "Passo 4"
+      }
+     ],
+     "done_at": "nenhum segredo aparece"
+    }
+   ]
+  },
+  "61": {
+   "shots": [
+    {
+     "type": "quiz",
+     "at": "Antes de avançar",
+     "question": "Pôr .env no .gitignore remove uma chave **já publicada**?",
+     "answer": "Não",
+     "answer_at": "A resposta é",
+     "note": "**Revogue** a chave; ignorar só previne arquivos **novos**",
+     "note_at": "Revogue a chave"
+    },
+    {
+     "type": "bullets",
+     "at": "Se você consegue",
+     "title": "PODE SEGUIR SE",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Explica com **suas palavras**",
+       "icon": "chat",
+       "at": "explicar isso"
+      },
+      {
+       "text": "Mostra o **resultado** do exercício",
+       "icon": "check",
+       "at": "mostrar o resultado"
+      }
+     ]
+    }
+   ]
+  },
+  "62": {
+   "shots": [
+    {
+     "type": "module_intro",
+     "at": "Módulo 5",
+     "n": 5,
+     "title": "AGENTS, Skills e memória",
+     "goal": "Criar **instruções de projeto** e uma **capacidade reutilizável** com critério de revisão.",
+     "goal_at": "Nosso objetivo",
+     "exercise": "Sua primeira Skill de relatório",
+     "exercise_at": "Ao final"
+    }
+   ]
+  },
+  "63": {
+   "takeaway": "AGENTS.md: **regras curtas** que mudam uma decisão real.",
+   "shots": [
+    {
+     "type": "filetree",
+     "at": "AGENTS.md orienta",
+     "root": "projetos/",
+     "entries": [
+      {
+       "path": "projetos/meu-projeto/",
+       "kind": "dir",
+       "at": "arquivo de instruções"
+      },
+      {
+       "path": "projetos/meu-projeto/AGENTS.md",
+       "at": "Codex descobre",
+       "note": "vale **nesta pasta**"
+      }
+     ]
+    },
+    {
+     "type": "fields",
+     "at": "Ele descreve",
+     "title": "AGENTS.md",
+     "fields": [
+      {
+       "label": "Arquivos iniciais",
+       "value": "README.md · entradas/",
+       "at": "arquivos iniciais"
+      },
+      {
+       "label": "Verificação",
+       "value": "conferir os totais",
+       "at": "comandos de verificação"
+      },
+      {
+       "label": "Limites",
+       "value": "não publicar",
+       "at": "limites e formato"
+      },
+      {
+       "label": "Entrega",
+       "value": "relatorio.md",
+       "at": "formato de entrega"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Não precisa explicar",
+     "left": {
+      "title": "História da organização",
+      "tone": "bad",
+      "at": "Não precisa explicar",
+      "lines": [
+       {
+        "text": "texto longo que **não muda nada**",
+        "at": "toda a história"
+       }
+      ]
+     },
+     "right": {
+      "title": "Regra curta",
+      "tone": "good",
+      "at": "prefira regras curtas",
+      "lines": [
+       {
+        "text": "**altera** uma decisão real",
+        "at": "decisão real"
+       }
+      ]
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Instruções objetivas",
+     "text": "Instrução objetiva: escrita **uma vez**",
+     "then": {
+      "at": "evitam repetir",
+      "text": "sem ~~repetir~~ em cada conversa",
+      "replace": false
+     }
+    },
+    {
+     "type": "chat",
+     "at": "O arquivo deve",
+     "title": "Agente com AGENTS.md",
+     "messages": [
+      {
+       "role": "note",
+       "text": "regra: **verificar antes** de finalizar",
+       "at": "O arquivo deve"
+      },
+      {
+       "role": "ai",
+       "text": "Verifiquei o relatório. **Agora** está finalizado.",
+       "at": "como verificar"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Instrução operacional",
+       "icon": "list",
+       "at": "Instrução operacional"
+      },
+      {
+       "text": "Escopo",
+       "icon": "folder",
+       "at": "escopo"
+      },
+      {
+       "text": "Regra observável",
+       "icon": "eye",
+       "at": "regra observável"
+      },
+      {
+       "text": "Concisão",
+       "icon": "target",
+       "at": "concisão"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

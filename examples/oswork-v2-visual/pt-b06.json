@@ -1,0 +1,698 @@
+{
+ "block": "pt-b06",
+ "scenes": {
+  "44": {
+   "takeaway": "Cada permissão é **uma decisão separada**; entrega vem com verificação.",
+   "shots": [
+    {
+     "type": "chat",
+     "at": "Vamos a um exemplo",
+     "title": "Pedido do agente",
+     "messages": [
+      {
+       "role": "ai",
+       "text": "Posso acessar a internet para consultar a **documentação**?",
+       "at": "O agente pede"
+      },
+      {
+       "role": "note",
+       "text": "avalie **este** pedido, sozinho",
+       "at": "Avalie essa necessidade"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "separadamente de permissões",
+     "left": {
+      "title": "Consultar documentação",
+      "tone": "neutral",
+      "at": "separadamente de permissões",
+      "lines": [
+       {
+        "text": "acesso externo **só para ler**",
+        "at": "separadamente de permissões"
+       }
+      ]
+     },
+     "right": {
+      "title": "Apagar ou enviar",
+      "tone": "bad",
+      "at": "apagar arquivos",
+      "lines": [
+       {
+        "text": "**apagar** arquivos",
+        "at": "apagar arquivos"
+       },
+       {
+        "text": "**enviar** mensagens",
+        "at": "enviar mensagens"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Cada permissão, **uma decisão**",
+      "at": "enviar mensagens"
+     }
+    },
+    {
+     "type": "fields",
+     "at": "Agora é sua vez",
+     "title": "AGENTS.md",
+     "fields": [
+      {
+       "label": "Entrega",
+       "value": "com **verificação observada**",
+       "at": "verificação observada"
+      },
+      {
+       "label": "Limite",
+       "value": "esta tarefa **não autoriza publicar**",
+       "at": "não autoriza publicar"
+      },
+      {
+       "label": "Git ativo",
+       "value": "**revise o diff**",
+       "at": "Revise o diff"
+      }
+     ],
+     "stamp": {
+      "text": "escrito",
+      "at": "quando Git estiver"
+     }
+    }
+   ]
+  },
+  "45": {
+   "takeaway": "Primeiro projeto: **análise sem alterações**, depois um plano conferido.",
+   "shots": [
+    {
+     "type": "steps",
+     "at": "Vamos ao laboratório",
+     "goal": "Primeiro projeto acompanhado",
+     "steps": [
+      {
+       "title": "Pasta **meu-primeiro-projeto** + README.md sem dados privados",
+       "at": "Passo 1"
+      },
+      {
+       "title": "Confira **instalação** e **autenticação**",
+       "at": "Passo 2"
+      },
+      {
+       "title": "Inicie o Codex: **análise sem alterações**",
+       "at": "Passo 3"
+      },
+      {
+       "title": "Autorize **plano.md** e confira com o README",
+       "at": "Passo 4"
+      }
+     ],
+     "done_at": "confira se respeita"
+    }
+   ]
+  },
+  "46": {
+   "shots": [
+    {
+     "type": "quiz",
+     "at": "Antes de avançar",
+     "question": "Codex não achou o README.md. Primeiro passo: **aumentar o raciocínio**?",
+     "answer": "Não",
+     "answer_at": "A resposta é",
+     "note": "Confira **diretório**, **nome do arquivo** e **permissão**",
+     "note_at": "Confira o diretório"
+    },
+    {
+     "type": "bullets",
+     "at": "Se você consegue",
+     "title": "PODE SEGUIR SE",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Explica com **suas palavras**",
+       "icon": "chat",
+       "at": "explicar isso"
+      },
+      {
+       "text": "Mostra o **resultado** do exercício",
+       "icon": "check",
+       "at": "mostrar o resultado"
+      }
+     ]
+    }
+   ]
+  },
+  "47": {
+   "shots": [
+    {
+     "type": "module_intro",
+     "at": "Módulo 4",
+     "n": 4,
+     "title": "Pastas, Markdown e segredos",
+     "goal": "Montar a **casa digital** e separar **conhecimento** de **credenciais**.",
+     "goal_at": "Nosso objetivo",
+     "exercise": "Organize seu segundo cérebro operacional",
+     "exercise_at": "Ao final"
+    }
+   ],
+   "takeaway": "Casa digital: **conhecimento** separado de **credenciais**."
+  },
+  "48": {
+   "takeaway": "Uma pasta por contexto: a IA lê **só o que importa**.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Uma pasta representa",
+     "text": "Uma pasta, **um contexto**"
+    },
+    {
+     "type": "filetree",
+     "at": "O símbolo",
+     "root": "~/",
+     "entries": [
+      {
+       "path": "~/projetos/",
+       "kind": "dir",
+       "at": "projetos reúne",
+       "note": "trabalhos **independentes**"
+      },
+      {
+       "path": "~/projetos/cliente-a/",
+       "kind": "dir",
+       "at": "nomes claros",
+       "note": "nomes **claros**"
+      },
+      {
+       "path": "~/projetos/cliente-b/",
+       "kind": "dir",
+       "at": "clientes diferentes",
+       "note": "clientes **não se misturam**"
+      },
+      {
+       "path": "~/projetos/config/",
+       "kind": "dir",
+       "at": "pasta config",
+       "note": "conhecimento **transversal**"
+      },
+      {
+       "path": "~/projetos/cliente-a/entradas/",
+       "kind": "dir",
+       "at": "suas próprias entradas"
+      },
+      {
+       "path": "~/projetos/cliente-a/resultados/",
+       "kind": "dir",
+       "at": "e resultados"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Contextos separados",
+      "tone": "good",
+      "at": "Contextos separados",
+      "lines": [
+       {
+        "text": "a IA lê **só o necessário**",
+        "at": "limitar o que"
+       }
+      ]
+     },
+     "right": {
+      "title": "Pasta com tudo misturado",
+      "tone": "bad",
+      "at": "Uma pasta cheia",
+      "lines": [
+       {
+        "text": "mais **ruído**",
+        "at": "aumenta ruído"
+       },
+       {
+        "text": "conclusão **sem origem clara**",
+        "at": "de onde veio"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Pasta pessoal",
+       "icon": "folder",
+       "at": "Pasta pessoal"
+      },
+      {
+       "text": "Projetos",
+       "icon": "box",
+       "at": "projetos"
+      },
+      {
+       "text": "Contexto",
+       "icon": "target",
+       "at": "contexto"
+      },
+      {
+       "text": "Entradas e saídas",
+       "icon": "refresh",
+       "at": "entradas e saídas"
+      }
+     ]
+    }
+   ]
+  },
+  "49": {
+   "takeaway": "Desenhe a árvore **antes** de criar arquivos.",
+   "shots": [
+    {
+     "type": "filetree",
+     "at": "Vamos a um exemplo",
+     "root": "~/projetos/",
+     "entries": [
+      {
+       "path": "~/projetos/website/",
+       "kind": "dir",
+       "at": "~/projetos/website",
+       "note": "arquivos do **site**"
+      },
+      {
+       "path": "~/projetos/estudos/",
+       "kind": "dir",
+       "at": "~/projetos/estudos",
+       "note": "**experimentos**"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "No Windows",
+     "text": "No **Windows**, o gerenciador mostra:",
+     "then": {
+      "at": "C:\\Users\\SeuNome\\projetos",
+      "text": "**C:\\Users\\SeuNome\\projetos**",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Desenhe a **árvore** primeiro",
+       "icon": "pencil",
+       "at": "Desenhe a árvore"
+      },
+      {
+       "text": "**Um** projeto de treino",
+       "icon": "folder",
+       "at": "único projeto"
+      },
+      {
+       "text": "**Uma** pasta config global",
+       "icon": "gear",
+       "at": "única pasta global"
+      }
+     ]
+    }
+   ]
+  },
+  "50": {
+   "takeaway": "Markdown: sinais simples, **texto legível**, arquivo .md.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Markdown é texto",
+     "title": "notas.md",
+     "lines": [
+      {
+       "type": "comment",
+       "text": "sinais simples organizam o texto",
+       "at": "sinais simples"
+      },
+      {
+       "type": "out",
+       "text": "# Título",
+       "at": "cria título"
+      },
+      {
+       "type": "out",
+       "text": "## Subtítulo",
+       "at": "cria subtítulo"
+      },
+      {
+       "type": "out",
+       "text": "- item de lista",
+       "at": "hífen inicia"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "O arquivo continua",
+     "text": "Continua sendo **texto**",
+     "then": {
+      "at": "O nome termina",
+      "text": "Nome termina em **.md**"
+     }
+    },
+    {
+     "type": "keyword",
+     "at": "Você não precisa",
+     "text": "++Sem código++",
+     "sub": "instruções claras bastam",
+     "sub_at": "instruções claras"
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Arquivo .md pequeno",
+      "tone": "good",
+      "at": "Arquivos pequenos",
+      "lines": [
+       {
+        "text": "**dura** mais",
+        "at": "duram mais"
+       },
+       {
+        "text": "revisado por **pessoas**",
+        "at": "revisados por pessoas"
+       },
+       {
+        "text": "consultado por **agentes**",
+        "at": "consultados por agentes"
+       }
+      ]
+     },
+     "right": {
+      "title": "Conversa",
+      "tone": "bad",
+      "at": "conversa perdida",
+      "lines": [
+       {
+        "text": "**perde-se** com o tempo",
+        "at": "conversa perdida"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "O valor vem da **clareza**",
+      "at": "O valor vem"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Título",
+       "icon": "pencil",
+       "at": "Título"
+      },
+      {
+       "text": "Lista",
+       "icon": "list",
+       "at": "lista"
+      },
+      {
+       "text": "Bloco de código",
+       "icon": "code",
+       "at": "bloco de código"
+      },
+      {
+       "text": "Link",
+       "icon": "link",
+       "at": "link"
+      },
+      {
+       "text": "Texto simples",
+       "icon": "doc",
+       "at": "texto simples"
+      }
+     ]
+    }
+   ]
+  },
+  "51": {
+   "takeaway": "Um bom README explica a tarefa **sem a conversa original**.",
+   "shots": [
+    {
+     "type": "fields",
+     "at": "Vamos a um exemplo",
+     "title": "README.md",
+     "fields": [
+      {
+       "label": "Propósito",
+       "value": "resumir as atas da semana",
+       "at": "propósito"
+      },
+      {
+       "label": "Entradas",
+       "value": "atas/*.md",
+       "at": "arquivos de entrada"
+      },
+      {
+       "label": "Resultado esperado",
+       "value": "resumo.md com decisões",
+       "at": "resultado esperado"
+      },
+      {
+       "label": "Como verificar",
+       "value": "cada decisão **está na ata**",
+       "at": "como verificar"
+      }
+     ],
+     "stamp": {
+      "text": "sem a conversa",
+      "at": "Quem chegar depois"
+     }
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "meu-projeto",
+     "lines": [
+      {
+       "type": "comment",
+       "text": "abra o modelo do kit",
+       "at": "Abra materiais/README-projeto.md"
+      },
+      {
+       "type": "cmd",
+       "text": "cp materiais/README-projeto.md README.md",
+       "at": "Copie o modelo"
+      },
+      {
+       "type": "out",
+       "text": "Propósito: resumir atas",
+       "at": "informação real"
+      },
+      {
+       "type": "out",
+       "text": "Entradas: a definir",
+       "at": "a definir"
+      }
+     ]
+    }
+   ]
+  },
+  "52": {
+   "takeaway": "Um arquivo por função: **consultar** não é **obedecer sempre**.",
+   "shots": [
+    {
+     "type": "lanes",
+     "at": "Cada arquivo tem",
+     "lanes": [
+      {
+       "title": "memoria.md",
+       "sub": "preferências",
+       "icon": "memory"
+      },
+      {
+       "title": "decisoes.md",
+       "sub": "escolhas",
+       "icon": "flag"
+      },
+      {
+       "title": "dicas.md",
+       "sub": "procedimentos",
+       "icon": "bulb"
+      },
+      {
+       "title": "falhas.md",
+       "sub": "problemas",
+       "icon": "warn"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "preferências **estáveis**",
+       "at": "memoria.md registra"
+      },
+      {
+       "lane": 1,
+       "text": "**por que** escolhemos",
+       "at": "decisoes.md explica"
+      },
+      {
+       "lane": 2,
+       "text": "procedimentos **úteis**",
+       "at": "dicas.md guarda"
+      },
+      {
+       "lane": 3,
+       "text": "problema + **correção**",
+       "at": "falhas.md documenta"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Não coloque tudo",
+     "text": "Tudo em um ~~documento gigante~~",
+     "then": {
+      "at": "Quando uma decisão muda",
+      "text": "Decisão mudou? ++data e motivo++"
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Consultar quando precisa",
+      "tone": "good",
+      "at": "Separar funções",
+      "lines": [
+       {
+        "text": "abre **só o necessário**",
+        "at": "consultar só"
+       }
+      ]
+     },
+     "right": {
+      "title": "Regra em toda tarefa",
+      "tone": "bad",
+      "at": "Um histórico de falhas",
+      "lines": [
+       {
+        "text": "falhas viram **comandos obrigatórios**",
+        "at": "comandos obrigatórios"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Consultável ≠ **permanente**",
+      "at": "Conhecimento consultável"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Memória seletiva",
+       "icon": "memory",
+       "at": "Memória seletiva"
+      },
+      {
+       "text": "Decisões datadas",
+       "icon": "calendar",
+       "at": "decisões datadas"
+      },
+      {
+       "text": "Como fazer",
+       "icon": "list",
+       "at": "procedimento"
+      },
+      {
+       "text": "Histórico",
+       "icon": "clock",
+       "at": "histórico"
+      }
+     ]
+    }
+   ]
+  },
+  "53": {
+   "takeaway": "Preferência, decisão, dica ou falha: **cada nota tem seu lugar**.",
+   "shots": [
+    {
+     "type": "lanes",
+     "at": "Vamos a um exemplo",
+     "lanes": [
+      {
+       "title": "memoria.md",
+       "sub": "preferência",
+       "icon": "memory"
+      },
+      {
+       "title": "decisoes.md",
+       "sub": "decisão",
+       "icon": "flag"
+      },
+      {
+       "title": "dicas.md",
+       "sub": "procedimento",
+       "icon": "bulb"
+      },
+      {
+       "title": "falhas.md",
+       "sub": "falha",
+       "icon": "warn"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "“Prefiro relatórios **curtos**”",
+       "at": "Prefiro relatórios curtos"
+      },
+      {
+       "lane": 1,
+       "text": "“Escolhemos **CSV**: compatível com a planilha”",
+       "at": "Escolhemos CSV"
+      },
+      {
+       "lane": 3,
+       "text": "“O serviço **parou** sem supervisão”",
+       "at": "O serviço parou"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**5** notas fictícias",
+       "icon": "pencil",
+       "at": "cinco notas fictícias"
+      },
+      {
+       "text": "Distribua nos **4 arquivos**",
+       "icon": "folder",
+       "at": "entre os quatro"
+      },
+      {
+       "text": "Explique **por quê**",
+       "icon": "bulb",
+       "at": "explique por que"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

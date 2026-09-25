@@ -1,0 +1,311 @@
+{
+  "block": "pt-b14",
+  "scenes": {
+    "120": {
+      "takeaway": "Acesso testado antes do firewall; credenciais **fora do Git**; serviço **supervisionado** e testado.",
+      "shots": [
+        {
+          "type": "flow",
+          "at": "Vamos ao laboratório",
+          "nodes": [
+            {
+              "id": "p",
+              "label": "Pasta local",
+              "icon": "folder",
+              "col": 0,
+              "row": 1,
+              "at": "pasta local"
+            },
+            {
+              "id": "v",
+              "label": "VPS",
+              "icon": "cloud",
+              "col": 2,
+              "row": 1,
+              "at": "a um serviço"
+            },
+            {
+              "id": "s",
+              "label": "Serviço supervisionado",
+              "icon": "eye",
+              "col": 4,
+              "row": 1,
+              "at": "serviço supervisionado"
+            }
+          ],
+          "edges": [
+            {
+              "from": "p",
+              "to": "v",
+              "at": "a um serviço"
+            },
+            {
+              "from": "v",
+              "to": "s",
+              "at": "serviço supervisionado"
+            }
+          ]
+        },
+        {
+          "type": "steps",
+          "at": "Passo 1",
+          "goal": "Da pasta local a um serviço supervisionado",
+          "steps": [
+            {
+              "title": "VPS Ubuntu, orçamento e console de recuperação",
+              "at": "Passo 1"
+            },
+            {
+              "title": "Usuário, SSH em 2ª sessão e só então firewall",
+              "at": "Passo 2"
+            },
+            {
+              "title": "Projeto pelo Git, sem credenciais + .env privado",
+              "at": "Passo 3"
+            },
+            {
+              "title": "Unidade systemd, logs e restauração de backup",
+              "at": "Passo 4"
+            }
+          ]
+        },
+        {
+          "type": "terminal",
+          "at": "inicie o serviço",
+          "title": "VPS · oswork",
+          "lines": [
+            {
+              "type": "cmd",
+              "text": "sudo systemctl enable --now oswork",
+              "at": "inicie o serviço"
+            },
+            {
+              "type": "out",
+              "text": "● oswork.service · active (running)",
+              "at": "teste resposta"
+            },
+            {
+              "type": "cmd",
+              "text": "sudo systemctl restart oswork",
+              "at": "reinício controlado"
+            },
+            {
+              "type": "cmd",
+              "text": "journalctl -u oswork -n 20",
+              "at": "logs"
+            },
+            {
+              "type": "comment",
+              "text": "# restaurar o backup e conferir",
+              "at": "restauração de backup"
+            }
+          ]
+        }
+      ]
+    },
+    "121": {
+      "takeaway": "Agente 24 h = **serviço supervisionado**, credenciais, rede e monitoramento.",
+      "shots": [
+        {
+          "type": "quiz",
+          "at": "Antes de avançar",
+          "question": "Instalar Codex numa VPS garante um agente ativo **24 horas**?",
+          "answer": "Não. Instalar não basta.",
+          "answer_at": "A resposta é"
+        },
+        {
+          "type": "hub",
+          "at": "serviço ou agendador",
+          "center": {
+            "label": "Agente 24 h",
+            "icon": "bot",
+            "at": "serviço ou agendador"
+          },
+          "nodes": [
+            {
+              "label": "Serviço ou agendador",
+              "icon": "clock",
+              "at": "serviço ou agendador"
+            },
+            {
+              "label": "Processo supervisionado",
+              "icon": "eye",
+              "at": "processo supervisionado"
+            },
+            {
+              "label": "Credenciais válidas",
+              "icon": "key",
+              "at": "credenciais válidas"
+            },
+            {
+              "label": "Rede",
+              "icon": "globe",
+              "at": "rede"
+            },
+            {
+              "label": "Monitoramento",
+              "icon": "chart",
+              "at": "monitoramento"
+            }
+          ]
+        },
+        {
+          "type": "bullets",
+          "at": "Se você consegue",
+          "title": "PARA SEGUIR",
+          "layout": "row",
+          "items": [
+            {
+              "text": "Explique com **suas palavras**",
+              "icon": "chat",
+              "at": "explicar isso"
+            },
+            {
+              "text": "Mostre o **exercício**",
+              "icon": "check",
+              "at": "mostrar o resultado"
+            },
+            {
+              "text": "Siga para a **próxima etapa**",
+              "icon": "flag",
+              "at": "próxima etapa"
+            }
+          ]
+        }
+      ]
+    },
+    "122": {
+      "takeaway": "Tarefa pequena, entrada e saída, conferir e **registrar** — o sistema melhora assim.",
+      "shots": [
+        {
+          "type": "hub",
+          "at": "Concluímos",
+          "center": {
+            "label": "8 módulos",
+            "icon": "gear",
+            "at": "oito módulos"
+          },
+          "nodes": [
+            {
+              "label": "Modelos",
+              "icon": "ai",
+              "at": "modelos"
+            },
+            {
+              "label": "Interfaces",
+              "icon": "chat",
+              "at": "interfaces"
+            },
+            {
+              "label": "Terminal",
+              "icon": "terminal",
+              "at": "terminal"
+            },
+            {
+              "label": "Arquivos",
+              "icon": "folder",
+              "at": "organização de arquivos"
+            },
+            {
+              "label": "Instruções e habilidades",
+              "icon": "list",
+              "at": "instruções"
+            },
+            {
+              "label": "Memória",
+              "icon": "memory",
+              "at": "memória"
+            },
+            {
+              "label": "Git e GitHub",
+              "icon": "git",
+              "at": "Git"
+            },
+            {
+              "label": "Telegram e servidor",
+              "icon": "server",
+              "at": "Telegram"
+            }
+          ]
+        },
+        {
+          "type": "flow",
+          "at": "O próximo passo",
+          "nodes": [
+            {
+              "id": "t",
+              "label": "Tarefa pequena",
+              "icon": "target",
+              "col": 0,
+              "row": 1,
+              "at": "tarefa pequena"
+            },
+            {
+              "id": "e",
+              "label": "Entrada e saída",
+              "icon": "doc",
+              "col": 1,
+              "row": 0,
+              "at": "entrada e saída"
+            },
+            {
+              "id": "x",
+              "label": "Executar",
+              "icon": "play",
+              "col": 2,
+              "row": 1,
+              "at": "executar"
+            },
+            {
+              "id": "c",
+              "label": "Conferir",
+              "icon": "check",
+              "col": 3,
+              "row": 0,
+              "at": "conferir"
+            },
+            {
+              "id": "r",
+              "label": "Registrar",
+              "icon": "pencil",
+              "col": 4,
+              "row": 1,
+              "at": "registrar o que"
+            }
+          ],
+          "edges": [
+            {
+              "from": "t",
+              "to": "e",
+              "at": "entrada e saída"
+            },
+            {
+              "from": "e",
+              "to": "x",
+              "at": "executar"
+            },
+            {
+              "from": "x",
+              "to": "c",
+              "at": "conferir"
+            },
+            {
+              "from": "c",
+              "to": "r",
+              "at": "registrar o que"
+            }
+          ]
+        },
+        {
+          "type": "statement",
+          "at": "Volte aos módulos",
+          "text": "Volte aos **módulos** sempre que precisar",
+          "then": {
+            "at": "O sistema melhora",
+            "text": "O sistema melhora: ++registre, corrija++"
+          }
+        }
+      ]
+    }
+  }
+}

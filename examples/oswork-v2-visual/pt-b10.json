@@ -1,0 +1,794 @@
+{
+ "block": "pt-b10",
+ "scenes": {
+  "83": {
+   "takeaway": "Mensagem de commit boa diz **o que mudou**.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "treino/",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "git commit -m \"Adiciona instruções para conferir vendas\"",
+       "at": "Adiciona instruções"
+      },
+      {
+       "type": "comment",
+       "text": "# a mensagem diz o que mudou",
+       "at": "diz o que mudou"
+      },
+      {
+       "type": "cmd",
+       "text": "git log --oneline",
+       "at": "Depois"
+      },
+      {
+       "type": "out",
+       "text": "a3f9c21 Adiciona instruções para conferir vendas",
+       "at": "lista compacta"
+      },
+      {
+       "type": "out",
+       "text": "7b2e104 Primeiro commit",
+       "at": "seus identificadores"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Configure **nome** e **email**",
+       "icon": "user",
+       "sub": "git config, só no treino",
+       "at": "Configure git config"
+      },
+      {
+       "text": "Prepare **README.md** e **.gitignore**",
+       "icon": "doc",
+       "at": "Prepare"
+      },
+      {
+       "text": "Crie o **primeiro commit**",
+       "icon": "git",
+       "at": "crie o primeiro commit"
+      }
+     ]
+    }
+   ]
+  },
+  "84": {
+   "takeaway": "Clone cria, pull atualiza; **divergência pede revisão**.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Clone e atualize",
+     "nodes": [
+      {
+       "id": "r",
+       "label": "Repositório remoto",
+       "icon": "cloud",
+       "col": 0,
+       "row": 1,
+       "at": "repositório remoto"
+      },
+      {
+       "id": "l",
+       "label": "Pasta nova + histórico",
+       "icon": "folder",
+       "col": 3,
+       "row": 0,
+       "at": "copia um repositório"
+      },
+      {
+       "id": "b",
+       "label": "Branch atual",
+       "icon": "git",
+       "col": 3,
+       "row": 2,
+       "at": "busca e integra"
+      }
+     ],
+     "edges": [
+      {
+       "from": "r",
+       "to": "l",
+       "label": "git clone",
+       "at": "copia um repositório"
+      },
+      {
+       "from": "r",
+       "to": "b",
+       "label": "git pull",
+       "at": "busca e integra"
+      }
+     ]
+    },
+    {
+     "type": "keyword",
+     "at": "Antes de atualizar",
+     "text": "**git status**",
+     "sub": "sempre antes do pull",
+     "sub_at": "confira git status"
+    },
+    {
+     "type": "compare",
+     "at": "Em um fluxo inicial",
+     "left": {
+      "title": "Atualização direta",
+      "tone": "good",
+      "at": "aceita somente",
+      "lines": [
+       {
+        "text": "--ff-only ++avança++",
+        "at": "uma atualização direta"
+       }
+      ]
+     },
+     "right": {
+      "title": "Históricos divergiram",
+      "tone": "bad",
+      "at": "para quando",
+      "lines": [
+       {
+        "text": "--ff-only **para** e avisa",
+        "at": "históricos divergiram"
+       }
+      ]
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Por que isso importa",
+     "text": "Pull com mudanças locais → **conflitos**",
+     "then": {
+      "at": "O bloqueio",
+      "text": "O bloqueio é **informação útil**"
+     }
+    },
+    {
+     "type": "compare",
+     "at": "não o contorne",
+     "left": {
+      "title": "Contornar",
+      "tone": "bad",
+      "at": "não o contorne",
+      "lines": [
+       {
+        "text": "~~apagar trabalho~~",
+        "at": "apagando trabalho"
+       }
+      ]
+     },
+     "right": {
+      "title": "Investigar",
+      "tone": "good",
+      "at": "Inspecione o histórico",
+      "lines": [
+       {
+        "text": "inspecione o **histórico**",
+        "at": "Inspecione o histórico"
+       },
+       {
+        "text": "peça ajuda **com contexto**",
+        "at": "peça ajuda"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**Clone** cria a pasta",
+       "icon": "folder",
+       "at": "Clone cria"
+      },
+      {
+       "text": "**Pull** atualiza",
+       "icon": "download",
+       "at": "pull atualiza"
+      },
+      {
+       "text": "**Branch** = linha de trabalho",
+       "icon": "git",
+       "at": "branch é"
+      },
+      {
+       "text": "Divergência → **revisão**",
+       "icon": "eye",
+       "at": "divergência pede"
+      }
+     ]
+    }
+   ]
+  },
+  "85": {
+   "takeaway": "Sem mudanças locais, avance; com divergência, **pare e inspecione**.",
+   "shots": [
+    {
+     "type": "timeline",
+     "at": "Vamos a um exemplo",
+     "events": [
+      {
+       "label": "Ontem",
+       "sub": "você clonou o projeto",
+       "at": "clonou um projeto"
+      },
+      {
+       "label": "Hoje",
+       "sub": "novas instruções no GitHub",
+       "at": "hoje há novas"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Sem mudanças locais",
+     "left": {
+      "title": "Sem mudanças locais",
+      "tone": "good",
+      "at": "Sem mudanças locais",
+      "lines": [
+       {
+        "text": "--ff-only **avança** a versão",
+        "at": "costuma avançar"
+       }
+      ]
+     },
+     "right": {
+      "title": "Commits dos dois lados",
+      "tone": "bad",
+      "at": "Com commits diferentes",
+      "lines": [
+       {
+        "text": "**pare** e inspecione",
+        "at": "pare e inspecione"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**Clone** o repositório do curso",
+       "icon": "download",
+       "at": "Clone o repositório"
+      },
+      {
+       "text": "Em uma **pasta separada**",
+       "icon": "folder",
+       "at": "pasta separada"
+      },
+      {
+       "text": "**Leia** antes de executar",
+       "icon": "eye",
+       "at": "Leia antes"
+      }
+     ]
+    }
+   ]
+  },
+  "86": {
+   "takeaway": "Revert **preserva** o histórico; recuperar exige **diagnóstico**.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Recupere sem apagar",
+     "nodes": [
+      {
+       "id": "a",
+       "label": "Commit A",
+       "icon": "check",
+       "col": 0,
+       "row": 1,
+       "at": "Recupere sem apagar"
+      },
+      {
+       "id": "b",
+       "label": "Commit B · erro",
+       "icon": "warn",
+       "col": 2,
+       "row": 1,
+       "at": "git revert"
+      },
+      {
+       "id": "c",
+       "label": "Commit C · desfaz B",
+       "icon": "refresh",
+       "col": 4,
+       "row": 1,
+       "at": "um novo commit"
+      }
+     ],
+     "edges": [
+      {
+       "from": "a",
+       "to": "b",
+       "at": "git revert"
+      },
+      {
+       "from": "b",
+       "to": "c",
+       "label": "revert",
+       "at": "desfaz uma mudança"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "É adequado",
+     "left": {
+      "title": "git revert",
+      "tone": "good",
+      "at": "É adequado",
+      "lines": [
+       {
+        "text": "++preserva++ o histórico",
+        "at": "corrigir um registro"
+       },
+       {
+        "text": "serve para o **já compartilhado**",
+        "at": "já compartilhado"
+       }
+      ]
+     },
+     "right": {
+      "title": "git restore",
+      "tone": "bad",
+      "at": "git restore",
+      "lines": [
+       {
+        "text": "descarta o **não salvo**",
+        "at": "descarta mudanças"
+       },
+       {
+        "text": "**pode perder** trabalho",
+        "at": "pode perder trabalho"
+       }
+      ]
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Não ensine",
+     "text": "~~reset --hard~~ como resposta automática",
+     "strike_at": "resposta automática",
+     "then": {
+      "at": "consequências diferentes",
+      "text": "Cada comando tem **consequências diferentes**"
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Identifique se",
+     "pos": "top",
+     "text": "**Onde** está a mudança?",
+     "then": {
+      "at": "antes de escolher",
+      "text": "Diagnóstico **antes** do comando"
+     }
+    },
+    {
+     "type": "flow",
+     "at": "a mudança está",
+     "keep": true,
+     "nodes": [
+      {
+       "id": "a",
+       "label": "Só no arquivo",
+       "icon": "doc",
+       "col": 0,
+       "row": 2,
+       "at": "só no arquivo"
+      },
+      {
+       "id": "c",
+       "label": "Commit local",
+       "icon": "git",
+       "col": 2,
+       "row": 2,
+       "at": "em commit local"
+      },
+      {
+       "id": "p",
+       "label": "Publicada",
+       "icon": "cloud",
+       "col": 4,
+       "row": 2,
+       "at": "ou publicada"
+      }
+     ],
+     "edges": [
+      {
+       "from": "a",
+       "to": "c",
+       "label": "commit",
+       "at": "em commit local"
+      },
+      {
+       "from": "c",
+       "to": "p",
+       "label": "push",
+       "at": "ou publicada"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Revert **preserva** histórico",
+       "icon": "refresh",
+       "at": "Revert preserva"
+      },
+      {
+       "text": "Restore **descarta** alterações",
+       "icon": "x",
+       "at": "restore descarta"
+      },
+      {
+       "text": "Recuperar exige **diagnóstico**",
+       "icon": "search",
+       "at": "recuperação exige"
+      }
+     ]
+    }
+   ]
+  },
+  "87": {
+   "takeaway": "Revert desfaz **sem esconder** a mudança — confira o arquivo.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "treino/",
+     "lines": [
+      {
+       "type": "comment",
+       "text": "# 2º commit: muda o título do README",
+       "at": "segundo commit"
+      },
+      {
+       "type": "cmd",
+       "text": "git revert HEAD",
+       "at": "git revert HEAD"
+      },
+      {
+       "type": "out",
+       "text": "[main 9c1d4e2] Revert \"Muda título do README\"",
+       "at": "terceiro commit"
+      },
+      {
+       "type": "comment",
+       "text": "# título anterior de volta; a mudança segue no log",
+       "at": "sem esconder"
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "at": "Agora é sua vez",
+     "goal": "Reverter com segurança",
+     "steps": [
+      {
+       "title": "git revert --no-edit HEAD",
+       "at": "Use git revert"
+      },
+      {
+       "title": "Só se HEAD for o 2º commit de treino",
+       "at": "somente após confirmar"
+      },
+      {
+       "title": "Abra o README e confira",
+       "at": "Abra o README"
+      }
+     ],
+     "done_at": "não apenas a mensagem"
+    }
+   ]
+  },
+  "88": {
+   "takeaway": "Registrar, enviar e publicar são **três etapas** separadas.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Publique só",
+     "nodes": [
+      {
+       "id": "l",
+       "label": "Commits locais",
+       "icon": "folder",
+       "col": 0,
+       "row": 1,
+       "at": "Publique só"
+      },
+      {
+       "id": "r",
+       "label": "Remoto · GitHub",
+       "icon": "cloud",
+       "col": 3,
+       "row": 1,
+       "at": "ao remoto"
+      }
+     ],
+     "edges": [
+      {
+       "from": "l",
+       "to": "r",
+       "label": "push",
+       "at": "envia commits"
+      }
+     ]
+    },
+    {
+     "type": "fields",
+     "at": "Antes disso",
+     "title": "Antes do push",
+     "fields": [
+      {
+       "label": "Conta",
+       "value": "a conta certa?",
+       "at": "a conta"
+      },
+      {
+       "label": "Destino",
+       "value": "URL do remoto conferida",
+       "at": "URL de destino"
+      },
+      {
+       "label": "Escopo",
+       "value": "só os arquivos revisados",
+       "at": "o escopo"
+      },
+      {
+       "label": "Credenciais",
+       "value": "nenhuma no commit",
+       "at": "ausência de credenciais"
+      }
+     ],
+     "stamp": {
+      "text": "revisado",
+      "at": "Repositório público"
+     }
+    },
+    {
+     "type": "compare",
+     "at": "fica acessível",
+     "left": {
+      "title": "Público",
+      "tone": "neutral",
+      "at": "fica acessível",
+      "lines": [
+       {
+        "text": "acessível a **terceiros**",
+        "at": "a terceiros"
+       }
+      ]
+     },
+     "right": {
+      "title": "Privado",
+      "tone": "neutral",
+      "at": "privado também",
+      "lines": [
+       {
+        "text": "também exige **controle de acesso**",
+        "at": "controle de acesso"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Site no ar é uma **etapa adicional**",
+      "at": "Publicar um site"
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Por que isso importa",
+     "text": "Misturar salvar e publicar",
+     "then": {
+      "at": "exposição acidental",
+      "text": "→ **exposição acidental**",
+      "replace": false
+     }
+    },
+    {
+     "type": "timeline",
+     "at": "Separe",
+     "events": [
+      {
+       "label": "Registrar",
+       "sub": "commit local",
+       "at": "registrar localmente"
+      },
+      {
+       "label": "Enviar",
+       "sub": "push ao GitHub",
+       "at": "enviar ao GitHub"
+      },
+      {
+       "label": "Site no ar",
+       "sub": "hospedagem",
+       "at": "colocar o site"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**origin**: para onde vai",
+       "icon": "link",
+       "at": "origin"
+      },
+      {
+       "text": "**push**: envia os commits",
+       "icon": "upload",
+       "at": "push"
+      },
+      {
+       "text": "**visibilidade**: público ou privado",
+       "icon": "eye",
+       "at": "visibilidade"
+      },
+      {
+       "text": "**credenciais**: nunca no commit",
+       "icon": "key",
+       "at": "credenciais"
+      },
+      {
+       "text": "**publicação**: etapa à parte",
+       "icon": "globe",
+       "at": "publicação"
+      }
+     ]
+    }
+   ]
+  },
+  "89": {
+   "takeaway": "Confira **URL e último commit** antes de enviar.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Na sua máquina",
+      "tone": "neutral",
+      "at": "Um README local",
+      "lines": [
+       {
+        "text": "README com **rascunhos**",
+        "at": "conter rascunhos"
+       },
+       {
+        "text": "o commit **preserva** localmente",
+        "at": "O commit preserva"
+       }
+      ]
+     },
+     "right": {
+      "title": "No remoto",
+      "tone": "good",
+      "at": "Só envie",
+      "lines": [
+       {
+        "text": "só **depois de decidir**",
+        "at": "tiver decidido"
+       }
+      ]
+     }
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "antes do envio",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "git remote -v",
+       "at": "git remote"
+      },
+      {
+       "type": "out",
+       "text": "origin  github.com/voce/treino.git (push)",
+       "at": "e git status"
+      },
+      {
+       "type": "cmd",
+       "text": "git status",
+       "at": "e git status"
+      },
+      {
+       "type": "comment",
+       "text": "# a URL é a esperada?",
+       "at": "Confirme a URL"
+      },
+      {
+       "type": "cmd",
+       "text": "git show --stat",
+       "at": "reveja o último commit"
+      },
+      {
+       "type": "out",
+       "text": " README.md | 3 ++-",
+       "at": "antes de decidir"
+      }
+     ]
+    }
+   ]
+  },
+  "90": {
+   "takeaway": "Commit, diff e revert: seu **primeiro ponto de recuperação**.",
+   "shots": [
+    {
+     "type": "steps",
+     "at": "Vamos ao laboratório",
+     "goal": "Seu primeiro ponto de recuperação",
+     "steps": [
+      {
+       "title": "git init no treino + nome e email",
+       "at": "Passo 1"
+      },
+      {
+       "title": "1º commit; altere uma linha do README",
+       "at": "Passo 2"
+      },
+      {
+       "title": "git diff e 2º commit",
+       "at": "Passo 3"
+      },
+      {
+       "title": "git revert, confira e leia o log",
+       "at": "Passo 4"
+      }
+     ],
+     "done_at": "leia git log"
+    }
+   ]
+  },
+  "91": {
+   "takeaway": "Commit **registra**; push **envia**.",
+   "shots": [
+    {
+     "type": "quiz",
+     "at": "Antes de avançar",
+     "question": "git commit já envia os arquivos ao GitHub?",
+     "answer": "**Não.** Commit registra localmente; **push** envia ao remoto.",
+     "answer_at": "A resposta é",
+     "note": "Explique com suas palavras e mostre o exercício",
+     "note_at": "Se você consegue"
+    }
+   ]
+  },
+  "92": {
+   "takeaway": "Bot restrito: **responde sem executar** mensagens.",
+   "shots": [
+    {
+     "type": "module_intro",
+     "at": "Módulo 7",
+     "n": 7,
+     "title": "Telegram como interface de trabalho",
+     "goal": "Executar um **bot restrito** de consulta e entender **onde a IA entra**.",
+     "goal_at": "Nosso objetivo",
+     "exercise": "Um bot que responde sem executar mensagens",
+     "exercise_at": "Ao final"
+    }
+   ]
+  }
+ }
+}

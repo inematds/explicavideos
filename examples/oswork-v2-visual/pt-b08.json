@@ -1,0 +1,943 @@
+{
+ "block": "pt-b08",
+ "scenes": {
+  "64": {
+   "takeaway": "Boa regra define uma **ação** e a **evidência** de que foi cumprida.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Vago",
+      "at": "Seja excelente",
+      "lines": [
+       {
+        "text": "“Seja **excelente**”",
+        "at": "Seja excelente"
+       },
+       {
+        "text": "difícil de **testar**",
+        "at": "difícil de testar"
+       }
+      ]
+     },
+     "right": {
+      "title": "Testável",
+      "at": "Compare o total",
+      "lines": [
+       {
+        "text": "compare o total com **vendas.csv**",
+        "at": "com vendas.csv"
+       },
+       {
+        "text": "indique a **diferença**",
+        "at": "indique a diferença"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "uma **ação** + sua **evidência**",
+      "at": "uma ação e sua evidência"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Escreva **5 regras**",
+       "icon": "pencil",
+       "at": "Escreva cinco regras"
+      },
+      {
+       "text": "Dá para **observar** se foi cumprida?",
+       "icon": "eye",
+       "at": "consigo observar"
+      },
+      {
+       "text": "Remova o que **não muda** o trabalho",
+       "icon": "x",
+       "at": "Remova orientações"
+      }
+     ]
+    }
+   ]
+  },
+  "65": {
+   "takeaway": "Global **pequeno**; detalhes no **projeto**. O caminho define o que vale.",
+   "shots": [
+    {
+     "type": "filetree",
+     "at": "Por padrão",
+     "root": "~/",
+     "entries": [
+      {
+       "path": ".codex/",
+       "at": "~/.codex/AGENTS.md guarda"
+      },
+      {
+       "path": ".codex/AGENTS.md",
+       "at": "guarda instruções globais",
+       "note": "**global**: vale para tudo"
+      },
+      {
+       "path": "projeto/",
+       "at": "No projeto"
+      },
+      {
+       "path": "projeto/AGENTS.md",
+       "at": "acrescenta regras",
+       "note": "acrescenta regras **do projeto**"
+      },
+      {
+       "path": "projeto/dados/",
+       "at": "arquivos em pastas"
+      },
+      {
+       "path": "projeto/dados/AGENTS.md",
+       "at": "podem prevalecer",
+       "note": "pasta mais próxima **prevalece**"
+      },
+      {
+       "path": "projeto/AGENTS.override.md",
+       "at": "AGENTS.override.md tem",
+       "note": "**override** vence no mesmo nível"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Isso não supera",
+     "title": "ACIMA DO AGENTS.MD",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Instruções de **sistema**",
+       "icon": "shield",
+       "at": "instruções de sistema"
+      },
+      {
+       "text": "**Permissões**",
+       "icon": "lock",
+       "at": "permissões"
+      },
+      {
+       "text": "Pedido **explícito** da sessão",
+       "icon": "chat",
+       "at": "solicitação explícita"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "O caminho importa",
+     "pos": "top",
+     "text": "O **caminho** importa"
+    },
+    {
+     "type": "compare",
+     "at": "Uma regra local",
+     "left": {
+      "title": "Surpresas",
+      "at": "Uma regra local",
+      "lines": [
+       {
+        "text": "regra local **não vale** em outra pasta",
+        "at": "a outra pasta"
+       },
+       {
+        "text": "**override** esquecido",
+        "at": "override esquecido"
+       }
+      ]
+     },
+     "right": {
+      "title": "Organizado",
+      "at": "Mantenha o global",
+      "lines": [
+       {
+        "text": "global **pequeno**",
+        "at": "global pequeno"
+       },
+       {
+        "text": "detalhes **no projeto**",
+        "at": "detalhes locais"
+       }
+      ]
+     },
+     "keep": true
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Descoberta",
+       "icon": "search",
+       "at": "Descoberta"
+      },
+      {
+       "text": "Hierarquia",
+       "icon": "list",
+       "at": "hierarquia"
+      },
+      {
+       "text": "Escopo de diretório",
+       "icon": "folder",
+       "at": "escopo de diretório"
+      },
+      {
+       "text": "Override",
+       "icon": "warn",
+       "at": "override"
+      }
+     ]
+    }
+   ]
+  },
+  "66": {
+   "takeaway": "Global e projeto **colaboram**; confira nos **arquivos reais**.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Vamos a um exemplo",
+     "nodes": [
+      {
+       "id": "g",
+       "label": "Global: relate os testes",
+       "icon": "globe",
+       "col": 0,
+       "row": 0,
+       "at": "relate os testes"
+      },
+      {
+       "id": "p",
+       "label": "Projeto: python3 validar.py",
+       "icon": "folder",
+       "col": 0,
+       "row": 2,
+       "at": "valide o CSV"
+      },
+      {
+       "id": "c",
+       "label": "Codex segue as duas",
+       "icon": "bot",
+       "col": 3,
+       "row": 1,
+       "at": "As duas instruções"
+      }
+     ],
+     "edges": [
+      {
+       "from": "g",
+       "to": "c",
+       "at": "colaboram",
+       "label": "regra geral"
+      },
+      {
+       "from": "p",
+       "to": "c",
+       "at": "não é necessário",
+       "label": "script só no projeto"
+      }
+     ]
+    },
+    {
+     "type": "chat",
+     "at": "Agora é sua vez",
+     "title": "Codex",
+     "messages": [
+      {
+       "role": "user",
+       "text": "Resuma as **instruções** que você carregou.",
+       "at": "Peça ao Codex"
+      },
+      {
+       "role": "ai",
+       "text": "Global: relatar testes. Projeto: validar o CSV.",
+       "at": "que carregou"
+      },
+      {
+       "role": "note",
+       "text": "confira contra os **arquivos reais**",
+       "at": "Confira a resposta"
+      },
+      {
+       "role": "note",
+       "text": "só depois culpe o modelo",
+       "at": "atribuir um erro"
+      }
+     ]
+    }
+   ]
+  },
+  "67": {
+   "takeaway": "Regra diz o que **respeitar**; Skill ensina um **procedimento**.",
+   "shots": [
+    {
+     "type": "fields",
+     "at": "Uma Skill reúne",
+     "title": "SKILL.md",
+     "fields": [
+      {
+       "label": "Atividade",
+       "value": "relatório semanal (recorrente)",
+       "at": "atividade recorrente"
+      },
+      {
+       "label": "Nome",
+       "value": "relatorio-semanal",
+       "at": "com nome"
+      },
+      {
+       "label": "Descrição",
+       "value": "quando usar esta Skill",
+       "at": "descrição no início"
+      },
+      {
+       "label": "Apoio",
+       "value": "recursos e scripts opcionais",
+       "at": "recursos e programas"
+      }
+     ],
+     "stamp": {
+      "text": "procedimento",
+      "at": "de apoio"
+     }
+    },
+    {
+     "type": "filetree",
+     "at": "Skills pessoais",
+     "root": "~/",
+     "entries": [
+      {
+       "path": ".agents/",
+       "at": "Skills pessoais"
+      },
+      {
+       "path": ".agents/skills/",
+       "at": "ficam em",
+       "note": "Skills **pessoais**"
+      },
+      {
+       "path": "repositorio/",
+       "at": "as do projeto"
+      },
+      {
+       "path": "repositorio/.agents/",
+       "at": "podem ficar em"
+      },
+      {
+       "path": "repositorio/.agents/skills/",
+       "at": "dentro do repositório",
+       "note": "Skills **do projeto**"
+      },
+      {
+       "path": ".codex/",
+       "at": "A pasta",
+       "note": "**configuração** do Codex"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Uma regra diz",
+     "left": {
+      "title": "Regra · AGENTS.md",
+      "tone": "neutral",
+      "at": "Uma regra diz",
+      "lines": [
+       {
+        "text": "diz o que **respeitar**",
+        "at": "o que respeitar"
+       }
+      ]
+     },
+     "right": {
+      "title": "Skill",
+      "tone": "good",
+      "at": "uma Skill ensina",
+      "lines": [
+       {
+        "text": "ensina um **procedimento**",
+        "at": "ensina um procedimento"
+       },
+       {
+        "text": "acionada **quando necessário**",
+        "at": "quando necessário"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "nada de carregar **o manual inteiro** em toda tarefa",
+      "at": "evita carregar"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**Nome**",
+       "icon": "pencil",
+       "at": "Nome"
+      },
+      {
+       "text": "**Descrição** de acionamento",
+       "icon": "target",
+       "at": "descrição de acionamento"
+      },
+      {
+       "text": "**Procedimento**",
+       "icon": "list",
+       "at": "procedimento"
+      },
+      {
+       "text": "**Entrada** e **saída**",
+       "icon": "download",
+       "at": "entrada e saída"
+      },
+      {
+       "text": "**Validação**",
+       "icon": "check",
+       "at": "validação"
+      }
+     ]
+    }
+   ]
+  },
+  "68": {
+   "takeaway": "Uma Skill com entrada, saída conferível e **limite claro**.",
+   "shots": [
+    {
+     "type": "pipeline",
+     "at": "Vamos a um exemplo",
+     "core": {
+      "label": "SKILL · relatorio-semanal",
+      "at": "relatorio-semanal recebe"
+     },
+     "input": {
+      "title": "ENTRADA",
+      "files": [
+       "vendas-ficticias.csv"
+      ],
+      "at": "recebe um CSV"
+     },
+     "output": {
+      "title": "SAÍDA · MARKDOWN",
+      "tokens": [
+       {
+        "text": "Total conferível",
+        "at": "total conferível"
+       },
+       {
+        "text": "Pendências",
+        "at": "com pendências"
+       }
+      ],
+      "at": "produz um Markdown"
+     }
+    },
+    {
+     "type": "statement",
+     "at": "A descrição deixa",
+     "text": "A descrição avisa:",
+     "then": {
+      "at": "não envia",
+      "text": "++não envia++ o resultado sozinho",
+      "replace": false
+     }
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "pasta-de-treino",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "cat materiais/SKILL-relatorio.md",
+       "at": "Leia materiais/SKILL-relatorio.md"
+      },
+      {
+       "type": "cmd",
+       "text": "mkdir -p .agents/skills/relatorio-semanal",
+       "at": "Crie a pasta"
+      },
+      {
+       "type": "cmd",
+       "text": "cd .agents/skills/relatorio-semanal",
+       "at": "e salve"
+      },
+      {
+       "type": "cmd",
+       "text": "cp ../../../materiais/SKILL-relatorio.md SKILL.md",
+       "at": "como SKILL.md"
+      },
+      {
+       "type": "comment",
+       "text": "# mantenha o cabeçalho entre ---",
+       "at": "mantendo o cabeçalho"
+      }
+     ]
+    }
+   ]
+  },
+  "69": {
+   "takeaway": "Memória **pequena, datada e revisada** vale mais que histórico inteiro.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "A memória operacional",
+     "text": "Memória = **arquivos consultáveis**",
+     "then": {
+      "at": "não uma mudança",
+      "text": "não é ~~mudança nos pesos~~ do modelo",
+      "replace": false
+     }
+    },
+    {
+     "type": "flow",
+     "at": "Ela funciona",
+     "nodes": [
+      {
+       "id": "m",
+       "label": "memoria.md",
+       "icon": "doc",
+       "col": 2,
+       "row": 1,
+       "at": "Ela funciona"
+      },
+      {
+       "id": "a",
+       "label": "Agente lê",
+       "icon": "bot",
+       "col": 4,
+       "row": 1,
+       "at": "o agente lê"
+      },
+      {
+       "id": "u",
+       "label": "Alguém atualiza",
+       "icon": "user",
+       "col": 0,
+       "row": 1,
+       "at": "alguém mantém"
+      }
+     ],
+     "edges": [
+      {
+       "from": "m",
+       "to": "a",
+       "at": "informações relevantes",
+       "label": "consulta"
+      },
+      {
+       "from": "u",
+       "to": "m",
+       "at": "informações atualizadas",
+       "label": "mantém"
+      }
+     ]
+    },
+    {
+     "type": "lanes",
+     "at": "Guarde fatos",
+     "lanes": [
+      {
+       "title": "Guarde",
+       "icon": "check"
+      },
+      {
+       "title": "Não guarde",
+       "icon": "x"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "fatos **estáveis**",
+       "at": "fatos estáveis"
+      },
+      {
+       "lane": 0,
+       "text": "**decisões**",
+       "at": "decisões"
+      },
+      {
+       "lane": 0,
+       "text": "**causas** de falhas",
+       "at": "causas de falhas"
+      },
+      {
+       "lane": 1,
+       "text": "cada frase de **cada conversa**",
+       "at": "não preserve"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Copiar todo",
+     "left": {
+      "title": "Histórico inteiro",
+      "at": "Copiar todo",
+      "lines": [
+       {
+        "text": "mais **volume**",
+        "at": "aumenta volume"
+       },
+       {
+        "text": "instruções **antigas** voltam",
+        "at": "reintroduzir instruções"
+       }
+      ]
+     },
+     "right": {
+      "title": "Memória enxuta",
+      "at": "Uma memória pequena",
+      "lines": [
+       {
+        "text": "**pequena** e **datada**",
+        "at": "datada"
+       },
+       {
+        "text": "**revisada**",
+        "at": "revisada"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "arquivo imenso: **ninguém valida**",
+      "at": "ninguém consegue validar"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Memória **externa**",
+       "icon": "memory",
+       "at": "Memória externa"
+      },
+      {
+       "text": "Consulta **explícita**",
+       "icon": "search",
+       "at": "consulta explícita"
+      },
+      {
+       "text": "**Resumo**",
+       "icon": "list",
+       "at": "resumo"
+      },
+      {
+       "text": "**Validade**",
+       "icon": "calendar",
+       "at": "validade"
+      },
+      {
+       "text": "**Fonte**",
+       "icon": "link",
+       "at": "fonte"
+      }
+     ]
+    }
+   ]
+  },
+  "70": {
+   "takeaway": "Indique o **arquivo** de memória em vez de repetir a conversa.",
+   "shots": [
+    {
+     "type": "fields",
+     "at": "Vamos a um exemplo",
+     "title": "memoria.md · turma",
+     "fields": [
+      {
+       "label": "Linguagem",
+       "value": "acessível",
+       "at": "linguagem acessível"
+      },
+      {
+       "label": "Exemplos",
+       "value": "sempre fictícios",
+       "at": "exemplos fictícios"
+      },
+      {
+       "label": "Próxima tarefa",
+       "value": "leia memoria.md",
+       "at": "indica esse arquivo"
+      }
+     ],
+     "stamp": {
+      "text": "sem repetir a conversa",
+      "at": "em vez de repetir"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**3 fatos** úteis",
+       "icon": "list",
+       "at": "três fatos úteis"
+      },
+      {
+       "text": "**Data** de revisão",
+       "icon": "calendar",
+       "at": "data de revisão"
+      },
+      {
+       "text": "Agente **cita** o fato usado",
+       "icon": "bot",
+       "at": "cite qual fato"
+      }
+     ]
+    }
+   ]
+  },
+  "71": {
+   "takeaway": "Falha vira **proteção pequena** que muda o próximo procedimento.",
+   "shots": [
+    {
+     "type": "fields",
+     "at": "Registre o sintoma",
+     "title": "falhas.md · uma linha",
+     "fields": [
+      {
+       "label": "Sintoma",
+       "value": "relatório não foi gerado",
+       "at": "o sintoma"
+      },
+      {
+       "label": "Causa observada",
+       "value": "arquivo de entrada ausente",
+       "at": "causa observada"
+      },
+      {
+       "label": "Menor correção",
+       "value": "checar se o arquivo existe",
+       "at": "menor correção"
+      },
+      {
+       "label": "Como verificar",
+       "value": "rodar sem o arquivo e ver o aviso",
+       "at": "como verificar"
+      }
+     ]
+    },
+    {
+     "type": "lanes",
+     "at": "Diferencie falha",
+     "lanes": [
+      {
+       "title": "Falha de pedido",
+       "sub": "o que foi pedido",
+       "icon": "chat"
+      },
+      {
+       "title": "Falha de infraestrutura",
+       "sub": "máquina · processo · serviço",
+       "icon": "server"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "objetivo **ambíguo**",
+       "at": "objetivo ambíguo"
+      },
+      {
+       "lane": 1,
+       "text": "processo **encerrado**",
+       "at": "processo encerrado"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "O registro só",
+     "nodes": [
+      {
+       "id": "r",
+       "label": "Registro",
+       "icon": "doc",
+       "col": 0,
+       "row": 1,
+       "at": "O registro só"
+      },
+      {
+       "id": "a",
+       "label": "Aprendizado",
+       "icon": "bulb",
+       "col": 4,
+       "row": 1,
+       "at": "aprendizado operacional"
+      },
+      {
+       "id": "p",
+       "label": "Próximo procedimento",
+       "icon": "refresh",
+       "col": 2,
+       "row": 1,
+       "at": "altera o procedimento"
+      }
+     ],
+     "edges": [
+      {
+       "from": "r",
+       "to": "p",
+       "at": "altera o procedimento",
+       "label": "altera"
+      },
+      {
+       "from": "p",
+       "to": "a",
+       "at": "procedimento seguinte"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Refazer todo",
+     "left": {
+      "title": "Refazer tudo",
+      "at": "Refazer todo",
+      "lines": [
+       {
+        "text": "**mascara** um problema simples",
+        "at": "mascarar um problema"
+       }
+      ]
+     },
+     "right": {
+      "title": "Proteção pequena",
+      "at": "Uma proteção pequena",
+      "lines": [
+       {
+        "text": "o arquivo **existe**? antes de ler",
+        "at": "verificar a existência"
+       },
+       {
+        "text": "fácil de **testar** e **manter**",
+        "at": "testar e manter"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Sintoma **≠** causa",
+       "icon": "search",
+       "at": "Sintoma não é causa"
+      },
+      {
+       "text": "Correção **mínima**",
+       "icon": "gear",
+       "at": "correção mínima"
+      },
+      {
+       "text": "Prevenção",
+       "icon": "shield",
+       "at": "prevenção"
+      },
+      {
+       "text": "Evidência",
+       "icon": "check",
+       "at": "evidência"
+      }
+     ]
+    }
+   ]
+  },
+  "72": {
+   "takeaway": "Valide a **entrada** antes de culpar o modelo.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "pasta-de-treino",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "python3 relatorio.py vendas.csv",
+       "at": "O relatório saiu"
+      },
+      {
+       "type": "err",
+       "text": "relatorio.md gerado: VAZIO",
+       "at": "porque o CSV"
+      },
+      {
+       "type": "cmd",
+       "text": "wc -l vendas.csv",
+       "at": "estava sem linhas"
+      },
+      {
+       "type": "out",
+       "text": "1 vendas.csv      # só o cabeçalho",
+       "at": "A proteção"
+      },
+      {
+       "type": "comment",
+       "text": "# proteção: validar ANTES de gerar",
+       "at": "proteção é"
+      },
+      {
+       "type": "cmd",
+       "text": "python3 checar_csv.py vendas.csv",
+       "at": "validar cabeçalho"
+      },
+      {
+       "type": "out",
+       "text": "cabeçalho: ok",
+       "at": "e quantidade"
+      },
+      {
+       "type": "err",
+       "text": "registros: 0 → pare e avise",
+       "at": "registros antes"
+      },
+      {
+       "type": "comment",
+       "text": "# trocar de modelo não resolve",
+       "at": "não trocar de modelo"
+      }
+     ]
+    },
+    {
+     "type": "fields",
+     "at": "Agora é sua vez",
+     "title": "falhas.md",
+     "fields": [
+      {
+       "label": "Erro (fictício)",
+       "value": "vendas.csv ausente",
+       "at": "crie uma linha"
+      },
+      {
+       "label": "Checagem",
+       "value": "o arquivo existe? senão, pare e avise",
+       "at": "Escreva uma checagem"
+      }
+     ],
+     "stamp": {
+      "text": "antes de rodar",
+      "at": "antes da execução"
+     }
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,136 @@
+{
+  "block": "pt-b01",
+  "scenes": {
+    "1": {
+      "takeaway": "Do primeiro pedido à **operação contínua**, com testes na pasta de treino.",
+      "shots": [
+        {"type": "keyword", "at": "Bem-vindo", "text": "**OSWORK**", "sub": "curso completo · com Nei Maldaner", "sub_at": "Eu sou"},
+        {"type": "counter", "at": "Vamos percorrer", "items": [
+          {"value": 8, "label": "MÓDULOS", "at": "oito módulos"},
+          {"value": 48, "label": "TÓPICOS", "at": "quarenta e oito tópicos"},
+          {"value": 8, "label": "LABORATÓRIOS", "at": "exercícios"}
+        ]},
+        {"type": "flow", "at": "O objetivo", "nodes": [
+          {"id": "p", "label": "Primeiro pedido", "icon": "chat", "col": 0, "row": 1, "at": "primeiro pedido"},
+          {"id": "s", "label": "Sistema de trabalho", "icon": "gear", "col": 2, "row": 0, "at": "sistema de trabalho"},
+          {"id": "i", "label": "Inteligência artificial", "icon": "ai", "col": 2, "row": 2, "at": "inteligência artificial"},
+          {"id": "o", "label": "Operação contínua", "icon": "refresh", "col": 4, "row": 1, "at": "operação contínua"}
+        ], "edges": [
+          {"from": "p", "to": "s", "at": "do primeiro pedido"},
+          {"from": "i", "to": "s", "at": "inteligência artificial"},
+          {"from": "s", "to": "o", "at": "até a operação"}
+        ]},
+        {"type": "filetree", "at": "Pause quando", "root": "pasta-de-treino/", "entries": [
+          {"path": "pasta-de-treino/modulo-1/", "at": "chegar aos exercícios", "note": "**Pause** o vídeo ao chegar em cada exercício"},
+          {"path": "pasta-de-treino/modulo-1/teste.md", "at": "faça os testes", "note": "Faça o teste aqui, **não** nos seus arquivos reais"}
+        ]},
+        {"type": "statement", "at": "Este vídeo acompanha", "text": "Edição de **setembro de 2026**", "then": {"at": "nomes, acessos e preços", "text": "nomes · acessos · preços ~~mudam~~"}}
+      ]
+    },
+    "2": {
+      "shots": [
+        {"type": "module_intro", "at": "Módulo 1", "n": 1, "title": "Modelos: escolha pela tarefa", "goal": "Comparar modelos com uma **tarefa real** e um **critério de qualidade**.", "goal_at": "Nosso objetivo", "exercise": "Sua ficha de decisão", "exercise_at": "Ao final"}
+      ]
+    },
+    "3": {
+      "takeaway": "Modelo raciocina; interface recebe; arquivos dão evidência; ferramentas executam; **você confere**.",
+      "shots": [
+        {"type": "pipeline", "at": "Quando este curso", "core": {"label": "LLM · MODELO DE LINGUAGEM", "at": "modelos de linguagem"},
+          "input": {"title": "O QUE VOCÊ ENTREGA", "files": ["pauta.txt", "ata-anterior.md"], "at": "a partir do que"},
+          "output": {"title": "TEXTO PRODUZIDO", "tokens": ["Resumo:", "3 decisões", "2 pendências", "prazo 12/10"], "at": "produzir texto"}},
+        {"type": "orbs", "at": "Existem vários", "names_at": "com nomes", "sizes_at": "tamanhos", "tags_at": "custos diferentes", "items": [
+          {"name": "Sol", "size": 1.0, "tag": "$$"}, {"name": "Luna", "size": 0.75, "tag": "$"}, {"name": "Opus", "size": 1.2, "tag": "$$$"},
+          {"name": "Fable", "size": 0.9, "tag": "$$"}, {"name": "Terra", "size": 1.4, "tag": "$$"}, {"name": "Astra", "size": 1.7, "tag": "$$$"}
+        ]},
+        {"type": "podium", "at": "primeira pergunta", "question": "Qual é o melhor?", "question_at": "qual é o melhor", "names": ["Astra", "Opus", "Terra", "Sol", "Luna", "Fable"], "collapse_at": "não tem resposta útil"},
+        {"type": "statement", "at": "não existe melhor modelo", "pos": "top", "text": "Não existe ~~melhor~~ modelo", "then": {"at": "existe o modelo adequado", "text": "Existe o modelo ++adequado++"}},
+        {"type": "radar", "at": "à tarefa", "keep": true, "axes": [
+          {"label": "Tarefa", "at": "à tarefa", "value": 0.85}, {"label": "Prazo", "at": "ao prazo", "value": 0.45},
+          {"label": "Custo", "at": "ao custo", "value": 0.4}, {"label": "Conferência", "at": "nível de conferência", "value": 0.8}
+        ], "candidates": [
+          {"name": "Astra", "values": [1, 0.95, 0.97, 0.62], "fit": false, "note": "custo alto", "at": "Por isso"},
+          {"name": "Terra", "values": [0.88, 0.5, 0.43, 0.83], "fit": true, "note": "adequado", "at": "tarefa real"}
+        ]},
+        {"type": "hub", "at": "Um modelo produz respostas", "center": {"label": "Sistema OSWork", "icon": "gear", "at": "um sistema organiza"}, "nodes": [
+          {"label": "Modelo", "icon": "ai", "at": "combina modelo"}, {"label": "Interface", "icon": "chat", "at": "interface"},
+          {"label": "Arquivos", "icon": "doc", "at": "arquivos"}, {"label": "Instruções", "icon": "list", "at": "instruções"},
+          {"label": "Ferramentas", "icon": "gear", "at": "ferramentas"}, {"label": "Memória", "icon": "memory", "at": "memória"},
+          {"label": "Automações", "icon": "refresh", "at": "automações"}
+        ], "focus": [{"node": 4, "at": "ferramentas, materiais"}]},
+        {"type": "statement", "at": "Não estamos instalando", "text": "Não é um ~~sistema operacional~~ novo", "then": {"at": "metáfora de organização", "text": "é uma ++metáfora++ de organização"}},
+        {"type": "compare", "at": "Sem essa distinção", "left": {"title": "Sem separar as peças", "at": "Sem essa distinção", "lines": [{"text": "toda falha vira um **prompt maior**", "at": "prompt maior"}]},
+          "right": {"title": "Separando as peças", "at": "Às vezes falta", "lines": [{"text": "falta o **arquivo de entrada**", "at": "arquivo de entrada"}, {"text": "falta uma **permissão**", "at": "uma permissão"}, {"text": "falta a **forma de conferir**", "at": "forma de conferir"}]},
+          "verdict": {"text": "Corrija o **ponto certo**", "at": "corrigir o ponto certo"}},
+        {"type": "bullets", "at": "Pontos para lembrar", "layout": "column", "items": [
+          {"text": "**Modelo** raciocina", "icon": "ai", "at": "Modelo raciocina"}, {"text": "**Interface** recebe o objetivo", "icon": "chat", "at": "interface recebe"},
+          {"text": "**Arquivos** dão evidência", "icon": "doc", "at": "arquivos dão"}, {"text": "**Ferramentas** executam", "icon": "gear", "at": "ferramentas executam"},
+          {"text": "**Você** confere", "icon": "check", "at": "você confere"}
+        ]}
+      ]
+    },
+    "4": {
+      "takeaway": "Contexto certo transforma **imaginação** em **proposta verificável**.",
+      "shots": [
+        {"type": "compare", "at": "Vamos a um exemplo", "left": {"title": "Sem pauta", "at": "Sem pauta", "lines": [{"text": "a IA **imagina** prioridades", "at": "imagina prioridades"}]},
+          "right": {"title": "Com pauta e ata anterior", "at": "Com pauta", "lines": [{"text": "proposta **verificável**", "at": "proposta verificável"}]}},
+        {"type": "bullets", "at": "Agora é sua vez", "title": "SUA AÇÃO", "layout": "row", "items": [
+          {"text": "Desenhe **sete caixas** com as peças", "icon": "box", "at": "Desenhe sete caixas"},
+          {"text": "Marque o que **você já tem**", "icon": "check", "at": "Marque quais"},
+          {"text": "Ache a peça que **falta**", "icon": "search", "at": "qual falta"}
+        ]}
+      ]
+    },
+    "5": {
+      "takeaway": "Separe por **função** antes de comparar nomes.",
+      "shots": [
+        {"type": "lanes", "at": "Antes de comparar", "chaos_at": "comparar nomes", "sort_at": "separe por função", "lanes_at": "separe por função",
+          "lanes": [
+            {"title": "Texto · LLMs", "sub": "escrevem · resumem · explicam · programam", "icon": "doc"},
+            {"title": "Imagem · vídeo", "sub": "geram ou editam visual", "icon": "image"},
+            {"title": "Classificação", "sub": "escolha · sim/não · nota", "icon": "list"},
+            {"title": "Centrais", "sub": "vários provedores, um ponto", "icon": "link"}
+          ],
+          "chips": [
+            {"label": "GPT", "lane": 0, "at": "como GPT"}, {"label": "Sol", "lane": 0, "at": "com Sol"}, {"label": "Terra", "lane": 0, "at": "Terra"},
+            {"label": "Luna", "lane": 0, "at": "Luna"}, {"label": "GPT-6 Astra", "lane": 0, "at": "Astra"}, {"label": "Claude", "lane": 0, "at": "família Claude"},
+            {"label": "Opus", "lane": 0, "at": "com Opus"}, {"label": "Fable", "lane": 0, "at": "Fable"}, {"label": "Jev", "lane": 2, "at": "como o Jev"},
+            {"label": "OpenRouter", "lane": 3, "at": "o OpenRouter"}, {"label": "Kie", "lane": 3, "at": "o Kie"}
+          ],
+          "items": [
+            {"lane": 0, "text": "escrevem, resumem, explicam, programam", "at": "escrevem"},
+            {"lane": 1, "text": "**geram** ou **editam** material visual", "at": "imagem e de vídeo"},
+            {"lane": 2, "text": "não conversam: devolvem uma **escolha**", "at": "que não conversam"},
+            {"lane": 2, "text": "sim ou não · uma **nota**", "at": "sim ou não"},
+            {"lane": 3, "text": "acesso a **vários provedores** por um único ponto", "at": "dão acesso"}
+          ]},
+        {"type": "statement", "at": "Nomes, versões", "text": "Nomes e versões **mudam**", "then": {"at": "esta consulta", "text": "consulta de **20/09/2026**"}},
+        {"type": "compare", "at": "Por que isso importa", "left": {"title": "Um \"melhor\" para tudo", "at": "Adotar um modelo", "lines": [{"text": "LLM excelente **não gera vídeo**", "at": "não gera um vídeo"}, {"text": "classificador **não escreve** relatório", "at": "não escreve"}]},
+          "right": {"title": "Tipo certo para a tarefa", "at": "Entender para que", "lines": [{"text": "entenda o **tipo** antes de escolher", "at": "vem antes de escolher"}, {"text": "a escolha muda com a **tarefa**", "at": "quando a tarefa aparece"}, {"text": "disponibilidade varia por **conta e liberação**", "at": "Disponibilidade também"}]}},
+        {"type": "bullets", "at": "Pontos para lembrar", "layout": "row", "items": [
+          {"text": "Texto", "icon": "doc", "at": "Texto"}, {"text": "Imagem e vídeo", "icon": "image", "at": "imagem"},
+          {"text": "Classificação", "icon": "list", "at": "classificação"}, {"text": "Centrais e disponibilidade", "icon": "link", "at": "centrais de acesso"}
+        ]}
+      ]
+    },
+    "6": {
+      "takeaway": "Tipo de modelo **primeiro**, nome depois — são hipóteses para testar.",
+      "shots": [
+        {"type": "lanes", "at": "Vamos a um exemplo", "lanes": [
+            {"title": "Resumir uma ata", "sub": "→ modelo de linguagem", "icon": "doc"},
+            {"title": "Triar 200 comentários", "sub": "→ classificador (Jev)", "icon": "list"},
+            {"title": "Vinheta de 10 s", "sub": "→ modelo de vídeo via central", "icon": "video"}
+          ], "items": [
+            {"lane": 0, "text": "ata → **resumo** de decisões", "at": "Resumir uma ata"},
+            {"lane": 1, "text": "3 categorias, **uma escolha** por comentário", "at": "Triar duzentos"},
+            {"lane": 2, "text": "**modelo de vídeo**, acessado por uma **central**", "at": "Produzir uma vinheta"},
+            {"lane": 2, "text": "hipóteses para **testar**, não garantias", "at": "São hipóteses"}
+          ]},
+        {"type": "fields", "at": "Agora é sua vez", "title": "Minhas 3 tarefas de IA", "fields": [
+          {"label": "Tarefa 1", "value": "resumir reuniões → linguagem → testar Terra", "at": "Liste as três"},
+          {"label": "Tarefa 2", "value": "triar pedidos → classificação → testar Jev", "at": "tipo de modelo"},
+          {"label": "Tarefa 3", "value": "vinheta curta → vídeo → via central", "at": "o nome que pretende"}
+        ], "stamp": {"text": "tipo antes do nome", "at": "consulte as fontes"}}
+      ]
+    }
+  }
+}

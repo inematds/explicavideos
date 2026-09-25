@@ -1,0 +1,923 @@
+{
+ "block": "pt-b12",
+ "scenes": {
+  "102": {
+   "takeaway": "IA recebe **só o necessário**; o bot base funciona **sem ela**.",
+   "shots": [
+    {
+     "type": "pipeline",
+     "at": "Vamos a um exemplo",
+     "core": {
+      "label": "FUNÇÃO DE RESUMO · IA",
+      "at": "função de resumo"
+     },
+     "input": {
+      "title": "SÓ O NECESSÁRIO",
+      "files": [
+       "total",
+       "categoria A",
+       "categoria B",
+       "categoria C"
+      ],
+      "at": "apenas o total"
+     },
+     "output": {
+      "title": "TEXTO GERADO",
+      "tokens": [
+       "Resumo:",
+       "3 categorias",
+       "total intacto"
+      ],
+      "at": "três categorias"
+     }
+    },
+    {
+     "type": "statement",
+     "at": "nunca altera",
+     "text": "nunca altera o **total**",
+     "then": {
+      "at": "calculado pelo programa",
+      "text": "calculado pelo ++programa++",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "layout": "column",
+     "title": "CONTRATO DE INTEGRAÇÃO",
+     "items": [
+      {
+       "text": "**Dados** enviados",
+       "icon": "upload",
+       "at": "dados enviados"
+      },
+      {
+       "text": "**Modelo** disponível",
+       "icon": "ai",
+       "at": "modelo disponível"
+      },
+      {
+       "text": "Limite de **custo**",
+       "icon": "money",
+       "at": "limite de custo"
+      },
+      {
+       "text": "Tempo **máximo**",
+       "icon": "clock",
+       "at": "tempo máximo"
+      },
+      {
+       "text": "Ação se a IA **falhar**",
+       "icon": "warn",
+       "at": "ação quando"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "O bot base permanece",
+     "text": "O bot base permanece ++útil++ sem a IA"
+    }
+   ]
+  },
+  "103": {
+   "takeaway": "Poucos cenários provam **acesso restrito**, **logs limpos** e **recuperação**.",
+   "shots": [
+    {
+     "type": "lanes",
+     "at": "Teste remetente",
+     "lanes": [
+      {
+       "title": "Deve responder",
+       "icon": "check"
+      },
+      {
+       "title": "Deve recusar",
+       "icon": "x"
+      },
+      {
+       "title": "Deve avisar",
+       "icon": "warn"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "remetente **permitido**",
+       "at": "remetente permitido"
+      },
+      {
+       "lane": 1,
+       "text": "remetente **bloqueado**",
+       "at": "bloqueado"
+      },
+      {
+       "lane": 1,
+       "text": "mensagem de **grupo**",
+       "at": "grupo"
+      },
+      {
+       "lane": 2,
+       "text": "comando **desconhecido**",
+       "at": "comando desconhecido"
+      },
+      {
+       "lane": 2,
+       "text": "**dados ausentes**",
+       "at": "dados ausentes"
+      }
+     ]
+    },
+    {
+     "type": "terminal",
+     "at": "Logs devem informar",
+     "title": "bot.log",
+     "lines": [
+      {
+       "type": "out",
+       "text": "14:02:11 ERRO rede: timeout ao enviar",
+       "at": "tipo de falha"
+      },
+      {
+       "type": "out",
+       "text": "14:05:40 AVISO remetente bloqueado",
+       "at": "e horário"
+      },
+      {
+       "type": "err",
+       "text": "token=123:ABC...   ← nunca no log",
+       "at": "sem token"
+      },
+      {
+       "type": "err",
+       "text": "msg: \"texto privado inteiro\" ← nunca",
+       "at": "mensagens privadas"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "No laboratório",
+     "nodes": [
+      {
+       "id": "t",
+       "label": "Telegram",
+       "icon": "phone",
+       "col": 0,
+       "row": 1,
+       "at": "No laboratório"
+      },
+      {
+       "id": "p",
+       "label": "Programa local",
+       "icon": "cpu",
+       "col": 2,
+       "row": 1,
+       "at": "desligar o processo"
+      },
+      {
+       "id": "r",
+       "label": "Resposta",
+       "icon": "chat",
+       "col": 4,
+       "row": 1,
+       "at": "parar as respostas"
+      }
+     ],
+     "edges": [
+      {
+       "from": "t",
+       "to": "p",
+       "at": "desligar o processo"
+      },
+      {
+       "from": "p",
+       "to": "r",
+       "at": "programa local",
+       "label": "está no caminho"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Uma resposta certa",
+      "tone": "bad",
+      "at": "Uma resposta correta",
+      "lines": [
+       {
+        "text": "não prova **restrição**",
+        "at": "está restrito"
+       },
+       {
+        "text": "não prova **recuperar rede**",
+        "at": "recupera rede"
+       }
+      ]
+     },
+     "right": {
+      "title": "Poucos cenários",
+      "tone": "good",
+      "at": "Um conjunto pequeno",
+      "lines": [
+       {
+        "text": "provam as **propriedades**",
+        "at": "propriedades importantes"
+       },
+       {
+        "text": "**antes** da VPS",
+        "at": "antes de migrar"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**Autoteste**",
+       "icon": "check",
+       "at": "Autoteste"
+      },
+      {
+       "text": "Falha de **rede**",
+       "icon": "globe",
+       "at": "falha de rede"
+      },
+      {
+       "text": "Logs **sem segredo**",
+       "icon": "lock",
+       "at": "logs sem segredo"
+      },
+      {
+       "text": "**Interrupção**",
+       "icon": "pause",
+       "at": "interrupção"
+      },
+      {
+       "text": "**Diagnóstico**",
+       "icon": "search",
+       "at": "diagnóstico"
+      }
+     ]
+    }
+   ]
+  },
+  "104": {
+   "takeaway": "Diagnostique pelo **caminho que falhou**, não trocando o modelo.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Só /relatorio falha",
+      "tone": "neutral",
+      "at": "status funciona",
+      "lines": [
+       {
+        "text": "investigue o **arquivo de dados**",
+        "at": "investigue o arquivo"
+       }
+      ]
+     },
+     "right": {
+      "title": "Nenhum comando funciona",
+      "tone": "neutral",
+      "at": "Se nenhum funciona",
+      "lines": [
+       {
+        "text": "**processo**",
+        "at": "confira processo"
+       },
+       {
+        "text": "**autenticação**",
+        "at": "autenticação"
+       },
+       {
+        "text": "**conexão**",
+        "at": "e conexão"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "~~Trocar o modelo~~: esses comandos **nem usam IA**",
+      "at": "Não troque o modelo"
+     }
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "sua vez",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "python3 bot.py --self-test > autoteste.txt",
+       "at": "Execute"
+      },
+      {
+       "type": "comment",
+       "text": "# guarde a saída",
+       "at": "guarde a saída"
+      },
+      {
+       "type": "comment",
+       "text": "# depois: conversa real com sua conta",
+       "at": "teste a conversa real"
+      }
+     ]
+    },
+    {
+     "type": "lanes",
+     "at": "diferencie no registro",
+     "lanes": [
+      {
+       "title": "Simulado",
+       "sub": "autoteste offline",
+       "icon": "gear"
+      },
+      {
+       "title": "Testado no Telegram",
+       "sub": "conversa real",
+       "icon": "phone"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "o que foi **simulado**",
+       "at": "foi simulado"
+      },
+      {
+       "lane": 1,
+       "text": "o que foi **testado**",
+       "at": "testado no Telegram"
+      }
+     ]
+    }
+   ]
+  },
+  "105": {
+   "takeaway": "Autoteste, token no **.env**, lista de acesso e **conferência real**.",
+   "shots": [
+    {
+     "type": "steps",
+     "at": "Vamos ao laboratório",
+     "goal": "Um bot que responde sem executar mensagens",
+     "steps": [
+      {
+       "title": "Autoteste offline, **sem token**",
+       "at": "Passo 1"
+      },
+      {
+       "title": "BotFather oficial · token só no **.env**",
+       "at": "Passo 2"
+      },
+      {
+       "title": "Descubra seu ID · **lista de acesso**",
+       "at": "Passo 3"
+      },
+      {
+       "title": "Envie **/status** e **/relatorio**",
+       "at": "Passo 4"
+      }
+     ],
+     "done_at": "confira os resultados"
+    }
+   ]
+  },
+  "106": {
+   "takeaway": "Comandos permitidos → **funções definidas**, remetente verificado.",
+   "shots": [
+    {
+     "type": "quiz",
+     "at": "Antes de avançar",
+     "question": "Uma mensagem do Telegram pode ir **direto para o shell**?",
+     "answer": "**Não.** Comandos permitidos → funções definidas",
+     "answer_at": "A resposta é",
+     "note": "e verifique sempre o **remetente**",
+     "note_at": "verificar o remetente"
+    },
+    {
+     "type": "bullets",
+     "at": "Se você consegue",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Explique com **suas palavras**",
+       "icon": "chat",
+       "at": "explicar isso"
+      },
+      {
+       "text": "Mostre o **resultado**",
+       "icon": "check",
+       "at": "mostrar o resultado"
+      },
+      {
+       "text": "Siga para a **próxima etapa**",
+       "icon": "flag",
+       "at": "próxima etapa"
+      }
+     ]
+    }
+   ]
+  },
+  "107": {
+   "shots": [
+    {
+     "type": "module_intro",
+     "at": "Módulo 8",
+     "n": 8,
+     "title": "VPS do zero e operação 24/7",
+     "goal": "Plano de **implantação**, **supervisão**, **backup** e **verificação**.",
+     "goal_at": "Nosso objetivo",
+     "exercise": "Da pasta local a um serviço supervisionado",
+     "exercise_at": "Ao final"
+    }
+   ]
+  },
+  "108": {
+   "takeaway": "Máquina ligada ≠ **serviço saudável**: defina o que roda e **quem cuida**.",
+   "shots": [
+    {
+     "type": "hub",
+     "at": "Uma VPS é uma máquina",
+     "center": {
+      "label": "VPS · servidor virtual alugado",
+      "icon": "server",
+      "at": "servidor virtual alugado"
+     },
+     "nodes": [
+      {
+       "label": "Memória",
+       "icon": "memory",
+       "at": "com memória"
+      },
+      {
+       "label": "Disco",
+       "icon": "box",
+       "at": "disco"
+      },
+      {
+       "label": "Rede",
+       "icon": "globe",
+       "at": "e rede"
+      },
+      {
+       "label": "Usuários",
+       "icon": "user",
+       "at": "Você administra usuários"
+      },
+      {
+       "label": "Atualizações",
+       "icon": "refresh",
+       "at": "atualizações"
+      },
+      {
+       "label": "Processos",
+       "icon": "gear",
+       "at": "e processos"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "Comece com uma máquina",
+     "nodes": [
+      {
+       "id": "v",
+       "label": "VPS pequena · sem GPU",
+       "icon": "server",
+       "col": 0,
+       "row": 1,
+       "at": "máquina pequena"
+      },
+      {
+       "id": "a",
+       "label": "API",
+       "icon": "link",
+       "col": 2,
+       "row": 1,
+       "at": "chamar um modelo"
+      },
+      {
+       "id": "m",
+       "label": "Modelo no provedor",
+       "icon": "cloud",
+       "col": 4,
+       "row": 1,
+       "at": "O modelo remoto"
+      }
+     ],
+     "edges": [
+      {
+       "from": "v",
+       "to": "a",
+       "at": "chamar um modelo"
+      },
+      {
+       "from": "a",
+       "to": "m",
+       "at": "infraestrutura do provedor"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Por que isso importa",
+     "text": "Uma máquina **ligada**",
+     "then": {
+      "at": "não significa",
+      "text": "não significa um serviço ++saudável++",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Custos de VPS",
+     "layout": "row",
+     "title": "CUSTOS SEPARADOS",
+     "items": [
+      {
+       "text": "VPS",
+       "icon": "server",
+       "at": "Custos de VPS"
+      },
+      {
+       "text": "Armazenamento",
+       "icon": "box",
+       "at": "armazenamento"
+      },
+      {
+       "text": "API",
+       "icon": "link",
+       "at": "e API"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Antes de contratar",
+     "text": "O que precisa **rodar continuamente**?",
+     "then": {
+      "at": "quem verificará",
+      "text": "Quem **verificará incidentes**?",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Servidor remoto",
+       "icon": "server",
+       "at": "Servidor remoto"
+      },
+      {
+       "text": "Recursos",
+       "icon": "cpu",
+       "at": "recursos"
+      },
+      {
+       "text": "Custo recorrente",
+       "icon": "money",
+       "at": "custo recorrente"
+      },
+      {
+       "text": "Responsabilidade **operacional**",
+       "icon": "shield",
+       "at": "responsabilidade operacional"
+      }
+     ]
+    }
+   ]
+  },
+  "109": {
+   "takeaway": "Estime **carga, orçamento e disponibilidade** antes do plano.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Bot pequeno",
+      "tone": "good",
+      "at": "Um bot pequeno",
+      "lines": [
+       {
+        "text": "consulta **dados fictícios**",
+        "at": "dados fictícios"
+       },
+       {
+        "text": "VPS **pequena** basta",
+        "at": "não precisa"
+       }
+      ]
+     },
+     "right": {
+      "title": "Modelo local",
+      "tone": "neutral",
+      "at": "modelo local",
+      "lines": [
+       {
+        "text": "outra **infraestrutura**",
+        "at": "modelo local"
+       }
+      ]
+     }
+    },
+    {
+     "type": "radar",
+     "at": "A gestora estima",
+     "axes": [
+      {
+       "label": "Carga",
+       "at": "estima carga",
+       "value": 0.3
+      },
+      {
+       "label": "Orçamento",
+       "at": "orçamento",
+       "value": 0.5
+      },
+      {
+       "label": "Disponibilidade",
+       "at": "disponibilidade",
+       "value": 0.7
+      }
+     ],
+     "candidates": [
+      {
+       "name": "Pequeno",
+       "values": [
+        0.35,
+        0.45,
+        0.7
+       ],
+       "fit": true,
+       "note": "adequado",
+       "at": "escolher o plano"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "layout": "column",
+     "title": "MATERIAIS/PLANO-VPS.MD",
+     "items": [
+      {
+       "text": "**Sistema** operacional",
+       "icon": "cpu",
+       "at": "sistema operacional"
+      },
+      {
+       "text": "Forma de **acesso**",
+       "icon": "key",
+       "at": "forma de acesso"
+      },
+      {
+       "text": "Limite **mensal**",
+       "icon": "money",
+       "at": "limite mensal"
+      },
+      {
+       "text": "**Responsável**",
+       "icon": "user",
+       "at": "responsável"
+      },
+      {
+       "text": "Como **desligar**",
+       "icon": "x",
+       "at": "forma de desligar"
+      }
+     ]
+    }
+   ]
+  },
+  "110": {
+   "takeaway": "Teste a **segunda sessão** e o **console** antes de restringir.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Entre por SSH",
+     "nodes": [
+      {
+       "id": "c",
+       "label": "Seu computador",
+       "icon": "user",
+       "col": 0,
+       "row": 1,
+       "at": "SSH cria"
+      },
+      {
+       "id": "k",
+       "label": "Chave pública",
+       "icon": "key",
+       "col": 2,
+       "row": 0,
+       "at": "chave pública"
+      },
+      {
+       "id": "v",
+       "label": "VPS",
+       "icon": "server",
+       "col": 4,
+       "row": 1,
+       "at": "administrar a máquina"
+      },
+      {
+       "id": "f",
+       "label": "Identidade do servidor",
+       "icon": "eye",
+       "col": 2,
+       "row": 2,
+       "at": "identidade do servidor"
+      }
+     ],
+     "edges": [
+      {
+       "from": "c",
+       "to": "v",
+       "at": "conexão protegida",
+       "label": "SSH"
+      },
+      {
+       "from": "k",
+       "to": "v",
+       "at": "cadastrada"
+      },
+      {
+       "from": "f",
+       "to": "c",
+       "at": "confira a identidade"
+      }
+     ]
+    },
+    {
+     "type": "terminal",
+     "at": "Crie um usuário",
+     "title": "na VPS",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "adduser trabalho",
+       "at": "usuário de trabalho"
+      },
+      {
+       "type": "cmd",
+       "text": "usermod -aG sudo trabalho",
+       "at": "permissões administrativas"
+      },
+      {
+       "type": "comment",
+       "text": "# sessão 1 continua aberta",
+       "at": "sessão original aberta"
+      },
+      {
+       "type": "cmd",
+       "text": "ssh trabalho@ip-da-vps   # sessão 2",
+       "at": "segunda conexão"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Sem rota de recuperação",
+      "tone": "bad",
+      "at": "Mudar firewall",
+      "lines": [
+       {
+        "text": "firewall / autenticação **sem testar**",
+        "at": "sem testar"
+       },
+       {
+        "text": "**bloqueia** seu acesso",
+        "at": "bloquear seu próprio"
+       }
+      ]
+     },
+     "right": {
+      "title": "Console do provedor",
+      "tone": "good",
+      "at": "O console do provedor",
+      "lines": [
+       {
+        "text": "alternativa quando **SSH falha**",
+        "at": "conexão normal falha"
+       },
+       {
+        "text": "confira **antes** de restringir",
+        "at": "antes de restringir"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**Chave** pública",
+       "icon": "key",
+       "at": "Chave pública"
+      },
+      {
+       "text": "**Impressão** digital",
+       "icon": "eye",
+       "at": "impressão digital"
+      },
+      {
+       "text": "**Usuário** de trabalho",
+       "icon": "user",
+       "at": "usuário"
+      },
+      {
+       "text": "**sudo**",
+       "icon": "shield",
+       "at": "usuário"
+      },
+      {
+       "text": "**Recuperação**",
+       "icon": "refresh",
+       "at": "usuário"
+      }
+     ]
+    }
+   ]
+  },
+  "111": {
+   "takeaway": "Confirme **onde você está** e nunca feche a única porta de entrada.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "sessão SSH",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "ssh usuario@ip-da-vps",
+       "at": "O comando"
+      },
+      {
+       "type": "comment",
+       "text": "# usuario e ip-da-vps: substitua",
+       "at": "campos para substituir"
+      },
+      {
+       "type": "out",
+       "text": "trabalho@vps-oswork:~$",
+       "at": "O nome do prompt"
+      },
+      {
+       "type": "cmd",
+       "text": "pwd",
+       "at": "e pwd"
+      },
+      {
+       "type": "out",
+       "text": "/home/trabalho",
+       "at": "em qual máquina"
+      }
+     ]
+    },
+    {
+     "type": "timeline",
+     "at": "Agora é sua vez",
+     "events": [
+      {
+       "label": "Sessão 1 aberta",
+       "at": "Teste a segunda"
+      },
+      {
+       "label": "Sessão 2 testada",
+       "sub": "entrou? ótimo",
+       "at": "segunda sessão"
+      },
+      {
+       "label": "Só então feche a 1",
+       "at": "encerrar a primeira"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Não desative login",
+     "text": "Não ~~desative login~~ ou ~~altere porta~~",
+     "then": {
+      "at": "sem saber como",
+      "text": "sem saber como **recuperar acesso**",
+      "replace": false
+     }
+    }
+   ]
+  }
+ }
+}

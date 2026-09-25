@@ -25,6 +25,20 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 `prepare` não sobrescreve produções já iniciadas. `start` lança cinco serviços persistentes; não interrompe os já ativos. Não reinicie uma submissão `needs_review`: confira primeiro se existe um ID no HeyGen. A produção em andamento já está preparada; use `status`, não `prepare`.
 
+## Formato v2: animação explicativa (2.0.0)
+
+No v2, o visual explica o que está sendo falado, no instante da fala. Cada cena recebe um roteiro visual (`<output>/visual-v2/pt-bNN.json`), com shots de 21 primitivos animados em `engine/v2/runtime/v2.js`. Todo tempo é uma **deixa falada**, resolvida pela transcrição real. A legenda usa a grafia do roteiro, e o avatar e o áudio da produção v1 são reaproveitados, sem nova geração no HeyGen. Regras e catálogo: [engine/v2/AUTHORING.md](engine/v2/AUTHORING.md). Exemplo aprovado: `visual-v2/pt-b01.json` do OSWork.
+
+```bash
+export EXPLICAVIDEOS_CONFIG=examples/oswork-v2.json
+python3 engine/v2/setup_output.py            # novo diretório de saída; o v1 não é tocado
+python3 engine/v2/build_block.py 1 --strict   # deixas → tempos, 0 avisos, lacunas > 10 s acusadas
+engine/v2/run_lane.sh 1 2 3                   # hyperframes check + render 25 fps verificado por bloco
+python3 engine/assemble_languages.py && python3 engine/publish_finished.py
+```
+
+O motor v1 (`explica.py`, `engine/*.py`) continua igual e disponível. A versão anterior do vídeo OSWork fica no release `video-v1.0.0`.
+
 ## Configuração para outros vídeos
 
 Copie examples/oswork.json e altere id, title, source_repo, output, github_repo e release_tag. Para conteúdo que não é OSWork, forneça `scene_files` com caminhos por idioma, por exemplo `{"pt":"/caminho/lesson-pt.json"}`. Cada cena contém title, chapter, speech, labels, source, kind e takeaway; svg é opcional. O roteiro precisa ser revisado antes de `start`.

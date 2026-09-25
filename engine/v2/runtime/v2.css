@@ -1,0 +1,174 @@
+/* Explicavideos v2 — design system (dark cinema, âmbar INEMA). Coordenadas em px de um quadro 1920×1080. */
+@font-face{font-family:"MontBlack";src:url("mont-black.ttf")}
+@font-face{font-family:"MontX";src:url("mont-xbold.ttf")}
+@font-face{font-family:"Mono";src:url("mono.ttf")}
+:root{--bg:#05070d;--ink:#eef3ff;--dim:#7d8aa5;--amber:#ffb638;--cyan:#3ee6ff;--violet:#9a86ff;--mint:#3ef0a0;--rose:#ff5d7a;--panel:rgba(16,24,42,.86);--line:rgba(130,170,255,.22)}
+html,body{margin:0;background:var(--bg);overflow:hidden}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:"MontX",sans-serif;color:var(--ink)}
+.full{position:absolute;left:0;top:0;width:1920px;height:1080px}
+/* fundo compartilhado */
+#bg .bg-grad{position:absolute;inset:0;background:radial-gradient(1200px 700px at 38% 42%,#12203d 0%,#070b16 55%,#03050a 100%)}
+#bg-grid-wrap{position:absolute;inset:0;perspective:700px;overflow:hidden}
+#bg-grid{position:absolute;left:-200px;top:560px;width:2320px;height:900px;background-image:linear-gradient(rgba(62,230,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(62,230,255,.12) 1px,transparent 1px);background-size:80px 80px;transform-origin:50% 0%;opacity:.5}
+#bg .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 45% 45%,transparent 45%,rgba(0,0,0,.72) 100%)}
+#stars{position:absolute;inset:0}
+/* avatar */
+.pip{position:absolute;left:1478px;top:36px;width:406px;height:228px;border-radius:22px;overflow:hidden;z-index:30;box-shadow:0 0 0 2px rgba(255,182,56,.55),0 18px 60px rgba(0,0,0,.6),0 0 60px rgba(255,182,56,.18)}
+.pip video{position:absolute;left:0;top:0;width:406px;height:228px;object-fit:cover}
+.pip-tag{position:absolute;left:1478px;top:274px;width:406px;z-index:30;font-family:"Mono";font-size:17px;letter-spacing:.18em;color:var(--dim);text-align:right}
+.pip-tag b{color:var(--amber);font-weight:400}
+/* legenda karaokê */
+#caps{position:absolute;left:110px;top:952px;width:1700px;height:100px;z-index:40}
+.cap{position:absolute;left:0;top:0;width:1700px;text-align:center;font-family:"MontX";font-size:36px;line-height:1.25;opacity:0;text-shadow:0 3px 16px rgba(0,0,0,.95)}
+.cap span{color:rgba(238,243,255,.45);display:inline-block;margin:0 .2em}
+/* cena */
+.v2-scene{position:absolute;inset:0;overflow:hidden}
+.v2-stage{position:absolute;left:0;top:0;width:1920px;height:1080px}
+.v2-shot{position:absolute;left:0;top:0;width:1920px;height:1080px}
+.v2-hdr{position:absolute;left:90px;top:48px;width:1330px;z-index:20;transform-origin:0% 0%}
+.v2-hdr .kick{font-family:"Mono";font-size:18px;letter-spacing:.26em;color:var(--amber);white-space:nowrap}
+.v2-hdr .ttl{font-family:"MontBlack";font-size:44px;letter-spacing:-.01em;margin-top:6px;white-space:nowrap}
+.v2-side{position:absolute;left:1478px;top:318px;width:406px;z-index:15}
+.v2-side .no{font-family:"Mono";font-size:17px;letter-spacing:.2em;color:var(--dim)}
+.v2-side .bar{position:relative;margin-top:10px;width:406px;height:6px;border-radius:3px;background:rgba(130,170,255,.15);overflow:hidden}
+.v2-side .bar i{position:absolute;left:0;top:0;height:6px;background:var(--amber);border-radius:3px}
+.v2-take{position:absolute;left:1478px;top:372px;width:406px;padding:22px 24px 24px;box-sizing:border-box;border-radius:20px;background:linear-gradient(160deg,rgba(40,30,8,.92),rgba(16,14,10,.92));border:1.5px solid rgba(255,182,56,.55);z-index:15}
+.v2-take .k{font-family:"Mono";font-size:16px;letter-spacing:.24em;color:var(--amber)}
+.v2-take .t{margin-top:10px;font-family:"MontX";font-size:27px;line-height:1.28}
+/* componentes comuns */
+.v2-card{position:absolute;border-radius:20px;background:var(--panel);border:1.5px solid var(--line);box-shadow:0 20px 60px rgba(0,0,0,.45);box-sizing:border-box}
+.v2-chip{position:absolute;height:44px;border-radius:22px;background:rgba(20,30,52,.95);border:1.5px solid rgba(130,170,255,.35);font-family:"MontX";font-size:19px;line-height:44px;text-align:center;white-space:nowrap;padding:0 18px;box-sizing:border-box}
+.v2-lbl{position:absolute;font-family:"Mono";font-size:18px;letter-spacing:.22em;white-space:nowrap}
+.v2-ico{display:block}
+.v2-t{position:absolute;box-sizing:border-box}
+.hl{color:var(--amber)}.good{color:var(--mint)}.bad{color:var(--rose)}
+/* bullets */
+.b-node{position:absolute;width:64px;height:64px;border-radius:32px;background:#14203a;border:2px solid rgba(130,170,255,.45);box-sizing:border-box}
+.b-node svg{position:absolute;left:14px;top:14px}
+.b-node .num{position:absolute;left:0;top:0;width:60px;height:60px;line-height:60px;text-align:center;font-family:"MontBlack";font-size:26px;color:var(--ink)}
+.b-text{position:absolute;font-family:"MontX";line-height:1.22}
+.b-sub{position:absolute;font-family:"Mono";font-size:20px;color:var(--dim);line-height:1.35}
+.b-card{position:absolute;border-radius:22px;background:var(--panel);border:1.5px solid var(--line);box-sizing:border-box}
+.b-card .big{position:absolute;left:24px;top:22px;font-family:"MontBlack";font-size:22px;color:var(--amber);letter-spacing:.1em}
+.b-card svg{position:absolute;right:22px;top:20px}
+.b-card .tx{position:absolute;left:24px;top:74px;right:22px;font-family:"MontX";line-height:1.22}
+.b-card .sb{position:absolute;left:24px;bottom:22px;right:22px;font-family:"Mono";font-size:18px;color:var(--dim);line-height:1.35}
+/* hub */
+.h-core{position:absolute;width:230px;height:230px;border-radius:115px;background:radial-gradient(circle at 36% 30%,#fff3 0%,#ffb63855 30%,#1a1406 72%);border:2px solid var(--amber);box-shadow:0 0 80px rgba(255,182,56,.35);box-sizing:border-box}
+.h-core .lb{position:absolute;left:10px;top:136px;width:206px;text-align:center;font-family:"MontBlack";font-size:26px;line-height:1.1}
+.h-core svg{position:absolute;left:83px;top:52px}
+.h-node{position:absolute;width:250px;height:84px;border-radius:18px;background:var(--panel);border:1.5px solid rgba(62,230,255,.5);box-sizing:border-box}
+.h-node svg{position:absolute;left:16px;top:22px}
+.h-node .lb{position:absolute;left:66px;top:0;width:176px;height:84px;display:flex;align-items:center;font-family:"MontX";font-size:22px;line-height:1.1}
+.h-node .sb{position:absolute;left:0;top:92px;width:250px;text-align:center;font-family:"Mono";font-size:16px;color:var(--dim)}
+/* pipeline */
+.p-card{position:absolute;top:430px;width:320px;height:270px;border-radius:20px;background:var(--panel);border:1.5px solid var(--line);box-sizing:border-box}
+.p-card .cp{position:absolute;left:-40px;top:-44px;width:400px;text-align:center;font-family:"Mono";font-size:19px;letter-spacing:.24em;white-space:nowrap}
+.p-file{position:absolute;left:20px;height:40px;border-radius:10px;background:rgba(62,230,255,.12);border:1px solid rgba(62,230,255,.5);font-family:"Mono";font-size:18px;line-height:40px;padding:0 14px;white-space:nowrap;box-sizing:border-box;max-width:280px;overflow:hidden}
+.p-line{position:absolute;left:20px;height:10px;border-radius:5px;background:rgba(238,243,255,.22)}
+.p-tk{display:inline-block;margin:0 6px 8px 0;padding:3px 9px;border-radius:8px;background:rgba(62,240,160,.13);border:1px solid rgba(62,240,160,.45);font-size:19px;white-space:nowrap}
+.p-core-lb{position:absolute;left:470px;top:818px;width:560px;text-align:center;font-family:"Mono";font-size:24px;letter-spacing:.14em;color:var(--violet);white-space:nowrap}
+/* orbs */
+.o-orb{position:absolute;width:140px;height:140px;border-radius:70px}
+.o-orb .nm{position:absolute;left:-30px;top:52px;width:200px;text-align:center;font-family:"MontBlack";font-size:23px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.7);white-space:nowrap}
+.o-orb .pr{position:absolute;left:96px;top:-10px;height:34px;padding:0 12px;border-radius:17px;background:#0b1020;border:1.5px solid var(--amber);font-family:"MontBlack";font-size:17px;line-height:34px;color:var(--amber);white-space:nowrap}
+/* statement */
+.s-line{position:absolute;left:90px;width:1330px;text-align:center;font-family:"MontBlack";perspective:800px}
+.s-line span{display:inline-block;margin:0 .13em;position:relative}
+.s-line i.strk{position:absolute;left:-4%;top:52%;width:108%;height:.11em;border-radius:.06em;background:var(--rose);transform-origin:0% 50%}
+/* radar */
+.r-ax{font-family:"MontBlack";font-size:24px;letter-spacing:.06em}
+.r-cand{position:absolute;left:1110px;width:320px;height:64px;border-radius:16px;background:var(--panel);border:1.5px solid var(--line);box-sizing:border-box}
+.r-cand .d{position:absolute;left:16px;top:17px;width:28px;height:28px;border-radius:14px}
+.r-cand .n{position:absolute;left:58px;top:16px;max-width:120px;overflow:hidden;font-family:"MontBlack";font-size:22px;white-space:nowrap}
+.r-cand .v{position:absolute;right:14px;top:19px;font-family:"MontX";font-size:20px;white-space:nowrap}
+/* lanes */
+.l-lane{position:absolute;top:258px;height:612px;border-radius:24px;background:linear-gradient(180deg,rgba(22,32,58,.88),rgba(10,15,28,.88));border:1.5px solid rgba(130,170,255,.22);box-sizing:border-box}
+.l-lane .ic{position:absolute;left:18px;top:18px;width:50px;height:50px;border-radius:14px}
+.l-lane .ic svg{position:absolute;left:11px;top:11px}
+.l-lane .tt{position:absolute;left:82px;top:14px;right:14px;font-family:"MontBlack";font-size:25px;line-height:1.1}
+.l-lane .vb{position:absolute;left:82px;top:48px;right:14px;font-family:"Mono";font-size:14px;color:var(--dim);line-height:1.3}
+.l-item{position:absolute;font-family:"MontX";font-size:21px;line-height:1.25;padding:12px 16px 12px 40px;border-radius:14px;background:rgba(10,16,30,.8);border:1px solid rgba(130,170,255,.18);box-sizing:border-box}
+.l-item:before{content:"";position:absolute;left:16px;top:21px;width:10px;height:10px;border-radius:5px;background:var(--amber)}
+/* compare */
+.c-panel{position:absolute;width:630px;border-radius:24px;background:var(--panel);border:2px solid var(--line);box-sizing:border-box}
+.c-panel .hd{position:absolute;left:28px;top:24px;right:90px;font-family:"MontBlack";font-size:30px;line-height:1.1}
+.c-panel .st{position:absolute;right:24px;top:18px;width:54px;height:54px;border-radius:27px}
+.c-panel .st svg{position:absolute;left:13px;top:13px}
+.c-line{position:absolute;left:28px;right:28px;font-family:"MontX";line-height:1.3;padding-left:26px}
+.c-line:before{content:"";position:absolute;left:0;top:.5em;width:10px;height:10px;border-radius:5px;background:currentColor;opacity:.7}
+.c-verdict{position:absolute;left:90px;width:1330px;text-align:center;font-family:"MontBlack";font-size:34px;color:var(--mint)}
+/* chat */
+.ch-win{position:absolute;left:215px;top:170px;width:1080px;height:720px;border-radius:26px;background:rgba(10,15,28,.9);border:1.5px solid var(--line);box-sizing:border-box;overflow:hidden}
+.ch-bar{position:absolute;left:0;top:0;width:1080px;height:62px;border-bottom:1px solid var(--line);font-family:"Mono";font-size:20px;line-height:62px;color:var(--dim);padding-left:28px;box-sizing:border-box}
+.ch-msg{position:absolute;max-width:760px;padding:18px 24px;border-radius:22px;font-family:"MontX";font-size:25px;line-height:1.32;box-sizing:border-box}
+.ch-u{right:28px;background:#1d4ed8;color:#fff;border-bottom-right-radius:6px}
+.ch-a{left:28px;background:#18233d;border:1px solid rgba(62,240,160,.35);border-bottom-left-radius:6px}
+.ch-n{left:50%;background:rgba(255,182,56,.12);color:var(--amber);border:1px dashed rgba(255,182,56,.5);font-size:21px}
+.ch-dots{position:absolute;left:28px;height:52px;width:96px;border-radius:22px;background:#18233d}
+.ch-dots i{position:absolute;top:21px;width:11px;height:11px;border-radius:6px;background:var(--mint)}
+/* terminal */
+.t-win{position:absolute;left:150px;top:180px;width:1210px;height:690px;border-radius:20px;background:#070a12;border:1.5px solid rgba(62,230,255,.35);box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 60px rgba(62,230,255,.08);box-sizing:border-box;overflow:hidden}
+.t-bar{position:absolute;left:0;top:0;width:1210px;height:52px;background:#101626}
+.t-bar i{position:absolute;top:18px;width:16px;height:16px;border-radius:8px}
+.t-bar span{position:absolute;left:0;top:0;width:1210px;text-align:center;font-family:"Mono";font-size:18px;line-height:52px;color:var(--dim)}
+.t-line{position:absolute;left:34px;width:1140px;font-family:"Mono";font-size:27px;line-height:1.4;white-space:pre-wrap;word-break:break-all}
+.t-cur{display:inline-block;width:.6em;height:1.05em;vertical-align:-.15em;background:var(--mint)}
+/* filetree */
+.f-win{position:absolute;left:130px;top:180px;width:760px;height:690px;border-radius:20px;background:rgba(10,15,28,.9);border:1.5px solid var(--line);box-sizing:border-box}
+.f-row{position:absolute;height:52px;font-family:"Mono";font-size:25px;line-height:52px;white-space:nowrap}
+.f-row svg{position:absolute;left:0;top:13px}
+.f-row span{position:absolute;left:40px;top:0}
+.f-note{position:absolute;left:930px;height:auto;max-width:470px;padding:12px 18px;border-radius:14px;background:rgba(255,182,56,.12);border:1.5px solid rgba(255,182,56,.5);font-family:"MontX";font-size:22px;line-height:1.28;color:var(--ink);box-sizing:border-box}
+/* counter */
+.k-num{position:absolute;text-align:center;font-family:"MontBlack";line-height:1;text-shadow:0 0 50px rgba(62,230,255,.35);white-space:nowrap}
+.k-lab{position:absolute;text-align:center;font-family:"Mono";font-size:26px;letter-spacing:.18em;color:var(--cyan);line-height:1.3}
+/* steps (laboratório) */
+.st-card{position:absolute;top:360px;height:400px;border-radius:24px;background:var(--panel);border:1.5px solid var(--line);box-sizing:border-box}
+.st-card .n{position:absolute;left:22px;top:18px;width:62px;height:62px;border-radius:31px;background:#1b2745;border:2px solid rgba(130,170,255,.45);text-align:center;line-height:58px;font-family:"MontBlack";font-size:28px;box-sizing:border-box}
+.st-card .tx{position:absolute;left:22px;top:104px;right:20px;font-family:"MontX";line-height:1.28}
+.st-card .ok{position:absolute;right:18px;top:22px}
+.st-rail{position:absolute;left:90px;top:300px;width:1330px;height:10px;border-radius:5px;background:rgba(130,170,255,.15)}
+.st-fill{position:absolute;left:90px;top:300px;width:1330px;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--cyan),var(--amber));transform-origin:0% 50%}
+.st-goal{position:absolute;left:90px;top:220px;width:1330px;font-family:"Mono";font-size:22px;letter-spacing:.12em;color:var(--dim);white-space:nowrap;overflow:hidden}
+/* quiz */
+.q-card{position:absolute;left:190px;top:200px;width:1130px;border-radius:26px;background:var(--panel);border:2px solid rgba(154,134,255,.55);box-sizing:border-box;padding:40px 44px 40px 150px}
+.q-card .mk{position:absolute;left:40px;top:34px;width:80px;height:80px;border-radius:40px;background:var(--violet);color:#0b0620;text-align:center;line-height:80px;font-family:"MontBlack";font-size:48px}
+.q-card .tx{font-family:"MontX";font-size:36px;line-height:1.3}
+.q-ans{position:absolute;left:190px;width:1130px;border-radius:26px;background:linear-gradient(160deg,rgba(14,60,40,.92),rgba(8,24,18,.92));border:2px solid var(--mint);box-sizing:border-box;padding:34px 44px 34px 150px;transform-origin:50% 0%}
+.q-ans .mk{position:absolute;left:40px;top:28px;width:80px;height:80px;border-radius:40px;background:var(--mint)}
+.q-ans .mk svg{position:absolute;left:20px;top:20px}
+.q-ans .tx{font-family:"MontX";font-size:32px;line-height:1.32;color:#eafff4}
+.q-think{position:absolute;left:190px;height:40px}
+.q-think i{position:absolute;top:10px;width:18px;height:18px;border-radius:9px;background:var(--violet)}
+/* timeline */
+.tm-line{position:absolute;left:130px;top:520px;width:1250px;height:6px;border-radius:3px;background:rgba(130,170,255,.2)}
+.tm-fill{position:absolute;left:130px;top:520px;width:1250px;height:6px;border-radius:3px;background:var(--amber);transform-origin:0% 50%}
+.tm-dot{position:absolute;top:499px;width:48px;height:48px;border-radius:24px;background:#0b1020;border:4px solid var(--amber);box-sizing:border-box}
+.tm-lab{position:absolute;width:250px;text-align:center;font-family:"MontX";font-size:23px;line-height:1.22}
+.tm-sub{position:absolute;width:250px;text-align:center;font-family:"Mono";font-size:19px;color:var(--dim);line-height:1.3}
+/* flow */
+.fl-node{position:absolute;width:250px;height:110px;border-radius:20px;background:var(--panel);border:2px solid rgba(62,230,255,.5);box-sizing:border-box}
+.fl-node svg{position:absolute;left:18px;top:34px}
+.fl-node .lb{position:absolute;left:72px;top:0;width:168px;height:110px;display:flex;align-items:center;font-family:"MontX";font-size:22px;line-height:1.15}
+.fl-el{font-family:"Mono";font-size:17px}
+/* fields */
+.fd-doc{position:absolute;left:250px;top:170px;width:1010px;height:720px;border-radius:24px;background:#f4f1e8;color:#161a22;box-shadow:0 40px 100px rgba(0,0,0,.6);box-sizing:border-box}
+.fd-doc .hd{position:absolute;left:48px;top:34px;right:48px;font-family:"MontBlack";font-size:34px;color:#161a22}
+.fd-row{position:absolute;left:48px;right:48px;border-bottom:2px dashed rgba(22,26,34,.2)}
+.fd-row .lb{position:absolute;left:0;top:0;width:250px;font-family:"Mono";font-size:18px;letter-spacing:.14em;color:#4d5566;text-transform:uppercase}
+.fd-row .vl{position:absolute;left:260px;top:-6px;right:0;font-family:"MontX";font-size:25px;line-height:1.28;color:#161a22}
+.fd-stamp{position:absolute;left:870px;top:640px;padding:10px 22px;border:5px solid #0f9d63;border-radius:14px;color:#0f9d63;font-family:"MontBlack";font-size:30px;white-space:nowrap}
+/* keyword */
+.kw-t{position:absolute;left:90px;width:1330px;text-align:center;font-family:"MontBlack";line-height:1.05}
+.kw-s{position:absolute;left:190px;width:1130px;text-align:center;font-family:"MontX";font-size:32px;line-height:1.3;color:var(--dim)}
+/* module intro */
+.mi-n{position:absolute;left:90px;top:190px;width:1330px;font-family:"MontBlack";font-size:300px;line-height:1;color:transparent;-webkit-text-stroke:3px rgba(255,182,56,.75)}
+.mi-k{position:absolute;left:100px;top:170px;font-family:"Mono";font-size:26px;letter-spacing:.4em;color:var(--amber)}
+.mi-t{position:absolute;left:100px;top:500px;width:1300px;font-family:"MontBlack";font-size:74px;line-height:1.05}
+.mi-row{position:absolute;left:100px;width:1300px;min-height:70px;border-radius:18px;background:var(--panel);border:1.5px solid var(--line);box-sizing:border-box;padding:16px 24px 16px 210px}
+.mi-row .k{position:absolute;left:24px;top:20px;font-family:"Mono";font-size:18px;letter-spacing:.2em}
+.mi-row .v{font-family:"MontX";font-size:26px;line-height:1.28}
+/* svg da fonte */
+.sv-wrap{position:absolute;left:120px;top:190px;width:1270px;height:660px;display:flex;align-items:center;justify-content:center}
+.sv-wrap svg{width:1270px;height:660px}

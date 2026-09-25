@@ -1,0 +1,887 @@
+{
+ "block": "pt-b13",
+ "scenes": {
+  "112": {
+   "takeaway": "Poucas peças: mais fácil de **explicar, atualizar e recuperar**.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Os exemplos do laboratório",
+     "title": "Ubuntu · apt",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "sudo apt update",
+       "at": "Atualize a lista"
+      },
+      {
+       "type": "comment",
+       "text": "# lista de pacotes atualizada",
+       "at": "lista de pacotes"
+      },
+      {
+       "type": "cmd",
+       "text": "sudo apt upgrade",
+       "at": "revise a atualização"
+      },
+      {
+       "type": "comment",
+       "text": "# leia o que vai mudar antes do Y",
+       "at": "atualização proposta"
+      }
+     ]
+    },
+    {
+     "type": "lanes",
+     "at": "O bot base precisa",
+     "lanes": [
+      {
+       "title": "Necessário",
+       "sub": "bot base",
+       "icon": "check"
+      },
+      {
+       "title": "Opcional",
+       "sub": "conforme a aplicação",
+       "icon": "box"
+      }
+     ],
+     "chips": [
+      {
+       "label": "Python 3",
+       "lane": 0,
+       "at": "Python 3"
+      },
+      {
+       "label": "Git",
+       "lane": 0,
+       "at": "Git ajuda"
+      },
+      {
+       "label": "Node",
+       "lane": 1,
+       "at": "Node"
+      },
+      {
+       "label": "Docker",
+       "lane": 1,
+       "at": "Docker"
+      },
+      {
+       "label": "Codex",
+       "lane": 1,
+       "at": "Codex"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "Git **transfere** o projeto",
+       "at": "transferir o projeto"
+      },
+      {
+       "lane": 1,
+       "text": "**não** é lista obrigatória",
+       "at": "não uma lista"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Por hábito",
+      "tone": "bad",
+      "at": "Cada dependência",
+      "lines": [
+       {
+        "text": "cada dependência = **manutenção**",
+        "at": "acrescenta manutenção"
+       }
+      ]
+     },
+     "right": {
+      "title": "Poucas peças",
+      "tone": "good",
+      "at": "Um serviço simples",
+      "lines": [
+       {
+        "text": "fácil de **explicar**",
+        "at": "explicar"
+       },
+       {
+        "text": "fácil de **atualizar**",
+        "at": "atualizar e recuperar"
+       },
+       {
+        "text": "fácil de **recuperar**",
+        "at": "recuperar"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Instalar por hábito = trabalho **sem capacidade**",
+      "at": "Instalar ferramentas"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "apt update",
+       "icon": "refresh",
+       "at": "apt update"
+      },
+      {
+       "text": "apt upgrade",
+       "icon": "upload",
+       "at": "apt upgrade"
+      },
+      {
+       "text": "Dependência",
+       "icon": "link",
+       "at": "dependência"
+      },
+      {
+       "text": "Ambiente virtual se preciso",
+       "icon": "box",
+       "at": "ambiente virtual"
+      }
+     ]
+    }
+   ]
+  },
+  "113": {
+   "takeaway": "Leia os pacotes, confira as **versões** e crie **~/projetos**.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "sequência de referência",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "sudo apt update",
+       "at": "sudo apt update"
+      },
+      {
+       "type": "cmd",
+       "text": "sudo apt upgrade",
+       "at": "sudo apt upgrade"
+      },
+      {
+       "type": "cmd",
+       "text": "sudo apt install git python3",
+       "at": "apt install"
+      },
+      {
+       "type": "comment",
+       "text": "# bot do kit: só biblioteca padrão",
+       "at": "biblioteca padrão"
+      },
+      {
+       "type": "comment",
+       "text": "# nenhum pip install externo",
+       "at": "sem instalar pacotes"
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "at": "Agora é sua vez",
+     "goal": "Na conta de trabalho",
+     "steps": [
+      {
+       "title": "Leia os **pacotes** antes de confirmar",
+       "at": "leia os pacotes"
+      },
+      {
+       "title": "Versão do **python3**",
+       "at": "Confira python3"
+      },
+      {
+       "title": "Versão do **git**",
+       "at": "git version"
+      },
+      {
+       "title": "mkdir **~/projetos**",
+       "at": "depois crie"
+      }
+     ],
+     "done_at": "conta de trabalho"
+    }
+   ]
+  },
+  "114": {
+   "takeaway": "Libere **só o necessário**, e diagnostique cada parte **em separado**.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Firewall filtra",
+     "nodes": [
+      {
+       "id": "w",
+       "label": "Firewall",
+       "icon": "shield",
+       "col": 2,
+       "row": 1,
+       "at": "Firewall filtra"
+      },
+      {
+       "id": "b",
+       "label": "Bot na VPS",
+       "icon": "server",
+       "col": 0,
+       "row": 1,
+       "at": "o bot precisa"
+      },
+      {
+       "id": "t",
+       "label": "Telegram · HTTPS",
+       "icon": "send",
+       "col": 4,
+       "row": 0,
+       "at": "sair para HTTPS"
+      },
+      {
+       "id": "i",
+       "label": "Internet",
+       "icon": "globe",
+       "col": 4,
+       "row": 2,
+       "at": "expor uma porta"
+      }
+     ],
+     "edges": [
+      {
+       "from": "b",
+       "to": "w",
+       "at": "sair para HTTPS"
+      },
+      {
+       "from": "w",
+       "to": "t",
+       "at": "sair para HTTPS",
+       "label": "saída ✓"
+      },
+      {
+       "from": "i",
+       "to": "w",
+       "at": "expor uma porta",
+       "label": "entrada ✗"
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "at": "Antes de ativar UFW",
+     "goal": "Antes de ativar o UFW",
+     "steps": [
+      {
+       "title": "Libere a **porta SSH** realmente usada",
+       "at": "libere a porta"
+      },
+      {
+       "title": "Confira regras **locais e do provedor**",
+       "at": "confira regras"
+      }
+     ]
+    },
+    {
+     "type": "filetree",
+     "at": "Restrinja o .env",
+     "root": "~/projetos/oswork-bot/",
+     "entries": [
+      {
+       "path": "~/projetos/oswork-bot/.env",
+       "at": "chmod 600",
+       "note": "**chmod 600**: só o dono lê"
+      },
+      {
+       "path": "~/projetos/oswork-bot/.gitignore",
+       "at": "fora do Git",
+       "note": ".env **fora do Git**"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Por que isso importa",
+     "text": "Abrir ~~todas as portas~~",
+     "then": {
+      "at": "amplia o risco",
+      "text": "amplia o **risco** sem diagnosticar a causa",
+      "replace": false
+     }
+    },
+    {
+     "type": "lanes",
+     "at": "Se o processo não responde",
+     "lanes": [
+      {
+       "title": "Rede de saída",
+       "icon": "globe"
+      },
+      {
+       "title": "Token",
+       "icon": "key"
+      },
+      {
+       "title": "Execução",
+       "icon": "play"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "alcança **HTTPS**?",
+       "at": "rede de saída"
+      },
+      {
+       "lane": 1,
+       "text": "token **válido**?",
+       "at": "token"
+      },
+      {
+       "lane": 2,
+       "text": "processo **rodando**?",
+       "at": "e execução"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Entrada e saída",
+       "icon": "globe",
+       "at": "Entrada e saída"
+      },
+      {
+       "text": "Porta SSH",
+       "icon": "terminal",
+       "at": "porta SSH"
+      },
+      {
+       "text": "Regra de firewall",
+       "icon": "shield",
+       "at": "regra de firewall"
+      },
+      {
+       "text": "Permissões",
+       "icon": "lock",
+       "at": "permissões de arquivo"
+      }
+     ]
+    }
+   ]
+  },
+  "115": {
+   "takeaway": "A porta do exemplo **não é universal**: confira a sua.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "UFW",
+     "lines": [
+      {
+       "type": "comment",
+       "text": "# SSH na porta 22?",
+       "at": "Se SSH usa"
+      },
+      {
+       "type": "cmd",
+       "text": "sudo ufw allow 22/tcp",
+       "at": "sudo ufw allow"
+      },
+      {
+       "type": "comment",
+       "text": "# outra porta? a regra muda",
+       "at": "Se usa outra porta"
+      },
+      {
+       "type": "comment",
+       "text": "# teste a configuração e a recuperação...",
+       "at": "após testar"
+      },
+      {
+       "type": "cmd",
+       "text": "sudo ufw enable",
+       "at": "acesso de recuperação"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "layout": "row",
+     "title": "SUA AÇÃO",
+     "items": [
+      {
+       "text": "Liste as portas **necessárias**",
+       "icon": "list",
+       "at": "Liste portas"
+      },
+      {
+       "text": "Marque o que **varia por provedor**",
+       "icon": "cloud",
+       "at": "variam por provedor"
+      },
+      {
+       "text": "Porta 22 **não é universal**",
+       "icon": "warn",
+       "at": "nunca trate"
+      }
+     ]
+    }
+   ]
+  },
+  "116": {
+   "takeaway": "Supervisão **reinicia e centraliza logs**, mas não acha a causa.",
+   "shots": [
+    {
+     "type": "keyword",
+     "at": "Systemd supervisiona",
+     "text": "**systemd**",
+     "sub": "gerenciador de serviços do Linux",
+     "sub_at": "gerenciador de serviços"
+    },
+    {
+     "type": "terminal",
+     "at": "Uma unidade descreve",
+     "title": "oswork-bot.service",
+     "lines": [
+      {
+       "type": "out",
+       "text": "[Service]",
+       "at": "Uma unidade descreve"
+      },
+      {
+       "type": "out",
+       "text": "ExecStart=/usr/bin/python3 bot.py",
+       "at": "qual programa iniciar"
+      },
+      {
+       "type": "out",
+       "text": "User=oswork",
+       "at": "com qual usuário"
+      },
+      {
+       "type": "out",
+       "text": "WorkingDirectory=/home/oswork/bot",
+       "at": "em qual pasta"
+      },
+      {
+       "type": "out",
+       "text": "Restart=on-failure",
+       "at": "Restart=on-failure"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "reinicia após uma falha",
+     "text": "Reinicia após uma ++falha++",
+     "then": {
+      "at": "mas não corrige",
+      "text": "mas **não corrige** um erro persistente",
+      "replace": false
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Bot na sessão SSH",
+      "tone": "bad",
+      "at": "Executar o bot",
+      "lines": [
+       {
+        "text": "fechou a conexão, **parou**",
+        "at": "ao fechar a conexão"
+       }
+      ]
+     },
+     "right": {
+      "title": "Sob systemd",
+      "tone": "good",
+      "at": "Supervisão permite",
+      "lines": [
+       {
+        "text": "reinicia com a **máquina**",
+        "at": "reiniciar com a máquina"
+       },
+       {
+        "text": "logs no **journal**",
+        "at": "centralizar logs"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Não substitui **alertas, limites e análise**",
+      "at": "não substitui"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**Unidade**",
+       "icon": "doc",
+       "at": "Unidade"
+      },
+      {
+       "text": "**Usuário** de serviço",
+       "icon": "user",
+       "at": "usuário de serviço"
+      },
+      {
+       "text": "**Diretório**",
+       "icon": "folder",
+       "at": "diretório"
+      },
+      {
+       "text": "**Reinício**",
+       "icon": "refresh",
+       "at": "reinício"
+      },
+      {
+       "text": "**Journal**",
+       "icon": "book",
+       "at": "journal"
+      }
+     ]
+    }
+   ]
+  },
+  "117": {
+   "takeaway": "Reinício **controlado**, /status conferido e **horário registrado**.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "systemd",
+     "lines": [
+      {
+       "type": "comment",
+       "text": "# depois de adaptar os caminhos",
+       "at": "adaptar caminhos"
+      },
+      {
+       "type": "cmd",
+       "text": "sudo systemctl daemon-reload",
+       "at": "daemon-reload"
+      },
+      {
+       "type": "cmd",
+       "text": "sudo systemctl enable --now oswork-bot",
+       "at": "enable"
+      },
+      {
+       "type": "cmd",
+       "text": "systemctl status oswork-bot",
+       "at": "Consulte systemctl status"
+      },
+      {
+       "type": "cmd",
+       "text": "journalctl -u oswork-bot -n 50 --no-pager",
+       "at": "journalctl"
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "at": "Agora é sua vez",
+     "goal": "Reinício controlado",
+     "steps": [
+      {
+       "title": "systemctl **restart**",
+       "at": "systemctl restart"
+      },
+      {
+       "title": "Confira **/status**",
+       "at": "confira"
+      },
+      {
+       "title": "Registre o **horário**",
+       "at": "registre o horário"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Se falhar",
+     "text": "Se falhar, **pare o serviço**",
+     "then": {
+      "at": "antes de ficar",
+      "text": "antes de ficar ~~repetindo tentativas~~",
+      "replace": false
+     }
+    }
+   ]
+  },
+  "118": {
+   "takeaway": "A promessa é uma **rotina recuperável**, não uma máquina infalível.",
+   "shots": [
+    {
+     "type": "hub",
+     "at": "Disponibilidade exige",
+     "center": {
+      "label": "Operação contínua",
+      "icon": "refresh",
+      "at": "Operação contínua"
+     },
+     "nodes": [
+      {
+       "label": "Supervisão",
+       "icon": "eye",
+       "at": "supervisão"
+      },
+      {
+       "label": "Atualização",
+       "icon": "download",
+       "at": "atualização"
+      },
+      {
+       "label": "Monitoramento",
+       "icon": "chart",
+       "at": "monitoramento"
+      },
+      {
+       "label": "Backups",
+       "icon": "cloud",
+       "at": "backups"
+      },
+      {
+       "label": "Restauração testada",
+       "icon": "check",
+       "at": "restauração testada"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "Faça cópias",
+     "nodes": [
+      {
+       "id": "v",
+       "label": "Dados na VPS",
+       "icon": "server",
+       "col": 0,
+       "row": 1,
+       "at": "Faça cópias"
+      },
+      {
+       "id": "b",
+       "label": "Backup fora",
+       "icon": "cloud",
+       "col": 2,
+       "row": 1,
+       "at": "fora da máquina"
+      },
+      {
+       "id": "r",
+       "label": "Restaurar",
+       "icon": "download",
+       "col": 4,
+       "row": 0,
+       "at": "restaurou uma cópia"
+      },
+      {
+       "id": "c",
+       "label": "Conteúdo verificado",
+       "icon": "check",
+       "col": 4,
+       "row": 2,
+       "at": "verificou o conteúdo"
+      }
+     ],
+     "edges": [
+      {
+       "from": "v",
+       "to": "b",
+       "at": "fora da máquina",
+       "label": "com retenção"
+      },
+      {
+       "from": "b",
+       "to": "r",
+       "at": "restaurou uma cópia"
+      },
+      {
+       "from": "r",
+       "to": "c",
+       "at": "verificou o conteúdo"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Sem monitoramento",
+      "tone": "bad",
+      "at": "Sem monitoramento",
+      "lines": [
+       {
+        "text": "parado por **dias**",
+        "at": "durante dias"
+       }
+      ]
+     },
+     "right": {
+      "title": "Sem teste de restauração",
+      "tone": "bad",
+      "at": "Sem teste",
+      "lines": [
+       {
+        "text": "cópia **incompleta**",
+        "at": "estar incompleta"
+       }
+      ]
+     }
+    },
+    {
+     "type": "statement",
+     "at": "A promessa real",
+     "text": "Uma rotina ++recuperável++",
+     "then": {
+      "at": "não uma máquina",
+      "text": "não uma ~~máquina infalível~~",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Checagem **externa**",
+       "icon": "eye",
+       "at": "Checagem externa"
+      },
+      {
+       "text": "**Logs**",
+       "icon": "list",
+       "at": "logs"
+      },
+      {
+       "text": "Backup **fora da VPS**",
+       "icon": "cloud",
+       "at": "backup fora"
+      },
+      {
+       "text": "**Restauração**",
+       "icon": "download",
+       "at": "restauração"
+      },
+      {
+       "text": "Limite de **gasto**",
+       "icon": "money",
+       "at": "limite de gasto"
+      }
+     ]
+    }
+   ]
+  },
+  "119": {
+   "takeaway": "Cinco evidências fecham o projeto; **declare** o que não executou.",
+   "shots": [
+    {
+     "type": "lanes",
+     "at": "Vamos a um exemplo",
+     "lanes": [
+      {
+       "title": "Todo dia",
+       "sub": "verificação",
+       "icon": "calendar"
+      },
+      {
+       "title": "Todo mês",
+       "sub": "teste de restauração",
+       "icon": "refresh"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "o bot **respondeu**?",
+       "at": "resposta do bot"
+      },
+      {
+       "lane": 0,
+       "text": "**espaço** em disco",
+       "at": "espaço em disco"
+      },
+      {
+       "lane": 1,
+       "text": "restaura **vendas.csv** em pasta separada",
+       "at": "restaura vendas.csv"
+      },
+      {
+       "lane": 1,
+       "text": "compara o **total**",
+       "at": "compara o total"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Credenciais seguem",
+     "text": "Credenciais seguem tratamento **privado**",
+     "then": {
+      "at": "sem entrar",
+      "text": "sem entrar no ~~backup público~~",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "layout": "column",
+     "title": "5 EVIDÊNCIAS",
+     "items": [
+      {
+       "text": "Resposta **autorizada**",
+       "icon": "check",
+       "at": "resposta autorizada"
+      },
+      {
+       "text": "**Desconhecido** bloqueado",
+       "icon": "x",
+       "at": "bloqueio de desconhecido"
+      },
+      {
+       "text": "**Reinício**",
+       "icon": "refresh",
+       "at": "reinício"
+      },
+      {
+       "text": "Log **sem token**",
+       "icon": "lock",
+       "at": "log sem token"
+      },
+      {
+       "text": "**Restauração** conferida",
+       "icon": "download",
+       "at": "restauração conferida"
+      }
+     ]
+    },
+    {
+     "type": "keyword",
+     "at": "Declare",
+     "text": "**DECLARE**",
+     "sub": "qualquer etapa não executada"
+    }
+   ]
+  }
+ }
+}

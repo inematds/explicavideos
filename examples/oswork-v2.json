@@ -1,0 +1,14 @@
+{
+  "id": "oswork-completo",
+  "title": "OSWork completo",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/oswork",
+  "output": "/home/nmaldaner/projetos/output/oswork-completo-v2",
+  "v1_output": "/home/nmaldaner/projetos/output/oswork-completo",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/oswork",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77"
+}

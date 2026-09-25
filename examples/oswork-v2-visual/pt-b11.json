@@ -1,0 +1,1178 @@
+{
+ "block": "pt-b11",
+ "scenes": {
+  "93": {
+   "takeaway": "Telegram é a **interface**; o programa no meio decide o que executar.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Telegram é a interface",
+     "text": "Telegram é a ++interface++",
+     "then": {
+      "at": "não o agente",
+      "text": "não é o ~~agente~~",
+      "replace": false
+     }
+    },
+    {
+     "type": "flow",
+     "at": "Um bot recebe",
+     "nodes": [
+      {
+       "id": "m",
+       "label": "Mensagem",
+       "icon": "phone",
+       "col": 0,
+       "row": 1,
+       "at": "recebe mensagens"
+      },
+      {
+       "id": "a",
+       "label": "Bot API",
+       "icon": "cloud",
+       "col": 2,
+       "row": 1,
+       "at": "API do Telegram"
+      },
+      {
+       "id": "b",
+       "label": "Seu bot",
+       "icon": "bot",
+       "col": 4,
+       "row": 1,
+       "at": "API do Telegram"
+      },
+      {
+       "id": "r",
+       "label": "Resposta",
+       "icon": "chat",
+       "col": 2,
+       "row": 3,
+       "at": "devolve respostas"
+      }
+     ],
+     "edges": [
+      {
+       "from": "m",
+       "to": "a",
+       "at": "API do Telegram"
+      },
+      {
+       "from": "a",
+       "to": "b",
+       "label": "entrega",
+       "at": "API do Telegram"
+      },
+      {
+       "from": "b",
+       "to": "r",
+       "label": "devolve",
+       "at": "devolve respostas"
+      }
+     ]
+    },
+    {
+     "type": "hub",
+     "at": "A inteligência",
+     "center": {
+      "label": "Inteligência do bot",
+      "icon": "bulb",
+      "at": "A inteligência"
+     },
+     "nodes": [
+      {
+       "label": "Regras",
+       "icon": "list",
+       "at": "de regras"
+      },
+      {
+       "label": "Programa",
+       "icon": "code",
+       "at": "de um programa"
+      },
+      {
+       "label": "Modelo de IA",
+       "icon": "ai",
+       "at": "chamada a modelo"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "O aplicativo no celular",
+     "nodes": [
+      {
+       "id": "c",
+       "label": "App no celular",
+       "icon": "phone",
+       "col": 0,
+       "row": 1,
+       "at": "aplicativo no celular"
+      },
+      {
+       "id": "s",
+       "label": "Tarefas no servidor",
+       "icon": "server",
+       "col": 4,
+       "row": 1,
+       "at": "no servidor"
+      },
+      {
+       "id": "p",
+       "label": "Programa intermediário",
+       "icon": "shield",
+       "col": 2,
+       "row": 1,
+       "at": "programa intermediário"
+      }
+     ],
+     "edges": [
+      {
+       "from": "c",
+       "to": "p",
+       "at": "programa intermediário"
+      },
+      {
+       "from": "p",
+       "to": "s",
+       "label": "só o permitido",
+       "at": "permissões definidas"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Tudo vira \"agente\"",
+      "tone": "bad",
+      "at": "Separar interface",
+      "lines": [
+       {
+        "text": "resposta automática ≠ **agente inteligente**",
+        "at": "qualquer resposta"
+       }
+      ]
+     },
+     "right": {
+      "title": "Em duas etapas",
+      "tone": "good",
+      "at": "Primeiro construa",
+      "lines": [
+       {
+        "text": "1. caminho **confiável**: receber e responder",
+        "at": "caminho confiável"
+       },
+       {
+        "text": "2. depois, a **capacidade** necessária",
+        "at": "conecte a capacidade"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**Mensagem** no celular",
+       "icon": "phone",
+       "at": "Mensagem"
+      },
+      {
+       "text": "**Bot API** do Telegram",
+       "icon": "cloud",
+       "at": "Bot API"
+      },
+      {
+       "text": "**Programa** com permissões",
+       "icon": "shield",
+       "at": "programa"
+      },
+      {
+       "text": "**Agente**, só se necessário",
+       "icon": "ai",
+       "at": "agente"
+      },
+      {
+       "text": "**Resultado** de volta",
+       "icon": "check",
+       "at": "resultado"
+      }
+     ]
+    }
+   ]
+  },
+  "94": {
+   "takeaway": "Comece **sem IA**; ela entra onde agrega, preservando os números.",
+   "shots": [
+    {
+     "type": "chat",
+     "at": "Vamos a um exemplo",
+     "title": "Bot de treino",
+     "messages": [
+      {
+       "role": "user",
+       "text": "/status",
+       "at": "status consulta"
+      },
+      {
+       "role": "ai",
+       "text": "Bot ativo ✓ (sem IA)",
+       "at": "estado do bot"
+      },
+      {
+       "role": "user",
+       "text": "/relatorio",
+       "at": "relatorio calcula"
+      },
+      {
+       "role": "ai",
+       "text": "Vendas fictícias: R$ 12.400 (calculado, sem IA)",
+       "at": "vendas fictícias"
+      },
+      {
+       "role": "note",
+       "text": "Resumo em linguagem natural: depois, sem mudar os números",
+       "at": "Um resumo"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "Agora é sua vez",
+     "nodes": [
+      {
+       "id": "c",
+       "label": "Celular",
+       "icon": "phone",
+       "col": 0,
+       "row": 0,
+       "at": "celular"
+      },
+      {
+       "id": "t",
+       "label": "Telegram",
+       "icon": "send",
+       "col": 1,
+       "row": 2,
+       "at": "Telegram"
+      },
+      {
+       "id": "b",
+       "label": "Bot",
+       "icon": "bot",
+       "col": 2,
+       "row": 0,
+       "at": "bot"
+      },
+      {
+       "id": "f",
+       "label": "Função permitida",
+       "icon": "shield",
+       "col": 3,
+       "row": 2,
+       "at": "função permitida"
+      },
+      {
+       "id": "r",
+       "label": "Resposta",
+       "icon": "check",
+       "col": 4,
+       "row": 0,
+       "at": "resposta"
+      },
+      {
+       "id": "i",
+       "label": "IA aqui?",
+       "icon": "ai",
+       "col": 4,
+       "row": 3,
+       "at": "futura chamada"
+      }
+     ],
+     "edges": [
+      {
+       "from": "c",
+       "to": "t",
+       "at": "Telegram"
+      },
+      {
+       "from": "t",
+       "to": "b",
+       "at": "bot"
+      },
+      {
+       "from": "b",
+       "to": "f",
+       "at": "função permitida"
+      },
+      {
+       "from": "f",
+       "to": "r",
+       "at": "resposta"
+      },
+      {
+       "from": "i",
+       "to": "f",
+       "label": "útil?",
+       "at": "realmente útil"
+      }
+     ]
+    }
+   ]
+  },
+  "95": {
+   "takeaway": "Token é **chave de acesso**: arquivo privado, e revogue se vazar.",
+   "shots": [
+    {
+     "type": "steps",
+     "at": "No Telegram",
+     "goal": "Criar o bot",
+     "steps": [
+      {
+       "title": "Abra o **BotFather** oficial",
+       "at": "encontre o BotFather"
+      },
+      {
+       "title": "Envie /newbot",
+       "at": "e use"
+      },
+      {
+       "title": "Escolha nome e identificador",
+       "at": "Escolha nome"
+      }
+     ],
+     "done_at": "instruções mostradas"
+    },
+    {
+     "type": "flow",
+     "at": "O token gerado",
+     "nodes": [
+      {
+       "id": "k",
+       "label": "Token",
+       "icon": "key",
+       "col": 0,
+       "row": 1,
+       "at": "O token gerado"
+      },
+      {
+       "id": "p",
+       "label": "Seu programa",
+       "icon": "code",
+       "col": 2,
+       "row": 1,
+       "at": "seu programa"
+      },
+      {
+       "id": "t",
+       "label": "Telegram",
+       "icon": "send",
+       "col": 4,
+       "row": 1,
+       "at": "perante o Telegram"
+      }
+     ],
+     "edges": [
+      {
+       "from": "k",
+       "to": "p",
+       "at": "autentica"
+      },
+      {
+       "from": "p",
+       "to": "t",
+       "label": "autenticado",
+       "at": "perante o Telegram"
+      }
+     ]
+    },
+    {
+     "type": "terminal",
+     "at": "Guarde-o",
+     "title": "meu-bot/",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "cat .env",
+       "at": "Guarde-o"
+      },
+      {
+       "type": "out",
+       "text": "TELEGRAM_BOT_TOKEN=••••••••••••",
+       "at": "em um arquivo"
+      },
+      {
+       "type": "comment",
+       "text": "# privado: o valor nunca vai para a tela",
+       "at": "arquivo privado"
+      },
+      {
+       "type": "cmd",
+       "text": "cat .env.example",
+       "at": "o kit tem"
+      },
+      {
+       "type": "out",
+       "text": "TELEGRAM_BOT_TOKEN=cole-aqui-o-seu",
+       "at": "valores de exemplo"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Por que isso importa",
+     "text": "Quem controla o **token** opera o bot"
+    },
+    {
+     "type": "bullets",
+     "at": "Capturas de tela",
+     "title": "VAZAM ACESSO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**Capturas** de tela",
+       "icon": "image",
+       "at": "Capturas de tela"
+      },
+      {
+       "text": "**URLs** com o token",
+       "icon": "link",
+       "at": "URLs contendo"
+      }
+     ]
+    },
+    {
+     "type": "keyword",
+     "at": "Se houver exposição",
+     "text": "**REVOGUE**",
+     "sub": "no BotFather, antes de continuar",
+     "sub_at": "no BotFather"
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**BotFather**",
+       "icon": "bot",
+       "at": "BotFather"
+      },
+      {
+       "text": "**Token**",
+       "icon": "key",
+       "at": "token"
+      },
+      {
+       "text": "**Variável** de ambiente",
+       "icon": "lock",
+       "at": "variável de ambiente"
+      },
+      {
+       "text": "**Rotação**",
+       "icon": "refresh",
+       "at": "rotação"
+      }
+     ]
+    }
+   ]
+  },
+  "96": {
+   "takeaway": "Cada instalação usa **suas próprias credenciais**.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "A professora não faz",
+      "tone": "bad",
+      "at": "Ela não coloca",
+      "lines": [
+       {
+        "text": "~~token no README~~",
+        "at": "token no README"
+       },
+       {
+        "text": "~~credenciais para os alunos~~",
+        "at": "arquivo de credenciais"
+       }
+      ]
+     },
+     "right": {
+      "title": "Cada instalação",
+      "tone": "good",
+      "at": "Cada instalação",
+      "lines": [
+       {
+        "text": "usa **suas próprias** credenciais",
+        "at": "suas próprias"
+       }
+      ]
+     }
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "terminal local",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "python3 bot.py --identify",
+       "at": "modo"
+      },
+      {
+       "type": "out",
+       "text": "Aguardando /start…",
+       "at": "informa o ID"
+      },
+      {
+       "type": "out",
+       "text": "/start recebido · ID 123456789",
+       "at": "de quem envia"
+      },
+      {
+       "type": "comment",
+       "text": "# sem acesso às funções operacionais",
+       "at": "sem dar acesso"
+      }
+     ]
+    }
+   ]
+  },
+  "97": {
+   "takeaway": "Token **autentica** o programa; lista de IDs **autoriza** pessoas.",
+   "shots": [
+    {
+     "type": "fields",
+     "at": "Autorize pessoas",
+     "title": "Bot do kit aceita",
+     "fields": [
+      {
+       "label": "Conversa",
+       "value": "só privada",
+       "at": "conversas privadas"
+      },
+      {
+       "label": "Quem",
+       "value": "só IDs configurados",
+       "at": "IDs configurados"
+      },
+      {
+       "label": "Comandos",
+       "value": "só os conhecidos",
+       "at": "comandos conhecidos"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Verificar o ID",
+     "left": {
+      "title": "ID numérico",
+      "tone": "good",
+      "at": "Verificar o ID",
+      "lines": [
+       {
+        "text": "++fixo++: identifica a pessoa",
+        "at": "é diferente"
+       }
+      ]
+     },
+     "right": {
+      "title": "Nome visível",
+      "tone": "bad",
+      "at": "nome visível",
+      "lines": [
+       {
+        "text": "nomes **podem mudar**",
+        "at": "nomes podem mudar"
+       }
+      ]
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Uma mensagem de desconhecido",
+     "text": "Desconhecido → ~~ler arquivos · rodar comandos~~",
+     "strike_at": "comandos do sistema"
+    },
+    {
+     "type": "keyword",
+     "at": "Por que isso importa",
+     "text": "**QUALQUER UM**",
+     "sub": "pode escrever para o seu bot",
+     "sub_at": "mensagens inesperadas"
+    },
+    {
+     "type": "compare",
+     "at": "Autenticação do programa",
+     "left": {
+      "title": "Autenticação",
+      "tone": "neutral",
+      "at": "Autenticação do programa",
+      "lines": [
+       {
+        "text": "o **token** identifica o programa",
+        "at": "com token"
+       }
+      ]
+     },
+     "right": {
+      "title": "Autorização",
+      "tone": "neutral",
+      "at": "autorização",
+      "lines": [
+       {
+        "text": "**quem** pode usar o bot",
+        "at": "qualquer pessoa"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "São **controles distintos**",
+      "at": "controles distintos"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**ID** numérico",
+       "icon": "user",
+       "at": "ID numérico"
+      },
+      {
+       "text": "**Lista** de acesso",
+       "icon": "list",
+       "at": "lista de acesso"
+      },
+      {
+       "text": "Conversa **privada**",
+       "icon": "lock",
+       "at": "conversa privada"
+      },
+      {
+       "text": "Comandos **fixos**",
+       "icon": "terminal",
+       "at": "comandos fixos"
+      }
+     ]
+    }
+   ]
+  },
+  "98": {
+   "takeaway": "Confira **ID e chat privado** antes de despachar comandos.",
+   "shots": [
+    {
+     "type": "chat",
+     "at": "Vamos a um exemplo",
+     "title": "Bot de treino",
+     "messages": [
+      {
+       "role": "user",
+       "text": "Dono: /relatorio",
+       "at": "O dono escreve"
+      },
+      {
+       "role": "ai",
+       "text": "Totais fictícios: R$ 12.400",
+       "at": "totais fictícios"
+      },
+      {
+       "role": "note",
+       "text": "Fora da lista → nenhum dado",
+       "at": "fora da lista"
+      },
+      {
+       "role": "user",
+       "text": "Dono: rm -rf ~/dados",
+       "at": "comando de shell"
+      },
+      {
+       "role": "ai",
+       "text": "Comando desconhecido. Nada executado.",
+       "at": "o execute"
+      }
+     ]
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "bot.py",
+     "lines": [
+      {
+       "type": "out",
+       "text": "def handle_message(update):",
+       "at": "Leia a função"
+      },
+      {
+       "type": "out",
+       "text": "    if user_id not in ALLOWED: return",
+       "at": "conferência de ID"
+      },
+      {
+       "type": "out",
+       "text": "    if chat.type != \"private\": return",
+       "at": "chat privado"
+      },
+      {
+       "type": "out",
+       "text": "    dispatch(command)",
+       "at": "despacho dos comandos"
+      }
+     ]
+    }
+   ]
+  },
+  "99": {
+   "takeaway": "Long polling: **uma** instância, só acesso de saída.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Comece com long polling",
+     "nodes": [
+      {
+       "id": "p",
+       "label": "Seu programa",
+       "icon": "code",
+       "col": 0,
+       "row": 1,
+       "at": "o programa perguntar"
+      },
+      {
+       "id": "t",
+       "label": "Telegram",
+       "icon": "send",
+       "col": 4,
+       "row": 1,
+       "at": "ao Telegram"
+      },
+      {
+       "id": "w",
+       "label": "Nada novo: espera",
+       "icon": "clock",
+       "col": 2,
+       "row": 3,
+       "at": "esperar um pouco"
+      }
+     ],
+     "edges": [
+      {
+       "from": "p",
+       "to": "t",
+       "label": "há mensagens?",
+       "at": "por mensagens"
+      },
+      {
+       "from": "t",
+       "to": "w",
+       "at": "esperar um pouco"
+      },
+      {
+       "from": "w",
+       "to": "p",
+       "label": "pergunta de novo",
+       "at": "não há novidades"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "É simples",
+     "left": {
+      "title": "Long polling",
+      "tone": "good",
+      "at": "É simples",
+      "lines": [
+       {
+        "text": "**simples** para aprender",
+        "at": "simples para aprender"
+       },
+       {
+        "text": "**sem porta** pública de entrada",
+        "at": "não exige abrir"
+       }
+      ]
+     },
+     "right": {
+      "title": "Webhook",
+      "tone": "neutral",
+      "at": "Webhook é outra",
+      "lines": [
+       {
+        "text": "Telegram chama seu **HTTPS**",
+        "at": "endereço HTTPS"
+       },
+       {
+        "text": "não é necessário **aqui**",
+        "at": "não é necessária"
+       }
+      ]
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Por que isso importa",
+     "text": "Escolha **um único modo**",
+     "then": {
+      "at": "problemas de configuração",
+      "text": "menos problemas de configuração",
+      "replace": false
+     }
+    },
+    {
+     "type": "flow",
+     "at": "Mantenha uma única",
+     "nodes": [
+      {
+       "id": "a",
+       "label": "Processo 1",
+       "icon": "cpu",
+       "col": 0,
+       "row": 0,
+       "at": "única instância"
+      },
+      {
+       "id": "b",
+       "label": "Bot · mesmo token",
+       "icon": "bot",
+       "col": 3,
+       "row": 1,
+       "at": "para um bot"
+      },
+      {
+       "id": "c",
+       "label": "Processo 2",
+       "icon": "warn",
+       "col": 0,
+       "row": 2,
+       "at": "processos duplicados"
+      }
+     ],
+     "edges": [
+      {
+       "from": "a",
+       "to": "b",
+       "at": "para um bot"
+      },
+      {
+       "from": "c",
+       "to": "b",
+       "label": "disputa",
+       "at": "disputar atualizações"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**getUpdates**: pergunta por mensagens",
+       "icon": "download",
+       "at": "getUpdates"
+      },
+      {
+       "text": "**offset**: não repetir",
+       "icon": "list",
+       "at": "offset"
+      },
+      {
+       "text": "**timeout**: espera controlada",
+       "icon": "clock",
+       "at": "timeout"
+      },
+      {
+       "text": "**instância única**",
+       "icon": "cpu",
+       "at": "instância única"
+      },
+      {
+       "text": "só **acesso de saída**",
+       "icon": "upload",
+       "at": "acesso de saída"
+      }
+     ]
+    }
+   ]
+  },
+  "100": {
+   "takeaway": "Espera, avança o offset, tenta de novo — e **um processo** por token.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Vamos a um exemplo",
+     "nodes": [
+      {
+       "id": "w",
+       "label": "Aguarda até 25 s",
+       "icon": "clock",
+       "col": 0,
+       "row": 1,
+       "at": "aguarda até"
+      },
+      {
+       "id": "m",
+       "label": "Recebe a mensagem",
+       "icon": "chat",
+       "col": 2,
+       "row": 0,
+       "at": "Ao recebê-la"
+      },
+      {
+       "id": "o",
+       "label": "Atualiza o offset",
+       "icon": "list",
+       "col": 4,
+       "row": 0,
+       "at": "atualiza o offset"
+      },
+      {
+       "id": "f",
+       "label": "Falha de rede",
+       "icon": "warn",
+       "col": 2,
+       "row": 2,
+       "at": "falha de rede"
+      },
+      {
+       "id": "r",
+       "label": "Espera e tenta de novo",
+       "icon": "refresh",
+       "col": 4,
+       "row": 2,
+       "at": "espera antes"
+      }
+     ],
+     "edges": [
+      {
+       "from": "w",
+       "to": "m",
+       "at": "Ao recebê-la"
+      },
+      {
+       "from": "m",
+       "to": "o",
+       "label": "não repete",
+       "at": "não repetir"
+      },
+      {
+       "from": "w",
+       "to": "f",
+       "at": "falha de rede"
+      },
+      {
+       "from": "f",
+       "to": "r",
+       "at": "tentar de novo"
+      }
+     ]
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "meu-bot/",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "python3 bot.py",
+       "at": "Inicie com"
+      },
+      {
+       "type": "out",
+       "text": "Aguardando mensagens…",
+       "at": "Use"
+      },
+      {
+       "type": "out",
+       "text": "^C  encerrado",
+       "at": "para encerrar"
+      },
+      {
+       "type": "err",
+       "text": "Conflict: terminated by other getUpdates request",
+       "at": "surgir conflito"
+      },
+      {
+       "type": "comment",
+       "text": "# outro processo com o mesmo token?",
+       "at": "outro processo"
+      },
+      {
+       "type": "comment",
+       "text": "# webhook configurado?",
+       "at": "existe webhook"
+      }
+     ]
+    }
+   ]
+  },
+  "101": {
+   "takeaway": "Base **determinística** primeiro; IA com limites, medida contra referência.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Conecte capacidades",
+     "nodes": [
+      {
+       "id": "t",
+       "label": "Transporte · Telegram",
+       "icon": "send",
+       "col": 0,
+       "row": 1,
+       "at": "separa transporte"
+      },
+      {
+       "id": "f",
+       "label": "Funções de trabalho",
+       "icon": "gear",
+       "col": 3,
+       "row": 1,
+       "at": "funções de trabalho"
+      }
+     ],
+     "edges": [
+      {
+       "from": "t",
+       "to": "f",
+       "label": "separados",
+       "at": "funções de trabalho"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Começa determinístico",
+     "title": "BASE DETERMINÍSTICA · SEM IA",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**/status**",
+       "icon": "check",
+       "sub": "estado do bot",
+       "at": "status"
+      },
+      {
+       "text": "**/relatorio**",
+       "icon": "chart",
+       "sub": "dados fictícios",
+       "at": "relatório"
+      },
+      {
+       "text": "IA só **depois**",
+       "icon": "ai",
+       "sub": "com limites",
+       "at": "Para acoplar IA"
+      }
+     ]
+    },
+    {
+     "type": "fields",
+     "at": "defina uma função",
+     "title": "Função de IA",
+     "fields": [
+      {
+       "label": "Entrada",
+       "value": "limitada",
+       "at": "entrada limitada"
+      },
+      {
+       "label": "Timeout",
+       "value": "definido",
+       "at": "timeout"
+      },
+      {
+       "label": "Saída",
+       "value": "com teto",
+       "at": "teto de saída"
+      },
+      {
+       "label": "Revisão",
+       "value": "obrigatória",
+       "at": "e revisão"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Não exponha",
+     "text": "~~codex exec~~ direto a mensagens públicas",
+     "strike_at": "mensagens públicas",
+     "then": {
+      "at": "desative proteções",
+      "text": "nem ~~desativar proteções~~",
+      "replace": false
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Base previsível",
+      "tone": "good",
+      "at": "Um programa previsível",
+      "lines": [
+       {
+        "text": "testa **sem gastar API**",
+        "at": "sem gastar API"
+       }
+      ]
+     },
+     "right": {
+      "title": "Depois, a IA",
+      "tone": "neutral",
+      "at": "Depois, você avalia",
+      "lines": [
+       {
+        "text": "melhora **interpretação, resumo** ou **classificação**?",
+        "at": "interpretação"
+       },
+       {
+        "text": "**meça** com referência conhecida",
+        "at": "mede o resultado"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**Função** de domínio",
+       "icon": "gear",
+       "at": "Função de domínio"
+      },
+      {
+       "text": "**Limites**",
+       "icon": "shield",
+       "at": "limites"
+      },
+      {
+       "text": "**Timeout**",
+       "icon": "clock",
+       "at": "timeout"
+      },
+      {
+       "text": "**Revisão**",
+       "icon": "eye",
+       "at": "revisão"
+      },
+      {
+       "text": "**Dados mínimos**",
+       "icon": "lock",
+       "at": "dados mínimos"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

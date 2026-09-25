@@ -1,0 +1,827 @@
+{
+ "block": "pt-b03",
+ "scenes": {
+  "15": {
+   "takeaway": "Mesma tarefa, mesmos dados, **dois modelos** — e a escolha registrada.",
+   "shots": [
+    {
+     "type": "steps",
+     "at": "Vamos ao laboratório",
+     "goal": "Sua ficha de decisão",
+     "steps": [
+      {
+       "title": "Tarefa pequena: resumir uma reunião fictícia",
+       "at": "Passo 1"
+      },
+      {
+       "title": "3 fatos que precisam aparecer",
+       "at": "Passo 2"
+      },
+      {
+       "title": "Mesmo pedido em 2 modelos",
+       "at": "Passo 3"
+      },
+      {
+       "title": "Compare fatos, invenções, tempo e revisão",
+       "at": "Passo 4"
+      }
+     ],
+     "done_at": "Registre sua escolha"
+    }
+   ]
+  },
+  "16": {
+   "takeaway": "Escolha pela **qualidade verificável** e pelo retrabalho, não pela velocidade.",
+   "shots": [
+    {
+     "type": "quiz",
+     "at": "Antes de avançar",
+     "question": "Chegou mais rápido, mas inventou 2 prazos. O que orienta a escolha?",
+     "answer": "Qualidade verificável e retrabalho",
+     "answer_at": "A resposta é",
+     "note": "velocidade isolada não basta",
+     "note_at": "velocidade isolada"
+    },
+    {
+     "type": "bullets",
+     "at": "Se você consegue",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Explique **com suas palavras**",
+       "icon": "chat",
+       "at": "explicar isso"
+      },
+      {
+       "text": "Mostre o **exercício**",
+       "icon": "doc",
+       "at": "mostrar o resultado"
+      },
+      {
+       "text": "**Siga** em frente",
+       "icon": "play",
+       "at": "pode seguir"
+      }
+     ]
+    }
+   ]
+  },
+  "17": {
+   "shots": [
+    {
+     "type": "module_intro",
+     "at": "Módulo 2",
+     "n": 2,
+     "title": "Chat, Work e Desktop",
+     "goal": "Redigir uma **encomenda de trabalho** com entradas, saída e revisão.",
+     "goal_at": "Nosso objetivo",
+     "exercise": "De pergunta solta a encomenda",
+     "exercise_at": "Ao final"
+    }
+   ]
+  },
+  "18": {
+   "takeaway": "Necessidade pequena pede **uma resposta**, não uma automação.",
+   "shots": [
+    {
+     "type": "chat",
+     "at": "Chat é uma interface",
+     "title": "Chat · conversa",
+     "messages": [
+      {
+       "role": "user",
+       "text": "O que é **inflação**?",
+       "at": "apresenta uma pergunta"
+      },
+      {
+       "role": "ai",
+       "text": "É a alta geral dos preços ao longo do tempo.",
+       "at": "recebe uma resposta"
+      },
+      {
+       "role": "user",
+       "text": "Explique para **crianças de 10 anos**.",
+       "at": "ajustar o pedido"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Funciona bem",
+     "layout": "row",
+     "title": "BOM PARA",
+     "items": [
+      {
+       "text": "Esclarecer um **conceito**",
+       "icon": "bulb",
+       "at": "esclarecer um conceito"
+      },
+      {
+       "text": "Rascunhar uma **mensagem**",
+       "icon": "pencil",
+       "at": "rascunhar uma mensagem"
+      }
+     ]
+    },
+    {
+     "type": "hub",
+     "at": "Recursos adicionais variam",
+     "center": {
+      "label": "Chat",
+      "icon": "chat",
+      "at": "um chat também"
+     },
+     "nodes": [
+      {
+       "label": "Arquivos",
+       "icon": "doc",
+       "sub": "quando disponível",
+       "at": "com arquivos"
+      },
+      {
+       "label": "Ferramentas",
+       "icon": "gear",
+       "sub": "quando disponível",
+       "at": "e ferramentas"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "A distinção didática",
+     "text": "Distinção: a **intenção** da tarefa",
+     "then": {
+      "at": "não uma proibição",
+      "text": "não uma ~~proibição~~",
+      "replace": false
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Automação",
+      "tone": "bad",
+      "at": "montar uma automação",
+      "lines": [
+       {
+        "text": "estrutura para **algo pequeno**",
+        "at": "para algo que"
+       }
+      ]
+     },
+     "right": {
+      "title": "Uma resposta",
+      "tone": "good",
+      "at": "apenas de uma resposta",
+      "lines": [
+       {
+        "text": "confere a entrega com **menos atrito**",
+        "at": "menos atrito"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Conversa",
+       "icon": "chat",
+       "at": "Conversa"
+      },
+      {
+       "text": "Esclarecimento",
+       "icon": "bulb",
+       "at": "esclarecimento"
+      },
+      {
+       "text": "Rascunho",
+       "icon": "pencil",
+       "at": "rascunho"
+      },
+      {
+       "text": "Revisão humana",
+       "icon": "user",
+       "at": "revisão humana"
+      }
+     ]
+    }
+   ]
+  },
+  "19": {
+   "takeaway": "Diga **público e finalidade** e peça as suposições da resposta.",
+   "shots": [
+    {
+     "type": "chat",
+     "at": "Vamos a um exemplo",
+     "title": "Professora · chat",
+     "messages": [
+      {
+       "role": "user",
+       "text": "3 maneiras de explicar **frações** com ingredientes de uma receita.",
+       "at": "Uma professora pede"
+      },
+      {
+       "role": "ai",
+       "text": "½ xícara de açúcar · ¼ de litro de leite · ⅓ da massa",
+       "at": "ingredientes de uma receita"
+      },
+      {
+       "role": "note",
+       "text": "ela analisa e **escolhe um** antes da aula",
+       "at": "Ela analisa"
+      }
+     ]
+    },
+    {
+     "type": "fields",
+     "at": "Agora é sua vez",
+     "title": "Minha pergunta curta",
+     "fields": [
+      {
+       "label": "Público",
+       "value": "alunos do 5º ano",
+       "at": "com público"
+      },
+      {
+       "label": "Finalidade",
+       "value": "revisar antes da prova",
+       "at": "e finalidade"
+      },
+      {
+       "label": "Pedido extra",
+       "value": "indique suas suposições",
+       "at": "indique suas suposições"
+      }
+     ]
+    }
+   ]
+  },
+  "20": {
+   "takeaway": "Encomenda boa tem **definição de pronto**.",
+   "shots": [
+    {
+     "type": "pipeline",
+     "at": "Work permite delegar",
+     "core": {
+      "label": "WORK · TAREFA DELEGADA",
+      "at": "delegar uma tarefa"
+     },
+     "output": {
+      "title": "RESULTADO REVISÁVEL",
+      "tokens": [
+       "análise",
+       "documento"
+      ],
+      "at": "resultado revisável"
+     },
+     "input": {
+      "title": "ARQUIVOS E FERRAMENTAS",
+      "files": [
+       "dados.xlsx",
+       "briefing.md"
+      ],
+      "at": "Pode usar arquivos"
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Em vez de acompanhar",
+     "left": {
+      "title": "Acompanhar tudo",
+      "tone": "neutral",
+      "at": "Em vez de acompanhar",
+      "lines": [
+       {
+        "text": "cada **frase**",
+        "at": "cada frase"
+       }
+      ]
+     },
+     "right": {
+      "title": "Encomendar",
+      "tone": "good",
+      "at": "você define",
+      "lines": [
+       {
+        "text": "defina o que existe **no final**",
+        "at": "deve existir no final"
+       },
+       {
+        "text": "acompanhe as **etapas relevantes**",
+        "at": "etapas relevantes"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Depende da **conta** e do **ambiente**",
+      "at": "A disponibilidade depende"
+     }
+    },
+    {
+     "type": "flow",
+     "at": "Por que isso importa",
+     "nodes": [
+      {
+       "id": "e",
+       "label": "Várias entradas",
+       "icon": "folder",
+       "col": 0,
+       "row": 1,
+       "at": "várias entradas"
+      },
+      {
+       "id": "p",
+       "label": "Definição de pronto",
+       "icon": "flag",
+       "col": 2,
+       "row": 0,
+       "at": "definição de pronto"
+      },
+      {
+       "id": "l",
+       "label": "Pesquisa sem fim",
+       "icon": "refresh",
+       "col": 2,
+       "row": 2,
+       "at": "continuar pesquisando"
+      },
+      {
+       "id": "t",
+       "label": "Comparação de 3 opções",
+       "icon": "check",
+       "col": 4,
+       "row": 0,
+       "at": "só precisava"
+      }
+     ],
+     "edges": [
+      {
+       "from": "e",
+       "to": "p",
+       "at": "definição de pronto"
+      },
+      {
+       "from": "e",
+       "to": "l",
+       "at": "continuar pesquisando",
+       "label": "sem pronto"
+      },
+      {
+       "from": "p",
+       "to": "t",
+       "at": "só precisava"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Objetivo",
+       "icon": "target",
+       "at": "Objetivo"
+      },
+      {
+       "text": "Fontes",
+       "icon": "doc",
+       "at": "fontes"
+      },
+      {
+       "text": "Entrega",
+       "icon": "send",
+       "at": "entrega"
+      },
+      {
+       "text": "Limites",
+       "icon": "shield",
+       "at": "limites"
+      },
+      {
+       "text": "Condição de parada",
+       "icon": "flag",
+       "at": "condição de parada"
+      }
+     ]
+    }
+   ]
+  },
+  "21": {
+   "takeaway": "De \"pesquise\" a **encomenda**: fontes, formato e limite.",
+   "shots": [
+    {
+     "type": "fields",
+     "at": "Vamos a um exemplo",
+     "title": "Encomenda da gestora",
+     "fields": [
+      {
+       "label": "Fontes",
+       "value": "dados fictícios de 3 fornecedores",
+       "at": "dados fictícios"
+      },
+      {
+       "label": "Entrega",
+       "value": "tabela: preço · prazo · riscos",
+       "at": "solicita uma tabela"
+      },
+      {
+       "label": "Regra",
+       "value": "campo ausente = não informado",
+       "at": "campos ausentes"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Agora é sua vez",
+     "left": {
+      "title": "Pergunta solta",
+      "tone": "bad",
+      "at": "Transforme",
+      "lines": [
+       {
+        "text": "“pesquise fornecedores”",
+        "at": "pesquise fornecedores"
+       }
+      ]
+     },
+     "right": {
+      "title": "Encomenda",
+      "tone": "good",
+      "at": "em uma encomenda",
+      "lines": [
+       {
+        "text": "**1 página**",
+        "at": "uma página"
+       },
+       {
+        "text": "**3 alternativas**",
+        "at": "três alternativas"
+       },
+       {
+        "text": "só os **documentos fornecidos**",
+        "at": "documentos fornecidos"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "22": {
+   "takeaway": "Antes de concluir, **confirme o que o agente leu**.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Desktop significa",
+     "nodes": [
+      {
+       "id": "a",
+       "label": "App no computador",
+       "icon": "cpu",
+       "col": 0,
+       "row": 1,
+       "at": "aplicativo instalado"
+      },
+      {
+       "id": "p",
+       "label": "Permissões",
+       "icon": "lock",
+       "col": 2,
+       "row": 1,
+       "at": "ele pode acessar"
+      },
+      {
+       "id": "f",
+       "label": "Pastas",
+       "icon": "folder",
+       "col": 4,
+       "row": 0,
+       "at": "acessar pastas"
+      },
+      {
+       "id": "g",
+       "label": "Aplicativos",
+       "icon": "gear",
+       "col": 4,
+       "row": 2,
+       "at": "e aplicativos"
+      }
+     ],
+     "edges": [
+      {
+       "from": "a",
+       "to": "p",
+       "at": "ele pode acessar"
+      },
+      {
+       "from": "p",
+       "to": "f",
+       "at": "acessar pastas"
+      },
+      {
+       "from": "p",
+       "to": "g",
+       "at": "e aplicativos",
+       "label": "mediante permissões"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "A presença do aplicativo",
+     "text": "App instalado **≠** ~~acesso universal~~",
+     "strike_at": "acesso universal",
+     "then": {
+      "at": "Se uma ferramenta",
+      "text": "Indisponível? Use um **caminho suportado**",
+      "replace": false
+     }
+    },
+    {
+     "type": "filetree",
+     "at": "Muitas falhas",
+     "root": "documentos/",
+     "entries": [
+      {
+       "path": "documentos/compartilhada/",
+       "kind": "dir",
+       "at": "falhas de acesso",
+       "note": "o agente ++vê++"
+      },
+      {
+       "path": "documentos/relatorios/",
+       "kind": "dir",
+       "at": "vê uma pasta",
+       "note": "o aluno **imagina** que ele vê"
+      },
+      {
+       "path": "documentos/relatorios/q3.xlsx",
+       "at": "não foi compartilhada",
+       "note": "~~não compartilhada~~: nunca lida"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Verificar o contexto",
+     "left": {
+      "title": "Verificar antes",
+      "tone": "good",
+      "at": "Verificar o contexto",
+      "lines": [
+       {
+        "text": "confira o que ele **leu**",
+        "at": "antes da execução"
+       }
+      ]
+     },
+     "right": {
+      "title": "Sem verificar",
+      "tone": "bad",
+      "at": "evita conclusões",
+      "lines": [
+       {
+        "text": "conclusões sobre ~~o que nunca leu~~",
+        "at": "nunca leu"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Pasta autorizada",
+       "icon": "folder",
+       "at": "Pasta autorizada"
+      },
+      {
+       "text": "Acesso local",
+       "icon": "cpu",
+       "at": "acesso local"
+      },
+      {
+       "text": "Ferramenta disponível",
+       "icon": "gear",
+       "at": "ferramenta disponível"
+      },
+      {
+       "text": "Confirmação de leitura",
+       "icon": "check",
+       "at": "confirmação de leitura"
+      }
+     ]
+    }
+   ]
+  },
+  "23": {
+   "takeaway": "Autorize **só a subpasta** e confirme os nomes lidos.",
+   "shots": [
+    {
+     "type": "filetree",
+     "at": "Vamos a um exemplo",
+     "root": "orcamentos/",
+     "entries": [
+      {
+       "path": "orcamentos/orcamento-v1.xlsx",
+       "at": "três versões"
+      },
+      {
+       "path": "orcamentos/orcamento-v2.xlsx",
+       "at": "versões de orçamento"
+      },
+      {
+       "path": "orcamentos/orcamento-v3.xlsx",
+       "at": "de orçamento"
+      },
+      {
+       "path": "orcamentos/exemplos/",
+       "kind": "dir",
+       "at": "somente a subpasta",
+       "note": "**única** pasta autorizada"
+      }
+     ]
+    },
+    {
+     "type": "chat",
+     "at": "pede que o agente",
+     "messages": [
+      {
+       "role": "user",
+       "text": "Liste os arquivos que você **consegue ler**.",
+       "at": "liste os arquivos"
+      },
+      {
+       "role": "ai",
+       "text": "Leio 1 arquivo: exemplos/orcamento-ex.xlsx",
+       "at": "consegue ler"
+      },
+      {
+       "role": "note",
+       "text": "só depois ele **compara**",
+       "at": "antes de comparar"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Pasta com **2 textos fictícios**",
+       "icon": "folder",
+       "at": "Crie uma pasta"
+      },
+      {
+       "text": "Confirme os **nomes lidos**",
+       "icon": "check",
+       "at": "Confirme os nomes"
+      },
+      {
+       "text": "Então peça o **resumo**",
+       "icon": "doc",
+       "at": "pedir um resumo"
+      }
+     ]
+    }
+   ]
+  },
+  "24": {
+   "takeaway": "Saiba **onde o processo vive**, onde ficam os arquivos e do que ele depende.",
+   "shots": [
+    {
+     "type": "keyword",
+     "at": "Local e nuvem",
+     "text": "**LOCAL** · **NUVEM**",
+     "sub": "escolhas de execução",
+     "sub_at": "escolhas de execução"
+    },
+    {
+     "type": "compare",
+     "at": "Local é a execução",
+     "left": {
+      "title": "Local",
+      "tone": "neutral",
+      "at": "Local é a execução",
+      "lines": [
+       {
+        "text": "na **sua máquina**",
+        "at": "sua máquina"
+       }
+      ]
+     },
+     "right": {
+      "title": "Nuvem",
+      "tone": "neutral",
+      "at": "Nuvem é a execução",
+      "lines": [
+       {
+        "text": "em **infraestrutura remota**",
+        "at": "infraestrutura remota"
+       }
+      ]
+     }
+    },
+    {
+     "type": "hub",
+     "at": "Um trabalho local",
+     "center": {
+      "label": "Trabalho local",
+      "icon": "cpu",
+      "at": "trabalho local depende"
+     },
+     "nodes": [
+      {
+       "label": "Energia",
+       "icon": "bulb",
+       "at": "de energia"
+      },
+      {
+       "label": "Rede",
+       "icon": "globe",
+       "at": "rede"
+      },
+      {
+       "label": "Permissões",
+       "icon": "lock",
+       "at": "e permissões"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Alguns ambientes",
+     "text": "Nuvem: segue com a **máquina desligada**",
+     "then": {
+      "at": "isso depende da funcionalidade",
+      "text": "vale a ++funcionalidade++, não o ~~nome Work~~",
+      "replace": false
+     }
+    },
+    {
+     "type": "fields",
+     "at": "Uma automação não fica",
+     "title": "Onde vive a automação?",
+     "fields": [
+      {
+       "label": "Interface moderna",
+       "value": "não garante permanência",
+       "at": "interface moderna"
+      },
+      {
+       "label": "Processo",
+       "value": "minha máquina ou nuvem",
+       "at": "onde o processo vive"
+      },
+      {
+       "label": "Arquivos",
+       "value": "pasta local ou drive",
+       "at": "onde os arquivos ficam"
+      },
+      {
+       "label": "Conexões",
+       "value": "rede, contas, APIs",
+       "at": "quais conexões"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Onde executa",
+       "icon": "server",
+       "at": "Localização da execução"
+      },
+      {
+       "text": "Persistência",
+       "icon": "memory",
+       "at": "persistência"
+      },
+      {
+       "text": "Acesso aos arquivos",
+       "icon": "folder",
+       "at": "acesso aos arquivos"
+      },
+      {
+       "text": "Continuidade",
+       "icon": "refresh",
+       "at": "continuidade"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

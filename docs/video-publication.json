@@ -1,10 +1,10 @@
 {
-  "release": "https://github.com/inematds/oswork/releases/tag/video-v1.0.0",
+  "release": "https://github.com/inematds/oswork/releases/tag/video-v2.0.0",
   "player": "https://inematds.github.io/oswork/videos/",
   "videos": {
     "pt": {
-      "url": "https://github.com/inematds/oswork/releases/download/video-v1.0.0/oswork-completo-pt.mp4",
-      "srt": "https://github.com/inematds/oswork/releases/download/video-v1.0.0/oswork-completo-pt.srt",
+      "url": "https://github.com/inematds/oswork/releases/download/video-v2.0.0/oswork-completo-pt.mp4",
+      "srt": "https://github.com/inematds/oswork/releases/download/video-v2.0.0/oswork-completo-pt.srt",
       "duration": 3955.501333
     }
   }

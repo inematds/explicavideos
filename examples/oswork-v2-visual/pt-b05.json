@@ -1,0 +1,1007 @@
+{
+ "block": "pt-b05",
+ "scenes": {
+  "35": {
+   "takeaway": "Instalar, entrar e abrir a pasta certa são **etapas diferentes**.",
+   "shots": [
+    {
+     "type": "hub",
+     "at": "A página oficial",
+     "center": {
+      "label": "Página oficial do Codex",
+      "icon": "globe",
+      "at": "página oficial do Codex"
+     },
+     "nodes": [
+      {
+       "label": "macOS · Linux",
+       "sub": "instalador",
+       "icon": "terminal",
+       "at": "oferece instalador"
+      },
+      {
+       "label": "Windows",
+       "sub": "orientações próprias",
+       "icon": "box",
+       "at": "específicas para Windows"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "Instalar significa",
+     "nodes": [
+      {
+       "id": "p",
+       "label": "Programa codex",
+       "icon": "box",
+       "col": 0,
+       "row": 0,
+       "at": "adicionar o programa"
+      },
+      {
+       "id": "m",
+       "label": "Sua máquina",
+       "icon": "cpu",
+       "col": 4,
+       "row": 0,
+       "at": "à máquina"
+      },
+      {
+       "id": "s",
+       "label": "Script oficial · install.sh",
+       "icon": "doc",
+       "col": 2,
+       "row": 2,
+       "at": "baixa e executa"
+      }
+     ],
+     "edges": [
+      {
+       "from": "p",
+       "to": "m",
+       "at": "à máquina",
+       "label": "instalar"
+      },
+      {
+       "from": "s",
+       "to": "m",
+       "at": "executa um script",
+       "label": "baixa e executa"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "leia a fonte",
+     "title": "ANTES DE EXECUTAR",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Leia a **fonte**",
+       "icon": "eye",
+       "at": "leia a fonte"
+      },
+      {
+       "text": "Confira o **domínio**",
+       "icon": "globe",
+       "at": "confira o domínio"
+      },
+      {
+       "text": "Use **sua conta**",
+       "icon": "user",
+       "at": "use sua própria conta"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Não execute comandos",
+     "text": "~~Comandos de páginas desconhecidas~~",
+     "then": {
+      "at": "Por que isso importa",
+      "text": "só da ++fonte oficial++",
+      "replace": false
+     }
+    },
+    {
+     "type": "timeline",
+     "at": "Instalação, login e execução",
+     "events": [
+      {
+       "label": "**Instalação**",
+       "sub": "programa na máquina",
+       "at": "Instalação, login"
+      },
+      {
+       "label": "**Login**",
+       "sub": "instalado ≠ autenticado",
+       "at": "precisa de autenticação"
+      },
+      {
+       "label": "**Pasta correta**",
+       "sub": "logado ≠ pasta certa",
+       "at": "abriu a pasta correta"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Fonte oficial",
+       "icon": "shield",
+       "at": "Fonte oficial"
+      },
+      {
+       "text": "Instalação",
+       "icon": "download",
+       "at": "instalação;"
+      },
+      {
+       "text": "Versão",
+       "icon": "flag",
+       "at": "versão"
+      },
+      {
+       "text": "Diagnóstico",
+       "icon": "search",
+       "at": "diagnóstico"
+      }
+     ]
+    }
+   ]
+  },
+  "36": {
+   "takeaway": "Confirme a instalação com **codex --version**.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "codex --version",
+      "tone": "good",
+      "at": "codex --version informa",
+      "lines": [
+       {
+        "text": "mostra a **versão** reconhecida",
+        "at": "a versão reconhecida"
+       }
+      ]
+     },
+     "right": {
+      "title": "\"command not found\"",
+      "tone": "bad",
+      "at": "command not found",
+      "lines": [
+       {
+        "text": "**reabra** o terminal",
+        "at": "reabra o terminal"
+       },
+       {
+        "text": "confira o **caminho** do instalador",
+        "at": "confira o caminho"
+       }
+      ]
+     }
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "bash · macOS/Linux",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "curl -fsSL https://chatgpt.com/codex/install.sh | sh",
+       "at": "No macOS/Linux"
+      },
+      {
+       "type": "comment",
+       "text": "# baixa o script do domínio oficial",
+       "at": "https://chatgpt.com/codex/install.sh"
+      },
+      {
+       "type": "comment",
+       "text": "# e executa com sh",
+       "at": "sh"
+      },
+      {
+       "type": "cmd",
+       "text": "codex --version",
+       "at": "Depois verifique"
+      },
+      {
+       "type": "comment",
+       "text": "# outras plataformas: veja a fonte no rodapé",
+       "at": "Veja a fonte"
+      }
+     ]
+    }
+   ]
+  },
+  "37": {
+   "takeaway": "A chave entra pela **entrada padrão**, nunca digitada no comando.",
+   "shots": [
+    {
+     "type": "lanes",
+     "at": "Execute codex login",
+     "lanes": [
+      {
+       "title": "ChatGPT",
+       "sub": "login pelo navegador",
+       "icon": "chat"
+      },
+      {
+       "title": "API",
+       "sub": "chave em variável",
+       "icon": "key"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "**codex login**",
+       "at": "Execute codex login"
+      },
+      {
+       "lane": 0,
+       "text": "conclua no **navegador**",
+       "at": "fluxo de navegador"
+      },
+      {
+       "lane": 1,
+       "text": "variável **OPENAI_API_KEY**",
+       "at": "Se optar por API"
+      },
+      {
+       "lane": 1,
+       "text": "pela **entrada padrão**",
+       "at": "pela entrada padrão"
+      },
+      {
+       "lane": 1,
+       "text": "~~digitada no comando~~",
+       "at": "sem digitá-la"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "Um arquivo .env",
+     "nodes": [
+      {
+       "id": "e",
+       "label": ".env (só arquivo)",
+       "icon": "doc",
+       "col": 0,
+       "row": 1,
+       "at": "Um arquivo .env"
+      },
+      {
+       "id": "m",
+       "label": "Mecanismo que carrega",
+       "icon": "gear",
+       "col": 2,
+       "row": 1,
+       "at": "algum mecanismo"
+      },
+      {
+       "id": "c",
+       "label": "Codex autenticado",
+       "icon": "check",
+       "col": 4,
+       "row": 1,
+       "at": "carregar a variável"
+      }
+     ],
+     "edges": [
+      {
+       "from": "e",
+       "to": "m",
+       "at": "deve carregar"
+      },
+      {
+       "from": "m",
+       "to": "c",
+       "at": "carregar a variável"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Por que isso importa",
+     "title": "ONDE A CHAVE VAZA",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Exemplos",
+       "icon": "doc",
+       "at": "em exemplos"
+      },
+      {
+       "text": "Mensagens",
+       "icon": "chat",
+       "at": "mensagens"
+      },
+      {
+       "text": "Histórico",
+       "icon": "clock",
+       "at": "histórico"
+      },
+      {
+       "text": "**Conta exposta**",
+       "icon": "warn",
+       "at": "expor a conta"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Também é possível",
+     "text": "Autenticado pelo ~~método errado~~",
+     "strike_at": "método errado",
+     "then": {
+      "at": "modalidade diferente",
+      "text": "consome **outra modalidade**",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "codex login",
+       "icon": "terminal",
+       "at": "codex login;"
+      },
+      {
+       "text": "codex login status",
+       "icon": "check",
+       "at": "codex login status"
+      },
+      {
+       "text": "Entrada padrão",
+       "icon": "key",
+       "at": "entrada padrão"
+      },
+      {
+       "text": "Conta ativa",
+       "icon": "user",
+       "at": "conta ativa"
+      }
+     ]
+    }
+   ]
+  },
+  "38": {
+   "takeaway": "Registre só o **método**, nunca a chave.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "bash · login com API",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "printenv OPENAI_API_KEY | codex login --with-api-key",
+       "at": "printenv OPENAI_API_KEY"
+      },
+      {
+       "type": "comment",
+       "text": "# a chave vai direto ao programa",
+       "at": "diretamente ao programa"
+      },
+      {
+       "type": "comment",
+       "text": "# e não aparece na tela",
+       "at": "mostrar a chave"
+      },
+      {
+       "type": "cmd",
+       "text": "codex login",
+       "at": "conclua o login"
+      },
+      {
+       "type": "cmd",
+       "text": "codex login status",
+       "at": "execute codex login status"
+      }
+     ]
+    },
+    {
+     "type": "fields",
+     "at": "Registre apenas",
+     "title": "Ficha do projeto",
+     "fields": [
+      {
+       "label": "Autenticação",
+       "value": "ChatGPT ou API",
+       "at": "Registre apenas"
+      },
+      {
+       "label": "Chave de API",
+       "value": "não anotar aqui",
+       "at": "ChatGPT"
+      }
+     ],
+     "stamp": {
+      "text": "só o método",
+      "at": "ficha do projeto"
+     }
+    }
+   ]
+  },
+  "39": {
+   "takeaway": "Escopo pequeno: **menos ambiguidade**, revisão mais fácil.",
+   "shots": [
+    {
+     "type": "keyword",
+     "at": "A pasta de trabalho",
+     "text": "Pasta = **bancada**",
+     "sub": "onde a tarefa acontece",
+     "sub_at": "da tarefa"
+    },
+    {
+     "type": "filetree",
+     "at": "Crie uma área pequena",
+     "root": "meu-primeiro-projeto/",
+     "entries": [
+      {
+       "path": "meu-primeiro-projeto/entradas/",
+       "at": "arquivos de treino",
+       "note": "arquivos de **treino**"
+      },
+      {
+       "path": "meu-primeiro-projeto/README.md",
+       "at": "Um README.md",
+       "note": "finalidade, para **pessoas**"
+      },
+      {
+       "path": "meu-primeiro-projeto/AGENTS.md",
+       "at": "AGENTS.md dá",
+       "note": "instruções para o **agente**"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Você não precisa",
+     "left": {
+      "title": "Pasta pessoal inteira",
+      "tone": "bad",
+      "at": "pasta pessoal inteira",
+      "lines": [
+       {
+        "text": "acesso a **tudo**",
+        "at": "pasta pessoal inteira"
+       }
+      ]
+     },
+     "right": {
+      "title": "Área de treino",
+      "tone": "good",
+      "at": "para experimentar",
+      "lines": [
+       {
+        "text": "só o **necessário**",
+        "at": "para experimentar"
+       }
+      ]
+     }
+    },
+    {
+     "type": "flow",
+     "at": "Um escopo pequeno",
+     "nodes": [
+      {
+       "id": "s",
+       "label": "Escopo pequeno",
+       "icon": "target",
+       "col": 0,
+       "row": 1,
+       "at": "Um escopo pequeno"
+      },
+      {
+       "id": "a",
+       "label": "Menos ambiguidade",
+       "icon": "check",
+       "col": 2,
+       "row": 0,
+       "at": "reduz ambiguidade"
+      },
+      {
+       "id": "d",
+       "label": "Diferenças fáceis de revisar",
+       "icon": "eye",
+       "col": 2,
+       "row": 2,
+       "at": "revisar diferenças"
+      },
+      {
+       "id": "e",
+       "label": "Erro localizado",
+       "icon": "search",
+       "col": 4,
+       "row": 1,
+       "at": "fica claro"
+      }
+     ],
+     "edges": [
+      {
+       "from": "s",
+       "to": "a",
+       "at": "reduz ambiguidade"
+      },
+      {
+       "from": "s",
+       "to": "d",
+       "at": "revisar diferenças"
+      },
+      {
+       "from": "d",
+       "to": "e",
+       "at": "deveriam ter sido afetados"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Escopo local",
+       "icon": "target",
+       "at": "Escopo local"
+      },
+      {
+       "text": "README",
+       "icon": "book",
+       "at": "README;"
+      },
+      {
+       "text": "AGENTS",
+       "icon": "bot",
+       "at": "AGENTS;"
+      },
+      {
+       "text": "Arquivos de entrada",
+       "icon": "folder",
+       "at": "arquivos de entrada"
+      }
+     ]
+    }
+   ]
+  },
+  "40": {
+   "takeaway": "Abra o Codex **dentro** da pasta do projeto.",
+   "shots": [
+    {
+     "type": "lanes",
+     "at": "Vamos a um exemplo",
+     "lanes": [
+      {
+       "title": "Dentro do escopo",
+       "sub": "o que a tarefa usa",
+       "icon": "check"
+      },
+      {
+       "title": "Fora do escopo",
+       "sub": "sem acesso necessário",
+       "icon": "lock"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "README.md",
+       "at": "README.md e"
+      },
+      {
+       "lane": 0,
+       "text": "entradas/reuniao.txt",
+       "at": "entradas/reuniao.txt"
+      },
+      {
+       "lane": 0,
+       "text": "tarefa: **explicar** os dois",
+       "at": "explicar esses dois"
+      },
+      {
+       "lane": 1,
+       "text": "documentos pessoais",
+       "at": "documentos pessoais"
+      },
+      {
+       "lane": 1,
+       "text": "outros projetos",
+       "at": "outros projetos"
+      }
+     ]
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "bash",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "mkdir -p ~/projetos/meu-primeiro-projeto",
+       "at": "No Bash"
+      },
+      {
+       "type": "cmd",
+       "text": "cd ~/projetos/meu-primeiro-projeto",
+       "at": "Entre com cd"
+      },
+      {
+       "type": "cmd",
+       "text": "codex",
+       "at": "inicie codex"
+      }
+     ]
+    }
+   ]
+  },
+  "41": {
+   "takeaway": "Primeiro **ler**, depois uma alteração **pequena e nomeada**.",
+   "shots": [
+    {
+     "type": "bullets",
+     "at": "Comece solicitando inspeção",
+     "title": "INSPEÇÃO · SÓ LEITURA",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Listar **estrutura**",
+       "icon": "folder",
+       "at": "listar estrutura"
+      },
+      {
+       "text": "Ler **instruções**",
+       "icon": "book",
+       "at": "ler instruções"
+      },
+      {
+       "text": "Explicar **pendências**",
+       "icon": "list",
+       "at": "explicar pendências"
+      },
+      {
+       "text": "Citar **arquivos usados**",
+       "icon": "doc",
+       "at": "cite quais arquivos"
+      }
+     ]
+    },
+    {
+     "type": "filetree",
+     "at": "Depois de conferir",
+     "root": "meu-primeiro-projeto/",
+     "entries": [
+      {
+       "path": "meu-primeiro-projeto/README.md",
+       "at": "Depois de conferir"
+      },
+      {
+       "path": "meu-primeiro-projeto/AGENTS.md",
+       "at": "autorize uma alteração"
+      },
+      {
+       "path": "meu-primeiro-projeto/plano.md",
+       "at": "criar plano.md",
+       "note": "**única** alteração: 3 próximos passos"
+      }
+     ]
+    },
+    {
+     "type": "timeline",
+     "at": "Separar diagnóstico",
+     "events": [
+      {
+       "label": "**Diagnóstico**",
+       "sub": "só leitura",
+       "at": "Separar diagnóstico"
+      },
+      {
+       "label": "**Alteração**",
+       "sub": "pequena e nomeada",
+       "at": "e alteração"
+      },
+      {
+       "label": "**Revisão**",
+       "sub": "compara com a referência",
+       "at": "referência para a revisão"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Você aprende o fluxo",
+     "left": {
+      "title": "Tudo de uma vez",
+      "tone": "bad",
+      "at": "sem misturar",
+      "lines": [
+       {
+        "text": "instalação",
+        "at": "sem misturar instalação"
+       },
+       {
+        "text": "+ grande **refatoração**",
+        "at": "grande refatoração"
+       },
+       {
+        "text": "+ **publicação**",
+        "at": "e publicação"
+       }
+      ]
+     },
+     "right": {
+      "title": "Um passo por vez",
+      "tone": "good",
+      "at": "Você aprende o fluxo",
+      "lines": [
+       {
+        "text": "uma coisa **de cada vez**",
+        "at": "aprende o fluxo"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Inspecionar",
+       "icon": "search",
+       "at": "Inspecionar"
+      },
+      {
+       "text": "Planejar",
+       "icon": "list",
+       "at": "planejar"
+      },
+      {
+       "text": "Alterar",
+       "icon": "pencil",
+       "at": "alterar"
+      },
+      {
+       "text": "Validar",
+       "icon": "check",
+       "at": "validar"
+      }
+     ]
+    }
+   ]
+  },
+  "42": {
+   "takeaway": "Confira se o plano se apoia no **projeto real**.",
+   "shots": [
+    {
+     "type": "chat",
+     "at": "Vamos a um exemplo",
+     "title": "Dois pedidos ao Codex",
+     "messages": [
+      {
+       "role": "user",
+       "text": "Leia AGENTS.md e README.md. Explique o propósito e liste o que falta, **sem editar**.",
+       "at": "Pedido inicial"
+      },
+      {
+       "role": "note",
+       "text": "1º pedido: só leitura",
+       "at": "sem editar"
+      },
+      {
+       "role": "user",
+       "text": "Crie **somente plano.md**, com três ações e uma verificação para cada.",
+       "at": "Segundo pedido"
+      },
+      {
+       "role": "note",
+       "text": "2º pedido: uma alteração, com nome",
+       "at": "uma verificação para"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Agora é sua vez",
+     "left": {
+      "title": "Apoiado no projeto",
+      "tone": "good",
+      "at": "Abra plano.md",
+      "lines": [
+       {
+        "text": "cita o **README.md** real",
+        "at": "se apoiam no projeto"
+       }
+      ]
+     },
+     "right": {
+      "title": "Arquivo pressuposto",
+      "tone": "bad",
+      "at": "o agente pressupôs",
+      "lines": [
+       {
+        "text": "cita **config.yaml**, que não existe",
+        "at": "arquivos inexistentes"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Peça **correção específica**",
+      "at": "arquivos inexistentes"
+     }
+    }
+   ]
+  },
+  "43": {
+   "takeaway": "Permissão mínima e **ponto de retorno** antes de ampliar.",
+   "shots": [
+    {
+     "type": "hub",
+     "at": "As permissões do cliente",
+     "center": {
+      "label": "Permissões do cliente",
+      "icon": "lock",
+      "at": "permissões do cliente"
+     },
+     "nodes": [
+      {
+       "label": "Arquivos",
+       "icon": "folder",
+       "at": "acesso a arquivos"
+      },
+      {
+       "label": "Rede",
+       "icon": "globe",
+       "at": "rede"
+      },
+      {
+       "label": "Execução",
+       "icon": "play",
+       "at": "e execução"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Instruções em linguagem",
+     "left": {
+      "title": "Instrução em texto",
+      "tone": "neutral",
+      "at": "Instruções em linguagem",
+      "lines": [
+       {
+        "text": "**orienta** o comportamento",
+        "at": "orientam o comportamento"
+       }
+      ]
+     },
+     "right": {
+      "title": "Isolamento técnico",
+      "tone": "good",
+      "at": "isolamento técnico",
+      "lines": [
+       {
+        "text": "**limita** de fato",
+        "at": "isolamento técnico"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Instrução **não substitui** isolamento",
+      "at": "não substituem"
+     }
+    },
+    {
+     "type": "keyword",
+     "at": "Comece com permissões",
+     "text": "Permissão **mínima**",
+     "sub": "restrita à pasta de treino",
+     "sub_at": "à pasta de treino"
+    },
+    {
+     "type": "statement",
+     "at": "Não ensine a remover",
+     "text": "~~Remover todas as proteções~~",
+     "then": {
+      "at": "para contornar",
+      "text": "nem para contornar **qualquer erro**",
+      "replace": false
+     }
+    },
+    {
+     "type": "flow",
+     "at": "Recuperar uma alteração",
+     "nodes": [
+      {
+       "id": "a",
+       "label": "O que existia antes",
+       "icon": "box",
+       "col": 0,
+       "row": 0,
+       "at": "existia antes"
+      },
+      {
+       "id": "b",
+       "label": "Alteração",
+       "icon": "pencil",
+       "col": 4,
+       "row": 0,
+       "at": "Recuperar uma alteração"
+      },
+      {
+       "id": "g",
+       "label": "Git · cópias",
+       "icon": "git",
+       "col": 2,
+       "row": 2,
+       "at": "Git e cópias"
+      }
+     ],
+     "edges": [
+      {
+       "from": "a",
+       "to": "g",
+       "at": "Git e cópias",
+       "label": "guarda"
+      },
+      {
+       "from": "g",
+       "to": "b",
+       "at": "pontos de retorno",
+       "label": "restaura"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Leia o que o comando",
+     "text": "**Leia** o que o comando fará",
+     "then": {
+      "at": "antes de ampliar",
+      "text": "antes de ++ampliar permissões++",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Permissão mínima",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Permissão mínima",
+       "icon": "lock",
+       "at": "Permissão mínima"
+      },
+      {
+       "text": "Alterações pequenas",
+       "icon": "pencil",
+       "at": "alterações pequenas"
+      },
+      {
+       "text": "Comparação",
+       "icon": "search",
+       "at": "comparação"
+      },
+      {
+       "text": "Ponto de retorno",
+       "icon": "refresh",
+       "at": "ponto de retorno"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

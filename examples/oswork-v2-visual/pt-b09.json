@@ -1,0 +1,814 @@
+{
+ "block": "pt-b09",
+ "scenes": {
+  "73": {
+   "takeaway": "Teste com entradas **variadas** e meça **comportamento**.",
+   "shots": [
+    {
+     "type": "lanes",
+     "at": "Teste a Skill com",
+     "lanes": [
+      {
+       "title": "Caso normal",
+       "icon": "check"
+      },
+      {
+       "title": "Caso incompleto",
+       "icon": "warn"
+      },
+      {
+       "title": "Fora de escopo",
+       "icon": "x"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "entrada **completa**",
+       "at": "entrada normal"
+      },
+      {
+       "lane": 1,
+       "text": "falta **um dado**",
+       "at": "outra incompleta"
+      },
+      {
+       "lane": 2,
+       "text": "pedido **fora do papel**",
+       "at": "fora de escopo"
+      },
+      {
+       "lane": 0,
+       "text": "✓ preserva os **dados**",
+       "at": "preserva dados"
+      },
+      {
+       "lane": 1,
+       "text": "✓ sinaliza **incerteza**",
+       "at": "sinaliza incerteza"
+      },
+      {
+       "lane": 2,
+       "text": "✓ **para** quando deveria",
+       "at": "para quando deveria"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "O teste deve medir",
+     "text": "Meça o **comportamento**",
+     "then": {
+      "at": "não apenas procurar",
+      "text": "~~procurar o nome da Skill~~",
+      "replace": false
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Um procedimento que",
+     "left": {
+      "title": "Funcionou uma vez",
+      "at": "funciona uma vez",
+      "lines": [
+       {
+        "text": "depende de **contexto acidental**",
+        "at": "contexto acidental"
+       }
+      ]
+     },
+     "right": {
+      "title": "Entradas variadas",
+      "at": "Variar entradas",
+      "lines": [
+       {
+        "text": "revelam o que precisa ficar **explícito**",
+        "at": "ficar explícito"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Caso **normal**",
+       "icon": "check",
+       "at": "Caso normal"
+      },
+      {
+       "text": "Caso **incompleto**",
+       "icon": "warn",
+       "at": "caso incompleto"
+      },
+      {
+       "text": "Limite de **escopo**",
+       "icon": "shield",
+       "at": "limite de escopo"
+      },
+      {
+       "text": "Critério de **aceitação**",
+       "icon": "target",
+       "at": "critério de aceitação"
+      }
+     ]
+    }
+   ]
+  },
+  "74": {
+   "takeaway": "Corrija a Skill com a **menor regra** que resolve a falha.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Entrada incompleta",
+      "tone": "neutral",
+      "at": "Entrada incompleta",
+      "lines": [
+       {
+        "text": "falta o **valor** de uma venda",
+        "at": "falta o valor"
+       },
+       {
+        "text": "esperado: ++não inventar++",
+        "at": "não inventar"
+       },
+       {
+        "text": "total conhecido + **pendência**",
+        "at": "separar total"
+       }
+      ]
+     },
+     "right": {
+      "title": "Fora de escopo",
+      "tone": "neutral",
+      "at": "Fora de escopo",
+      "lines": [
+       {
+        "text": "pedir **envio** ao cliente",
+        "at": "pedir envio"
+       },
+       {
+        "text": "esperado: só **rascunho**",
+        "at": "somente rascunho"
+       }
+      ]
+     }
+    },
+    {
+     "type": "fields",
+     "at": "Agora é sua vez",
+     "title": "Ficha de verificação",
+     "fields": [
+      {
+       "label": "Casos",
+       "value": "normal · incompleto · fora de escopo",
+       "at": "Anote três casos"
+      },
+      {
+       "label": "Saídas",
+       "value": "comparadas lado a lado",
+       "at": "compare as saídas"
+      },
+      {
+       "label": "Ajuste",
+       "value": "a menor regra que corrige",
+       "at": "menor regra"
+      }
+     ],
+     "stamp": {
+      "text": "só o necessário",
+      "at": "falha observada"
+     }
+    }
+   ]
+  },
+  "75": {
+   "takeaway": "AGENTS.md + Skill + dados fictícios, e **conferência** no final.",
+   "shots": [
+    {
+     "type": "steps",
+     "at": "Vamos ao laboratório",
+     "goal": "Laboratório · AGENTS.md + Skill + relatório",
+     "steps": [
+      {
+       "title": "Copie **AGENTS-projeto.md** para AGENTS.md e adapte",
+       "at": "Passo 1"
+      },
+      {
+       "title": "Crie **SKILL.md** em relatorio-semanal/",
+       "at": "Passo 2"
+      },
+      {
+       "title": "Peça o **relatório** citando a Skill",
+       "at": "Passo 3"
+      },
+      {
+       "title": "Confira e registre em **decisoes.md**",
+       "at": "Passo 4"
+      }
+     ],
+     "done_at": "melhoria necessária"
+    }
+   ]
+  },
+  "76": {
+   "takeaway": "Instruções **orientam**; permissões **restringem**.",
+   "shots": [
+    {
+     "type": "quiz",
+     "at": "Escrever",
+     "question": "“Não vaze segredos” no AGENTS.md substitui **permissões**?",
+     "answer": "**Não.** Instruções orientam; permissões e isolamento **restringem** o acesso.",
+     "answer_at": "A resposta é",
+     "note": "Explique com suas palavras e mostre o **exercício**.",
+     "note_at": "Se você consegue"
+    }
+   ]
+  },
+  "77": {
+   "shots": [
+    {
+     "type": "module_intro",
+     "at": "Módulo 6",
+     "n": 6,
+     "title": "Git e GitHub sem perder trabalho",
+     "goal": "**Salvar** uma versão, **inspecionar** diferenças e **recuperar** uma mudança de treino.",
+     "goal_at": "Nosso objetivo",
+     "exercise": "Seu primeiro ponto de recuperação",
+     "exercise_at": "Ao final"
+    }
+   ]
+  },
+  "78": {
+   "takeaway": "Git guarda o **histórico**; backup de tudo é **outra** proteção.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Git registra versões",
+     "pos": "top",
+     "text": "Git registra **versões** de arquivos"
+    },
+    {
+     "type": "flow",
+     "at": "Repositório é a pasta",
+     "nodes": [
+      {
+       "id": "r",
+       "label": "Repositório · a pasta",
+       "icon": "folder",
+       "col": 0,
+       "row": 2,
+       "at": "Repositório é a pasta"
+      },
+      {
+       "id": "c",
+       "label": "commit · alterações + mensagem",
+       "icon": "git",
+       "col": 2,
+       "row": 2,
+       "at": "commit é um registro"
+      },
+      {
+       "id": "g",
+       "label": "GitHub · remoto",
+       "icon": "cloud",
+       "col": 4,
+       "row": 1,
+       "at": "GitHub é um serviço"
+      },
+      {
+       "id": "l",
+       "label": "Só local, sem publicar",
+       "icon": "lock",
+       "col": 4,
+       "row": 3,
+       "at": "usar Git localmente"
+      }
+     ],
+     "edges": [
+      {
+       "from": "r",
+       "to": "c",
+       "at": "alterações e mensagem"
+      },
+      {
+       "from": "c",
+       "to": "g",
+       "at": "repositórios remotos",
+       "label": "opcional"
+      },
+      {
+       "from": "c",
+       "to": "l",
+       "at": "sem publicar nada"
+      }
+     ],
+     "keep": true
+    },
+    {
+     "type": "timeline",
+     "at": "Quando um agente",
+     "events": [
+      {
+       "label": "commit **✓**",
+       "sub": "versão conhecida",
+       "at": "Quando um agente"
+      },
+      {
+       "label": "agente **altera**",
+       "sub": "muitos arquivos",
+       "at": "altera muitos arquivos"
+      },
+      {
+       "label": "**o que mudou?**",
+       "sub": "o histórico mostra",
+       "at": "entender o que mudou"
+      },
+      {
+       "label": "**recuperar**",
+       "sub": "volta à versão conhecida",
+       "at": "recuperar uma versão"
+      }
+     ]
+    },
+    {
+     "type": "lanes",
+     "at": "Git não substitui",
+     "lanes": [
+      {
+       "title": "No histórico do Git",
+       "icon": "git"
+      },
+      {
+       "title": "Precisa de proteção própria",
+       "icon": "shield"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "arquivos **acompanhados** pelo repositório",
+       "at": "Git não substitui"
+      },
+      {
+       "lane": 1,
+       "text": "arquivos **ignorados**",
+       "at": "arquivos ignorados"
+      },
+      {
+       "lane": 1,
+       "text": "**bancos** de dados",
+       "at": "bancos"
+      },
+      {
+       "lane": 1,
+       "text": "dados **externos**",
+       "at": "dados externos"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "**Repositório**",
+       "icon": "folder",
+       "at": "Repositório"
+      },
+      {
+       "text": "**Commit**",
+       "icon": "git",
+       "at": "commit"
+      },
+      {
+       "text": "**Histórico**",
+       "icon": "clock",
+       "at": "histórico"
+      },
+      {
+       "text": "**Remoto**",
+       "icon": "cloud",
+       "at": "remoto"
+      },
+      {
+       "text": "**Backup**",
+       "icon": "shield",
+       "at": "backup"
+      }
+     ]
+    }
+   ]
+  },
+  "79": {
+   "takeaway": "Um commit anterior **preserva**; a mensagem clara **localiza**.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Relatório alterado",
+      "at": "Uma gestora muda",
+      "lines": [
+       {
+        "text": "uma seção **perdida**",
+        "at": "perde uma seção"
+       }
+      ]
+     },
+     "right": {
+      "title": "Commit anterior",
+      "at": "Um commit anterior",
+      "lines": [
+       {
+        "text": "conteúdo antigo **preservado**",
+        "at": "preserva o conteúdo"
+       },
+       {
+        "text": "mensagem clara **localiza** a mudança",
+        "at": "mensagem clara"
+       }
+      ]
+     }
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "pasta-de-treino",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "git --version",
+       "at": "Execute git"
+      },
+      {
+       "type": "out",
+       "text": "git version 2.43.0",
+       "at": "Na pasta de treino"
+      },
+      {
+       "type": "cmd",
+       "text": "git init -b main",
+       "at": "use git init"
+      },
+      {
+       "type": "out",
+       "text": "Initialized empty Git repository in pasta-de-treino/.git/",
+       "at": "Não inicialize"
+      },
+      {
+       "type": "comment",
+       "text": "# nunca na sua pasta pessoal inteira",
+       "at": "sua pasta pessoal"
+      }
+     ]
+    }
+   ]
+  },
+  "80": {
+   "takeaway": "**Observe** (status, diff) antes de **preparar** (add).",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "git status mostra",
+     "title": "pasta-de-treino",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "git status",
+       "at": "git status mostra"
+      },
+      {
+       "type": "out",
+       "text": "novo:        anotacoes.md",
+       "at": "arquivos novos"
+      },
+      {
+       "type": "out",
+       "text": "modificado:  README.md",
+       "at": "modificados"
+      },
+      {
+       "type": "out",
+       "text": "preparado:   relatorio.md",
+       "at": "e preparados"
+      },
+      {
+       "type": "cmd",
+       "text": "git diff",
+       "at": "git diff mostra"
+      },
+      {
+       "type": "out",
+       "text": "README.md  +2 −1     # ainda NÃO preparado",
+       "at": "ainda não preparadas"
+      },
+      {
+       "type": "cmd",
+       "text": "git diff --cached",
+       "at": "git diff --cached"
+      },
+      {
+       "type": "out",
+       "text": "relatorio.md  +5     # vai para o próximo commit",
+       "at": "próximo commit"
+      }
+     ]
+    },
+    {
+     "type": "lanes",
+     "at": "A área de preparação",
+     "lanes": [
+      {
+       "title": "Working tree",
+       "sub": "tudo que mudou",
+       "icon": "pencil"
+      },
+      {
+       "title": "Staging",
+       "sub": "você escolhe",
+       "icon": "box"
+      },
+      {
+       "title": "Mesma mudança",
+       "sub": "vira um commit",
+       "icon": "git"
+      }
+     ],
+     "chips": [
+      {
+       "label": "anotacoes.md",
+       "lane": 0,
+       "at": "chamada staging"
+      },
+      {
+       "label": "README.md",
+       "lane": 1,
+       "at": "escolher exatamente"
+      },
+      {
+       "label": "relatorio.md",
+       "lane": 1,
+       "at": "quais arquivos"
+      }
+     ],
+     "items": [
+      {
+       "lane": 1,
+       "text": "escolha **exatamente** o que entra",
+       "at": "permite escolher"
+      },
+      {
+       "lane": 2,
+       "text": "arquivos da **mesma mudança**",
+       "at": "mesma mudança"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "prepara tudo",
+     "left": {
+      "title": "git add .",
+      "at": "prepara tudo",
+      "lines": [
+       {
+        "text": "prepara **tudo** que não está ignorado",
+        "at": "não está ignorado"
+       }
+      ]
+     },
+     "right": {
+      "title": "git add README.md",
+      "at": "prefira nomear",
+      "lines": [
+       {
+        "text": "**escopo** mais claro",
+        "at": "percebe melhor o escopo"
+       },
+       {
+        "text": "menos risco de **material sem relação**",
+        "at": "reduz o risco"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Working tree",
+       "icon": "pencil",
+       "at": "Working tree"
+      },
+      {
+       "text": "Staging",
+       "icon": "box",
+       "at": "staging"
+      },
+      {
+       "text": "Diff",
+       "icon": "search",
+       "at": "diff"
+      },
+      {
+       "text": "Revisão de conteúdo",
+       "icon": "eye",
+       "at": "revisão de conteúdo"
+      }
+     ]
+    }
+   ]
+  },
+  "81": {
+   "takeaway": "Prepare **só** o que pertence à mudança e confira com **--cached**.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Vamos a um exemplo",
+     "title": "pasta-de-treino",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "git status",
+       "at": "Você mudou"
+      },
+      {
+       "type": "out",
+       "text": "modificado:  README.md",
+       "at": "mudou README.md"
+      },
+      {
+       "type": "out",
+       "text": "novo:        anotacao-privada.md",
+       "at": "anotação privada"
+      },
+      {
+       "type": "cmd",
+       "text": "git add README.md",
+       "at": "git add README.md"
+      },
+      {
+       "type": "comment",
+       "text": "# só a documentação; a anotação fica de fora",
+       "at": "somente a documentação"
+      },
+      {
+       "type": "cmd",
+       "text": "git diff --cached",
+       "at": "Antes do commit"
+      },
+      {
+       "type": "out",
+       "text": "README.md | 3 +++",
+       "at": "será registrado"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "git **status**",
+       "icon": "terminal",
+       "at": "Rode git status"
+      },
+      {
+       "text": "git **diff**",
+       "icon": "search",
+       "at": "git diff"
+      },
+      {
+       "text": "**--cached**",
+       "sub": "git diff --cached",
+       "icon": "box",
+       "at": "git diff --cached"
+      },
+      {
+       "text": "Saída **vazia**? Diga em que etapa",
+       "icon": "warn",
+       "at": "Se alguma saída"
+      }
+     ]
+    }
+   ]
+  },
+  "82": {
+   "takeaway": "Commit = mudança **coesa**, com mensagem **concreta** e verificada.",
+   "shots": [
+    {
+     "type": "terminal",
+     "at": "Configure user.name",
+     "title": "pasta-de-treino",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "git config user.name \"Ana Souza\"",
+       "at": "Configure user.name"
+      },
+      {
+       "type": "cmd",
+       "text": "git config user.email \"ana@exemplo.com\"",
+       "at": "user.email"
+      },
+      {
+       "type": "comment",
+       "text": "# sem --global: vale só neste repositório",
+       "at": "localmente"
+      },
+      {
+       "type": "cmd",
+       "text": "git add README.md",
+       "at": "Prepare os arquivos"
+      },
+      {
+       "type": "cmd",
+       "text": "git commit -m \"Adiciona seção de pendências ao relatório\"",
+       "at": "git commit -m"
+      },
+      {
+       "type": "out",
+       "text": "[main 3f2a1c9] Adiciona seção de pendências ao relatório",
+       "at": "descrição concreta"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Um commit deve",
+     "text": "Um commit = uma mudança",
+     "then": {
+      "at": "consegue explicar",
+      "text": "**explicável** e **verificável**",
+      "replace": false
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Mensagens como",
+     "left": {
+      "title": "Mensagem “update”",
+      "at": "Mensagens como",
+      "lines": [
+       {
+        "text": "histórico **pouco útil**",
+        "at": "pouco útil"
+       }
+      ]
+     },
+     "right": {
+      "title": "Ponto confiável",
+      "at": "Uma versão só",
+      "lines": [
+       {
+        "text": "você sabe se **funcionava**",
+        "at": "ela funcionava"
+       },
+       {
+        "text": "e quais **verificações** fez",
+        "at": "quais verificações"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Autoria",
+       "icon": "user",
+       "at": "Autoria"
+      },
+      {
+       "text": "Mensagem",
+       "icon": "chat",
+       "at": "mensagem"
+      },
+      {
+       "text": "Mudança coesa",
+       "icon": "box",
+       "at": "mudança coesa"
+      },
+      {
+       "text": "Verificação",
+       "icon": "check",
+       "at": "verificação"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,824 @@
+{
+ "block": "pt-b02",
+ "scenes": {
+  "7": {
+   "takeaway": "Modelo e esforço são **eixos diferentes**: complete as entradas antes de subir o esforço.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Modelo não é esforço",
+     "text": "Modelo **não é** esforço"
+    },
+    {
+     "type": "bullets",
+     "at": "O modelo é o mecanismo",
+     "layout": "row",
+     "items": [
+      {
+       "text": "**Modelo** = o mecanismo",
+       "icon": "cpu",
+       "at": "mecanismo escolhido"
+      },
+      {
+       "text": "**Esforço** = um ajuste dele",
+       "icon": "gear",
+       "at": "é uma configuração"
+      }
+     ]
+    },
+    {
+     "type": "orbs",
+     "at": "Níveis mais altos",
+     "names_at": "Níveis mais altos",
+     "sizes_at": "gastar mais tempo",
+     "tags_at": "e tokens",
+     "items": [
+      {
+       "name": "Instant",
+       "size": 0.7,
+       "tag": "$"
+      },
+      {
+       "name": "Medium",
+       "size": 1.0,
+       "tag": "$$"
+      },
+      {
+       "name": "High",
+       "size": 1.35,
+       "tag": "$$$"
+      },
+      {
+       "name": "Pro",
+       "size": 1.75,
+       "tag": "$$$$"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Os nomes do seletor",
+     "text": "Cada produto, **seu seletor**: Chat · Work · Codex",
+     "then": {
+      "at": "não existe uma lista única",
+      "text": "~~uma lista única~~ para todos",
+      "replace": false
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Máximo em tudo",
+      "tone": "bad",
+      "at": "Pedir o máximo",
+      "lines": [
+       {
+        "text": "mais **consumo**",
+        "at": "aumentar consumo"
+       },
+       {
+        "text": "resultado **igual**",
+        "at": "sem melhorar"
+       },
+       {
+        "text": "o **documento** continua faltando",
+        "at": "não fornece um documento"
+       }
+      ]
+     },
+     "right": {
+      "title": "Entradas primeiro",
+      "tone": "good",
+      "at": "Primeiro complete",
+      "lines": [
+       {
+        "text": "complete as **entradas**",
+        "at": "complete as entradas"
+       },
+       {
+        "text": "depois, **mais análise**?",
+        "at": "avalie se o problema"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Modelo ≠ **esforço**",
+       "icon": "gear",
+       "at": "Modelo e esforço"
+      },
+      {
+       "text": "Comece pelo **padrão**",
+       "icon": "play",
+       "at": "comece pelo padrão"
+      },
+      {
+       "text": "Compare em **condições iguais**",
+       "icon": "check",
+       "at": "compare em condições"
+      }
+     ]
+    }
+   ]
+  },
+  "8": {
+   "takeaway": "Dar o **arquivo que falta** vale mais que mover o controle.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Convite de 5 linhas",
+      "tone": "neutral",
+      "at": "reescrever um convite",
+      "lines": [
+       {
+        "text": "o **padrão** resolve",
+        "at": "o padrão pode resolver"
+       }
+      ]
+     },
+     "right": {
+      "title": "Duas planilhas discordam",
+      "tone": "good",
+      "at": "Para explicar",
+      "lines": [
+       {
+        "text": "entregue **as duas planilhas**",
+        "at": "fornecer as duas"
+       },
+       {
+        "text": "importa mais que **mover o controle**",
+        "at": "mover um controle"
+       }
+      ]
+     }
+    },
+    {
+     "type": "fields",
+     "at": "Agora é sua vez",
+     "title": "Teste de esforço",
+     "fields": [
+      {
+       "label": "Pedido",
+       "value": "o mesmo, repetido",
+       "at": "Repita um pedido"
+      },
+      {
+       "label": "Modelo",
+       "value": "o mesmo",
+       "at": "no mesmo modelo"
+      },
+      {
+       "label": "Esforço",
+       "value": "padrão → alto",
+       "at": "somente o esforço"
+      },
+      {
+       "label": "Melhora",
+       "value": "só vale se eu puder mostrar",
+       "at": "Registre se houve"
+      }
+     ],
+     "stamp": {
+      "text": "uma variável por vez",
+      "at": "consegue demonstrar"
+     }
+    }
+   ]
+  },
+  "9": {
+   "takeaway": "Uma régua definida **antes** troca opinião por observação.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Uma régua transforma",
+     "text": "Régua: ~~opinião~~",
+     "strike_at": "transforma opinião",
+     "then": {
+      "at": "em observação",
+      "text": "vira ++observação++",
+      "replace": false
+     }
+    },
+    {
+     "type": "fields",
+     "at": "Defina antes do pedido",
+     "title": "Antes do pedido",
+     "fields": [
+      {
+       "label": "Fatos obrigatórios",
+       "value": "nomes, valores, datas",
+       "at": "quais fatos precisam"
+      },
+      {
+       "label": "Erros inaceitáveis",
+       "value": "valor alterado, prazo inventado",
+       "at": "quais erros são"
+      },
+      {
+       "label": "Uso da saída",
+       "value": "enviar à equipe",
+       "at": "como a saída"
+      }
+     ]
+    },
+    {
+     "type": "radar",
+     "at": "Use três critérios",
+     "axes": [
+      {
+       "label": "Fidelidade aos dados",
+       "at": "fidelidade aos dados",
+       "value": 0.9
+      },
+      {
+       "label": "Formato combinado",
+       "at": "formato combinado",
+       "value": 0.75
+      },
+      {
+       "label": "Verificável",
+       "at": "verificar as conclusões",
+       "value": 0.85
+      }
+     ],
+     "candidates": [
+      {
+       "name": "Bonita",
+       "values": [
+        0.35,
+        0.95,
+        0.3
+       ],
+       "fit": false,
+       "note": "altera valores",
+       "at": "resposta mais bonita"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "O teste deve refletir",
+     "left": {
+      "title": "Teste certo",
+      "tone": "good",
+      "at": "O teste deve refletir",
+      "lines": [
+       {
+        "text": "o trabalho que você **precisa entregar**",
+        "at": "precisa entregar"
+       }
+      ]
+     },
+     "right": {
+      "title": "Teste errado",
+      "tone": "bad",
+      "at": "não uma demonstração",
+      "lines": [
+       {
+        "text": "demo feita para **impressionar**",
+        "at": "para impressionar"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Aceitação",
+       "icon": "check",
+       "at": "Aceitação"
+      },
+      {
+       "text": "Evidência",
+       "icon": "search",
+       "at": "evidência"
+      },
+      {
+       "text": "Amostra representativa",
+       "icon": "list",
+       "at": "amostra representativa"
+      },
+      {
+       "text": "Comparação controlada",
+       "icon": "target",
+       "at": "comparação controlada"
+      }
+     ]
+    }
+   ]
+  },
+  "10": {
+   "takeaway": "Elegância **não compensa** um responsável perdido.",
+   "shots": [
+    {
+     "type": "fields",
+     "at": "Vamos a um exemplo",
+     "title": "Teste da ata fictícia",
+     "fields": [
+      {
+       "label": "Responsáveis",
+       "value": "os 3 nomes presentes",
+       "at": "os três nomes"
+      },
+      {
+       "label": "Prazos",
+       "value": "nenhum inventado",
+       "at": "nenhum prazo inventado"
+      },
+      {
+       "label": "Pendências",
+       "value": "seção própria",
+       "at": "seção de pendências"
+      }
+     ],
+     "stamp": {
+      "text": "perdeu nome = reprovou",
+      "at": "não compensa"
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Agora é sua vez",
+     "left": {
+      "title": "Esperado",
+      "tone": "good",
+      "at": "Agora é sua vez",
+      "lines": [
+       {
+        "text": "**3** responsáveis",
+        "at": "esperado"
+       }
+      ]
+     },
+     "right": {
+      "title": "Observado",
+      "tone": "bad",
+      "at": "observado",
+      "lines": [
+       {
+        "text": "**2** responsáveis",
+        "at": "observado"
+       },
+       {
+        "text": "passou? ~~não~~",
+        "at": "passou"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Guarde a **resposta ruim**",
+      "at": "Guarde uma resposta ruim"
+     }
+    }
+   ]
+  },
+  "11": {
+   "takeaway": "Assinatura, API e centrais são **carteiras diferentes**: confira o método ativo.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Login com ChatGPT",
+     "left": {
+      "title": "Login com ChatGPT",
+      "tone": "neutral",
+      "at": "Login com ChatGPT",
+      "lines": [
+       {
+        "text": "direitos e **limites da conta**",
+        "at": "direitos e limites"
+       },
+       {
+        "text": "e do **espaço de trabalho**",
+        "at": "espaço de trabalho"
+       }
+      ]
+     },
+     "right": {
+      "title": "Chave de API",
+      "tone": "neutral",
+      "at": "Uma chave de API",
+      "lines": [
+       {
+        "text": "cobrança **por consumo**",
+        "at": "cobrança por consumo"
+       },
+       {
+        "text": "na **plataforma**",
+        "at": "na plataforma"
+       }
+      ]
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Assinar ChatGPT",
+     "text": "Assinatura **≠** ~~saldo livre na API~~",
+     "strike_at": "saldo livre"
+    },
+    {
+     "type": "hub",
+     "at": "Centrais como",
+     "center": {
+      "label": "Centrais",
+      "icon": "link",
+      "at": "Centrais como"
+     },
+     "nodes": [
+      {
+       "label": "OpenRouter",
+       "icon": "globe",
+       "sub": "crédito próprio",
+       "at": "OpenRouter"
+      },
+      {
+       "label": "Kie",
+       "icon": "globe",
+       "sub": "crédito próprio",
+       "at": "e Kie"
+      },
+      {
+       "label": "Por consumo",
+       "icon": "chart",
+       "sub": "paga o que usar",
+       "at": "cobrado por consumo"
+      },
+      {
+       "label": "Fora da assinatura",
+       "icon": "x",
+       "sub": "carteira separada",
+       "at": "separado de qualquer"
+      }
+     ]
+    },
+    {
+     "type": "fields",
+     "at": "Confira o método ativo",
+     "title": "Antes de uma execução longa",
+     "fields": [
+      {
+       "label": "Método ativo",
+       "value": "login ChatGPT ou chave de API?",
+       "at": "Confira o método"
+      },
+      {
+       "label": "Execução",
+       "value": "longa: confira antes",
+       "at": "execução longa"
+      },
+      {
+       "label": "Conta cobrada",
+       "value": "a que você espera",
+       "at": "evita descobrir"
+      }
+     ],
+     "stamp": {
+      "text": "sem surpresa",
+      "at": "conta diferente"
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Limites de uso",
+     "text": "Limites · modelos · regras de dados **mudam**",
+     "then": {
+      "at": "a fonte de verdade",
+      "text": "Fonte de verdade: **sua conta hoje**"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "column",
+     "items": [
+      {
+       "text": "Assinatura",
+       "icon": "user",
+       "at": "Assinatura"
+      },
+      {
+       "text": "Autenticação",
+       "icon": "lock",
+       "at": "autenticação"
+      },
+      {
+       "text": "API",
+       "icon": "key",
+       "at": "API"
+      },
+      {
+       "text": "Consumo",
+       "icon": "chart",
+       "at": "consumo"
+      },
+      {
+       "text": "Limite de gasto",
+       "icon": "money",
+       "at": "limite de gasto"
+      }
+     ]
+    }
+   ]
+  },
+  "12": {
+   "takeaway": "Registre o **método** de acesso, nunca a credencial.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Vamos a um exemplo",
+     "nodes": [
+      {
+       "id": "a",
+       "label": "Aluno",
+       "icon": "user",
+       "col": 0,
+       "row": 1,
+       "at": "Um aluno"
+      },
+      {
+       "id": "c",
+       "label": "Codex",
+       "icon": "code",
+       "col": 2,
+       "row": 0,
+       "at": "usa Codex"
+      },
+      {
+       "id": "g",
+       "label": "Conta ChatGPT",
+       "icon": "user",
+       "col": 4,
+       "row": 0,
+       "at": "conectado ao ChatGPT"
+      },
+      {
+       "id": "p",
+       "label": "Programa",
+       "icon": "terminal",
+       "col": 2,
+       "row": 2,
+       "at": "executa um programa"
+      },
+      {
+       "id": "k",
+       "label": "OPENAI_API_KEY",
+       "icon": "key",
+       "col": 4,
+       "row": 2,
+       "at": "com OPENAI_API_KEY"
+      }
+     ],
+     "edges": [
+      {
+       "from": "a",
+       "to": "c",
+       "at": "usa Codex"
+      },
+      {
+       "from": "c",
+       "to": "g",
+       "at": "conectado ao ChatGPT",
+       "label": "caminho 1"
+      },
+      {
+       "from": "a",
+       "to": "p",
+       "at": "executa um programa"
+      },
+      {
+       "from": "p",
+       "to": "k",
+       "at": "São caminhos distintos",
+       "label": "caminho 2"
+      }
+     ]
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "Codex",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "codex login status",
+       "at": "use codex login status"
+      },
+      {
+       "type": "out",
+       "text": "Logged in using ChatGPT",
+       "at": "conferir o método"
+      },
+      {
+       "type": "comment",
+       "text": "# ficha: método = login ChatGPT",
+       "at": "registre o método"
+      },
+      {
+       "type": "err",
+       "text": "# nunca cole a chave na ficha",
+       "at": "nunca a credencial"
+      }
+     ]
+    }
+   ]
+  },
+  "13": {
+   "takeaway": "Autonomia com **escopo, teto e parada** — e saída que diz como foi verificada.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Autonomia é uma",
+     "text": "Autonomia = **autorização com escopo**",
+     "then": {
+      "at": "não um convite",
+      "text": "~~convite para qualquer coisa~~",
+      "replace": false
+     }
+    },
+    {
+     "type": "fields",
+     "at": "Combine objetivo",
+     "title": "Autorização do agente",
+     "fields": [
+      {
+       "label": "Objetivo",
+       "value": "comparar 3 propostas",
+       "at": "Combine objetivo"
+      },
+      {
+       "label": "Arquivos",
+       "value": "só a pasta de treino",
+       "at": "arquivos permitidos"
+      },
+      {
+       "label": "Ações",
+       "value": "ler e rascunhar",
+       "at": "ações autorizadas"
+      },
+      {
+       "label": "Tempo",
+       "value": "até 20 minutos",
+       "at": "limite de tempo"
+      },
+      {
+       "label": "Parada",
+       "value": "antes de enviar",
+       "at": "condição de parada"
+      },
+      {
+       "label": "Saída",
+       "value": "o que fez + como verificou",
+       "at": "o que foi feito"
+      }
+     ]
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Agente sem limite",
+      "tone": "bad",
+      "at": "Um agente pode",
+      "lines": [
+       {
+        "text": "**mais etapas** que um chat",
+        "at": "mais etapas"
+       },
+       {
+        "text": "pode errar em **várias**",
+        "at": "errar em várias"
+       }
+      ]
+     },
+     "right": {
+      "title": "Com um limite simples",
+      "tone": "good",
+      "at": "Um limite simples",
+      "lines": [
+       {
+        "text": "protege **tempo, orçamento, arquivos**",
+        "at": "protege tempo"
+       },
+       {
+        "text": "sem travar o **trabalho útil**",
+        "at": "sem impedir"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Permissão técnica **+** instrução escrita",
+      "at": "Permissão técnica"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Escopo",
+       "icon": "target",
+       "at": "Escopo"
+      },
+      {
+       "text": "Aprovação de ações externas",
+       "icon": "shield",
+       "at": "aprovação de ações"
+      },
+      {
+       "text": "Teto de execução",
+       "icon": "clock",
+       "at": "teto de execução"
+      },
+      {
+       "text": "Resultado revisável",
+       "icon": "eye",
+       "at": "resultado revisável"
+      }
+     ]
+    }
+   ]
+  },
+  "14": {
+   "takeaway": "O botão existir **não é** autorização: pare antes de publicar ou enviar.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Autorizado",
+      "tone": "good",
+      "at": "Autorize criar",
+      "lines": [
+       {
+        "text": "criar **rascunho**",
+        "at": "criar um rascunho"
+       },
+       {
+        "text": "comparar **dados fictícios**",
+        "at": "comparar dados"
+       }
+      ]
+     },
+     "right": {
+      "title": "Outra ação",
+      "tone": "bad",
+      "at": "Enviar a proposta",
+      "lines": [
+       {
+        "text": "**enviar** ao cliente",
+        "at": "a um cliente"
+       },
+       {
+        "text": "exige **instrução explícita**",
+        "at": "instrução explícita"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Botão existir **≠** autorização",
+      "at": "O botão de envio"
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Agora é sua vez",
+     "title": "SUA AÇÃO",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Use **estes arquivos**",
+       "icon": "folder",
+       "at": "use estes arquivos"
+      },
+      {
+       "text": "Gere **este resultado**",
+       "icon": "doc",
+       "at": "gere este resultado"
+      },
+      {
+       "text": "Verifique **3 pontos**",
+       "icon": "check",
+       "at": "verifique estes"
+      },
+      {
+       "text": "**Pare** antes de enviar",
+       "icon": "pause",
+       "at": "pare antes"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

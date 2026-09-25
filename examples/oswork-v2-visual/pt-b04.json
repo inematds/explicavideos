@@ -1,0 +1,804 @@
+{
+ "block": "pt-b04",
+ "scenes": {
+  "25": {
+   "takeaway": "Saiba **onde executa**, onde lê e onde salva.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Só no notebook",
+      "tone": "bad",
+      "at": "somente no notebook",
+      "lines": [
+       {
+        "text": "para se o computador **dormir**",
+        "at": "computador dormir"
+       }
+      ]
+     },
+     "right": {
+      "title": "Serviço na VPS",
+      "tone": "neutral",
+      "at": "Um serviço na VPS",
+      "lines": [
+       {
+        "text": "**continua** rodando",
+        "at": "VPS continua"
+       },
+       {
+        "text": "só vê arquivos **enviados** a ele",
+        "at": "só conhece os arquivos"
+       }
+      ]
+     }
+    },
+    {
+     "type": "fields",
+     "at": "Agora é sua vez",
+     "title": "Minha ficha · execução",
+     "fields": [
+      {
+       "label": "Executa em",
+       "value": "notebook ou VPS?",
+       "at": "onde a tarefa executa"
+      },
+      {
+       "label": "Lê entradas de",
+       "value": "pasta de treino",
+       "at": "onde lê entradas"
+      },
+      {
+       "label": "Salva saídas em",
+       "value": "pasta saidas/",
+       "at": "onde salva saídas"
+      }
+     ],
+     "stamp": {
+      "text": "não sabe? pendência",
+      "at": "trate isso como pendência"
+     }
+    }
+   ]
+  },
+  "26": {
+   "takeaway": "Nomeie o **artefato** e a **condição de pronto**.",
+   "shots": [
+    {
+     "type": "fields",
+     "at": "Um bom pedido contém",
+     "title": "Contrato de entrega",
+     "fields": [
+      {
+       "label": "Objetivo",
+       "value": "ata da reunião",
+       "at": "contém objetivo"
+      },
+      {
+       "label": "Contexto",
+       "value": "equipe da escola",
+       "at": "contexto"
+      },
+      {
+       "label": "Entradas",
+       "value": "pauta.txt",
+       "at": "entradas"
+      },
+      {
+       "label": "Restrições",
+       "value": "não enviar nada",
+       "at": "restrições"
+      },
+      {
+       "label": "Resultado",
+       "value": "ata-rascunho.md",
+       "at": "resultado"
+      },
+      {
+       "label": "Verificação",
+       "value": "todos os responsáveis",
+       "at": "verificação"
+      }
+     ],
+     "stamp": {
+      "text": "encomenda",
+      "at": "campos de uma encomenda"
+     }
+    },
+    {
+     "type": "timeline",
+     "at": "Quanto mais fácil",
+     "events": [
+      {
+       "label": "Saída **fácil de inspecionar**",
+       "at": "inspecionar a saída"
+      },
+      {
+       "label": "Desvio **detectado**",
+       "at": "detectar um desvio"
+      },
+      {
+       "label": "Sem **retrabalho**",
+       "at": "vire retrabalho"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Por que isso importa",
+     "title": "O AGENTE NÃO PRECISA ADIVINHAR",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Uma **explicação**?",
+       "icon": "chat",
+       "at": "uma explicação"
+      },
+      {
+       "text": "Um **arquivo editável**?",
+       "icon": "doc",
+       "at": "arquivo editável"
+      },
+      {
+       "text": "Uma **publicação**?",
+       "icon": "globe",
+       "at": "uma publicação"
+      }
+     ]
+    },
+    {
+     "type": "flow",
+     "at": "Nomear o artefato",
+     "nodes": [
+      {
+       "id": "i",
+       "label": "Intenção",
+       "icon": "bulb",
+       "col": 0,
+       "row": 1,
+       "at": "entre intenção"
+      },
+      {
+       "id": "a",
+       "label": "Artefato nomeado",
+       "icon": "doc",
+       "col": 2,
+       "row": 0,
+       "at": "Nomear o artefato"
+      },
+      {
+       "id": "p",
+       "label": "Condição de pronto",
+       "icon": "check",
+       "col": 2,
+       "row": 2,
+       "at": "condição de pronto"
+      },
+      {
+       "id": "e",
+       "label": "Execução",
+       "icon": "play",
+       "col": 4,
+       "row": 1,
+       "at": "e execução"
+      }
+     ],
+     "edges": [
+      {
+       "from": "i",
+       "to": "a",
+       "at": "encurta a distância"
+      },
+      {
+       "from": "i",
+       "to": "p",
+       "at": "encurta a distância"
+      },
+      {
+       "from": "a",
+       "to": "e",
+       "at": "e execução"
+      },
+      {
+       "from": "p",
+       "to": "e",
+       "at": "e execução"
+      }
+     ]
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Artefato",
+       "icon": "doc",
+       "at": "Artefato"
+      },
+      {
+       "text": "Formato",
+       "icon": "list",
+       "at": "formato"
+      },
+      {
+       "text": "Fontes autorizadas",
+       "icon": "shield",
+       "at": "fontes autorizadas"
+      },
+      {
+       "text": "Critério observável",
+       "icon": "eye",
+       "at": "critério observável"
+      }
+     ]
+    }
+   ]
+  },
+  "27": {
+   "takeaway": "Troque \"bom\" por um **critério conferível**.",
+   "shots": [
+    {
+     "type": "chat",
+     "at": "Vamos a um exemplo",
+     "title": "Pedido ao agente",
+     "messages": [
+      {
+       "role": "user",
+       "text": "Use **pauta.txt** para criar **ata-rascunho.md**.",
+       "at": "Use pauta.txt"
+      },
+      {
+       "role": "user",
+       "text": "Preserve todos os responsáveis, sinalize datas ausentes e **não envie nada**.",
+       "at": "Preserve todos"
+      },
+      {
+       "role": "note",
+       "text": "entrada ✓ · saída ✓ · limite concreto ✓",
+       "at": "Esse pedido determina"
+      }
+     ]
+    },
+    {
+     "type": "filetree",
+     "at": "Agora é sua vez",
+     "root": "pasta-de-treino/",
+     "entries": [
+      {
+       "path": "pasta-de-treino/materiais/",
+       "at": "Use o arquivo"
+      },
+      {
+       "path": "pasta-de-treino/materiais/contrato-de-tarefa.md",
+       "at": "materiais/contrato-de-tarefa.md",
+       "note": "**uma frase** por campo"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "troque",
+     "text": "Resultado ~~bom~~",
+     "strike_at": "troque",
+     "then": {
+      "at": "critério que alguém",
+      "text": "critério que alguém ++consiga conferir++",
+      "replace": false
+     }
+    }
+   ]
+  },
+  "28": {
+   "takeaway": "\"Pronto\" não prova nada: **abra, compare e teste**.",
+   "shots": [
+    {
+     "type": "statement",
+     "at": "Uma entrega só termina",
+     "text": "A entrega termina na **conferência**"
+    },
+    {
+     "type": "steps",
+     "at": "Abra o arquivo",
+     "steps": [
+      {
+       "title": "**Abrir** o arquivo",
+       "at": "Abra o arquivo"
+      },
+      {
+       "title": "**Comparar** números com as fontes",
+       "at": "compare números"
+      },
+      {
+       "title": "**Testar** links e fórmulas",
+       "at": "teste os links"
+      }
+     ],
+     "done_at": "Peça ao agente"
+    },
+    {
+     "type": "compare",
+     "at": "Peça ao agente evidências",
+     "left": {
+      "title": "Teste executado",
+      "tone": "good",
+      "at": "teste executado",
+      "lines": [
+       {
+        "text": "\"rodei e **conferi**\"",
+        "at": "teste executado"
+       }
+      ]
+     },
+     "right": {
+      "title": "Sugestão de teste",
+      "tone": "bad",
+      "at": "sugestão de teste",
+      "lines": [
+       {
+        "text": "\"você **poderia** testar\"",
+        "at": "sugestão de teste"
+       }
+      ]
+     }
+    },
+    {
+     "type": "statement",
+     "at": "A frase",
+     "text": "~~“Pronto”~~",
+     "strike_at": "não demonstra",
+     "then": {
+      "at": "o arquivo abre",
+      "text": "O arquivo **abre**? Os dados foram **preservados**?",
+      "replace": false
+     }
+    },
+    {
+     "type": "compare",
+     "at": "independente pequena",
+     "left": {
+      "title": "Verificação pequena",
+      "tone": "good",
+      "at": "independente pequena",
+      "lines": [
+       {
+        "text": "acha **mais problemas**",
+        "at": "achar mais problemas"
+       }
+      ]
+     },
+     "right": {
+      "title": "\"Melhore isso\"",
+      "tone": "bad",
+      "at": "novo pedido genérico",
+      "lines": [
+       {
+        "text": "pedido **genérico** de melhora",
+        "at": "genérico de melhora"
+       }
+      ]
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Pontos para lembrar",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Abrir",
+       "icon": "doc",
+       "at": "Abrir"
+      },
+      {
+       "text": "Comparar",
+       "icon": "search",
+       "at": "comparar"
+      },
+      {
+       "text": "Testar",
+       "icon": "check",
+       "at": "testar"
+      },
+      {
+       "text": "Registrar limites",
+       "icon": "pencil",
+       "at": "registrar limites"
+      }
+     ]
+    }
+   ]
+  },
+  "29": {
+   "takeaway": "Confronte cada item com a **fonte**.",
+   "shots": [
+    {
+     "type": "compare",
+     "at": "Vamos a um exemplo",
+     "left": {
+      "title": "Ata recebida",
+      "tone": "neutral",
+      "at": "A ata tem",
+      "lines": [
+       {
+        "text": "Compras → **Ana**",
+        "at": "lista de decisões"
+       },
+       {
+        "text": "Horário → **Carlos**",
+        "at": "lista de decisões"
+       }
+      ]
+     },
+     "right": {
+      "title": "Pauta · a fonte",
+      "tone": "good",
+      "at": "confronta cada decisão",
+      "lines": [
+       {
+        "text": "Compras → Ana ✓",
+        "at": "com a pauta"
+       },
+       {
+        "text": "Horário → **Bruno**",
+        "at": "com a pauta"
+       }
+      ]
+     },
+     "verdict": {
+      "text": "Carlos: responsável ~~inventado~~",
+      "at": "responsabilidade inventada"
+     }
+    },
+    {
+     "type": "statement",
+     "at": "Ela corrige",
+     "text": "Corrija a **fonte** ou o **pedido**",
+     "then": {
+      "at": "antes de reutilizar",
+      "text": "++antes++ de reutilizar o procedimento",
+      "replace": false
+     }
+    },
+    {
+     "type": "fields",
+     "at": "Agora é sua vez",
+     "title": "Revisão da minha entrega",
+     "fields": [
+      {
+       "label": "Fato",
+       "value": "data confere com a pauta",
+       "at": "um fato"
+      },
+      {
+       "label": "Formato",
+       "value": "abre como .md",
+       "at": "um formato"
+      },
+      {
+       "label": "Ação",
+       "value": "nada foi enviado",
+       "at": "uma ação"
+      }
+     ],
+     "stamp": {
+      "text": "observado",
+      "at": "resultado observado"
+     }
+    }
+   ]
+  },
+  "30": {
+   "shots": [
+    {
+     "type": "steps",
+     "at": "Vamos ao laboratório",
+     "goal": "De pergunta solta a encomenda",
+     "steps": [
+      {
+       "title": "Pauta **fictícia** com 5 itens",
+       "at": "Passo 1"
+      },
+      {
+       "title": "Pedido: objetivo, materiais, formato, **critério**",
+       "at": "Passo 2"
+      },
+      {
+       "title": "**Chat ou Work** produz a pauta revisada",
+       "at": "Passo 3"
+      },
+      {
+       "title": "Conferir, salvar e **melhorar o pedido**",
+       "at": "Passo 4"
+      }
+     ],
+     "done_at": "registre uma melhoria"
+    }
+   ]
+  },
+  "31": {
+   "shots": [
+    {
+     "type": "quiz",
+     "at": "Antes de avançar",
+     "question": "Só preciso de uma explicação de **duas frases**. Devo usar o **Work**?",
+     "answer": "**Não.** Escolha pelo resultado: o Chat pode bastar.",
+     "answer_at": "A resposta é",
+     "note": "Explique com suas palavras e mostre o exercício",
+     "note_at": "Se você consegue"
+    }
+   ]
+  },
+  "32": {
+   "shots": [
+    {
+     "type": "module_intro",
+     "at": "Módulo 3",
+     "n": 3,
+     "title": "Terminal e Codex na prática",
+     "goal": "Abrir um projeto de treino no **Codex** e produzir uma **alteração verificável**.",
+     "goal_at": "Nosso objetivo",
+     "exercise": "Primeiro projeto acompanhado",
+     "exercise_at": "Ao final"
+    }
+   ]
+  },
+  "33": {
+   "takeaway": "Saiba **em que ambiente** você está antes de culpar a IA.",
+   "shots": [
+    {
+     "type": "flow",
+     "at": "Terminal é a janela",
+     "nodes": [
+      {
+       "id": "u",
+       "label": "Você",
+       "icon": "user",
+       "col": 0,
+       "row": 1,
+       "at": "você escreve"
+      },
+      {
+       "id": "t",
+       "label": "Terminal · janela",
+       "icon": "terminal",
+       "col": 2,
+       "row": 0,
+       "at": "Terminal é a janela"
+      },
+      {
+       "id": "s",
+       "label": "Shell · intérprete",
+       "icon": "gear",
+       "col": 2,
+       "row": 2,
+       "at": "Shell é o programa"
+      },
+      {
+       "id": "c",
+       "label": "Computador",
+       "icon": "cpu",
+       "col": 4,
+       "row": 1,
+       "at": "para o computador"
+      }
+     ],
+     "edges": [
+      {
+       "from": "u",
+       "to": "t",
+       "at": "escreve comandos"
+      },
+      {
+       "from": "t",
+       "to": "s",
+       "at": "interpreta esses comandos"
+      },
+      {
+       "from": "s",
+       "to": "c",
+       "at": "interpreta esses comandos"
+      }
+     ]
+    },
+    {
+     "type": "lanes",
+     "at": "Aqui os exemplos",
+     "lanes": [
+      {
+       "title": "Linux · macOS",
+       "sub": "exemplos deste curso",
+       "icon": "terminal"
+      },
+      {
+       "title": "Windows",
+       "sub": "precisa de Bash",
+       "icon": "box"
+      }
+     ],
+     "items": [
+      {
+       "lane": 0,
+       "text": "**Bash** direto no terminal",
+       "at": "usam Bash"
+      },
+      {
+       "lane": 1,
+       "text": "Bash via **WSL**",
+       "at": "Bash via WSL"
+      },
+      {
+       "lane": 1,
+       "text": "ou o **instalador oficial**",
+       "at": "siga o instalador"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Não cole comandos",
+     "text": "Comando Linux no **PowerShell**",
+     "then": {
+      "at": "sem adaptação",
+      "text": "só com ++adaptação++",
+      "replace": false
+     }
+    },
+    {
+     "type": "compare",
+     "at": "Por que isso importa",
+     "left": {
+      "title": "Ambiente desconhecido",
+      "tone": "bad",
+      "at": "Saber em qual",
+      "lines": [
+       {
+        "text": "erro que **parece falha da IA**",
+        "at": "parecem falhas da IA"
+       }
+      ]
+     },
+     "right": {
+      "title": "Ambiente conhecido",
+      "tone": "good",
+      "at": "evita erros",
+      "lines": [
+       {
+        "text": "erro **evitado**",
+        "at": "evita erros"
+       }
+      ]
+     }
+    },
+    {
+     "type": "terminal",
+     "at": "O comando cd",
+     "title": "bash",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "cd meu-primeiro-projeto",
+       "at": "O comando cd"
+      },
+      {
+       "type": "comment",
+       "text": "# cd muda a pasta atual",
+       "at": "muda a pasta atual"
+      },
+      {
+       "type": "cmd",
+       "text": "pwd",
+       "at": "pwd mostra"
+      },
+      {
+       "type": "out",
+       "text": "/home/voce/meu-primeiro-projeto",
+       "at": "a localização"
+      }
+     ]
+    },
+    {
+     "type": "statement",
+     "at": "Não é necessário decorar",
+     "text": "Não precisa decorar ~~dezenas de comandos~~",
+     "strike_at": "para começar",
+     "then": {
+      "at": "para começar",
+      "text": "para ++começar++, poucos bastam",
+      "replace": false
+     }
+    },
+    {
+     "type": "bullets",
+     "at": "Terminal;",
+     "layout": "row",
+     "items": [
+      {
+       "text": "Terminal",
+       "icon": "terminal",
+       "at": "Terminal;"
+      },
+      {
+       "text": "Shell",
+       "icon": "gear",
+       "at": "shell;"
+      },
+      {
+       "text": "Pasta atual",
+       "icon": "folder",
+       "at": "pasta atual"
+      },
+      {
+       "text": "Comando e resposta",
+       "icon": "chat",
+       "at": "comando e resposta"
+      }
+     ]
+    }
+   ]
+  },
+  "34": {
+   "takeaway": "Escolha a **pasta de início** antes de abrir o Codex.",
+   "shots": [
+    {
+     "type": "filetree",
+     "at": "Vamos a um exemplo",
+     "root": "~/",
+     "entries": [
+      {
+       "path": "~/Downloads/",
+       "at": "pasta Downloads",
+       "note": "Codex aberto aqui: **fora** do projeto"
+      },
+      {
+       "path": "~/projetos/",
+       "at": "não está automaticamente"
+      },
+      {
+       "path": "~/projetos/meu-primeiro-projeto/",
+       "at": "dentro de meu-primeiro-projeto",
+       "note": "a pasta de início precisa ser **escolhida**"
+      }
+     ]
+    },
+    {
+     "type": "terminal",
+     "at": "Agora é sua vez",
+     "title": "bash · só leitura",
+     "lines": [
+      {
+       "type": "cmd",
+       "text": "pwd",
+       "at": "execute pwd"
+      },
+      {
+       "type": "out",
+       "text": "/home/voce/projetos/meu-primeiro-projeto",
+       "at": "Leia a saída"
+      },
+      {
+       "type": "comment",
+       "text": "# 1º: onde estou",
+       "at": "primeiro localização"
+      },
+      {
+       "type": "cmd",
+       "text": "ls",
+       "at": "depois arquivos"
+      },
+      {
+       "type": "out",
+       "text": "README.md  entradas/",
+       "at": "Não altere nada"
+      },
+      {
+       "type": "comment",
+       "text": "# nada foi alterado",
+       "at": "neste passo"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

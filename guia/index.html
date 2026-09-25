@@ -183,6 +183,23 @@ python3 engine/check_layouts.py</pre></div></div><div class="step"><div class="b
 journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager</pre></div></div>
 </div></section>
 
+<section id="v2"><div class="wrap">
+  <span class="chip">Formato v2 · animação explicativa</span>
+  <h2>O visual explica o que o Nei está falando</h2>
+  <p class="sub">No v2, cada cena tem um roteiro visual com deixas faladas: quando a fala diz "entrada, modelo, saída", o fluxo aparece; quando diz "não existe melhor modelo", o pódio desmorona e o radar de critérios encaixa o modelo adequado. O avatar e o áudio são reaproveitados, sem nova geração no HeyGen.</p>
+  <div class="grid g3">
+    <div class="card"><img src="assets/v2-hub.jpg" alt="Cena v2: sistema OSWork com peças ligadas ao núcleo" style="width:100%;height:auto;border-radius:10px"><h3>21 primitivos animados</h3><p>hub, pipeline, fluxo, radar, pódio, trilhas, comparação, chat, terminal, árvore de pastas, ficha, laboratório, quiz, linha do tempo e mais, em <code>engine/v2/runtime</code>.</p></div>
+    <div class="card"><img src="assets/v2-lanes.jpg" alt="Cena v2: modelos separados por função em trilhas" style="width:100%;height:auto;border-radius:10px"><h3>Deixas faladas, nunca segundos</h3><p>O roteiro usa trechos literais da fala; o build resolve cada deixa pela transcrição real e acusa lacunas acima de 10 s. A legenda usa a grafia do roteiro.</p></div>
+    <div class="card"><h3>v1 preservado</h3><p>O motor v1 (<code>explica.py</code>, <code>engine/*.py</code>) segue igual e continua disponível para produções e melhorias. A versão anterior do OSWork fica no release <code>video-v1.0.0</code>.</p></div>
+  </div>
+<pre><span class="c"># roteiro visual: &lt;output&gt;/visual-v2/pt-bNN.json (ver engine/v2/AUTHORING.md)</span>
+export EXPLICAVIDEOS_CONFIG=examples/oswork-v2.json
+python3 engine/v2/setup_output.py          <span class="c"># reaproveita avatar, transcrição e tempos do v1</span>
+python3 engine/v2/build_block.py 1 --strict <span class="c"># deixas → tempos; 0 avisos</span>
+engine/v2/run_lane.sh 1 2 3                 <span class="c"># check + render verificado por bloco</span>
+python3 engine/assemble_languages.py &amp;&amp; python3 engine/publish_finished.py</pre>
+</div></section>
+
 <section id="exemplos"><div class="wrap">
   <span class="chip">Exemplos</span>
   <h2>A origem do método</h2>
@@ -201,7 +218,7 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager</pre></div>
 <footer>
   <div class="wrap">
     <div class="pill">HeyGen Studio</div><div class="pill">HyperFrames</div><div class="pill">Python + FFmpeg</div>
-    <p style="margin-top:18px">Explicavideos · Processo documentado · v1.0.0 ·
+    <p style="margin-top:18px">Explicavideos · Processo documentado · v2.0.0 ·
       <a href="https://github.com/inematds/explicavideos">inematds/explicavideos</a> ·
       <a href="https://inema.club">INEMA.CLUB</a></p>
   </div>
