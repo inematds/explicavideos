@@ -1,0 +1,14 @@
+{
+  "id": "oswork-v62-m8-es",
+  "title": "OSWork v6.2 · Módulo 8",
+  "source_repo": "/home/nmaldaner/projetos/oswork-v62",
+  "output": "/home/nmaldaner/projetos/output/oswork-v62/m8-es",
+  "languages": ["es"],
+  "scene_files": {"es": "/home/nmaldaner/projetos/output/oswork-v62/roteiro/m8-es.json"},
+  "github_repo": "inematds/oswork-v62",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.66"
+}

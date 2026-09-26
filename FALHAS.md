@@ -1,4 +1,5 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-09-26 | Correção do palco vazio no v2 (`box.contains` em alvo de tween) quebrou cenas com contador: alvo era objeto JS → exceção → cena em branco (72% vazio) | Filtrar `el instanceof Node`; validar com `hyperframes snapshot` antes de render completo | prompt |
 | 2026-09-25 | Whisper (Groq) pulou 27 s de fala no bloco m7 pt-b02 → alinhamento 0,894 < 0,90, render parou | Transcrever só o trecho sem palavras e encaixar com offset; re-render do bloco (sem novo HeyGen) | infra |
 | 2026-09-25 | Título do comparativo (ffmpeg drawtext) truncado/tofu com acentos e "·" | Texto de sobreposição do ffmpeg só em ASCII (acentos ficam no HTML/HyperFrames) | infra |
 | 2026-09-25 | oswork-v62: painel estático (título+3 rótulos animam em 1,3s, cena de ~60s parada) e legenda do Whisper com nomes errados ("Neymar Dunner", "ia"→"inteligência artificial") | Roteiro visual com deixas faladas (`visual_files`, `build_visual_block.py`) cronometradas pelas palavras do Whisper; legenda com o texto do roteiro | prompt |

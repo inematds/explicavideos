@@ -65,20 +65,31 @@
     ctx.fade = (el, t, d) => tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: d || 0.35 }, t);
 
     tl.fromTo(stage, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
-    header(ctx);
-    side(ctx);
     const shots = S.shots || [];
-    shots.forEach((shot, i) => {
+    // Palco nunca vazio: o shot anterior só sai quando o PRÓXIMO já mostra conteúdo (1º tween de um
+    // elemento dele), não no `at` do próximo — os itens de um shot costumam entrar só nas próprias deixas.
+    const built = shots.map((shot, i) => {
       let j = i + 1;
       while (j < shots.length && shots[j].keep) j++;
       const t0 = Math.max(0, shot.at), t1 = j < shots.length ? shots[j].at : S.dur;
       const box = h(stage, 'div', 'v2-shot');
       box.setAttribute('data-layout-allow-overflow', '');
-      tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.25 }, Math.max(0, t0 - 0.1));
-      if (t1 < S.dur - 0.05) tl.to(box, { opacity: 0, scale: 1.035, filter: 'blur(8px)', duration: 0.32, ease: 'power2.in' }, Math.max(t0 + 0.4, t1 - 0.34));
       const fn = V2.P[shot.type];
       if (!fn) throw new Error('shot desconhecido: ' + shot.type);
+      const before = tl.getChildren(false, true, false).length;
       fn(box, shot, Object.assign({}, ctx, { T0: t0, T1: t1, box }));
+      const own = tl.getChildren(false, true, false).slice(before).filter((tw) => tw.targets().some((el) => el instanceof Node && el !== box && box.contains(el) && !(el.classList && el.classList.contains('v2-lbl'))));
+      // o shot inteiro (rótulos fixos inclusive) só aparece quando o 1º conteúdo animado entra
+      const first = own.length ? Math.max(t0, Math.min(Math.min(...own.map((tw) => tw.startTime())), t1 - 0.2)) : t0;
+      tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.25 }, Math.max(0, first - 0.1));
+      return { t0, t1, j, box, first };
+    });
+    header(ctx, built.length ? built[0].first : S.dur);
+    side(ctx);
+    built.forEach((b) => {
+      if (b.t1 >= S.dur - 0.05) return;
+      const out = Math.min(S.dur - 0.4, Math.max(b.t1, built[b.j].first + 0.15));
+      tl.to(b.box, { opacity: 0, scale: 1.035, filter: 'blur(8px)', duration: 0.32, ease: 'power2.in' }, Math.max(b.t0 + 0.4, out - 0.34));
     });
     if (S.dur > 1) tl.to(stage, { opacity: 0, scale: 1.08, filter: 'blur(10px)', duration: 0.3, ease: 'power2.in' }, S.dur - 0.3);
     tl.eventCallback('onUpdate', () => renders.forEach((f) => f()));
@@ -87,15 +98,15 @@
     return tl;
   };
 
-  function header(c) {
+  function header(c, firstContent) {
     const { S, tl, stage } = c;
     const tf = Math.min(44, Math.floor(1330 / (S.title.length * 0.62)));
     const hd = h(stage, 'div', 'v2-hdr', '', `<div class="kick">${esc(S.chapter)}</div><div class="ttl" style="font-size:${tf}px">${esc(S.title)}</div>`);
-    const first = (S.shots && S.shots.length) ? S.shots[0].at : S.dur;
+    const first = firstContent;
     if (first < 1.4) { tl.fromTo(hd, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4 }, 0.05); return; }
     const sc = Math.min(1.9 * 44 / tf, 1260 / (S.title.length * 0.62 * tf));
     tl.fromTo(hd, { x: 60, y: 330, scale: sc, opacity: 0 }, { opacity: 1, duration: 0.45, ease: 'power2.out' }, 0.08);
-    tl.to(hd, { x: 0, y: 0, scale: 1, duration: 0.8, ease: 'power3.inOut' }, Math.max(0.7, Math.min(2.4, first - 0.9)));
+    tl.to(hd, { x: 0, y: 0, scale: 1, duration: 0.8, ease: 'power3.inOut' }, Math.max(0.7, first - 0.9));
   }
 
   function side(c) {
