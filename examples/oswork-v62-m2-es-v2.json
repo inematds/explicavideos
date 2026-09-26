@@ -1,0 +1,12 @@
+{
+  "id": "oswork-v62-m2-es",
+  "title": "OSWork v6.2 · Módulo 2",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/oswork-v62",
+  "output": "/home/nmaldaner/projetos/output/oswork-v62/m2-es-v2",
+  "v1_output": "/home/nmaldaner/projetos/output/oswork-v62/m2-es",
+  "languages": ["es"],
+  "github_repo": "inematds/oswork-v62",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77"
+}

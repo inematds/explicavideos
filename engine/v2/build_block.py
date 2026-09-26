@@ -228,7 +228,7 @@ def captions(timing, starts, scene_ids, dur):
 
 
 INDEX = '''<!doctype html>
-<html lang="pt"><head><meta charset="utf-8">
+<html lang="{LANG}"><head><meta charset="utf-8">
 <link rel="stylesheet" href="assets/v2.css">
 <script src="assets/gsap.min.js"></script><script src="assets/CustomEase.min.js"></script><script src="assets/v2.js"></script>
 <script>window.CAPS=__CAPS__;</script>
@@ -265,7 +265,7 @@ __HOSTS__
 '''
 
 SCENE = '''<!doctype html>
-<html lang="pt"><body><template>
+<html lang="{LANG}"><body><template>
 <div id="{id}-root" class="v2-scene" data-composition-id="{id}" data-width="1920" data-height="1080" data-duration="{dur}">
 <div class="v2-stage" data-layout-allow-overflow></div>
 <script>V2.scene("{id}", {spec});</script>
@@ -324,15 +324,15 @@ def build(part, strict=False, spec_path=None, out=None):
         for a, g in gaps:
             warnings.append(f'cena {n}: {g}s sem animação a partir de {a}s')
         sid = f'scene-{n:03d}'
-        S = {'n': n, 'total': total, 'chapter': sc['chapter'], 'title': sc['title'], 'takeaway': sc.get('takeaway') if entry is None or entry.get('takeaway', True) is not False else None,
+        S = {'lang': lang, 'n': n, 'total': total, 'chapter': sc['chapter'], 'title': sc['title'], 'takeaway': sc.get('takeaway') if entry is None or entry.get('takeaway', True) is not False else None,
              'dur': sdur, 'shots': shots}
         if entry and isinstance(entry.get('takeaway'), str):
             S['takeaway'] = entry['takeaway']
-        (dest / 'compositions' / f'{sid}.html').write_text(SCENE.format(id=sid, dur=sdur, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/')))
+        (dest / 'compositions' / f'{sid}.html').write_text(SCENE.format(id=sid, dur=sdur, LANG=lang, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/')))
         hosts.append(f' <div id="{sid}" class="clip" data-composition-id="{sid}" data-composition-src="compositions/{sid}.html" data-start="{s0}" data-duration="{sdur}" data-track-index="1"></div>')
         report['scenes'].append({'scene': n, 'start': s0, 'dur': sdur, 'shots': [sh['type'] for sh in shots], 'fallback': fb, 'max_gap': max([b - a for a, b in zip(ts, ts[1:])] or [0])})
     caps = captions(timing, starts, block['scenes'], dur)
-    idx = INDEX.replace('__CAPS__', json.dumps(caps, ensure_ascii=False)).replace('__DUR__', str(dur)).replace('__HOSTS__', '\n'.join(hosts)).replace('__SEED__', str(7 + part))
+    idx = INDEX.replace('__CAPS__', json.dumps(caps, ensure_ascii=False)).replace('__DUR__', str(dur)).replace('__HOSTS__', '\n'.join(hosts)).replace('__SEED__', str(7 + part)).replace('{LANG}', lang)
     (dest / 'index.html').write_text(idx)
     (dest / 'captions.srt').write_text('\n'.join(f'{i + 1}\n{stamp(g["s"])} --> {stamp(max(g["e"], g["s"] + .5))}\n{" ".join(w["w"] for w in g["w"])}\n' for i, g in enumerate(caps)))
     (dest / 'alignment.json').write_text(json.dumps(align, indent=2))

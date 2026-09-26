@@ -17,6 +17,16 @@ Uma cena não é um slide. Cada frase importante da fala precisa de uma **imagem
 
 Nunca deixe mais de **10 s sem algo novo acontecer**. O build acusa essas lacunas.
 
+**Nenhuma moldura vazia por mais de 3 s** (2.0.1). Um shot com cartões, raias, chat ou terminal não pode ficar
+só com as molduras/títulos enquanto a fala segue: ponha o 1º item na mesma deixa do `at` do shot (ou até ~3 s
+depois) e distribua os demais pelas frases seguintes. Se a fala demora a chegar no conteúdo, use antes um
+`statement`/`keyword` curto. O runtime já segura o shot anterior até o próximo ter conteúdo; o que ele não
+resolve é um shot que entra e fica com as caixas vazias. Confira nos snapshots.
+
+**Outros idiomas.** Para EN/ES, parta do roteiro visual PT do mesmo módulo: mesma sequência de shots e tipos,
+textos traduzidos (mesma terminologia do curso no idioma) e **todas as deixas refeitas** com trechos literais da
+fala no idioma (`docs/lesson-<lang>.json`). Os rótulos fixos (PARA LEVAR, CENA…) já saem no idioma pelo `lang`.
+
 ## Formato
 
 ```json

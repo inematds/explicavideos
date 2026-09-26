@@ -1,4 +1,5 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-09-26 | Whisper inseriu palavra duplicada fora de ordem (m7-es b04, "LUCIA" 120s→110s) → legenda longa sobreposta, check falhou | Descartar palavras que voltam >1 s no tempo antes de montar legendas; re-render do bloco | infra |
 | 2026-09-26 | Correção do palco vazio no v2 (`box.contains` em alvo de tween) quebrou cenas com contador: alvo era objeto JS → exceção → cena em branco (72% vazio) | Filtrar `el instanceof Node`; validar com `hyperframes snapshot` antes de render completo | prompt |
 | 2026-09-25 | Whisper (Groq) pulou 27 s de fala no bloco m7 pt-b02 → alinhamento 0,894 < 0,90, render parou | Transcrever só o trecho sem palavras e encaixar com offset; re-render do bloco (sem novo HeyGen) | infra |
 | 2026-09-25 | Título do comparativo (ffmpeg drawtext) truncado/tofu com acentos e "·" | Texto de sobreposição do ffmpeg só em ASCII (acentos ficam no HTML/HyperFrames) | infra |

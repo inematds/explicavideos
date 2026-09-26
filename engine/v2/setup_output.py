@@ -18,7 +18,8 @@ def copy(src, dst):
 
 
 def main():
-    assert (V1 / 'verification/assembled-pt.json').exists(), 'produção v1 não está montada'
+    for lang in CFG['languages']:
+        assert (V1 / f'verification/assembled-{lang}.json').exists(), f'produção v1 ({lang}) não está montada'
     for d in ['assets', 'blocos', 'docs', 'verification', 'final', 'align', 'visual-v2', 'logs']:
         (ROOT / d).mkdir(parents=True, exist_ok=True)
     copy(V1 / 'blocos/manifest.json', ROOT / 'blocos/manifest.json')

@@ -1,0 +1,12 @@
+{
+  "id": "oswork-v62-m7-en",
+  "title": "OSWork v6.2 · Module 7",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/oswork-v62",
+  "output": "/home/nmaldaner/projetos/output/oswork-v62/m7-en-v2",
+  "v1_output": "/home/nmaldaner/projetos/output/oswork-v62/m7-en",
+  "languages": ["en"],
+  "github_repo": "inematds/oswork-v62",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77"
+}

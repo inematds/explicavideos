@@ -27,6 +27,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.1.1: v2 em PT/EN/ES (rótulos fixos e `lang` por idioma; `setup_output` aceita v1 de qualquer idioma) e regra de autoria "nenhuma moldura vazia por mais de 3 s".
+>
 > 2.0.1: o shot anterior fica na tela até o próximo mostrar conteúdo (rótulos não contam) e o título grande da cena espera o primeiro conteúdo — palco vazio medido caiu de 26% para 17% no OSWork v6.2 M1; o que resta são molduras com pouco conteúdo, a resolver no roteiro visual.
 
 No v2, o visual explica o que está sendo falado, no instante da fala. Cada cena recebe um roteiro visual (`<output>/visual-v2/pt-bNN.json`), com shots de 21 primitivos animados em `engine/v2/runtime/v2.js`. Todo tempo é uma **deixa falada**, resolvida pela transcrição real. A legenda usa a grafia do roteiro, e o avatar e o áudio da produção v1 são reaproveitados, sem nova geração no HeyGen. Regras e catálogo: [engine/v2/AUTHORING.md](engine/v2/AUTHORING.md). Exemplo aprovado: `visual-v2/pt-b01.json` do OSWork.

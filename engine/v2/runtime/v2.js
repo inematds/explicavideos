@@ -23,6 +23,13 @@
   const lines = (text, px, width) => Math.max(1, Math.ceil(plain(text).length * px * 0.56 / width));
   const def = (v, d) => (v == null || Number.isNaN(v) ? d : v);
   V2.util = { h, esc, rich, fs, rng };
+  // rótulos fixos por idioma (S.lang vem do build; padrão pt)
+  const LBL = {
+    pt: { take: 'PARA LEVAR', scene: 'CENA', inp: 'ENTRADA', out: 'SAÍDA', mod: 'MÓDULO', goal: 'OBJETIVO', ex: 'EXERCÍCIO' },
+    en: { take: 'TAKEAWAY', scene: 'SCENE', inp: 'INPUT', out: 'OUTPUT', mod: 'MODULE', goal: 'GOAL', ex: 'EXERCISE' },
+    es: { take: 'PARA LLEVAR', scene: 'ESCENA', inp: 'ENTRADA', out: 'SALIDA', mod: 'MÓDULO', goal: 'OBJETIVO', ex: 'EJERCICIO' },
+  };
+  const tr = (c, k) => (LBL[(c.S && c.S.lang) || 'pt'] || LBL.pt)[k];
 
   const ICON = {
     doc: 'M6 2h9l5 5v15H6z M14 2v6h6 M9 13h7 M9 17h7', folder: 'M3 6h6l2 3h10v11H3z', chat: 'M4 4h16v11H9l-5 4z',
@@ -111,10 +118,10 @@
 
   function side(c) {
     const { S, tl, stage } = c;
-    const sd = h(stage, 'div', 'v2-side', '', `<div class="no">CENA ${String(S.n).padStart(3, '0')} / ${S.total}</div><div class="bar"><i style="width:${(100 * S.n / S.total).toFixed(1)}%"></i></div>`);
+    const sd = h(stage, 'div', 'v2-side', '', `<div class="no">${tr(c, 'scene')} ${String(S.n).padStart(3, '0')} / ${S.total}</div><div class="bar"><i style="width:${(100 * S.n / S.total).toFixed(1)}%"></i></div>`);
     c.fade(sd, 0.4);
     if (S.takeaway) {
-      const tk = h(stage, 'div', 'v2-take', '', `<div class="k">PARA LEVAR</div><div class="t">${rich(S.takeaway)}</div>`);
+      const tk = h(stage, 'div', 'v2-take', '', `<div class="k">${tr(c, 'take')}</div><div class="t">${rich(S.takeaway)}</div>`);
       const t = Math.max(Math.min(S.dur * 0.5, 14), S.dur - 12);
       tl.fromTo(tk, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, t);
     }
@@ -218,13 +225,13 @@
     const fout = svgEl(svg, 'path', { d: 'M950 565 L1108 565', stroke: '#3ef0a0', 'stroke-width': 5, 'stroke-dasharray': '14 12', fill: 'none' });
     c.fade(fin, ti + 0.3); c.fade(fout, to);
     c.tl.fromTo([fin, fout], { strokeDashoffset: 0 }, { strokeDashoffset: -26 * Math.ceil((c.T1 - c.T0) * 2), duration: Math.max(0.1, c.T1 - c.T0), ease: 'none' }, c.T0);
-    const inC = h(box, 'div', 'p-card', 'left:130px', `<div class="cp" style="color:var(--cyan)">${esc(I.title || 'ENTRADA')}</div>`);
+    const inC = h(box, 'div', 'p-card', 'left:130px', `<div class="cp" style="color:var(--cyan)">${esc(I.title || tr(c, 'inp'))}</div>`);
     (I.files || []).slice(0, 3).forEach((f, i) => h(inC, 'div', 'p-file', `top:${22 + i * 52}px`, esc(f)));
     const nf = Math.min(3, (I.files || []).length);
     [250, 210, 236, 150].slice(0, Math.max(1, 4 - nf)).forEach((w, i) => h(inC, 'div', 'p-line', `top:${40 + nf * 52 + i * 24}px;width:${w}px`));
     c.tl.fromTo(inC, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, ti);
     for (let i = 0; i < 5; i++) { const r = svgEl(svg, 'rect', { width: 16, height: 16, rx: 4, x: 442, y: 557, fill: '#3ee6ff', opacity: 0 }); c.tl.fromTo(r, { x: 0, opacity: 0 }, { x: 205, opacity: 1, duration: 0.55, ease: 'power1.in' }, ti + 0.5 + i * 0.2); c.tl.to(r, { opacity: 0, duration: 0.1 }, ti + 1.05 + i * 0.2); }
-    const outC = h(box, 'div', 'p-card', 'left:1110px', `<div class="cp" style="color:var(--mint)">${esc(O.title || 'SAÍDA')}</div><div style="position:absolute;left:18px;top:20px;width:286px"></div>`);
+    const outC = h(box, 'div', 'p-card', 'left:1110px', `<div class="cp" style="color:var(--mint)">${esc(O.title || tr(c, 'out'))}</div><div style="position:absolute;left:18px;top:20px;width:286px"></div>`);
     const body = outC.lastChild, toks = O.tokens || [];
     toks.forEach((t) => h(body, 'span', 'p-tk', '', esc(typeof t === 'string' ? t : t.text)));
     c.tl.fromTo(outC, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, to);
@@ -633,14 +640,14 @@
   V2.P.module_intro = function (box, s, c) {
     const t = def(s.at, c.T0 + 0.05);
     const nb = h(box, 'div', 'mi-n', '', String(s.n).padStart(2, '0'));
-    const kk = h(box, 'div', 'mi-k', '', 'MÓDULO');
+    const kk = h(box, 'div', 'mi-k', '', tr(c, 'mod'));
     c.tl.fromTo(nb, { opacity: 0, x: -120, filter: 'blur(12px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power4.out' }, t);
     c.tl.fromTo(nb, { color: 'rgba(255,182,56,0)' }, { color: 'rgba(255,182,56,.14)', duration: 1.2 }, t + 0.5);
     c.fade(kk, t + 0.2);
     const ti = h(box, 'div', 'mi-t', `font-size:${fs(s.title, 76, 50, 20, 50)}px`, esc(s.title));
     c.tl.fromTo(ti, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, t + 0.35);
     let y = 640;
-    [['OBJETIVO', s.goal, s.goal_at, 'var(--cyan)'], ['EXERCÍCIO', s.exercise, s.exercise_at, 'var(--amber)']].forEach(([k, v, at, col]) => {
+    [[tr(c, 'goal'), s.goal, s.goal_at, 'var(--cyan)'], [tr(c, 'ex'), s.exercise, s.exercise_at, 'var(--amber)']].forEach(([k, v, at, col]) => {
       if (!v) return;
       const r = h(box, 'div', 'mi-row', `top:${y}px`, `<div class="k" style="color:${col}">${k}</div><div class="v">${rich(v)}</div>`);
       y += lines(v, 26, 1060) * 34 + 50;
