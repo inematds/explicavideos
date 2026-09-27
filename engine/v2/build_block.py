@@ -48,7 +48,12 @@ class Timing:
         self.bounds.append(len(self.tokens))
         spoken = [norm(w['word']) for w in words]
         m = difflib.SequenceMatcher(None, [t[1] for t in self.tokens], spoken, autojunk=False)
-        self.ratio = m.ratio()
+        # Whisper escreve números em dígitos ("83%") e o roteiro por extenso: trecho trocado com dígito
+        # no lado falado conta como acerto, com o tamanho do lado do roteiro (igual ao v1).
+        nums = [(a2 - a1, b2 - b1) for op, a1, a2, b1, b2 in m.get_opcodes()
+                if op == 'replace' and any(re.search(r'\d', words[i]['word']) for i in range(b1, b2))]
+        hit = sum(b.size for b in m.get_matching_blocks()) + sum(a for a, _ in nums)
+        self.ratio = 2 * hit / (len(self.tokens) + len(spoken) - sum(b for _, b in nums) + sum(a for a, _ in nums))
         mp = {}
         for b in m.get_matching_blocks():
             for i in range(b.size):

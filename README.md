@@ -27,6 +27,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.2.3: Whisper local — trechos pulados (buracos > 3 s entre palavras) são retranscritos sozinhos, com até 3 inícios; a checagem de alinhamento (v1 e v2) conta como acerto número falado em dígitos ("83%") contra o roteiro por extenso. LOOP-R PT: 10 blocos reprovados entre 0,79 e 0,88 passaram para 0,97–0,99.
+>
 > 2.2.2: os serviços (`start`) sobem dentro de `explica.slice` (`~/.config/systemd/user/explica.slice`: MemoryMax=40G, sem swap). Se o lote de renders estourar, o kernel mata um render, não os terminais da sessão (incidente de 2026-09-27 04:01).
 >
 > 2.2.1: `"transcriber": "whisper-local"` na config troca a Groq pelo Whisper large-v3 local (um processo por vez, lock em /tmp; `whisper_prompt` para nomes próprios) e `"balanced_blocks": true` equilibra os blocos para não sobrar um último bloco curto (< 60 s). Sem as chaves, o comportamento é o anterior. Primeiro uso: LOOP-R (`examples/loop-r-*.json`).

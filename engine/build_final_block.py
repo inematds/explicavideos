@@ -23,7 +23,11 @@ def build(lang,part,preview=False):
  spoken=[norm(w['word']) for w in words];matcher=difflib.SequenceMatcher(None,source,spoken,autojunk=False);mapping={}
  for m in matcher.get_matching_blocks():
   for k in range(m.size):mapping[m.a+k]=m.b+k
- ratio=matcher.ratio();assert ratio>.90,f'Low speech alignment {key}: {ratio}'
+ # Whisper writes numbers as digits ("83%") while the script spells them out: a replaced span whose
+ # spoken side has a digit counts as matched, sized by the script side.
+ nums=[(a2-a1,b2-b1) for op,a1,a2,b1,b2 in matcher.get_opcodes() if op=='replace' and any(re.search(r'\d',words[i]['word']) for i in range(b1,b2))]
+ hit=sum(m.size for m in matcher.get_matching_blocks())+sum(a for a,b in nums)
+ ratio=2*hit/(len(source)+len(spoken)-sum(b for a,b in nums)+sum(a for a,b in nums));assert ratio>.90,f'Low speech alignment {key}: {ratio}'
  starts=[0.0];evidence=[]
  for boundary in boundaries[1:]:
   near=min(mapping,key=lambda x:abs(x-boundary));assert abs(near-boundary)<=5,'Missing scene boundary'
