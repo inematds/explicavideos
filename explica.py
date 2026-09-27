@@ -19,7 +19,7 @@ elif a.command=='start':
  for stage,script in [('submit','submit.py'),('monitor','monitor.py'),('render','produce_blocks.py'),('assemble','wait_assembly.py'),('publish','wait_publication.py')]:
   unit=f"explica-{cfg['id']}-{stage}"
   if subprocess.run(['systemctl','--user','is-active','--quiet',unit]).returncode==0:continue
-  subprocess.run(['systemd-run','--user','--collect','--unit='+unit,'--property=WorkingDirectory='+str(ROOT),'--setenv=EXPLICAVIDEOS_CONFIG='+str(c),sys.executable,str(ROOT/'engine'/script)],check=True)
+  subprocess.run(['systemd-run','--user','--collect','--slice=explica.slice','--unit='+unit,'--property=WorkingDirectory='+str(ROOT),'--setenv=EXPLICAVIDEOS_CONFIG='+str(c),sys.executable,str(ROOT/'engine'/script)],check=True)
 elif a.command=='status':
  out=Path(cfg['output']);result={}
  for name,file in [('submitted','blocos/manifest.json'),('downloads','verification/blocos-downloads.json'),('production','verification/production.json'),('publication','verification/publication.json'),('notification','verification/telegram-final.json')]:
