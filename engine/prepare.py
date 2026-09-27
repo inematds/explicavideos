@@ -12,7 +12,25 @@ def pack(scenes,limit):
   if current and size+n+1>limit:blocks.append(current);current=[];size=0
   current.append(i);size+=n+1
  if current:blocks.append(current)
+ if CFG.get('balanced_blocks'):blocks=balance(scenes,limit,len(blocks)) or blocks
  return blocks
+
+def balance(scenes,limit,k):
+ """Same number of contiguous blocks as greedy (or one fewer), minimizing the largest block, so no tail block is tiny."""
+ sizes=[len(s['speech'])+1 for s in scenes];n=len(sizes);pre=[0]
+ for x in sizes:pre.append(pre[-1]+x)
+ for parts in [k-1,k]:
+  if parts<1:continue
+  best={(0,0):(0,[])}
+  for j in range(1,parts+1):
+   for i in range(1,n+1):
+    cands=[(max(best[(j-1,a)][0],pre[i]-pre[a]),best[(j-1,a)][1]+[a]) for a in range(i) if (j-1,a) in best and pre[i]-pre[a]<=limit]
+    if cands:best[(j,i)]=min(cands)
+  if (parts,n) in best:
+   cuts=best[(parts,n)][1][1:]+[n];start=0;out=[]
+   for c in cuts:out.append(list(range(start+1,c+1)));start=c
+   return out
+ return None
 
 def excerpt(text,limit=230):
  text=re.sub(r'\s+',' ',text).strip()

@@ -1,0 +1,14 @@
+{
+  "id": "loop-r-t1",
+  "title": "LOOP-R · Trilha 1",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/loop-r",
+  "output": "/home/nmaldaner/projetos/output/loop-r-videos/t1-v2",
+  "v1_output": "/home/nmaldaner/projetos/output/loop-r-videos/t1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/loop-r",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "loop-r-t4-en",
+  "title": "LOOP-R · Track 4",
+  "source_repo": "/home/nmaldaner/projetos/loop-r",
+  "output": "/home/nmaldaner/projetos/output/loop-r-videos/t4-en",
+  "languages": [
+    "en"
+  ],
+  "scene_files": {
+    "en": "/home/nmaldaner/projetos/output/loop-r-videos/roteiro/t4-en.json"
+  },
+  "github_repo": "inematds/loop-r",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.66",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, LOOP-R, INEMA.",
+  "balanced_blocks": true
+}

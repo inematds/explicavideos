@@ -3,11 +3,28 @@ import json,subprocess,os,sys,time
 from pathlib import Path
 import requests
 from settings import ROOT,REPO,CFG,LANGUAGES
+def local(audio,language):
+ """Whisper large-v3 on this machine; one process at a time (GB10 unified memory)."""
+ import fcntl,gc
+ with open('/tmp/explicavideos-whisper.lock','w') as lock:
+  fcntl.flock(lock,fcntl.LOCK_EX)
+  import whisper,torch
+  model=whisper.load_model(CFG.get('whisper_model','large-v3'))
+  try:r=model.transcribe(str(audio),language=language,word_timestamps=True,condition_on_previous_text=False,initial_prompt=CFG.get('whisper_prompt','Nei Maldaner, INEMA.'))
+  finally:
+   del model;gc.collect()
+   if torch.cuda.is_available():torch.cuda.empty_cache()
+ words=[{'word':w['word'].strip(),'start':float(w['start']),'end':float(w['end'])} for s in r['segments'] for w in s.get('words',[]) if w['word'].strip()]
+ duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',str(audio)]))
+ return {'text':r['text'],'language':language,'duration':duration,'words':words,'transcriber':'whisper-local'}
 def transcribe(key,language):
  dest=ROOT/'verification'/f'transcript-{key}.json'
  if dest.exists():return json.loads(dest.read_text())
  video=ROOT/'assets'/f'nei-{key}.mp4';audio=ROOT/'assets'/f'nei-{key}.mp3'
  subprocess.run(['ffmpeg','-v','error','-i',str(video),'-vn','-ar','16000','-ac','1','-b:a','64k','-y',str(audio)],check=True)
+ if CFG.get('transcriber')=='whisper-local':
+  d=local(audio,language);assert len(d['words'])>100,'Incomplete transcript'
+  dest.write_text(json.dumps(d,ensure_ascii=False,indent=2));return d
  secret=None
  for p in [Path.home()/'projetos/openpcbotv2/.env',Path.home()/'projetos/wifi/.env']:
   if not p.exists():continue

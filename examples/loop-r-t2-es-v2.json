@@ -1,0 +1,14 @@
+{
+  "id": "loop-r-t2-es",
+  "title": "LOOP-R · Ruta 2",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/loop-r",
+  "output": "/home/nmaldaner/projetos/output/loop-r-videos/t2-es-v2",
+  "v1_output": "/home/nmaldaner/projetos/output/loop-r-videos/t2-es",
+  "languages": [
+    "es"
+  ],
+  "github_repo": "inematds/loop-r",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77"
+}
