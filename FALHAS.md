@@ -1,4 +1,5 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-09-28 | HeyGen recusou 1 de 20 blocos LOOP-R (t1 pt-b03: "subscribe to higher plan … higher resolution"), mesmo template dos outros | Reenvio único e explícito: id antigo em `previous_ids`, título `-r2`, status `prepared`, entrada removida de blocos-downloads (backups `.bak-b03`); passou e `plan_credit` não mudou (200 → 200) | infra |
 | 2026-09-27 | LOOP-R PT: 10 blocos reprovados em "Low speech alignment" (0,79–0,88): Whisper local pulava janelas inteiras de ~30 s e escrevia números em dígitos | Retranscrever buracos > 3 s (até 3 inícios) + número em dígito conta como acerto na checagem | infra |
 | 2026-09-26 | Whisper inseriu palavra duplicada fora de ordem (m7-es b04, "LUCIA" 120s→110s) → legenda longa sobreposta, check falhou | Descartar palavras que voltam >1 s no tempo antes de montar legendas; re-render do bloco | infra |
 | 2026-09-26 | Correção do palco vazio no v2 (`box.contains` em alvo de tween) quebrou cenas com contador: alvo era objeto JS → exceção → cena em branco (72% vazio) | Filtrar `el instanceof Node`; validar com `hyperframes snapshot` antes de render completo | prompt |
