@@ -1,5 +1,7 @@
 # Explicavideos
 
+**🇧🇷 [Português](README.md) · 🇺🇸 [English](README.en.md) · 🇪🇸 [Español](README.es.md)**
+
 Processo reproduzível para vídeos explicativos com avatar e voz do Nei, ilustrações, capítulos e legendas. Derivado das produções concluídas do Astra Básico e OSWork Quick.
 
 [Guia de uso](https://inematds.github.io/explicavideos/guia/) · [Fonte OSWork](https://inematds.github.io/oswork/)
