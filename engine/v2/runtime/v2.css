@@ -191,3 +191,21 @@ html,body{margin:0;background:var(--bg);overflow:hidden}
 .v916 .v2-hdr .kick{font-size:24px}
 .v916 .v2-hdr .ttl{font-size:54px!important;white-space:normal;line-height:1.05}
 .v916 .v2-side,.v916 .v2-take{display:none}
+/* ---------- reel (2.4): perfil do makeshorts (reel-profiles.json). Legenda 1–3 palavras grande;
+   hook = capa no frame 0; media = print real do produto. Coordenadas do palco 1920×1080 (escala .752). */
+.reel .cap{font-size:70px;line-height:1.1;font-family:"MontBlack",sans-serif;text-shadow:0 4px 18px rgba(0,0,0,.85)}
+.reel .cap span{color:#fff;margin:0 .14em}
+.v916.reel #caps{top:945px;height:160px}
+.hk-img{position:absolute;left:90px;top:120px;width:1330px;height:840px;object-fit:cover;border-radius:28px}
+.hk-scrim{position:absolute;left:90px;top:120px;width:1330px;height:840px;border-radius:28px;background:linear-gradient(180deg,rgba(3,5,10,.05) 0%,rgba(3,5,10,.35) 40%,rgba(3,5,10,.96) 72%)}
+.hk-k{position:absolute;left:130px;top:170px;font-family:"Mono";font-size:30px;letter-spacing:.24em;color:var(--amber);text-transform:uppercase}
+.hk-t{position:absolute;left:130px;width:1250px;top:600px;font-family:"MontBlack",sans-serif;line-height:1.02;color:#fff;text-shadow:0 6px 30px rgba(0,0,0,.8)}
+.hk-t .hl{display:inline-block;color:var(--amber)}
+.hk-s{position:absolute;left:130px;width:1250px;top:820px;font-family:"MontX";font-size:40px;color:#e8eefc}
+.md-frame{position:absolute;overflow:hidden;border-radius:26px;border:3px solid rgba(255,182,56,.7);box-shadow:0 30px 80px rgba(0,0,0,.6);background:#0b1020}
+/* contêiner com a proporção da própria imagem: destaques em % caem no mesmo ponto da imagem */
+.md-in{position:absolute;left:0;top:0;width:100%}
+.md-img{width:100%;height:auto;display:block}
+.md-hl{position:absolute;border:6px solid var(--amber);border-radius:14px;box-shadow:0 0 0 9999px rgba(3,5,10,.35),0 0 30px rgba(255,182,56,.7)}
+.md-lb{position:absolute;left:90px;width:1330px;text-align:center;font-family:"MontBlack",sans-serif;font-size:52px;color:#fff}
+.md-lb .hl{color:var(--amber)}

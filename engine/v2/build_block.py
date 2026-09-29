@@ -24,6 +24,21 @@ E = html.escape
 # fica entre os dois (zona segura das redes). Coluna direita (CENA n/N, PARA LEVAR) não aparece.
 ASPECTS = {'16:9': (1920, 1080), '9:16': (1080, 1920)}
 
+# Perfil de reel (2.4): contrato único do makeshorts (reel-profiles.json). Proporção NÃO define reel:
+# só vale quando a config traz "reel_profile" (divulgacao | tutorial | mini-aula). A chave "profile"
+# já é o perfil do navegador do HeyGen — por isso o nome é outro.
+REEL_PROFILES = '~/projetos/makeshorts/.claude/skills/makeshorts/references/reel-profiles.json'
+
+
+def reel_of(cfg):
+    name = cfg.get('reel_profile')
+    if not name:
+        return None
+    data = json.loads(Path(os.path.expanduser(cfg.get('reel_profiles', REEL_PROFILES))).read_text())
+    if name not in data['profiles']:
+        raise BuildError(f'reel_profile inválido {name!r}; use ' + ', '.join(data['profiles']))
+    return dict(data['common'], name=name, version=data['version'], duration=data['profiles'][name]['duration'])
+
 
 def aspect_of(cfg):
     a = str(cfg.get('aspect', '16:9')).strip()
@@ -39,7 +54,9 @@ def frame(cfg):
     return w, h, ('v916' if a == '9:16' else '')
 
 SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'radar', 'lanes', 'compare', 'chat', 'terminal',
-              'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg'}
+              'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg',
+              'hook', 'media'}
+MEDIA_EXT = {'.png', '.jpg', '.jpeg', '.webp'}
 
 
 def norm(s):
@@ -135,6 +152,8 @@ def resolve_scene(timing, k, scene_start, spec, warnings, n, strict):
             if strict:
                 raise BuildError(f'cena {n}: {where} usa segundos ({v}); use uma deixa falada')
             return float(v), cursor
+        if v == 'start':
+            return 0.0, cursor
         gi, back = find_cue(timing, k, str(v), cursor)
         if back:
             warnings.append(f'cena {n}: deixa {v!r} ({where}) está antes da deixa anterior')
@@ -163,7 +182,7 @@ def resolve_scene(timing, k, scene_start, spec, warnings, n, strict):
             raise BuildError(f'cena {n}: shot {i} sem deixa "at"')
         raw = sh['at']
         sh['at'], gi = cue_time(raw, cursor, f'shot{i}.at')
-        cursor = gi if not isinstance(raw, (int, float)) else cursor
+        cursor = gi if not isinstance(raw, (int, float)) and raw != 'start' else cursor
         # palavras da frase no tempo da fala (statement/podium)
         for field, holder in (('text', sh), ('question', sh)):
             if sh['type'] in ('statement', 'podium') and field in holder and isinstance(holder[field], str):
@@ -205,7 +224,7 @@ def word_times(timing, k, text, gi, scene_start):
     return out
 
 
-def all_times(shots):
+def all_times(shots, words=True):
     ts = []
 
     def walk(o):
@@ -214,7 +233,8 @@ def all_times(shots):
                 if (kk == 'at' or kk.endswith('_at')) and isinstance(vv, (int, float)):
                     ts.append(float(vv))
                 elif kk == 'wt' and isinstance(vv, list):
-                    ts.extend(vv)
+                    if words:
+                        ts.extend(vv)
                 else:
                     walk(vv)
         elif isinstance(o, list):
@@ -224,13 +244,50 @@ def all_times(shots):
     return sorted(ts)
 
 
+def srt(caps, min_cue):
+    """SRT sem sobreposição: o cue dura ao menos min_cue, mas nunca passa do início do próximo."""
+    out = []
+    for i, g in enumerate(caps):
+        end = max(g['e'], g['s'] + min_cue)
+        if i + 1 < len(caps):
+            end = min(end, caps[i + 1]['s'])
+        out.append(f'{i + 1}\n{stamp(g["s"])} --> {stamp(max(end, g["s"] + 0.05))}\n{" ".join(w["w"] for w in g["w"])}\n')
+    return '\n'.join(out)
+
+
+def copy_media(src, dest, n, i):
+    """Mídia local (print/foto do produto) congelada dentro do bloco: assets/media/. Sem rede no render."""
+    if not src:
+        raise BuildError(f'cena {n}: shot {i} sem "src"')
+    p = Path(os.path.expanduser(str(src)))
+    if not p.is_absolute():
+        p = ROOT / 'media' / p
+    if not p.exists():
+        raise BuildError(f'cena {n}: mídia não encontrada {p}')
+    if p.suffix.lower() not in MEDIA_EXT:
+        raise BuildError(f'cena {n}: mídia {p.name} — use imagem ({", ".join(sorted(MEDIA_EXT))}); vídeo ainda não é suportado')
+    (dest / 'assets/media').mkdir(parents=True, exist_ok=True)
+    shutil.copy2(p, dest / 'assets/media' / p.name)
+    return f'assets/media/{p.name}'
+
+
+def image_size(p):
+    import subprocess
+    out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', str(p)],
+                         capture_output=True, text=True).stdout.strip().split(',')
+    try:
+        return int(out[0]), int(out[1])
+    except (ValueError, IndexError):
+        raise BuildError(f'mídia ilegível: {p.name}')
+
+
 def fallback_shots(scene):
     """Cena sem roteiro visual: lista dos rótulos (garante que o bloco monta; o relatório acusa)."""
     labels = [l.split('\n')[0] for l in scene.get('labels', [])][:5] or [scene['title']]
     return [{'type': 'bullets', 'at': 1.2, 'items': [{'text': l, 'at': 2 + i * 3} for i, l in enumerate(labels)]}]
 
 
-def captions(timing, starts, scene_ids, dur):
+def captions(timing, starts, scene_ids, dur, max_words=7, max_chars=None):
     groups, cur = [], []
     toks = timing.tokens
     for i, (w, nw, k) in enumerate(toks):
@@ -238,7 +295,9 @@ def captions(timing, starts, scene_ids, dur):
         nxt = i + 1 if i + 1 < len(toks) else None
         end = w[-1] in '.?!'
         gap = nxt is not None and timing.t[nxt] - timing.t[i] > 0.9
-        if nxt is None or len(cur) >= 7 or end or (w[-1] in ',:;' and len(cur) >= 3) or gap or toks[nxt][2] != k:
+        chars = sum(len(toks[j][0]) + 1 for j in cur) + (len(toks[nxt][0]) if nxt is not None else 0)
+        full = len(cur) >= max_words or (max_chars and chars > max_chars)
+        if nxt is None or full or end or (w[-1] in ',:;' and len(cur) >= min(3, max_words)) or gap or toks[nxt][2] != k:
             groups.append(cur)
             cur = []
     out = []
@@ -302,6 +361,9 @@ SCENE = '''<!doctype html>
 def build(part, strict=False, spec_path=None, out=None):
     lang = CFG['languages'][0]
     W, H, mode = frame(CFG)
+    reel = reel_of(CFG)
+    if reel:
+        mode = (mode + ' reel').strip()
     key = f'{lang}-b{part:02d}'
     manifest = json.loads((ROOT / 'blocos/manifest.json').read_text())
     block = next(b for b in manifest if b['language'] == lang and b['part'] == part)
@@ -337,6 +399,8 @@ def build(part, strict=False, spec_path=None, out=None):
         entry = spec.get('scenes', {}).get(str(n))
         fb = entry is None or not entry.get('shots')
         if fb:
+            if strict:
+                raise BuildError(f'cena {n}: sem roteiro visual (--strict não aceita fallback)')
             warnings.append(f'cena {n}: sem roteiro visual (fallback)')
             shots = fallback_shots(sc)
         else:
@@ -345,24 +409,44 @@ def build(part, strict=False, spec_path=None, out=None):
                 for sh in shots:
                     if sh['type'] == 'svg' and not sh.get('svg'):
                         sh['svg'] = sc['svg']
-        ts = [0.0] + all_times(shots) + [sdur - 2]
-        gaps = [(round(a, 1), round(b - a, 1)) for a, b in zip(ts, ts[1:]) if b - a > 10]
+        for i, sh in enumerate(shots):
+            if sh['type'] == 'media':
+                sh['src'] = copy_media(sh.get('src'), dest, n, i)
+                sh['iw'], sh['ih'] = image_size(dest / sh['src'])
+            if sh['type'] == 'hook' and sh.get('src'):
+                sh['src'] = copy_media(sh['src'], dest, n, i)
+        if reel and k == 0 and not (shots and shots[0]['type'] == 'hook' and shots[0]['at'] <= 0.05):
+            msg = f'cena {n}: reel precisa abrir com shot "hook" em "start" (frame 0 completo)'
+            if strict:
+                raise BuildError(msg)
+            warnings.append(msg)
+        if reel:
+            # no reel conta só troca de conteúdo (at/*_at), não palavra aparecendo (wt); e a cauda inteira
+            limit = reel['rhythm']['static_review_s']
+            ts = [0.0] + sorted(t for t in all_times(shots, words=False)) + [sdur]
+        else:
+            limit = 10
+            ts = [0.0] + all_times(shots) + [sdur - 2]
+        gaps = [(round(a, 1), round(b - a, 1)) for a, b in zip(ts, ts[1:]) if b - a > limit]
         for a, g in gaps:
-            warnings.append(f'cena {n}: {g}s sem animação a partir de {a}s')
+            warnings.append(f'cena {n}: {g}s sem mudança visual a partir de {a}s (limite {limit}s)')
         sid = f'scene-{n:03d}'
         S = {'lang': lang, 'n': n, 'total': total, 'chapter': sc['chapter'], 'title': sc['title'], 'takeaway': sc.get('takeaway') if entry is None or entry.get('takeaway', True) is not False else None,
-             'dur': sdur, 'shots': shots}
+             'dur': sdur, 'shots': shots, 'reel': bool(reel)}
         if entry and isinstance(entry.get('takeaway'), str):
             S['takeaway'] = entry['takeaway']
         (dest / 'compositions' / f'{sid}.html').write_text(SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=mode, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/')))
         hosts.append(f' <div id="{sid}" class="clip" data-composition-id="{sid}" data-composition-src="compositions/{sid}.html" data-start="{s0}" data-duration="{sdur}" data-track-index="1"></div>')
         report['scenes'].append({'scene': n, 'start': s0, 'dur': sdur, 'shots': [sh['type'] for sh in shots], 'fallback': fb, 'max_gap': max([b - a for a, b in zip(ts, ts[1:])] or [0])})
-    caps = captions(timing, starts, block['scenes'], dur)
+    caps = captions(timing, starts, block['scenes'], dur,
+                    max_words=reel['captions']['max_words'] if reel else 7,
+                    max_chars=reel['captions']['max_chars'] if reel else None)
     idx = INDEX.replace('__CAPS__', json.dumps(caps, ensure_ascii=False)).replace('__DUR__', str(dur)).replace('__HOSTS__', '\n'.join(hosts)).replace('__SEED__', str(7 + part)).replace('{LANG}', lang)
     idx = idx.replace('__W__', str(W)).replace('__H__', str(H)).replace('__MODE__', mode)
     report['aspect'] = aspect_of(CFG)
+    report['reel_profile'] = reel and {'name': reel['name'], 'contract_version': reel['version']}
     (dest / 'index.html').write_text(idx)
-    (dest / 'captions.srt').write_text('\n'.join(f'{i + 1}\n{stamp(g["s"])} --> {stamp(max(g["e"], g["s"] + .5))}\n{" ".join(w["w"] for w in g["w"])}\n' for i, g in enumerate(caps)))
+    (dest / 'captions.srt').write_text(srt(caps, reel['captions']['min_cue_s'] if reel else 0.5))
     (dest / 'alignment.json').write_text(json.dumps(align, indent=2))
     (dest / 'hyperframes.json').write_text(json.dumps({'$schema': 'https://hyperframes.heygen.com/schema/hyperframes.json', 'paths': {'blocks': 'compositions', 'assets': 'assets'}, 'media': {'autoProxy': True}, 'authoringSkill': 'general-video'}, indent=2))
     hv = CFG.get('hyperframes', '0.8.77')
@@ -383,3 +467,8 @@ if __name__ == '__main__':
         print('ERRO:', e)
         sys.exit(2)
     print(json.dumps({'key': r['key'], 'ratio': r['ratio'], 'scenes': len(r['scenes']), 'warnings': r['warnings']}, indent=1, ensure_ascii=False))
+    # --strict no reel reprova de verdade: qualquer aviso bloqueia. Fora do reel mantém o comportamento
+    # antigo (avisos não mudam o código de saída) para não quebrar as filas em produção.
+    if strict and r['warnings'] and r.get('reel_profile'):
+        print('REPROVADO (--strict): corrija os avisos acima')
+        sys.exit(3)

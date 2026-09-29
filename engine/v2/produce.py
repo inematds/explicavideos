@@ -12,6 +12,10 @@ CFG = json.loads(Path(os.environ.get('EXPLICAVIDEOS_CONFIG', PROJECT / 'examples
 ROOT = Path(CFG['output'])
 HV = CFG.get('hyperframes', '0.8.77')
 STATE = ROOT / 'verification/production.json'
+# Reel (2.4): com "reel_profile" na config, render a 30 fps, loudness -14 LUFS e QA do makeshorts.
+REEL = CFG.get('reel_profile')
+FPS = '30' if REEL else '25'
+QA = Path(os.path.expanduser(CFG.get('reel_qa', '~/projetos/makeshorts/.claude/skills/makeshorts/scripts/qa_short.py')))
 
 
 def probe(path):
@@ -32,9 +36,35 @@ def render(key):
     project, output = ROOT / 'final' / key, ROOT / 'final' / f'{key}.mp4'
     log = ROOT / 'logs' / f'render-{key}.log'
     with log.open('w') as f:
-        subprocess.run(['npx', '--yes', f'hyperframes@{HV}', 'render', '.', '--fps', '25', '--quality', 'delivery', '--crf', '20',
+        subprocess.run(['npx', '--yes', f'hyperframes@{HV}', 'render', '.', '--fps', FPS, '--quality', 'delivery', '--crf', '20',
                         '--workers', '2', '--output', str(output)], cwd=project, stdout=f, stderr=subprocess.STDOUT, check=True)
     return output
+
+
+def loudnorm(path, target=-14.0, tp=-1.5):
+    """Normalização em duas passadas (mede, depois aplica linear) — acerta ±1 LU; vídeo copiado."""
+    r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', str(path), '-af',
+                        f'loudnorm=I={target}:TP={tp}:LRA=11:print_format=json', '-f', 'null', '-'], capture_output=True, text=True, check=True)
+    m = json.loads(r.stderr[r.stderr.rindex('{'):r.stderr.rindex('}') + 1])
+    af = (f"loudnorm=I={target}:TP={tp}:LRA=11:measured_I={m['input_i']}:measured_TP={m['input_tp']}:"
+          f"measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
+    tmp = path.with_suffix('.norm.mp4')
+    subprocess.run(['ffmpeg', '-nostdin', '-y', '-loglevel', 'error', '-i', str(path), '-c:v', 'copy', '-af', af,
+                    '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', str(tmp)], check=True)
+    tmp.replace(path)
+
+
+def qa(key, out, single):
+    """Portão do makeshorts. Duração só vale para o vídeo inteiro: com vários blocos, avisa e roda no montado."""
+    rep = ROOT / 'verification' / f'qa-{key}.json'
+    cmd = ['python3', str(QA), str(out), '--profile', REEL, '--srt', str(ROOT / 'final' / key / 'captions.srt'),
+           '--sheet', str(ROOT / 'verification' / f'sheet-{key}.png'), '--report', str(rep)]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    print(r.stdout, flush=True)
+    if r.returncode and single:
+        update(key, {'status': 'qa_failed', 'file': str(out), 'qa_report': str(rep)})
+        raise SystemExit(f'{key}: QA reprovou (ver {rep})')
+    return r.returncode == 0
 
 
 def main(parts):
@@ -55,13 +85,19 @@ def main(parts):
         p = probe(out)
         dur = float(p['format']['duration'])
         vids = [s for s in p['streams'] if s['codec_type'] == 'video']
-        assert vids and vids[0]['r_frame_rate'] == '25/1', f'{key}: fps {vids and vids[0]["r_frame_rate"]}'
+        assert vids and vids[0]['r_frame_rate'] == f'{FPS}/1', f'{key}: fps {vids and vids[0]["r_frame_rate"]}'
         assert any(s['codec_type'] == 'audio' for s in p['streams']), f'{key}: sem áudio'
         assert abs(dur - float(downloads[key]['duration'])) < 1, f'{key}: duração {dur} != {downloads[key]["duration"]}'
         with (ROOT / 'verification' / f'decode-{key}.log').open('w') as f:
             subprocess.run(['ffmpeg', '-v', 'error', '-i', str(out), '-f', 'null', '-'], stderr=f, check=True)
         assert (ROOT / 'verification' / f'decode-{key}.log').read_text() == '', f'{key}: erro de decodificação'
-        update(key, {'status': 'rendered', 'file': str(out), 'duration': dur, 'engine': 'v2'})
+        rec = {'status': 'rendered', 'file': str(out), 'duration': dur, 'engine': 'v2'}
+        if REEL:
+            loudnorm(out)
+            single = sum(1 for x in blocks if x['language'] == b['language']) == 1
+            rec['qa'] = 'ok' if qa(key, out, single) else ('reprovado' if single else 'rodar no montado')
+            rec['reel_profile'] = REEL
+        update(key, rec)
         print(key, 'rendered', dur, flush=True)
 
 

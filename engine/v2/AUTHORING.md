@@ -89,6 +89,38 @@ calendar, chart, cpu, play, pause, refresh, phone, globe, upload, download, bot,
 use `"takeaway": false`). Para um short de ~30 s: 3 cenas (gancho → tese com fatos → CTA), títulos curtos (≤ 40 caracteres, o
 título quebra linha no vertical), 1 a 3 shots por cena, e o CTA como `keyword` "inema.club".
 
+### Reel (2.4.3) — `"reel_profile"` na config (v1 e v2)
+
+`"aspect": "9:16"` só muda a proporção. **Reel** é escolha editorial: `"reel_profile": "divulgacao" | "tutorial" | "mini-aula"`
+(contrato único em `~/projetos/makeshorts/.claude/skills/makeshorts/references/reel-profiles.json`, explicado em `spec-reel.md`
+da mesma pasta). A chave `profile` continua sendo o perfil do navegador do HeyGen — não confundir.
+
+Com `reel_profile`:
+- **Frame 0 = capa.** A 1ª cena abre com um shot `hook` em `"at": "start"` — frase de 3–6 palavras (`**destaque**`),
+  `kicker` opcional, `sub` opcional, `src` opcional (imagem de fundo com scrim). Nasce visível em t = 0, sem surgir do vazio.
+  `--strict` reprova reel que não abre assim.
+- **Prova real.** Shot `media`: `src` (imagem local em `<output>/media/` ou caminho absoluto; é copiada para
+  `assets/media/` — render sem rede), `focus` [fx, fy], `zoom` [z0, z1], `highlights` [{x, y, w, h, at}] (0–1 na imagem),
+  `label`. Print do site/curso vale mais que card de texto. Vídeo ainda não é aceito.
+- **Legenda** de até 3 palavras / 22 caracteres por vez, 70 px, sem sobreposição no SRT.
+- **Sem cabeçalho** de capítulo/título no topo (use `"header": true` na cena se quiser).
+- **Ritmo:** mais de 4 s sem troca de conteúdo (`at`/`*_at`; palavra aparecendo não conta) vira aviso — e no reel
+  **`--strict` sai com código 3** se houver qualquer aviso. Fora do reel o comportamento antigo foi mantido.
+- **`produce.py`:** render a 30 fps, loudness −14 LUFS em duas passadas e QA do makeshorts (`qa-<bloco>.json` e
+  `sheet-<bloco>.png` em `verification/`). Bloco único reprovado no QA não é marcado como `rendered`.
+- **v1:** com `reel_profile`, os pisos `min_block_seconds`/`min_words` caem sozinhos para 15 s/30 palavras.
+
+Roteiro do reel: molde de 3 atos e banco de ganchos em `makeshorts/references/roteiro.md` — aprovar o roteiro **antes**
+de enviar ao HeyGen. `statement` e `keyword` ficam ~25–30% maiores no reel (o palco é escalado 0,752).
+
+```json
+{"scenes": {"1": {"shots": [
+  {"type": "hook", "at": "start", "kicker": "AGI-ready", "text": "A IA parou de **esperar ordens**", "src": "agi-ready.png"},
+  {"type": "media", "at": "Você diz o destino", "src": "agi-ready.png", "focus": [0.5, 0.3], "zoom": [1, 1.15],
+   "highlights": [{"x": 0.08, "y": 0.35, "w": 0.6, "h": 0.12, "at": "responsabilidade"}], "label": "**eventos.inema.pro**/agi-ready"}
+]}}}
+```
+
 ## Aceite (por bloco)
 
 ```bash

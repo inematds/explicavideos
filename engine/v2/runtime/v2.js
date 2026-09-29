@@ -71,8 +71,11 @@
     ctx.rise = (el, t, d) => tl.fromTo(el, { opacity: 0, y: d == null ? 40 : d }, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, t);
     ctx.fade = (el, t, d) => tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: d || 0.35 }, t);
 
-    tl.fromTo(stage, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
     const shots = S.shots || [];
+    // reel (2.4): cena que abre com "hook" em t≈0 nasce pronta — o frame 0 já é a capa (nada surge do vazio)
+    const openHook = shots.length && shots[0].type === 'hook' && shots[0].at <= 0.05;
+    if (openHook) tl.set(stage, { opacity: 1 }, 0);
+    else tl.fromTo(stage, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
     // Palco nunca vazio: o shot anterior só sai quando o PRÓXIMO já mostra conteúdo (1º tween de um
     // elemento dele), não no `at` do próximo — os itens de um shot costumam entrar só nas próprias deixas.
     const built = shots.map((shot, i) => {
@@ -88,10 +91,12 @@
       const own = tl.getChildren(false, true, false).slice(before).filter((tw) => tw.targets().some((el) => el instanceof Node && el !== box && box.contains(el) && !(el.classList && el.classList.contains('v2-lbl'))));
       // o shot inteiro (rótulos fixos inclusive) só aparece quando o 1º conteúdo animado entra
       const first = own.length ? Math.max(t0, Math.min(Math.min(...own.map((tw) => tw.startTime())), t1 - 0.2)) : t0;
-      tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.25 }, Math.max(0, first - 0.1));
+      if (i === 0 && openHook) tl.set(box, { opacity: 1 }, 0);
+      else tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.25 }, Math.max(0, first - 0.1));
       return { t0, t1, j, box, first };
     });
-    header(ctx, built.length ? built[0].first : S.dur);
+    // no reel o cabeçalho (capítulo/título) não ocupa o topo — a tela é do gancho e da prova
+    if (!S.reel || S.header) header(ctx, built.length ? built[0].first : S.dur);
     side(ctx);
     built.forEach((b) => {
       if (b.t1 >= S.dur - 0.05) return;
@@ -298,7 +303,7 @@
   V2.P.statement = function (box, s, c) {
     const mk = (text, wt, at, y, size) => {
       const words = String(text).split(/\s+/).filter(Boolean);
-      const f = stFont(text, size);
+      const f = c.S.reel ? Math.min(Math.round(stFont(text, size) * 1.3), Math.floor(2 * 1330 / Math.max(8, plain(text).length * 0.6))) : stFont(text, size);
       const one = plain(text).length * 0.6 * f <= 1330;
       const ln = h(box, 'div', 's-line', `top:${y}px;font-size:${f}px;line-height:1.15;${one ? 'white-space:nowrap' : ''}`);
       let mode = '';
@@ -628,12 +633,55 @@
 
   // keyword — palavra/número de impacto
   V2.P.keyword = function (box, s, c) {
-    const t = def(s.at, c.T0 + 0.1), f = s.size || fs(s.text, 160, 70, 6, 36);
+    const t = def(s.at, c.T0 + 0.1), f = s.size || Math.round(fs(s.text, 160, 70, 6, 36) * (c.S.reel ? 1.25 : 1));
     const k = h(box, 'div', 'kw-t', `top:${430 - f * 0.6}px;font-size:${f}px`, rich(s.text));
     c.tl.fromTo(k, { opacity: 0, scale: 2.2, filter: 'blur(16px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power4.out' }, t);
     const svg = fullSvg(box), ring = svgEl(svg, 'circle', { cx: 745, cy: 430, r: 60, fill: 'none', stroke: '#ffb638', 'stroke-width': 4 });
     c.tl.fromTo(ring, { attr: { r: 60 }, opacity: 0.9 }, { attr: { r: 520 }, opacity: 0, duration: 0.9, ease: 'power2.out' }, t + 0.1);
     if (s.sub) { const nl = lines(s.text, f, 1330); const sb = h(box, 'div', 'kw-s', `top:${430 - f * 0.6 + nl * f * 1.05 + 24}px`, rich(s.sub)); c.rise(sb, def(s.sub_at, t + 0.6), 20); }
+  };
+
+  // hook (2.4) — abertura de reel: frase de 3–6 palavras (+ imagem opcional) JÁ VISÍVEL no frame 0.
+  // Campos: text (rich), kicker?, sub?, src? (imagem local, vira fundo com scrim), punch_at? (deixa p/ pulso)
+  V2.P.hook = function (box, s, c) {
+    const t = Math.max(0, def(s.at, 0)), still = t <= 0.05;
+    if (s.src) {
+      const im = h(box, 'img', 'hk-img', ''); im.src = s.src;
+      h(box, 'div', 'hk-scrim', '');
+      c.tl.fromTo(im, { scale: 1.02 }, { scale: 1.1, duration: Math.max(1, c.T1 - t), ease: 'none', immediateRender: true }, t);
+    }
+    const f = s.size || fs(s.text, 150, 92, 8, 42);
+    if (s.kicker) { const k = h(box, 'div', 'hk-k', '', esc(s.kicker)); if (!still) c.fade(k, t); }
+    const tx = h(box, 'div', 'hk-t', `font-size:${f}px`, rich(s.text));
+    if (!still) c.pop(tx, t);
+    if (s.sub) { const sb = h(box, 'div', 'hk-s', '', rich(s.sub)); if (still) c.tl.set(sb, { opacity: 1 }, 0); else c.rise(sb, t + 0.3, 20); }
+    const hl = tx.querySelector('.hl');
+    if (hl) c.tl.fromTo(hl, { scale: 1 }, { scale: 1.08, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', transformOrigin: '50% 60%' }, def(s.punch_at, t + 0.6));
+  };
+
+  // media (2.4) — PROVA REAL: print/foto local do produto com punch-in, Ken Burns até o foco e destaques.
+  // Campos: src (assets/media/…), focus [fx,fy] 0–1, zoom [z0,z1], label? (rich), label_at?,
+  //         highlights [{x,y,w,h,at}] (0–1 na imagem) — caixa âmbar que aparece na deixa.
+  V2.P.media = function (box, s, c) {
+    const t = def(s.at, c.T0 + 0.05), X = 90, Y = s.label ? 150 : 170, W = 1330, Hh = s.label ? 700 : 780;
+    const fr = h(box, 'div', 'md-frame', `left:${X}px;top:${Y}px;width:${W}px;height:${Hh}px`);
+    // imagem e destaques no MESMO contêiner: o zoom move os dois juntos (o destaque fica na palavra certa)
+    const inn = h(fr, 'div', 'md-in', '');
+    const im = h(inn, 'img', 'md-img', ''); im.src = s.src;
+    const [fx, fy] = s.focus || [0.5, 0.5], [z0, z1] = s.zoom || (c.S.reel ? [1.35, 1.6] : [1.0, 1.12]);
+    // zoom que CENTRALIZA o foco (fx, fy) na moldura, sem mostrar borda vazia (limites por eixo)
+    const IH = W * (s.ih && s.iw ? s.ih / s.iw : Hh / W);
+    const pos = (z) => ({ scale: z,
+      x: Math.min(0, Math.max(W - W * z, W / 2 - fx * W * z)),
+      y: Math.min(0, Math.max(Hh - IH * z, Hh / 2 - fy * IH * z)) });
+    inn.style.transformOrigin = '0 0';
+    c.tl.fromTo(fr, { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'power3.out' }, t);
+    c.tl.fromTo(inn, pos(z0), Object.assign(pos(z1), { duration: Math.max(1, c.T1 - t), ease: 'sine.inOut' }), t);
+    (s.highlights || []).forEach((r) => {
+      const b = h(inn, 'div', 'md-hl', `left:${r.x * 100}%;top:${r.y * 100}%;width:${r.w * 100}%;height:${r.h * 100}%`);
+      c.tl.fromTo(b, { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, def(r.at, t + 1));
+    });
+    if (s.label) { const lb = h(box, 'div', 'md-lb', `top:${Y + Hh + 22}px`, rich(s.label)); c.rise(lb, def(s.label_at, t + 0.4), 16); }
   };
 
   // module_intro — abertura cinematográfica de módulo

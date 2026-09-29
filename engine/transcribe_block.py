@@ -37,7 +37,7 @@ def transcribe(key,language):
  video=ROOT/'assets'/f'nei-{key}.mp4';audio=ROOT/'assets'/f'nei-{key}.mp3'
  subprocess.run(['ffmpeg','-v','error','-i',str(video),'-vn','-ar','16000','-ac','1','-b:a','64k','-y',str(audio)],check=True)
  if CFG.get('transcriber')=='whisper-local':
-  d=local(audio,language);assert len(d['words'])>CFG.get('min_words',100),'Incomplete transcript'
+  d=local(audio,language);assert len(d['words'])>CFG.get('min_words',30 if CFG.get('reel_profile') else 100),'Incomplete transcript'
   dest.write_text(json.dumps(d,ensure_ascii=False,indent=2));return d
  secret=None
  for p in [Path.home()/'projetos/openpcbotv2/.env',Path.home()/'projetos/wifi/.env']:
@@ -52,7 +52,7 @@ def transcribe(key,language):
   if r.status_code==200:break
   if r.status_code not in [429,500,502,503]:raise RuntimeError('Transcription HTTP '+str(r.status_code))
   time.sleep(20)
- r.raise_for_status();d=r.json();assert len(d.get('words',[]))>CFG.get('min_words',100),'Incomplete transcript'
+ r.raise_for_status();d=r.json();assert len(d.get('words',[]))>CFG.get('min_words',30 if CFG.get('reel_profile') else 100),'Incomplete transcript'
  dest.write_text(json.dumps(d,ensure_ascii=False,indent=2));return d
 if __name__=='__main__':
  d=transcribe(sys.argv[1],sys.argv[2]);print('words',len(d['words']),'duration',d.get('duration'))

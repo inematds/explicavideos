@@ -29,6 +29,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.4.3: **reel** — `"reel_profile"` (divulgacao | tutorial | mini-aula, contrato do makeshorts) liga: shot `hook` visível no frame 0, shot `media` (print real com zoom e destaques), legenda de até 3 palavras em 70 px, sem cabeçalho no topo, aviso de trecho parado > 4 s (e `--strict` reprovando no reel), render 30 fps, −14 LUFS e QA do makeshorts com folha de quadros. Fora do reel, nada muda. Detalhes em `engine/v2/AUTHORING.md`.
+>
 > 2.3.3: modo vertical 9:16 no v2 — `"aspect": "9:16"` na config v2 gera 1080×1920 (Reels/Shorts): as cenas continuam desenhadas em 1920×1080 com todos os primitivos, a área útil é escalada para o topo, a legenda (46 px, 2 linhas) fica na zona segura e o avatar 16:9 recortado ocupa a faixa de baixo; coluna direita (CENA n/N, PARA LEVAR) não aparece. Sem `aspect`, tudo igual (16:9). Para blocos curtos, a config v1 aceita `min_block_seconds` (padrão 60) e `min_words` (padrão 100), os pisos do download e da transcrição. Primeiro uso: 9 shorts das áreas do eventos.inema.pro (`examples/eventos-shorts-*.json` e `*-v2.json`).
 >
 > 2.2.3: Whisper local — trechos pulados (buracos > 3 s entre palavras) são retranscritos sozinhos, com até 3 inícios; a checagem de alinhamento (v1 e v2) conta como acerto número falado em dígitos ("83%") contra o roteiro por extenso. LOOP-R PT: 10 blocos reprovados entre 0,79 e 0,88 passaram para 0,97–0,99.
