@@ -1,0 +1,23 @@
+{
+  "id": "eventos-shorts-jev",
+  "title": "JEV · decisões de IA na prática",
+  "source_repo": "/home/nmaldaner/projetos/inemaeventos",
+  "output": "/home/nmaldaner/projetos/output/eventos-shorts-9x16/jev",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/eventos-shorts-9x16/jev/roteiro/pt.json"
+  },
+  "github_repo": "inematds/eventos-shorts",
+  "release_tag": "v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, JEV, Jev Decision Lab, decisões, inema ponto club.",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}

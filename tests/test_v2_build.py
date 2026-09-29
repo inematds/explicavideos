@@ -64,6 +64,21 @@ class V2Build(unittest.TestCase):
         self.assertIn('OSWork', text)
         self.assertNotIn('Neymar', text)
 
+    def test_frame_default_is_16_9(self):
+        self.assertEqual(B.frame({}), (1920, 1080, ''))
+        self.assertEqual(B.frame({'aspect': '16:9'}), (1920, 1080, ''))
+
+    def test_frame_9_16_vertical(self):
+        self.assertEqual(B.frame({'aspect': '9:16'}), (1080, 1920, 'v916'))
+        with self.assertRaises(B.BuildError):
+            B.frame({'aspect': '4:3'})
+
+    def test_templates_carry_frame_placeholders(self):
+        self.assertIn('data-width="__W__" data-height="__H__"', B.INDEX)
+        self.assertIn('class="__MODE__"', B.INDEX)
+        self.assertIn('class="v2-scene {mode}"', B.SCENE)
+        self.assertIn('class="v2-fit"', B.SCENE)
+
     def test_statement_word_times_follow_speech(self):
         gi, _ = B.find_cue(self.t, 0, 'Vamos percorrer', self.t.bounds[0])
         wt = B.word_times(self.t, 0, 'os **oito** módulos', gi, 0.0)

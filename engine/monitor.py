@@ -24,7 +24,7 @@ for attempt in range(720):
       while chunk:=src.read(1024*1024):f.write(chunk)
      temp.replace(dest)
     probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration:stream=codec_type','-of','json',str(dest)]))
-    duration=float(probe['format']['duration']);assert duration>60 and any(s['codec_type']=='audio' for s in probe['streams'])
+    duration=float(probe['format']['duration']);assert duration>CFG.get('min_block_seconds',60) and any(s['codec_type']=='audio' for s in probe['streams'])
     j.update(downloaded=True,file=str(dest),duration=duration)
    if old!=j['status'] or j.get('downloaded'):print(key,j['status'],j.get('downloaded',False),flush=True)
    j.pop('last_error',None)

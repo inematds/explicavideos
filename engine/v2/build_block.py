@@ -18,6 +18,26 @@ ROOT = Path(CFG['output'])
 RUNTIME = HERE / 'runtime'
 E = html.escape
 
+# Proporção do quadro (2.3): "16:9" (padrão, 1920×1080) ou "9:16" (1080×1920, Reels/Shorts).
+# No 9:16 as cenas continuam desenhadas em 1920×1080 (todos os primitivos intactos); a área útil
+# x 90–1420 é escalada para a largura de 1080 no topo, o avatar ocupa a faixa de baixo e a legenda
+# fica entre os dois (zona segura das redes). Coluna direita (CENA n/N, PARA LEVAR) não aparece.
+ASPECTS = {'16:9': (1920, 1080), '9:16': (1080, 1920)}
+
+
+def aspect_of(cfg):
+    a = str(cfg.get('aspect', '16:9')).strip()
+    if a not in ASPECTS:
+        raise BuildError(f'aspect inválido {a!r}; use ' + ' ou '.join(ASPECTS))
+    return a
+
+
+def frame(cfg):
+    """(largura, altura, classe CSS do modo) do quadro final."""
+    a = aspect_of(cfg)
+    w, h = ASPECTS[a]
+    return w, h, ('v916' if a == '9:16' else '')
+
 SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'radar', 'lanes', 'compare', 'chat', 'terminal',
               'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg'}
 
@@ -238,8 +258,8 @@ INDEX = '''<!doctype html>
 <script src="assets/gsap.min.js"></script><script src="assets/CustomEase.min.js"></script><script src="assets/v2.js"></script>
 <script>window.CAPS=__CAPS__;</script>
 </head><body>
-<div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-duration="__DUR__">
- <div id="bg" class="full"><div class="bg-grad"></div><div id="bg-grid-wrap"><div id="bg-grid" style="transform:rotateX(62deg)"></div></div><svg id="stars" width="1920" height="1080" viewBox="0 0 1920 1080"></svg><div class="vignette"></div></div>
+<div id="root" class="__MODE__" data-composition-id="main" data-width="__W__" data-height="__H__" data-duration="__DUR__">
+ <div id="bg" class="full"><div class="bg-grad"></div><div id="bg-grid-wrap" data-layout-allow-overflow><div id="bg-grid" style="transform:rotateX(62deg)"></div></div><svg id="stars" width="__W__" height="__H__" viewBox="0 0 __W__ __H__"></svg><div class="vignette"></div></div>
 __HOSTS__
  <div class="pip" id="pip"><video id="nei-v" class="clip" src="assets/avatar.mp4" muted playsinline data-start="0" data-duration="__DUR__" data-track-index="2"></video></div>
  <div class="pip-tag"><b>NEI MALDANER</b> · INEMA</div>
@@ -250,7 +270,7 @@ __HOSTS__
 (function(){
  const tl=gsap.timeline({paused:true}),D=__DUR__;
  let seed=__SEED__;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
- let s='';for(let i=0;i<140;i++){const r=rnd()*1.6+.3;s+=`<circle cx="${(rnd()*1920).toFixed(1)}" cy="${(rnd()*620).toFixed(1)}" r="${r.toFixed(2)}" fill="#bcd4ff" opacity="${(rnd()*.5+.1).toFixed(2)}"/>`;}
+ let s='';for(let i=0;i<140;i++){const r=rnd()*1.6+.3;s+=`<circle cx="${(rnd()*__W__).toFixed(1)}" cy="${(rnd()*620).toFixed(1)}" r="${r.toFixed(2)}" fill="#bcd4ff" opacity="${(rnd()*.5+.1).toFixed(2)}"/>`;}
  document.getElementById('stars').innerHTML=s;
  tl.fromTo('#stars',{x:0},{x:-Math.min(400,D*.6),duration:D,ease:'none'},0);
  tl.fromTo('#bg-grid',{backgroundPosition:'0px 0px'},{backgroundPosition:'0px '+Math.round(D*16)+'px',duration:D,ease:'none'},0);
@@ -271,8 +291,8 @@ __HOSTS__
 
 SCENE = '''<!doctype html>
 <html lang="{LANG}"><body><template>
-<div id="{id}-root" class="v2-scene" data-composition-id="{id}" data-width="1920" data-height="1080" data-duration="{dur}">
-<div class="v2-stage" data-layout-allow-overflow></div>
+<div id="{id}-root" class="v2-scene {mode}" data-composition-id="{id}" data-width="{W}" data-height="{H}" data-duration="{dur}">
+<div class="v2-fit" data-layout-allow-overflow><div class="v2-stage" data-layout-allow-overflow></div></div>
 <script>V2.scene("{id}", {spec});</script>
 </div>
 </template></body></html>
@@ -281,6 +301,7 @@ SCENE = '''<!doctype html>
 
 def build(part, strict=False, spec_path=None, out=None):
     lang = CFG['languages'][0]
+    W, H, mode = frame(CFG)
     key = f'{lang}-b{part:02d}'
     manifest = json.loads((ROOT / 'blocos/manifest.json').read_text())
     block = next(b for b in manifest if b['language'] == lang and b['part'] == part)
@@ -333,11 +354,13 @@ def build(part, strict=False, spec_path=None, out=None):
              'dur': sdur, 'shots': shots}
         if entry and isinstance(entry.get('takeaway'), str):
             S['takeaway'] = entry['takeaway']
-        (dest / 'compositions' / f'{sid}.html').write_text(SCENE.format(id=sid, dur=sdur, LANG=lang, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/')))
+        (dest / 'compositions' / f'{sid}.html').write_text(SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=mode, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/')))
         hosts.append(f' <div id="{sid}" class="clip" data-composition-id="{sid}" data-composition-src="compositions/{sid}.html" data-start="{s0}" data-duration="{sdur}" data-track-index="1"></div>')
         report['scenes'].append({'scene': n, 'start': s0, 'dur': sdur, 'shots': [sh['type'] for sh in shots], 'fallback': fb, 'max_gap': max([b - a for a, b in zip(ts, ts[1:])] or [0])})
     caps = captions(timing, starts, block['scenes'], dur)
     idx = INDEX.replace('__CAPS__', json.dumps(caps, ensure_ascii=False)).replace('__DUR__', str(dur)).replace('__HOSTS__', '\n'.join(hosts)).replace('__SEED__', str(7 + part)).replace('{LANG}', lang)
+    idx = idx.replace('__W__', str(W)).replace('__H__', str(H)).replace('__MODE__', mode)
+    report['aspect'] = aspect_of(CFG)
     (dest / 'index.html').write_text(idx)
     (dest / 'captions.srt').write_text('\n'.join(f'{i + 1}\n{stamp(g["s"])} --> {stamp(max(g["e"], g["s"] + .5))}\n{" ".join(w["w"] for w in g["w"])}\n' for i, g in enumerate(caps)))
     (dest / 'alignment.json').write_text(json.dumps(align, indent=2))

@@ -23,6 +23,7 @@ html,body{margin:0;background:var(--bg);overflow:hidden}
 .cap span{color:rgba(238,243,255,.45);display:inline-block;margin:0 .2em}
 /* cena */
 .v2-scene{position:absolute;inset:0;overflow:hidden}
+.v2-fit{position:absolute;left:0;top:0;width:1920px;height:1080px}
 .v2-stage{position:absolute;left:0;top:0;width:1920px;height:1080px}
 .v2-shot{position:absolute;left:0;top:0;width:1920px;height:1080px}
 .v2-hdr{position:absolute;left:90px;top:48px;width:1330px;z-index:20;transform-origin:0% 0%}
@@ -172,3 +173,21 @@ html,body{margin:0;background:var(--bg);overflow:hidden}
 /* svg da fonte */
 .sv-wrap{position:absolute;left:120px;top:190px;width:1270px;height:660px;display:flex;align-items:center;justify-content:center}
 .sv-wrap svg{width:1270px;height:660px}
+/* ---------- modo 9:16 (2.3) — quadro 1080×1920. As cenas continuam em 1920×1080: a área útil
+   x 90–1420 (1330 px) é escalada por 0.752 para 1000 px (margens de 40) e fica no topo (y 130–942);
+   legenda no meio (y 960–1090, zona segura das redes); avatar 16:9 na faixa de baixo (y 1110–1710). */
+.v916 .full{width:1080px;height:1920px}
+.v916 #bg .bg-grad{background:radial-gradient(900px 900px at 50% 30%,#12203d 0%,#070b16 55%,#03050a 100%)}
+.v916 #bg-grid{left:-100px;top:1250px;width:1280px;height:800px}
+.v916 #bg .vignette{background:radial-gradient(ellipse at 50% 40%,transparent 40%,rgba(0,0,0,.72) 100%)}
+.v916 .pip{left:0;top:1110px;width:1080px;height:600px;border-radius:0;box-shadow:0 -2px 0 rgba(255,182,56,.55),0 -30px 60px rgba(0,0,0,.5)}
+.v916 .pip video{width:1080px;height:600px;object-fit:cover;object-position:50% 20%}
+.v916 .pip-tag{left:40px;top:1735px;width:1000px;font-size:22px;text-align:left}
+.v916 .pip-tag:after{content:"inema.club";position:absolute;right:0;top:0;color:var(--amber);letter-spacing:.12em}
+.v916 #caps{left:40px;top:960px;width:1000px;height:130px}
+.v916 .cap{width:1000px;font-size:46px;line-height:1.2}
+.v916 .cap span{color:rgba(238,243,255,.5);margin:0 .16em}
+.v916 .v2-fit{transform-origin:0 0;transform:translate(-28px,130px) scale(.752)}
+.v916 .v2-hdr .kick{font-size:24px}
+.v916 .v2-hdr .ttl{font-size:54px!important;white-space:normal;line-height:1.05}
+.v916 .v2-side,.v916 .v2-take{display:none}

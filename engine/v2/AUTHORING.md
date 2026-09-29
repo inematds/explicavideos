@@ -82,6 +82,13 @@ calendar, chart, cpu, play, pause, refresh, phone, globe, upload, download, bot,
 - **"Vamos ao laboratório":** use `steps`, com um card por "Passo N" e deixas "Passo 1", "Passo 2"… Depois, `bullets` ou `fields` para o registro.
 - **"Antes de avançar… pergunta":** use `quiz` (a deixa `answer_at` é "A resposta é").
 
+## Vertical 9:16 (Reels/Shorts)
+
+`"aspect": "9:16"` na config v2 (`examples/eventos-shorts-gestao-ia-v2.json`) renderiza 1080×1920. O roteiro visual é o mesmo
+(as cenas continuam em 1920×1080 e são escaladas para o topo do quadro); só a coluna direita some (CENA n/N e PARA LEVAR —
+use `"takeaway": false`). Para um short de ~30 s: 3 cenas (gancho → tese com fatos → CTA), títulos curtos (≤ 40 caracteres, o
+título quebra linha no vertical), 1 a 3 shots por cena, e o CTA como `keyword` "inema.club".
+
 ## Aceite (por bloco)
 
 ```bash
