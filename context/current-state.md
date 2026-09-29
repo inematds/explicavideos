@@ -14,3 +14,8 @@ Portal: docs/portal-publication.json.
 - 1 vídeo PT, v2 (10min07s, 14 cenas, 2 blocos HeyGen). Configs `examples/iacultivada.json` (v1, só intermediário) e `iacultivada-v2.json`; roteiro e visual-v2 em `~/projetos/output/iacultivada-video/`.
 - Publicado: release `video-v2.0.0` em inematds/iacultivada + https://inematds.github.io/iacultivada/videos/ ; feed de projetos do portal (41f774b) e catalog PRO (5a85e06).
 - Regra: entrega de explicavideo é sempre v2; no v1 subir só submit/monitor/render/assemble (a etapa publish usa o recibo de portal antigo).
+
+# Codex + Claude em vídeo (2026-09-29)
+- Configs `examples/codex-claude.json` (v1) e `codex-claude-v2.json`; saída em `~/projetos/output/codex-claude-video/` (2 blocos HeyGen, alinhamento 0,98/0,94).
+- Três versões a partir do v2: completo 16:9 (6min22s), essencial 16:9 (cenas 1-4 + 10-11, 3min25s) e reel 9:16 (cenas 1, 2, 11, 1min31s) — `extras.py` corta nas divisas de cena, sem nova geração.
+- Publicação própria (`publica.py`): repo inematds/codex-claude-video, release video-v2.0.0, https://inematds.github.io/codex-claude-video/videos/ + card de projeto no portal.

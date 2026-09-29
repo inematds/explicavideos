@@ -1,0 +1,14 @@
+{
+  "id": "codex-claude",
+  "title": "Codex + Claude · usar os dois juntos",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/codex-claude-video",
+  "output": "/home/nmaldaner/projetos/output/codex-claude-video/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/codex-claude-video/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/codex-claude-video",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77"
+}
