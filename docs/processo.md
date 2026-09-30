@@ -35,6 +35,7 @@ As mídias e os estados ficam em `~/projetos/output/<id>/`. O repositório cont�
 - Conferência HyperFrames, duração real, presença de áudio e decodificação FFmpeg.
 - MP4 e SRT em Release; player com capítulos e VTT no próprio curso.
 - Aviso final no bot v3 somente depois de publicação e recibo do portal.
+- Portal (desde 2026-09-30): vídeo entra no quadro **"Últimas Atualizações de Vídeos"** (`videoUpdatesData`) + catálogo `src/data/videos.ts` do portal — nunca no feed de projetos. Skill `atualiza-portal`, caso "vídeo".
 
 `verification/production.json` registra falhas por bloco. Corrija a causa e remova apenas o estado daquele bloco para retomá-lo, preservando seu ID HeyGen. Serviços têm janela de 12 horas; acompanhe com status e journalctl. Não há retentativa cega de geração.
 
