@@ -74,6 +74,16 @@ Media and state are stored in `~/projetos/output/<id>/`. The repository contains
 
 Avatar generation uses the HeyGen subscription session in the browser. The HeyGen API is used only for queries; Groq charges for transcription according to the account. HyperFrames renders locally. The engine does not call an LLM to coordinate each step. A subscription does not mean unlimited usage; this project records duration and IDs, but does not calculate provider bills.
 
+## HeyGen: how the engine generates, checks and downloads (options)
+
+**Current model — the default, in production. Unchanged.** Generation runs through a Playwright script in the HeyGen **studio** (`engine/heygen-studio.mjs`: clone `TEMPLATE-AVATAR16`, set title and speech, "Generate" → modal → "Submit"), billed to the subscription through the logged-in browser profile on display `:99`. Checking the queue (`submit.py`), following progress (`monitor.py`, every 60 s) and downloading the MP4 use **read-only** calls to `GET /v3/videos/<id>` on the HeyGen **API**.
+
+**Option under study — studio end to end (NOT implemented yet).** The same `| estudio` route used by [promoavatar3](https://github.com/inematds/promoavatar3), carried all the way: check status and download through the studio too, matching the exact title, with no API key. Gains: no API at all; it sees the real state (Draft, queued, processing, done, failed). Costs: depends on the profile session and on HeyGen's layout; each check opens a browser (seconds, every 5–10 min); submit and checks share display `:99`, one at a time.
+
+**Why — the 2026-09-29 case.** Three OSWork v6.2 blocks sat as `pending` in the API for 4 days. In the studio all three were **Draft**: the modal's final click did not register, the script saved the ID anyway, and the API reports a draft as `pending`. Nothing was generated or billed.
+
+**Minimal guard for both models (pending):** after "Submit", confirm in Projects that the title left **Draft**; otherwise mark `needs_review`. Unblocking a draft means generating video: only with explicit authorization. Never resubmit without looking at the studio first.
+
 ## References and Licenses
 
 Pipeline adapted from astrabasico and oswork-quick. Local layout fonts: Montserrat and DejaVu; animation: GSAP. Educational content and diagrams belong to the source course. Preserve asset licenses when redistributing.

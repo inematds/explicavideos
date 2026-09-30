@@ -3,7 +3,33 @@
 from pathlib import Path
 import argparse,os,subprocess,json,sys
 ROOT=Path(__file__).resolve().parent
-p=argparse.ArgumentParser();p.add_argument('--config',default=str(ROOT/'examples/oswork.json'));p.add_argument('command',choices=['prepare','start','status','preview']);a=p.parse_args()
+AJUDA='''comandos:
+  prepare   monta cenas, blocos (<= 4.400 caracteres) e templates. Não gera nada no HeyGen.
+  preview   renderiza o bloco 1 localmente, sem avatar, para conferir o layout.
+  start     sobe 5 serviços (submit, monitor, render, assemble, publish).
+            ATENÇÃO: o submit GERA VÍDEO no HeyGen. Só rode com APROVADO_HEYGEN
+            no output (texto da autorização do Nei com nº de blocos e minutos).
+  status    resumo: blocos enviados, baixados, renderizados, publicação.
+
+HeyGen, modelo atual (padrão, em produção):
+  gerar      script Playwright no ESTÚDIO (heygen-studio.mjs), pela assinatura,
+             com o perfil ~/.cache/inemaccbot/perfil-heygen na tela :99.
+  conferir   submit.py e monitor.py leem GET /v3/videos/<id> na API (só leitura).
+  baixar     monitor.py baixa o video_url que a API devolve (só leitura).
+
+HeyGen, opção em estudo (NÃO implementada): estúdio de ponta a ponta.
+  Conferir e baixar também pelo estúdio, pelo título exato, sem chave de API.
+  Ganha: nenhuma API; enxerga o estado real (Draft, fila, pronto, falhou).
+  Perde: depende da sessão do perfil e do layout do HeyGen; checagem mais lenta.
+
+Cuidado: a API responde "pending" para RASCUNHO. Bloco "pending" por horas =
+olhar Projetos no estúdio antes de qualquer reenvio (caso de 29/09/2026:
+3 blocos do OSWork v6.2 estavam em Draft; nada gerado, nada cobrado).
+Reenviar = gerar vídeo = só com autorização explícita. Detalhes: README.md,
+seção "HeyGen: como o motor gera, confere e baixa (opções)".'''
+p=argparse.ArgumentParser(description='Explicavideos: vídeo explicativo com avatar e voz do Nei, dirigido por config.',epilog=AJUDA,formatter_class=argparse.RawDescriptionHelpFormatter)
+p.add_argument('--config',default=str(ROOT/'examples/oswork.json'),help='config da produção (examples/<nome>.json)')
+p.add_argument('command',choices=['prepare','start','status','preview'],help='o que fazer (ver abaixo)');a=p.parse_args()
 c=Path(a.config).resolve();cfg=json.loads(c.read_text());env={**os.environ,'EXPLICAVIDEOS_CONFIG':str(c)}
 def run(script,*args):subprocess.run([sys.executable,str(ROOT/'engine'/script),*args],env=env,check=True)
 if a.command=='prepare':run('prepare.py');run('build_scene_templates.py')

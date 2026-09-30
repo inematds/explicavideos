@@ -78,6 +78,35 @@ As mídias e os estados ficam em `~/projetos/output/<id>/`. O repositório cont�
 
 Geração do avatar usa a sessão da assinatura HeyGen no navegador. A API HeyGen é usada só para consulta; Groq cobra transcrição conforme a conta. HyperFrames renderiza localmente. O motor não chama um LLM para coordenar cada etapa. Assinatura não significa uso ilimitado; este projeto registra duração e IDs, mas não calcula a fatura dos provedores.
 
+## HeyGen: como o motor gera, confere e baixa (opções)
+
+**Modelo atual — o padrão, e o que está em produção.** Não mudou.
+
+| etapa | como é feito hoje | custo |
+|---|---|---|
+| gerar o avatar | script Playwright no **estúdio** do HeyGen (`engine/heygen-studio.mjs`): clona o `TEMPLATE-AVATAR16`, troca título e fala, "Gerar" → modal → "Enviar" | assinatura (sessão do navegador, perfil `~/.cache/inemaccbot/perfil-heygen`, tela `:99`) |
+| conferir se entrou na fila | `submit.py` lê `GET /v3/videos/<id>` na **API** | só leitura; não gera cobrança |
+| acompanhar até ficar pronto | `monitor.py` lê a mesma rota da **API** a cada 60 s | só leitura |
+| baixar o MP4 | `monitor.py` baixa o `video_url` que a **API** devolve | só leitura |
+
+A chave usada na leitura é a `HEYGEN_API_KEY` de `~/projetos/openpcbotv2/.env`. Cada produção registra essa permissão no `APROVADO_HEYGEN` ("API HeyGen só status/download").
+
+**Opção em estudo — estúdio de ponta a ponta (ainda NÃO implementada).** Mesma rota `| estudio` do [promoavatar3](https://github.com/inematds/promoavatar3), levada até o fim: conferir o status e baixar também pelo estúdio, pelo título exato, sem nenhuma chamada de API.
+
+| | modelo atual (API para ler) | estúdio de ponta a ponta |
+|---|---|---|
+| chave de API | usada para ler | nenhuma |
+| status que enxerga | o da API — **rascunho aparece como `pending`** | o da tela: Draft, na fila, processando, pronto, falhou |
+| velocidade da checagem | milissegundos, a cada 60 s | segundos (abre o navegador), a cada 5–10 min |
+| o que pode quebrar | a chave (vencida, sem permissão) | a sessão do perfil expira; o layout do HeyGen muda |
+| navegador `:99` | só no envio | envio e checagem disputam a mesma tela: um de cada vez |
+
+**Por que a opção existe — o caso de 29/09/2026.** Três blocos do OSWork v6.2 (M3 PT b02, M6 PT b01, M6 EN b03) ficaram 4 dias como `pending` na API. No estúdio, os três estavam como **Draft**: o "Enviar" do modal não pegou (o modal veio em inglês, "Submit"), o script registrou o ID mesmo assim, e a API responde `pending` para rascunho. Nada foi gerado nem cobrado. O monitor não tinha como perceber; o estúdio mostra na hora. Conferência só de leitura em `~/projetos/output/oswork-v62/verification-estudio-2026-09-29/`.
+
+**Proteção mínima que vale nos dois modelos (pendente):** depois do "Enviar", o `heygen-studio.mjs` confirma em Projetos que o título saiu de **Draft**; se não saiu, marca `needs_review` em vez de gravar o ID como enviado.
+
+Destravar um rascunho é **gerar vídeo**: só com autorização explícita do Nei (novo `APROVADO_HEYGEN` com blocos e minutos). Nunca reenviar sem antes olhar o estúdio: se o título já está fora de Draft, o envio anterior valeu e já foi cobrado.
+
 ## Referências e licenças
 
 Pipeline adaptado de astrabasico e oswork-quick. Fontes locais de layout: Montserrat e DejaVu; animação GSAP. Conteúdo educacional e diagramas pertencem ao curso fonte. Preserve as licenças dos recursos ao redistribuir.

@@ -74,6 +74,16 @@ Los medios y estados se guardan en `~/projetos/output/<id>/`. El repositorio con
 
 La generación del avatar usa la sesión de la suscripción a HeyGen en el navegador. La API de HeyGen se usa solo para consultas; Groq cobra la transcripción según la cuenta. HyperFrames renderiza localmente. El motor no llama a un LLM para coordinar cada etapa. Tener una suscripción no significa tener uso ilimitado; este proyecto registra la duración y los ID, pero no calcula la factura de los proveedores.
 
+## HeyGen: cómo el motor genera, verifica y descarga (opciones)
+
+**Modelo actual — el predeterminado, en producción. Sin cambios.** La generación se hace con un script Playwright en el **estudio** de HeyGen (`engine/heygen-studio.mjs`: clona `TEMPLATE-AVATAR16`, cambia título y guion, "Generar" → modal → "Enviar"), con cargo a la suscripción mediante el perfil de navegador con sesión en la pantalla `:99`. Verificar la cola (`submit.py`), seguir el progreso (`monitor.py`, cada 60 s) y descargar el MP4 usan llamadas **de solo lectura** a `GET /v3/videos/<id>` en la **API** de HeyGen.
+
+**Opción en estudio — estudio de punta a punta (AÚN NO implementada).** La misma ruta `| estudio` del [promoavatar3](https://github.com/inematds/promoavatar3), llevada hasta el final: verificar el estado y descargar también por el estudio, por el título exacto, sin clave de API. Gana: ninguna API; ve el estado real (Draft, en cola, procesando, listo, falló). Pierde: depende de la sesión del perfil y del diseño de HeyGen; cada verificación abre el navegador (segundos, cada 5–10 min); envío y verificación comparten la pantalla `:99`, uno a la vez.
+
+**Por qué — el caso del 29/09/2026.** Tres bloques de OSWork v6.2 quedaron 4 días como `pending` en la API. En el estudio los tres estaban en **Draft**: el clic final del modal no se registró, el script guardó el ID de todos modos y la API informa un borrador como `pending`. No se generó ni se cobró nada.
+
+**Protección mínima para ambos modelos (pendiente):** tras "Enviar", confirmar en Proyectos que el título salió de **Draft**; si no, marcar `needs_review`. Desbloquear un borrador es generar video: solo con autorización explícita. Nunca reenviar sin mirar antes el estudio.
+
 ## Referencias y licencias
 
 Pipeline adaptado de astrabasico y oswork-quick. Fuentes locales de diseño: Montserrat y DejaVu; animación GSAP. El contenido educativo y los diagramas pertenecen al curso fuente. Conserve las licencias de los recursos al redistribuirlos.
