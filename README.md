@@ -49,7 +49,7 @@ No v2, o visual explica o que está sendo falado, no instante da fala. Cada cena
 export EXPLICAVIDEOS_CONFIG=examples/oswork-v2.json
 python3 engine/v2/setup_output.py            # novo diretório de saída; o v1 não é tocado
 python3 engine/v2/build_block.py 1 --strict   # deixas → tempos, 0 avisos, lacunas > 10 s acusadas
-engine/v2/run_lane.sh 1 2 3                   # hyperframes check + render 25 fps verificado por bloco
+engine/v2/run_lane.sh 1 2 3                   # hyperframes check + render verificado por bloco; sai ≠0 se algum bloco falhar (2.4.5)
 python3 engine/assemble_languages.py && python3 engine/publish_finished.py
 ```
 

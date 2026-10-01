@@ -131,7 +131,7 @@ class Producer(unittest.TestCase):
         report = {'warnings': []}
         rf = json.dumps(report).encode()
         fp = G.fingerprint(self.root / 'final/pt-b01', {'fps': '25', 'reel': None, 'hyperframes': '0.8.77',
-                                                       'build_report': G.hashlib.sha256(rf).hexdigest()})
+                                                       'build_report': __import__('hashlib').sha256(rf).hexdigest()})
         self.state({'status': 'rendered', 'fingerprint': fp})
         r = self.run_produce(False, report)
         self.assertEqual(r.returncode, 0, r.stderr)

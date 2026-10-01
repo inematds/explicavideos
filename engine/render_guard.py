@@ -38,6 +38,10 @@ def fingerprint(project, params):
     return h.hexdigest()
 
 
+def file_hash(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
 def can_reuse(rec, out, fp):
     """Recibo antigo (sem impressão) não é reaproveitado: renderiza de novo, que é local e sem custo de HeyGen."""
     return bool(rec) and rec.get('status') == 'rendered' and rec.get('fingerprint') == fp and Path(out).exists()

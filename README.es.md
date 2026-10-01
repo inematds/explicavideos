@@ -45,7 +45,7 @@ En v2, el elemento visual explica lo que se está diciendo en el momento en que 
 export EXPLICAVIDEOS_CONFIG=examples/oswork-v2.json
 python3 engine/v2/setup_output.py            # nuevo directorio de salida; v1 no se toca
 python3 engine/v2/build_block.py 1 --strict   # señales → tiempos, 0 advertencias, se notifican los huecos > 10 s
-engine/v2/run_lane.sh 1 2 3                   # hyperframes check + render verificado a 25 fps por bloque
+engine/v2/run_lane.sh 1 2 3                   # hyperframes check + render verificado por bloque; sale ≠0 si algún bloque falla (2.4.5)
 python3 engine/assemble_languages.py && python3 engine/publish_finished.py
 ```
 

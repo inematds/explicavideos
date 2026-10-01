@@ -91,7 +91,7 @@ def main(parts):
         out = ROOT / 'final' / f'{key}.mp4'
         # Recibo preso aos insumos: mudou roteiro, composição, avatar, modo reel ou versão do render → refaz.
         fp = G.fingerprint(ROOT / 'final' / key, {'fps': FPS, 'reel': REEL, 'hyperframes': HV,
-                                                  'build_report': G.hashlib.sha256(report_file.read_bytes()).hexdigest()})
+                                                  'build_report': G.file_hash(report_file)})
         if G.can_reuse(state.get(key), out, fp) and '--force' not in sys.argv:
             continue
         update(key, {'status': 'rendering'})

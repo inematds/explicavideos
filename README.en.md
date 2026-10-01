@@ -45,7 +45,7 @@ In v2, the visuals explain what is being said at the moment it is spoken. Each s
 export EXPLICAVIDEOS_CONFIG=examples/oswork-v2.json
 python3 engine/v2/setup_output.py            # new output directory; v1 is untouched
 python3 engine/v2/build_block.py 1 --strict   # cues → timings, 0 warnings, gaps > 10 s flagged
-engine/v2/run_lane.sh 1 2 3                   # HyperFrames check + render verified at 25 fps per block
+engine/v2/run_lane.sh 1 2 3                   # HyperFrames check + verified render per block; exits ≠0 if any block fails (2.4.5)
 python3 engine/assemble_languages.py && python3 engine/publish_finished.py
 ```
 
