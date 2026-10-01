@@ -4,8 +4,9 @@
 set -uo pipefail
 cd "$(dirname "$0")/../.."
 OUT=$(python3 -c "import json,os;print(json.load(open(os.environ['EXPLICAVIDEOS_CONFIG']))['output'])")
+LANG1=$(python3 -c "import json,os;print(json.load(open(os.environ['EXPLICAVIDEOS_CONFIG']))['languages'][0])")
 for n in "$@"; do
-  key=$(printf 'pt-b%02d' "$n")
+  key=$(printf '%s-b%02d' "$LANG1" "$n")
   log="$OUT/logs/check-$key.log"
   (cd "$OUT/final/$key" && timeout 3600 npx --yes hyperframes@0.8.77 check --timeout 90000 >"$log" 2>&1)
   if ! grep -q "Check passed" "$log"; then echo "$key CHECK FALHOU (ver $log)"; continue; fi

@@ -1,0 +1,21 @@
+{
+  "id": "iacultivada-en",
+  "title": "IA Cultivada · September 2026",
+  "source_repo": "/home/nmaldaner/projetos/iacultivada",
+  "output": "/home/nmaldaner/projetos/output/iacultivada-video/en-v1",
+  "languages": [
+    "en"
+  ],
+  "scene_files": {
+    "en": "/home/nmaldaner/projetos/output/iacultivada-video/roteiro/en.json"
+  },
+  "github_repo": "inematds/iacultivada",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.66",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, IA cultivada, Claude Code, Codex, Gemini, LangGraph, n8n, INEMA.",
+  "balanced_blocks": true
+}

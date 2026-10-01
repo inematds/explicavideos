@@ -1,0 +1,21 @@
+{
+  "id": "codex-claude-en",
+  "title": "Codex + Claude · using both together",
+  "source_repo": "/home/nmaldaner/projetos/codex-claude-video",
+  "output": "/home/nmaldaner/projetos/output/codex-claude-video/en-v1",
+  "languages": [
+    "en"
+  ],
+  "scene_files": {
+    "en": "/home/nmaldaner/projetos/output/codex-claude-video/roteiro/en.json"
+  },
+  "github_repo": "inematds/codex-claude-video",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.66",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Claude, Codex, Claude Code, Use Both, handoff, prime, claudex, iClaudeX, MakeClaudeX, DeepClaudeX, Mark Kashef, FLUX.",
+  "balanced_blocks": true
+}

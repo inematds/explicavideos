@@ -1,0 +1,14 @@
+{
+  "id": "iacultivada",
+  "title": "IA Cultivada · septiembre de 2026",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/iacultivada",
+  "output": "/home/nmaldaner/projetos/output/iacultivada-video/es-v2",
+  "v1_output": "/home/nmaldaner/projetos/output/iacultivada-video/es-v1",
+  "languages": [
+    "es"
+  ],
+  "github_repo": "inematds/iacultivada",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77"
+}
