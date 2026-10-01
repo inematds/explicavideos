@@ -8,6 +8,8 @@ Depois: python3 engine/assemble_languages.py e engine/publish_finished.py com o 
 """
 from pathlib import Path
 import json, os, subprocess, sys, fcntl
+# Mesmo navegador do v1 (produce_blocks.py): o Chromium do snap falha ao abrir no render ("Starting browsers 0/2").
+os.environ.setdefault('HYPERFRAMES_BROWSER_PATH', '/home/nmaldaner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux-arm64/chrome-headless-shell')
 
 PROJECT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT / 'engine'))

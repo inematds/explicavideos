@@ -1,0 +1,21 @@
+{
+  "id": "oswork-completo-en",
+  "title": "OSWork complete",
+  "source_repo": "/home/nmaldaner/projetos/oswork",
+  "output": "/home/nmaldaner/projetos/output/oswork-completo-en",
+  "languages": [
+    "en"
+  ],
+  "github_repo": "inematds/oswork",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "scene_files": {
+    "en": "/home/nmaldaner/projetos/output/oswork-completo/roteiro/en.json"
+  },
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, OSWork, INEMA, Claude Code, Codex, CLAUDE.md, AGENTS.md, Git, GitHub, Telegram, MCP.",
+  "balanced_blocks": true
+}

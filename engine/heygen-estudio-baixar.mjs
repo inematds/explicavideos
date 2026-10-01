@@ -40,6 +40,7 @@ try {
       })).catch(async () => { await pg.waitForTimeout(8_000); return null; });
     }
     if (!v) { passo('página recarregando — tento no próximo ciclo'); await pg.waitForTimeout(30_000); continue; }
+    if (/doesn't exist or has been moved|não existe/i.test(v.texto) && !v.src) await sair(3, 'ERRO: o estúdio diz que este ID de vídeo não existe — conferir o título em Projetos');
     if (/\bdraft\b|rascunho/i.test(v.texto) && !v.src) await sair(3, `ERRO: vídeo está em Draft — o envio não pegou (${v.texto.slice(0, 160)})`);
     if (/failed|falhou|error generating/i.test(v.texto) && !v.src) await sair(3, `ERRO: estúdio mostra falha (${v.texto.slice(0, 160)})`);
     if (v.src) {

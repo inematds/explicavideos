@@ -1,0 +1,23 @@
+{
+  "id": "eventos-shorts-rsi-en",
+  "title": "RSI · a IA que ajuda a melhorar a IA",
+  "source_repo": "/home/nmaldaner/projetos/inemaeventos",
+  "output": "/home/nmaldaner/projetos/output/eventos-shorts-9x16/rsi-en",
+  "languages": [
+    "en"
+  ],
+  "scene_files": {
+    "en": "/home/nmaldaner/projetos/output/eventos-shorts-9x16/rsi/roteiro/en.json"
+  },
+  "github_repo": "inematds/eventos-shorts",
+  "release_tag": "v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, RSI, LOOP-R, recursão, Guia RSI, inema dot club.",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}

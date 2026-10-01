@@ -1,0 +1,15 @@
+{
+  "id": "eventos-shorts-agi-ready",
+  "title": "AGI-ready · a IA parou de esperar ordens",
+  "engine": "v2",
+  "aspect": "9:16",
+  "source_repo": "/home/nmaldaner/projetos/inemaeventos",
+  "output": "/home/nmaldaner/projetos/output/eventos-shorts-9x16/agi-ready-es-v2",
+  "v1_output": "/home/nmaldaner/projetos/output/eventos-shorts-9x16/agi-ready-es",
+  "languages": [
+    "es"
+  ],
+  "github_repo": "inematds/eventos-shorts",
+  "release_tag": "v1.0.0",
+  "hyperframes": "0.8.77"
+}

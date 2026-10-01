@@ -1,0 +1,15 @@
+{
+  "id": "eventos-shorts-rsi",
+  "title": "RSI · a IA que ajuda a melhorar a IA",
+  "engine": "v2",
+  "aspect": "9:16",
+  "source_repo": "/home/nmaldaner/projetos/inemaeventos",
+  "output": "/home/nmaldaner/projetos/output/eventos-shorts-9x16/rsi-en-v2",
+  "v1_output": "/home/nmaldaner/projetos/output/eventos-shorts-9x16/rsi-en",
+  "languages": [
+    "en"
+  ],
+  "github_repo": "inematds/eventos-shorts",
+  "release_tag": "v1.0.0",
+  "hyperframes": "0.8.77"
+}
