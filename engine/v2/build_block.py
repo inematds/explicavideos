@@ -365,6 +365,8 @@ def build(part, strict=False, spec_path=None, out=None):
     if reel:
         mode = (mode + ' reel').strip()
     key = f'{lang}-b{part:02d}'
+    # Relatório velho não pode sobreviver a um build que falhou no meio: o produtor o leria como aprovado.
+    (ROOT / 'verification' / f'build-v2-{key}.json').unlink(missing_ok=True)
     manifest = json.loads((ROOT / 'blocos/manifest.json').read_text())
     block = next(b for b in manifest if b['language'] == lang and b['part'] == part)
     lesson = json.loads((ROOT / f'docs/lesson-{lang}.json').read_text())
@@ -452,6 +454,8 @@ def build(part, strict=False, spec_path=None, out=None):
     hv = CFG.get('hyperframes', '0.8.77')
     (dest / 'package.json').write_text(json.dumps({'name': f'explica-v2-{key}', 'private': True, 'type': 'module', 'scripts': {'check': f'npx --yes hyperframes@{hv} check', 'render': f'npx --yes hyperframes@{hv} render'}}, indent=2))
     report['warnings'] = warnings
+    # O produtor exige isto no reel (render_guard.build_problem): strict rodado e nenhum aviso.
+    report['validation'] = {'strict': bool(strict), 'ok': bool(strict) and not warnings}
     (ROOT / 'verification').mkdir(exist_ok=True)
     (ROOT / 'verification' / f'build-v2-{key}.json').write_text(json.dumps(report, indent=2, ensure_ascii=False))
     return report

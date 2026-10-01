@@ -1,13 +1,17 @@
 """Explicavideos v2 — renderiza os blocos já construídos e grava os recibos que a montagem/publicação leem.
 
 Uso: EXPLICAVIDEOS_CONFIG=examples/oswork-v2.json python3 engine/v2/produce.py [N ...]
-Retomável: blocos com status "rendered" e MP4 íntegro são pulados. Nenhuma chamada ao HeyGen.
+Retomável: bloco "rendered" é pulado só se a impressão dos insumos (composições, legendas, avatar, modo reel,
+versão do render, relatório do build) for a mesma do recibo; recibo sem impressão (antes da 2.4.5) renderiza
+de novo. No reel, o build tem de ter passado no --strict. Nenhuma chamada ao HeyGen.
 Depois: python3 engine/assemble_languages.py e engine/publish_finished.py com o mesmo EXPLICAVIDEOS_CONFIG.
 """
 from pathlib import Path
 import json, os, subprocess, sys, fcntl
 
 PROJECT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(PROJECT / 'engine'))
+import render_guard as G  # noqa: E402
 CFG = json.loads(Path(os.environ.get('EXPLICAVIDEOS_CONFIG', PROJECT / 'examples/oswork-v2.json')).read_text())
 ROOT = Path(CFG['output'])
 HV = CFG.get('hyperframes', '0.8.77')
@@ -55,16 +59,19 @@ def loudnorm(path, target=-14.0, tp=-1.5):
 
 
 def qa(key, out, single):
-    """Portão do makeshorts. Duração só vale para o vídeo inteiro: com vários blocos, avisa e roda no montado."""
+    """Portão do makeshorts. Com vários blocos só a duração é dispensada (vale para o montado, onde o QA roda
+    de novo em assemble_languages.py); qualquer outra falha — ou QA que nem gerou relatório — bloqueia."""
     rep = ROOT / 'verification' / f'qa-{key}.json'
+    rep.unlink(missing_ok=True)
     cmd = ['python3', str(QA), str(out), '--profile', REEL, '--srt', str(ROOT / 'final' / key / 'captions.srt'),
            '--sheet', str(ROOT / 'verification' / f'sheet-{key}.png'), '--report', str(rep)]
     r = subprocess.run(cmd, capture_output=True, text=True)
-    print(r.stdout, flush=True)
-    if r.returncode and single:
-        update(key, {'status': 'qa_failed', 'file': str(out), 'qa_report': str(rep)})
-        raise SystemExit(f'{key}: QA reprovou (ver {rep})')
-    return r.returncode == 0
+    print(r.stdout, r.stderr, flush=True)
+    blocking = G.qa_blocking(rep, ignore_duration=not single)
+    if blocking:
+        update(key, {'status': 'qa_failed', 'file': str(out), 'qa_report': str(rep), 'qa_blocking': blocking})
+        raise SystemExit(f'{key}: QA reprovou ({", ".join(blocking)}; ver {rep})')
+    return 'ok' if r.returncode == 0 else 'duração só no montado'
 
 
 def main(parts):
@@ -75,10 +82,17 @@ def main(parts):
         if parts and b['part'] not in parts:
             continue
         key = f"{b['language']}-b{b['part']:02d}"
-        report = json.loads((ROOT / f'verification/build-v2-{key}.json').read_text())
-        assert not any('fallback' in w for w in report['warnings']), f'{key}: cenas sem roteiro visual'
+        report_file = ROOT / f'verification/build-v2-{key}.json'
+        if not report_file.exists():
+            raise SystemExit(f'{key}: sem relatório de build (rode build_block.py {b["part"]})')
+        problem = G.build_problem(json.loads(report_file.read_text()), bool(REEL))
+        if problem:
+            raise SystemExit(f'{key}: {problem}')
         out = ROOT / 'final' / f'{key}.mp4'
-        if state.get(key, {}).get('status') == 'rendered' and out.exists() and not '--force' in sys.argv:
+        # Recibo preso aos insumos: mudou roteiro, composição, avatar, modo reel ou versão do render → refaz.
+        fp = G.fingerprint(ROOT / 'final' / key, {'fps': FPS, 'reel': REEL, 'hyperframes': HV,
+                                                  'build_report': G.hashlib.sha256(report_file.read_bytes()).hexdigest()})
+        if G.can_reuse(state.get(key), out, fp) and '--force' not in sys.argv:
             continue
         update(key, {'status': 'rendering'})
         render(key)
@@ -91,11 +105,13 @@ def main(parts):
         with (ROOT / 'verification' / f'decode-{key}.log').open('w') as f:
             subprocess.run(['ffmpeg', '-v', 'error', '-i', str(out), '-f', 'null', '-'], stderr=f, check=True)
         assert (ROOT / 'verification' / f'decode-{key}.log').read_text() == '', f'{key}: erro de decodificação'
-        rec = {'status': 'rendered', 'file': str(out), 'duration': dur, 'engine': 'v2'}
+        rec = {'status': 'rendered', 'file': str(out), 'duration': dur, 'engine': 'v2', 'fingerprint': fp}
         if REEL:
             loudnorm(out)
+            # a duração gravada é a do arquivo depois de normalizar — é ela que a montagem soma nas legendas
+            rec['duration'] = dur = float(probe(out)['format']['duration'])
             single = sum(1 for x in blocks if x['language'] == b['language']) == 1
-            rec['qa'] = 'ok' if qa(key, out, single) else ('reprovado' if single else 'rodar no montado')
+            rec['qa'] = qa(key, out, single)
             rec['reel_profile'] = REEL
         update(key, rec)
         print(key, 'rendered', dur, flush=True)
