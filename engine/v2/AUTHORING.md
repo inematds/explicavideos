@@ -96,15 +96,18 @@ título quebra linha no vertical), 1 a 3 shots por cena, e o CTA como `keyword` 
 da mesma pasta). A chave `profile` continua sendo o perfil do navegador do HeyGen — não confundir.
 
 Com `reel_profile`:
-- **Frame 0 = capa.** A 1ª cena abre com um shot `hook` em `"at": "start"` — frase de 3–6 palavras (`**destaque**`),
+- **Frame 0 = capa.** A 1ª cena abre com um shot `hook` em `"at": "@start"` (só o `hook` aceita esse marcador; em qualquer
+  outro shot "start" é deixa comum) — frase de 3–6 palavras (`**destaque**`),
   `kicker` opcional, `sub` opcional, `src` opcional (imagem de fundo com scrim). Nasce visível em t = 0, sem surgir do vazio.
   `--strict` reprova reel que não abre assim.
 - **Prova real.** Shot `media`: `src` (imagem local em `<output>/media/` ou caminho absoluto; é copiada para
-  `assets/media/` — render sem rede), `focus` [fx, fy], `zoom` [z0, z1], `highlights` [{x, y, w, h, at}] (0–1 na imagem),
-  `label`. Print do site/curso vale mais que card de texto. Vídeo ainda não é aceito.
+  `assets/media/<hash>-<nome>` — render sem rede, sem colisão de nomes), `focus` [fx, fy] (o zoom centraliza o foco e nunca
+  deixa faixa vazia), `zoom` [z0, z1], `highlights` [{x, y, w, h, at}] (0–1 na imagem), `label`. Print do site/curso vale mais
+  que card de texto. Vídeo ainda não é aceito.
 - **Legenda** de até 3 palavras / 22 caracteres por vez, 70 px, sem sobreposição no SRT.
-- **Sem cabeçalho** de capítulo/título no topo (use `"header": true` na cena se quiser).
-- **Ritmo:** mais de 4 s sem troca de conteúdo (`at`/`*_at`; palavra aparecendo não conta) vira aviso — e no reel
+- **Sem cabeçalho** de capítulo/título no topo (`"header": true` na cena devolve o cabeçalho).
+- **`reel_profile` exige `"aspect": "9:16"`** na config v2 — o build recusa antes de montar.
+- **Ritmo:** mais de 4 s sem troca de conteúdo (`at`/`*_at`; palavra aparecendo, `punch_at` e `strike_at` não contam) vira aviso — e no reel
   **`--strict` sai com código 3** se houver qualquer aviso. Fora do reel o comportamento antigo foi mantido.
 - **`produce.py`:** render a 30 fps, loudness −14 LUFS em duas passadas e QA do makeshorts (`qa-<bloco>.json` e
   `sheet-<bloco>.png` em `verification/`). Bloco único reprovado no QA não é marcado como `rendered`.
@@ -115,7 +118,7 @@ de enviar ao HeyGen. `statement` e `keyword` ficam ~25–30% maiores no reel (o 
 
 ```json
 {"scenes": {"1": {"shots": [
-  {"type": "hook", "at": "start", "kicker": "AGI-ready", "text": "A IA parou de **esperar ordens**", "src": "agi-ready.png"},
+  {"type": "hook", "at": "@start", "kicker": "AGI-ready", "text": "A IA parou de **esperar ordens**", "src": "agi-ready.png"},
   {"type": "media", "at": "Você diz o destino", "src": "agi-ready.png", "focus": [0.5, 0.3], "zoom": [1, 1.15],
    "highlights": [{"x": 0.08, "y": 0.35, "w": 0.6, "h": 0.12, "at": "responsabilidade"}], "label": "**eventos.inema.pro**/agi-ready"}
 ]}}}

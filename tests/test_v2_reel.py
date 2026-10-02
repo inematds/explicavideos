@@ -51,13 +51,40 @@ class Reel(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             d = Path(d)
             img = d / 'print.png'; img.write_bytes(b'\x89PNG fake')
-            self.assertEqual(B.copy_media(str(img), d / 'bloco', 1, 0), 'assets/media/print.png')
-            self.assertTrue((d / 'bloco/assets/media/print.png').exists())
+            rel = B.copy_media(str(img), d / 'bloco', 1, 0)
+            self.assertTrue(rel.startswith('assets/media/') and rel.endswith('-print.png'))
+            self.assertTrue((d / 'bloco' / rel).exists())
+            # mesmo nome em outra pasta não sobrescreve (nome leva hash do conteúdo)
+            (d / 'b').mkdir(); img2 = d / 'b/print.png'; img2.write_bytes(b'\x89PNG outro')
+            self.assertNotEqual(B.copy_media(str(img2), d / 'bloco', 1, 1), rel)
             mp4 = d / 'clip.mp4'; mp4.write_bytes(b'x')
             with self.assertRaises(B.BuildError):
                 B.copy_media(str(mp4), d / 'bloco', 1, 0)
             with self.assertRaises(B.BuildError):
                 B.copy_media(str(d / 'nao-existe.png'), d / 'bloco', 1, 0)
+
+    def test_start_marker_only_for_hook(self):
+        # "start" em shot que não é hook continua deixa comum (procura a palavra na fala) — fala sem "start" → erro
+        spec = {'shots': [{'type': 'keyword', 'at': 'start', 'text': 'x'}]}
+        with self.assertRaises(B.BuildError):
+            B.resolve_scene(self.t, 0, 0.0, spec, [], 1, True)
+        spec = {'shots': [{'type': 'hook', 'at': '@start', 'text': 'x'}]}
+        self.assertEqual(B.resolve_scene(self.t, 0, 0.0, spec, [], 1, True)[0]['at'], 0.0)
+
+    def test_effects_do_not_count_as_content_change(self):
+        shots = [{'type': 'hook', 'at': 0.0, 'punch_at': 1.5}, {'type': 'keyword', 'at': 6.0, 'sub_at': 7.0}]
+        self.assertEqual(B.all_times(shots, words=False, effects=False), [0.0, 6.0, 7.0])
+        self.assertIn(1.5, B.all_times(shots, words=False))
+
+    def test_srt_coincident_groups_merge(self):
+        caps = [{'s': 1.0, 'e': 1.4, 'w': [{'w': 'a'}]}, {'s': 1.0, 'e': 1.8, 'w': [{'w': 'b'}]}, {'s': 2.0, 'e': 2.5, 'w': [{'w': 'c'}]}]
+        txt = B.srt(caps, 0.5)
+        self.assertEqual(txt.count('-->'), 2)
+        self.assertIn('a b', txt)
+
+    def test_reel_requires_vertical(self):
+        with self.assertRaises(B.BuildError):
+            B.reel_of({'reel_profile': 'divulgacao'}) and B.aspect_of({'aspect': '4:3'})
 
     def test_word_reveals_do_not_count_as_visual_change(self):
         shots = [{'type': 'statement', 'at': 0.5, 'wt': [1, 2, 3, 4, 5, 6, 7, 8]}]

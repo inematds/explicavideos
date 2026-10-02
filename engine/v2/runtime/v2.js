@@ -668,9 +668,12 @@
     // imagem e destaques no MESMO contêiner: o zoom move os dois juntos (o destaque fica na palavra certa)
     const inn = h(fr, 'div', 'md-in', '');
     const im = h(inn, 'img', 'md-img', ''); im.src = s.src;
-    const [fx, fy] = s.focus || [0.5, 0.5], [z0, z1] = s.zoom || (c.S.reel ? [1.35, 1.6] : [1.0, 1.12]);
+    let [fx, fy] = s.focus || [0.5, 0.5], [z0, z1] = s.zoom || (c.S.reel ? [1.35, 1.6] : [1.0, 1.12]);
     // zoom que CENTRALIZA o foco (fx, fy) na moldura, sem mostrar borda vazia (limites por eixo)
     const IH = W * (s.ih && s.iw ? s.ih / s.iw : Hh / W);
+    // escala mínima para a imagem cobrir a moldura inteira (imagem panorâmica não deixa faixa vazia)
+    const zmin = Math.max(1, Hh / IH);
+    z0 = Math.max(z0, zmin); z1 = Math.max(z1, zmin);
     const pos = (z) => ({ scale: z,
       x: Math.min(0, Math.max(W - W * z, W / 2 - fx * W * z)),
       y: Math.min(0, Math.max(Hh - IH * z, Hh / 2 - fy * IH * z)) });

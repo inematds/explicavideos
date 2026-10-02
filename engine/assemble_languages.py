@@ -38,7 +38,7 @@ def assemble(lang):
  rec={'file':str(dest),'duration':duration,'blocks':keys,'fingerprints':prints,'chapters':chapter,'bytes':dest.stat().st_size}
  if REEL:
   rep=ROOT/'verification'/f'qa-full-{lang}.json';rep.unlink(missing_ok=True)
-  subprocess.run(['python3',str(QA),str(dest),'--profile',REEL,'--srt',str(ROOT/'final'/f"{CFG['id']}-{lang}.srt"),'--report',str(rep)])
+  subprocess.run(['python3',str(QA),str(dest),'--profile',REEL,'--profiles',os.path.expanduser(CFG.get('reel_profiles','~/projetos/makeshorts/.claude/skills/makeshorts/references/reel-profiles.json')),'--srt',str(ROOT/'final'/f"{CFG['id']}-{lang}.srt"),'--report',str(rep)])
   blocking=G.qa_blocking(rep,ignore_duration=False)
   if blocking:raise SystemExit(f'{lang}: QA do montado reprovou ({", ".join(blocking)}; ver {rep})')
   rec['qa']='ok';rec['reel_profile']=REEL

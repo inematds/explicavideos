@@ -152,8 +152,6 @@ def resolve_scene(timing, k, scene_start, spec, warnings, n, strict):
             if strict:
                 raise BuildError(f'cena {n}: {where} usa segundos ({v}); use uma deixa falada')
             return float(v), cursor
-        if v == 'start':
-            return 0.0, cursor
         gi, back = find_cue(timing, k, str(v), cursor)
         if back:
             warnings.append(f'cena {n}: deixa {v!r} ({where}) está antes da deixa anterior')
@@ -181,8 +179,12 @@ def resolve_scene(timing, k, scene_start, spec, warnings, n, strict):
         if 'at' not in sh:
             raise BuildError(f'cena {n}: shot {i} sem deixa "at"')
         raw = sh['at']
-        sh['at'], gi = cue_time(raw, cursor, f'shot{i}.at')
-        cursor = gi if not isinstance(raw, (int, float)) and raw != 'start' else cursor
+        if sh['type'] == 'hook' and raw in ('@start', 'start'):
+            # abertura do reel: t = 0 da cena. Só o hook aceita o marcador — "start" continua deixa normal nos outros
+            sh['at'], gi = 0.0, cursor
+        else:
+            sh['at'], gi = cue_time(raw, cursor, f'shot{i}.at')
+            cursor = gi if not isinstance(raw, (int, float)) else cursor
         # palavras da frase no tempo da fala (statement/podium)
         for field, holder in (('text', sh), ('question', sh)):
             if sh['type'] in ('statement', 'podium') and field in holder and isinstance(holder[field], str):
@@ -224,14 +226,18 @@ def word_times(timing, k, text, gi, scene_start):
     return out
 
 
-def all_times(shots, words=True):
+EFFECT_KEYS = {'punch_at', 'strike_at'}   # pulso/risco: efeito, não informação nova (não conta no ritmo do reel)
+
+
+def all_times(shots, words=True, effects=True):
     ts = []
 
     def walk(o):
         if isinstance(o, dict):
             for kk, vv in o.items():
                 if (kk == 'at' or kk.endswith('_at')) and isinstance(vv, (int, float)):
-                    ts.append(float(vv))
+                    if effects or kk not in EFFECT_KEYS:
+                        ts.append(float(vv))
                 elif kk == 'wt' and isinstance(vv, list):
                     if words:
                         ts.extend(vv)
@@ -246,13 +252,17 @@ def all_times(shots, words=True):
 
 def srt(caps, min_cue):
     """SRT sem sobreposição: o cue dura ao menos min_cue, mas nunca passa do início do próximo."""
-    out = []
-    for i, g in enumerate(caps):
-        end = max(g['e'], g['s'] + min_cue)
-        if i + 1 < len(caps):
-            end = min(end, caps[i + 1]['s'])
-        out.append(f'{i + 1}\n{stamp(g["s"])} --> {stamp(max(end, g["s"] + 0.05))}\n{" ".join(w["w"] for w in g["w"])}\n')
-    return '\n'.join(out)
+    cues = []   # [início, fim, texto] — grupos com início coincidente viram um cue só (nunca fim ≤ início)
+    for g in caps:
+        s0, text = g['s'], ' '.join(w['w'] for w in g['w'])
+        if cues and s0 < cues[-1][0] + 0.05:
+            cues[-1][2] += ' ' + text
+            cues[-1][1] = max(cues[-1][1], g['e'])
+            continue
+        if cues:
+            cues[-1][1] = min(cues[-1][1], s0)
+        cues.append([s0, max(g['e'], s0 + min_cue), text])
+    return '\n'.join(f'{i + 1}\n{stamp(a)} --> {stamp(max(b, a + 0.05))}\n{t}\n' for i, (a, b, t) in enumerate(cues))
 
 
 def copy_media(src, dest, n, i):
@@ -267,8 +277,10 @@ def copy_media(src, dest, n, i):
     if p.suffix.lower() not in MEDIA_EXT:
         raise BuildError(f'cena {n}: mídia {p.name} — use imagem ({", ".join(sorted(MEDIA_EXT))}); vídeo ainda não é suportado')
     (dest / 'assets/media').mkdir(parents=True, exist_ok=True)
-    shutil.copy2(p, dest / 'assets/media' / p.name)
-    return f'assets/media/{p.name}'
+    import hashlib
+    name = hashlib.sha256(p.read_bytes()).hexdigest()[:10] + '-' + p.name   # /a/print.png ≠ /b/print.png
+    shutil.copy2(p, dest / 'assets/media' / name)
+    return f'assets/media/{name}'
 
 
 def image_size(p):
@@ -363,6 +375,8 @@ def build(part, strict=False, spec_path=None, out=None):
     W, H, mode = frame(CFG)
     reel = reel_of(CFG)
     if reel:
+        if aspect_of(CFG) != '9:16':
+            raise BuildError(f'reel_profile {reel["name"]!r} exige "aspect": "9:16" na config (está {aspect_of(CFG)})')
         mode = (mode + ' reel').strip()
     key = f'{lang}-b{part:02d}'
     # Relatório velho não pode sobreviver a um build que falhou no meio: o produtor o leria como aprovado.
@@ -381,9 +395,9 @@ def build(part, strict=False, spec_path=None, out=None):
     spec_file = Path(spec_path) if spec_path else ROOT / 'visual-v2' / f'{key}.json'
     spec = json.loads(spec_file.read_text()) if spec_file.exists() else {'scenes': {}}
     dest = Path(out) if out else ROOT / 'final' / key
-    if dest.exists():
-        for p in (dest / 'compositions').glob('*.html'):
-            p.unlink()
+    # As composições antigas só são trocadas depois de TODAS as cenas validarem (build que falha no meio
+    # não deixa o bloco pela metade): as novas ficam em `pending` até o fim.
+    pending = []
     (dest / 'compositions').mkdir(parents=True, exist_ok=True)
     (dest / 'assets').mkdir(exist_ok=True)
     for f in RUNTIME.iterdir():
@@ -401,8 +415,8 @@ def build(part, strict=False, spec_path=None, out=None):
         entry = spec.get('scenes', {}).get(str(n))
         fb = entry is None or not entry.get('shots')
         if fb:
-            if strict:
-                raise BuildError(f'cena {n}: sem roteiro visual (--strict não aceita fallback)')
+            if strict and reel:
+                raise BuildError(f'cena {n}: sem roteiro visual (--strict não aceita fallback no reel)')
             warnings.append(f'cena {n}: sem roteiro visual (fallback)')
             shots = fallback_shots(sc)
         else:
@@ -425,7 +439,7 @@ def build(part, strict=False, spec_path=None, out=None):
         if reel:
             # no reel conta só troca de conteúdo (at/*_at), não palavra aparecendo (wt); e a cauda inteira
             limit = reel['rhythm']['static_review_s']
-            ts = [0.0] + sorted(t for t in all_times(shots, words=False)) + [sdur]
+            ts = [0.0] + all_times(shots, words=False, effects=False) + [sdur]
         else:
             limit = 10
             ts = [0.0] + all_times(shots) + [sdur - 2]
@@ -434,12 +448,16 @@ def build(part, strict=False, spec_path=None, out=None):
             warnings.append(f'cena {n}: {g}s sem mudança visual a partir de {a}s (limite {limit}s)')
         sid = f'scene-{n:03d}'
         S = {'lang': lang, 'n': n, 'total': total, 'chapter': sc['chapter'], 'title': sc['title'], 'takeaway': sc.get('takeaway') if entry is None or entry.get('takeaway', True) is not False else None,
-             'dur': sdur, 'shots': shots, 'reel': bool(reel)}
+             'dur': sdur, 'shots': shots, 'reel': bool(reel), 'header': bool(entry and entry.get('header'))}
         if entry and isinstance(entry.get('takeaway'), str):
             S['takeaway'] = entry['takeaway']
-        (dest / 'compositions' / f'{sid}.html').write_text(SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=mode, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/')))
+        pending.append((dest / 'compositions' / f'{sid}.html', SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=mode, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/'))))
         hosts.append(f' <div id="{sid}" class="clip" data-composition-id="{sid}" data-composition-src="compositions/{sid}.html" data-start="{s0}" data-duration="{sdur}" data-track-index="1"></div>')
         report['scenes'].append({'scene': n, 'start': s0, 'dur': sdur, 'shots': [sh['type'] for sh in shots], 'fallback': fb, 'max_gap': max([b - a for a, b in zip(ts, ts[1:])] or [0])})
+    for old in (dest / 'compositions').glob('*.html'):
+        old.unlink()
+    for path, content in pending:
+        path.write_text(content)
     caps = captions(timing, starts, block['scenes'], dur,
                     max_words=reel['captions']['max_words'] if reel else 7,
                     max_chars=reel['captions']['max_chars'] if reel else None)

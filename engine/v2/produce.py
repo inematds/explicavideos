@@ -20,7 +20,9 @@ HV = CFG.get('hyperframes', '0.8.77')
 STATE = ROOT / 'verification/production.json'
 # Reel (2.4): com "reel_profile" na config, render a 30 fps, loudness -14 LUFS e QA do makeshorts.
 REEL = CFG.get('reel_profile')
-FPS = '30' if REEL else '25'
+PROFILES = Path(os.path.expanduser(CFG.get('reel_profiles', '~/projetos/makeshorts/.claude/skills/makeshorts/references/reel-profiles.json')))
+# fps vem do contrato (mesmo arquivo que o QA lê), não de um literal
+FPS = str(json.loads(PROFILES.read_text())['common']['video']['fps']) if REEL else '25'
 QA = Path(os.path.expanduser(CFG.get('reel_qa', '~/projetos/makeshorts/.claude/skills/makeshorts/scripts/qa_short.py')))
 
 
@@ -65,7 +67,7 @@ def qa(key, out, single):
     de novo em assemble_languages.py); qualquer outra falha — ou QA que nem gerou relatório — bloqueia."""
     rep = ROOT / 'verification' / f'qa-{key}.json'
     rep.unlink(missing_ok=True)
-    cmd = ['python3', str(QA), str(out), '--profile', REEL, '--srt', str(ROOT / 'final' / key / 'captions.srt'),
+    cmd = ['python3', str(QA), str(out), '--profile', REEL, '--profiles', str(PROFILES), '--srt', str(ROOT / 'final' / key / 'captions.srt'),
            '--sheet', str(ROOT / 'verification' / f'sheet-{key}.png'), '--report', str(rep)]
     r = subprocess.run(cmd, capture_output=True, text=True)
     print(r.stdout, r.stderr, flush=True)
