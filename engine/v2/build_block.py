@@ -72,6 +72,30 @@ class BuildError(Exception):
     pass
 
 
+# O ASR escreve de outro jeito o que o roteiro escreve por extenso: a sigla "IA" vira "inteligência artificial",
+# "pro" vira "para o", "inema ponto club" vira "inema.club". Antes de casar, o lado falado é reescrito na forma
+# do roteiro (dividindo o tempo da palavra entre as partes) — assim essas palavras não ficam "interpoladas".
+ALIASES = [(('inteligencia', 'artificial'), ('IA',)), (('para', 'o'), ('pro',)), (('para', 'a'), ('pra',)),
+           (('inemaclub',), ('inema', 'ponto', 'club')), (('inema', 'club'), ('inema', 'ponto', 'club'))]
+
+
+def expand_aliases(words):
+    out, i = [], 0
+    toks = [norm(w['word']) for w in words]
+    while i < len(words):
+        for src, dst in ALIASES:
+            n = len(src)
+            if tuple(toks[i:i + n]) == src:
+                s0, e0 = words[i]['start'], words[i + n - 1]['end']
+                step = (e0 - s0) / len(dst)
+                out.extend({'word': d, 'start': round(s0 + j * step, 3), 'end': round(s0 + (j + 1) * step, 3)} for j, d in enumerate(dst))
+                i += n
+                break
+        else:
+            out.append(words[i]); i += 1
+    return out
+
+
 class Timing:
     """Mapeia cada palavra do roteiro (texto correto) para o tempo medido na transcrição."""
 
@@ -83,6 +107,7 @@ class Timing:
             for w in s['speech'].split():
                 self.tokens.append((w, norm(w), k))
         self.bounds.append(len(self.tokens))
+        words = expand_aliases(words)
         spoken = [norm(w['word']) for w in words]
         m = difflib.SequenceMatcher(None, [t[1] for t in self.tokens], spoken, autojunk=False)
         # Whisper escreve números em dígitos ("83%") e o roteiro por extenso: trecho trocado com dígito
@@ -96,6 +121,8 @@ class Timing:
             for i in range(b.size):
                 mp[b.a + i] = b.b + i
         keys = sorted(mp)
+        # palavras do roteiro que o ASR não casou: o tempo delas é interpolado — fica no relatório, não some
+        self.unmatched = [(self.tokens[i][2], self.tokens[i][0]) for i in range(len(self.tokens)) if i not in mp]
         self.t = []
         for i in range(len(self.tokens)):
             if i in mp:
@@ -403,10 +430,26 @@ def build(part, strict=False, spec_path=None, out=None):
     for f in RUNTIME.iterdir():
         shutil.copy2(f, dest / 'assets' / f.name)
     av = dest / 'assets/avatar.mp4'
-    if av.is_symlink() or av.exists():
-        av.unlink()
-    av.symlink_to(ROOT / 'assets' / f'nei-{key}.mp4')
-    warnings, report, hosts = [], {'key': key, 'ratio': round(timing.ratio, 4), 'scenes': []}, []
+    src_av = (ROOT / 'assets' / f'nei-{key}.mp4').resolve()
+    if reel:
+        # pacote autossuficiente: cópia real do avatar (symlink quebra se a pasta v1 sumir)
+        if av.is_symlink() or not av.exists() or av.stat().st_size != src_av.stat().st_size:
+            if av.is_symlink() or av.exists():
+                av.unlink()
+            shutil.copy2(src_av, av)
+    else:
+        if av.is_symlink() or av.exists():
+            av.unlink()
+        av.symlink_to(src_av)
+    CRIT = {'ia', 'nei', 'nao', 'sem', 'so', 'zero', 'gratis', 'club', 'inema'}
+    warnings, report, hosts = [], {'key': key, 'ratio': round(timing.ratio, 4), 'scenes': [],
+                                   'interpolated': [{'scene': k + 1, 'word': w} for k, w in timing.unmatched]}, []
+    if reel:
+        crit = [w for k, w in timing.unmatched if norm(w) in CRIT]
+        if crit:
+            warnings.append(f'palavras críticas não ouvidas na transcrição (tempo interpolado): {", ".join(crit[:8])}')
+        if len(timing.unmatched) > 0.10 * max(1, len(timing.tokens)):
+            warnings.append(f'{len(timing.unmatched)} de {len(timing.tokens)} palavras com tempo interpolado (> 10%)')
     total = len(lesson)
     for k, (n, sc) in enumerate(zip(block['scenes'], scenes)):
         s0 = starts[k]
@@ -431,6 +474,8 @@ def build(part, strict=False, spec_path=None, out=None):
                 sh['iw'], sh['ih'] = image_size(dest / sh['src'])
             if sh['type'] == 'hook' and sh.get('src'):
                 sh['src'] = copy_media(sh['src'], dest, n, i)
+        if reel and k > 0 and shots and shots[0]['at'] > 0.5:
+            warnings.append(f'cena {n}: topo vazio por {shots[0]["at"]}s até o 1º shot (use uma deixa do começo da fala)')
         if reel and k == 0 and not (shots and shots[0]['type'] == 'hook' and shots[0]['at'] <= 0.05):
             msg = f'cena {n}: reel precisa abrir com shot "hook" em "start" (frame 0 completo)'
             if strict:

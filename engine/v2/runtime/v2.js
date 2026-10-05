@@ -142,7 +142,9 @@
   // bullets — lista de ideias: cartões em linha (≤4 curtos) ou caminho vertical
   V2.P.bullets = function (box, s, c) {
     const items = s.items || [], n = items.length, T = times(items, c);
-    const row = s.layout ? s.layout === 'row' : (n <= 4 && items.every((it) => plain(it.text).length <= 60));
+    const reel = !!(c.S && c.S.reel);
+    // reel: sempre coluna (cards em linha ficam ilegíveis no celular) e fonte ~1,6× (palco é escalado 0,70)
+    const row = reel ? false : (s.layout ? s.layout === 'row' : (n <= 4 && items.every((it) => plain(it.text).length <= 60)));
     const top = s.title ? 260 : 220;
     if (s.title) { const t = h(box, 'div', 'v2-lbl', `left:90px;top:190px;width:1330px;color:var(--cyan);font-size:22px`, esc(s.title)); c.fade(t, c.T0 + 0.1); }
     if (row) {
@@ -162,9 +164,9 @@
         }
       });
     } else {
-      const gap = Math.min(150, 640 / Math.max(1, n)), svg = fullSvg(box);
+      const gap = reel ? Math.min(250, 760 / Math.max(1, n)) : Math.min(150, 640 / Math.max(1, n)), svg = fullSvg(box);
       items.forEach((it, i) => {
-        const y = top + 10 + i * gap, f = fs(it.text, 38, 25, 30, 130), col = COLORS[i % COLORS.length];
+        const y = top + 10 + i * gap, f = reel ? fs(it.text, 62, 44, 20, 70) : fs(it.text, 38, 25, 30, 130), col = COLORS[i % COLORS.length];
         if (i > 0) { const ln = svgEl(svg, 'line', { x1: 142, y1: y - gap + 64, x2: 142, y2: y, stroke: 'rgba(255,182,56,.6)', 'stroke-width': 4 }); drawLine(c, ln, T[i] - 0.15, 0.3); }
         const nd = h(box, 'div', 'b-node', `left:110px;top:${y}px;border-color:${col}`, it.icon ? icon(it.icon, 32, col) : `<div class="num">${i + 1}</div>`);
         const tx = h(box, 'div', 'b-text', `left:206px;top:${y + (it.sub ? -4 : 32 - f * 0.62)}px;width:1200px;font-size:${f}px`, rich(it.text));

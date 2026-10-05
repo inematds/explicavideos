@@ -112,6 +112,15 @@ Com `reel_profile`:
 - **`produce.py`:** render a 30 fps, loudness −14 LUFS em duas passadas e QA do makeshorts (`qa-<bloco>.json` e
   `sheet-<bloco>.png` em `verification/`). Bloco único reprovado no QA não é marcado como `rendered`.
 - **v1:** com `reel_profile`, os pisos `min_block_seconds`/`min_words` caem sozinhos para 15 s/30 palavras.
+- **Topo nunca vazio:** da 2ª cena em diante o 1º shot tem de entrar até 0,5 s (use uma deixa do começo da fala) — aviso no build.
+- **Alinhamento rastreável:** o relatório `build-v2-<bloco>.json` lista `interpolated` (palavras do roteiro que o ASR não
+  casou; o tempo delas é estimado). No reel, palavra crítica interpolada (IA, Nei, não, sem, só, zero, grátis, club, inema)
+  ou mais de 10% interpoladas viram aviso. Equivalências já tratadas: IA ↔ "inteligência artificial", pro ↔ "para o",
+  pra ↔ "para a", "inema ponto club" ↔ "inema.club" (`ALIASES` em `build_block.py`).
+- **Pacote autossuficiente:** no reel o avatar é copiado para `assets/avatar.mp4` (fora do reel continua symlink).
+- **Bullets no reel:** sempre em coluna e ~1,6× maiores (legíveis a 360×640); palco com margem de 6% (zona segura).
+- **Publicar exige aprovação:** `publish_finished.py` recusa reel sem `<output>/APROVADO_REEL` contendo os 12 primeiros
+  caracteres do sha256 do MP4 montado de cada idioma (o erro mostra o sha). Render novo = sha novo = nova aprovação.
 
 Roteiro do reel: molde de 3 atos e banco de ganchos em `makeshorts/references/roteiro.md` — aprovar o roteiro **antes**
 de enviar ao HeyGen. `statement` e `keyword` ficam ~25–30% maiores no reel (o palco é escalado 0,752).

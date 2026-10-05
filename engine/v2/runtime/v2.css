@@ -209,3 +209,7 @@ html,body{margin:0;background:var(--bg);overflow:hidden}
 .md-hl{position:absolute;border:6px solid var(--amber);border-radius:14px;box-shadow:0 0 0 9999px rgba(3,5,10,.35),0 0 30px rgba(255,182,56,.7)}
 .md-lb{position:absolute;left:90px;width:1330px;text-align:center;font-family:"MontBlack",sans-serif;font-size:52px;color:#fff}
 .md-lb .hl{color:var(--amber)}
+/* reel: zona segura do contrato (6% nas laterais = 65 px; coluna direita de botões abaixo de 45% da altura) */
+.v916.reel .v2-fit{transform:translate(11px,130px) scale(.70)}
+.v916.reel #caps{left:65px;width:950px}
+.v916.reel .cap{width:950px}

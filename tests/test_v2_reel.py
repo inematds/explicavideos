@@ -86,6 +86,23 @@ class Reel(unittest.TestCase):
         with self.assertRaises(B.BuildError):
             B.reel_of({'reel_profile': 'divulgacao'}) and B.aspect_of({'aspect': '4:3'})
 
+    def test_unmatched_words_are_tracked(self):
+        t = B.Timing([{'speech': 'A IA parou de esperar ordens'}], [{'word': w, 'start': i * .4, 'end': i * .4 + .3} for i, w in enumerate('A parou de esperar ordens'.split())])
+        self.assertEqual([w for _, w in t.unmatched], ['IA'])
+
+    def test_asr_aliases_match_script(self):
+        asr = [{'word': w, 'start': i * .4, 'end': i * .4 + .3} for i, w in enumerate('A inteligência artificial parou. Vai pro inema.club'.split())]
+        t = B.Timing([{'speech': 'A IA parou. Vai pro inema ponto club'}], asr)
+        self.assertEqual(t.unmatched, [])
+
+    def test_publish_gate_needs_sha_in_aprovado_reel(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as d:
+            mp4 = Path(d) / 'x.mp4'; mp4.write_bytes(b'video')
+            sha = hashlib.sha256(mp4.read_bytes()).hexdigest()[:12]
+            self.assertNotIn(sha, '')              # sem arquivo → bloqueia
+            self.assertIn(sha, f'aprovado {sha} pelo Nei em 05/10')   # com o sha → libera
+
     def test_word_reveals_do_not_count_as_visual_change(self):
         shots = [{'type': 'statement', 'at': 0.5, 'wt': [1, 2, 3, 4, 5, 6, 7, 8]}]
         self.assertEqual(B.all_times(shots, words=False), [0.5])

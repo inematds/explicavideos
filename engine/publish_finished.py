@@ -11,6 +11,14 @@ def publish():
  production=json.loads((ROOT/'verification/production.json').read_text())
  assert len(production)==len(blocks) and all(s['status']=='rendered' for s in production.values())
  receipts={l:json.loads((ROOT/f'verification/assembled-{l}.json').read_text()) for l in LANGUAGES}
+ if CFG.get('reel_profile'):
+  # portão humano (contrato de reel): o Nei aprova o protótipo; o arquivo APROVADO_REEL traz o sha256 (12+ chars)
+  # do MP4 montado de cada idioma. Mudou o render, muda o sha, cai a aprovação.
+  import hashlib
+  ok=(ROOT/'APROVADO_REEL');txt=ok.read_text() if ok.exists() else ''
+  for l in LANGUAGES:
+   sha=hashlib.sha256((ROOT/f"final/{CFG['id']}-{l}.mp4").read_bytes()).hexdigest()
+   if sha[:12] not in txt:raise SystemExit(f'reel {l}: sem aprovação do Nei para este render — escreva o sha {sha[:12]} em {ok} (vídeo + motivo) antes de publicar')
  for l,r in receipts.items():
   scenes=json.loads((ROOT/f'docs/lesson-{l}.json').read_text())
   assert Path(r['file']).stat().st_size==r['bytes'] and len(r['chapters'])==len(scenes)
