@@ -1,0 +1,14 @@
+{
+  "id": "claude-mods",
+  "title": "Claude Mods · o Claude Code que você mesmo muda",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/claude-mods-video",
+  "output": "/home/nmaldaner/projetos/output/claude-mods-video/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/claude-mods-video/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/claude-mods-video",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77"
+}

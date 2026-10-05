@@ -1,0 +1,21 @@
+{
+  "id": "claude-mods",
+  "title": "Claude Mods · o Claude Code que você mesmo muda",
+  "source_repo": "/home/nmaldaner/projetos/claude-mods-video",
+  "output": "/home/nmaldaner/projetos/output/claude-mods-video/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/claude-mods-video/roteiro/pt.json"
+  },
+  "github_repo": "inematds/claude-mods-video",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.66",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Claude, Claude Code, Mods, mod, plugin, skill, conector, barra model, barra effort, barra plugin, Tristan, inema.club.",
+  "balanced_blocks": true
+}
