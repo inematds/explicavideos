@@ -8,7 +8,7 @@ Portal: docs/portal-publication.json.
 - 15 vídeos (5 trilhas × PT/EN/ES), configs `examples/loop-r-*.json` (v1) e `*-v2.json`; saída em `~/projetos/output/loop-r-videos/`.
 - Orquestração lá: `orquestra.py` (original), `orquestra_pt.py`, `orquestra_multi.py` (envio em série, 2 renders, tudo em `explica.slice`), avisos pelo bot v3 (`notify_v3.mjs`).
 - Publicação: NÃO usar `publish_finished.py` (1 vídeo por repo, sobrescreve `videos/index.html`). Usar `publica_loop_r.py` (idempotente): release `video-v2.0.0` em inematds/loop-r + https://inematds.github.io/loop-r/videos/ (index/en/es).
-- PT T2–T5 publicados em 28/09; T1 PT e EN/ES em produção pelo `loop-r-multi-orquestra`.
+- Concluído em 29/09/2026 04:30: 15 de 15 publicados (≈4h13). Lições em FALHAS.md (nome do asset `mp4.stem`, 1 render por vez por causa do Whisper na GPU).
 
 # IA Cultivada em vídeo (2026-09-28)
 - 1 vídeo PT, v2 (10min07s, 14 cenas, 2 blocos HeyGen). Configs `examples/iacultivada.json` (v1, só intermediário) e `iacultivada-v2.json`; roteiro e visual-v2 em `~/projetos/output/iacultivada-video/`.
