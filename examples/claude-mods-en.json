@@ -1,0 +1,21 @@
+{
+  "id": "claude-mods-en",
+  "title": "Claude Mods · Claude Code, customized by you",
+  "source_repo": "/home/nmaldaner/projetos/claude-mods-video",
+  "output": "/home/nmaldaner/projetos/output/claude-mods-video/en-v1",
+  "languages": [
+    "en"
+  ],
+  "scene_files": {
+    "en": "/home/nmaldaner/projetos/output/claude-mods-video/roteiro/en.json"
+  },
+  "github_repo": "inematds/claude-mods-video",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.66",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Claude, Claude Code, Mods, mod, plugin, skill, connector, slash model, slash effort, slash plugin, Tristan, INEMA dot club.",
+  "balanced_blocks": true
+}
