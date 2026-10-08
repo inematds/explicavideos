@@ -95,6 +95,14 @@ título quebra linha no vertical), 1 a 3 shots por cena, e o CTA como `keyword` 
 (contrato único em `~/projetos/makeshorts/.claude/skills/makeshorts/references/reel-profiles.json`, explicado em `spec-reel.md`
 da mesma pasta). A chave `profile` continua sendo o perfil do navegador do HeyGen — não confundir.
 
+## Gancho no 16:9 (2.6.6)
+
+Todo vídeo, não só o reel, precisa prender nos primeiros 2 s pela voz e pela imagem. Shot com `"at"` em 0 s não basta: ele entra animado e o frame 0 sai só com o fundo. O `--strict` reprova o bloco 1 que não abre com shot `hook` em `"@start"`, a menos que a config tenha:
+- `"cold_open": true` — a abertura é montada depois do `assemble`: o trecho da frase de impacto que o avatar já fala adiante (2–6 s, sem conectivo tipo "Então"), sobre a thumb do vídeo em tela cheia e depois uma 2ª imagem (Codex `image_gen`) ligada ao assunto, com a frase grande e o avatar; a última imagem dissolve sobre o 1º segundo do original. Receita usada na trilogia gestão de agentes: `~/projetos/output/gestor-de-agentes/gancho/monta_gancho.py` (gera `<id>-pt-gancho.mp4/.srt/.json`, legendas e capítulos deslocados).
+- `"allow_cold_start": true` — só quando abrir sem gancho for de propósito.
+
+No roteiro, a 1ª frase já é a de impacto: nada de "Imagine que…", "Pense num…", "Se você…" como abertura.
+
 Com `reel_profile`:
 - **Frame 0 = capa.** A 1ª cena abre com um shot `hook` em `"at": "@start"` (só o `hook` aceita esse marcador; em qualquer
   outro shot "start" é deixa comum) — frase de 3–6 palavras (`**destaque**`),

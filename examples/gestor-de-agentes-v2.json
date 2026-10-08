@@ -1,0 +1,15 @@
+{
+  "id": "gestor-de-agentes",
+  "title": "O fim de uma fase da automação: do técnico ao gestor de agentes",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/gestor-de-agentes",
+  "output": "/home/nmaldaner/projetos/output/gestor-de-agentes/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/gestor-de-agentes/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/gestor-de-agentes",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77",
+  "cold_open": true
+}

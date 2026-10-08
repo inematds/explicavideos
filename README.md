@@ -29,6 +29,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.6.6: 16:9 também precisa de gancho — `build_block --strict` reprova o bloco 1 que não abre com shot `hook` em `"@start"` (o 1º shot em 0 s ainda entra animado e o frame 0 sai vazio); `"cold_open": true` na config quando a abertura com thumb + imagem + frase de impacto é montada depois (receita em `engine/v2/AUTHORING.md`), `"allow_cold_start": true` só de propósito.
+
 > 2.5.6: reel — topo nunca vazio (1º shot ≤ 0,5 s da 2ª cena em diante), palavras interpoladas rastreáveis no relatório (`interpolated`) com equivalências do ASR (IA ↔ inteligência artificial, inema.club ↔ inema ponto club…), avatar copiado no pacote, bullets em coluna ~1,6× maiores e margem de 6%, e `publish_finished.py` exigindo `APROVADO_REEL` com o sha do MP4 montado.
 >
 > 2.4.6: correções da auditoria Astra (01/10): marcador `@start` só no `hook` ("start" volta a ser deixa comum nos outros shots); composições só trocadas depois de todas as cenas validarem; SRT sem cue de duração zero quando dois grupos começam juntos; mídia gravada como `<hash>-nome` (sem colisão) e zoom que nunca deixa faixa vazia; `punch_at`/`strike_at` não contam como mudança de conteúdo; `reel_profile` exige `aspect 9:16`; `header: true` chega ao runtime; pisos do v1 inclusivos; fps e perfis lidos do mesmo contrato que o QA. Fora do reel, `--strict` com fallback volta a só avisar.

@@ -1,0 +1,17 @@
+{
+  "id": "gestor-de-agentes",
+  "title": "O fim de uma fase da automação: do técnico ao gestor de agentes",
+  "source_repo": "/home/nmaldaner/projetos/gestor-de-agentes",
+  "output": "/home/nmaldaner/projetos/output/gestor-de-agentes/v1",
+  "languages": ["pt"],
+  "scene_files": {"pt": "/home/nmaldaner/projetos/output/gestor-de-agentes/roteiro/pt.json"},
+  "github_repo": "inematds/gestor-de-agentes",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA ponto club, OSWork, ChatGPT, Claude, API, CRM, WhatsApp, webhook, VPS, WordPress, Wix, commodity, skill, skills, RH.",
+  "balanced_blocks": true
+}

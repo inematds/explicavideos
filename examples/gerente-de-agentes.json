@@ -1,0 +1,21 @@
+{
+  "id": "gerente-de-agentes",
+  "title": "Gerente que não domina agentes é o novo gerente que não sabe lidar com pessoas",
+  "source_repo": "/home/nmaldaner/projetos/gerente-de-agentes",
+  "output": "/home/nmaldaner/projetos/output/gerente-de-agentes/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/gerente-de-agentes/roteiro/pt.json"
+  },
+  "github_repo": "inematds/gerente-de-agentes",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA ponto club, OSWork, TI, Explorador de arquivos, terminal, gestão de agentes, sete princípios, eventos do INEMA.",
+  "balanced_blocks": true
+}

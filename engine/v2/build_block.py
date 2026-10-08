@@ -481,6 +481,15 @@ def build(part, strict=False, spec_path=None, out=None):
             if strict:
                 raise BuildError(msg)
             warnings.append(msg)
+        if (not reel and part == 1 and k == 0 and not CFG.get('cold_open') and not CFG.get('allow_cold_start')
+                and not (shots and shots[0]['type'] == 'hook' and shots[0]['at'] <= 0.05)):
+            # 2.6.6: no 16:9 o frame 0 também não pode nascer vazio — shot com "at" 0 ainda entra animado e o 1º frame
+            # sai só com o fundo (trilogia gestão de agentes, 08/10/2026). Só o "hook" nasce visível em t = 0.
+            msg = (f'cena {n}: o vídeo abre sem gancho — 1º shot "hook" em "@start", ou "cold_open" na config (abertura com '
+                   'thumb + frase de impacto montada depois); "allow_cold_start": true só se for de propósito')
+            if strict:
+                raise BuildError(msg)
+            warnings.append(msg)
         if reel:
             # no reel conta só troca de conteúdo (at/*_at), não palavra aparecendo (wt); e a cauda inteira
             limit = reel['rhythm']['static_review_s']

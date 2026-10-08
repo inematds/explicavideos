@@ -1,0 +1,21 @@
+{
+  "id": "consultor-ia-2027",
+  "title": "O que aprender para faturar em 2027: de construtor a consultor",
+  "source_repo": "/home/nmaldaner/projetos/consultor-ia-2027",
+  "output": "/home/nmaldaner/projetos/output/consultor-ia-2027/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/consultor-ia-2027/roteiro/pt.json"
+  },
+  "github_repo": "inematds/consultor-ia-2027",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA ponto club, 2027, API, prompt, briefing, commodity, consultor, mentor, auditor, gestão de agentes, sete princípios.",
+  "balanced_blocks": true
+}
