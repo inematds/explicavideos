@@ -112,6 +112,14 @@ Com `reel_profile`:
   `assets/media/<hash>-<nome>` — render sem rede, sem colisão de nomes), `focus` [fx, fy] (o zoom centraliza o foco e nunca
   deixa faixa vazia), `zoom` [z0, z1], `highlights` [{x, y, w, h, at}] (0–1 na imagem), `label`. Print do site/curso vale mais
   que card de texto. Vídeo ainda não é aceito.
+- **`calm: true`** no `media` (09/10, pedido do Nei): troca por dissolve suave (sem punch/blur), moldura no formato da
+  imagem (ilustração inteira, nada cortado embaixo) e aproximação lenta. **`cont: true` + `from: {focus, zoom}`**: shot da
+  MESMA imagem continuando o anterior — sem entrada, a câmera desliza de onde parou até o novo foco. Em ilustração com
+  texto, zoom ≤ ~1,25 (close forte corta o texto). Exemplo: `~/projetos/output/explica-aZLW-iMjil0/visual/gerar_visual.py`.
+- **`calm: true`** (2.7, pedido do Nei 09/10): troca por dissolve suave (sem punch/blur), moldura no formato da imagem
+  (ilustração inteira, nada cortado embaixo) e aproximação lenta sem easing. **`cont: true` + `from: {focus, zoom}`**: shot da
+  MESMA imagem que continua o anterior — sem entrada, a câmera desliza de onde parou até o novo foco. Para ilustração com
+  texto, zoom ≤ ~1,25 (close forte corta o texto). Exemplo: `~/projetos/output/explica-aZLW-iMjil0/visual/gerar_visual.py`.
 - **Legenda** de até 3 palavras / 22 caracteres por vez, 70 px, sem sobreposição no SRT.
 - **Sem cabeçalho** de capítulo/título no topo (`"header": true` na cena devolve o cabeçalho).
 - **`reel_profile` exige `"aspect": "9:16"`** na config v2 — o build recusa antes de montar.

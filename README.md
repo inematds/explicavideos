@@ -29,6 +29,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.7.7: shot `media` com `calm: true` (troca por dissolve, ilustração inteira na moldura, aproximação lenta) e `cont`+`from` (a câmera desliza na mesma imagem em vez de cortar). Opcional; vídeos antigos não mudam.
+
 > 2.6.7: `submit.py` espera o perfil do HeyGen ficar livre (SingletonLock de outra produção) antes de abrir o navegador, em vez de deixar o bloco em `needs_review`.
 
 > 2.6.6: 16:9 também precisa de gancho — `build_block --strict` reprova o bloco 1 que não abre com shot `hook` em `"@start"` (o 1º shot em 0 s ainda entra animado e o frame 0 sai vazio); `"cold_open": true` na config quando a abertura com thumb + imagem + frase de impacto é montada depois (receita em `engine/v2/AUTHORING.md`), `"allow_cold_start": true` só de propósito.

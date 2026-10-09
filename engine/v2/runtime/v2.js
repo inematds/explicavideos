@@ -92,7 +92,8 @@
       // o shot inteiro (rótulos fixos inclusive) só aparece quando o 1º conteúdo animado entra
       const first = own.length ? Math.max(t0, Math.min(Math.min(...own.map((tw) => tw.startTime())), t1 - 0.2)) : t0;
       if (i === 0 && openHook) tl.set(box, { opacity: 1 }, 0);
-      else tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.25 }, Math.max(0, first - 0.1));
+      else if (shot.cont) tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.01, immediateRender: true }, first);
+      else tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: shot.calm ? 0.6 : 0.25, ease: shot.calm ? 'sine.inOut' : 'none' }, Math.max(0, first - (shot.calm ? 0.3 : 0.1)));
       return { t0, t1, j, box, first };
     });
     // no reel o cabeçalho (capítulo/título) não ocupa o topo — a tela é do gancho e da prova
@@ -101,9 +102,12 @@
     built.forEach((b) => {
       if (b.t1 >= S.dur - 0.05) return;
       const out = Math.min(S.dur - 0.4, Math.max(b.t1, built[b.j].first + 0.15));
+      if (shots[b.j].cont) { tl.set(b.box, { opacity: 0 }, built[b.j].first + 0.04); return; }
+      if (shots[built.indexOf(b)].calm) { tl.to(b.box, { opacity: 0, duration: 0.6, ease: 'sine.inOut' }, Math.max(b.t0 + 0.4, built[b.j].first)); return; }
       tl.to(b.box, { opacity: 0, scale: 1.035, filter: 'blur(8px)', duration: 0.32, ease: 'power2.in' }, Math.max(b.t0 + 0.4, out - 0.34));
     });
-    if (S.dur > 1) tl.to(stage, { opacity: 0, scale: 1.08, filter: 'blur(10px)', duration: 0.3, ease: 'power2.in' }, S.dur - 0.3);
+    if (S.dur > 1 && shots.some((x) => x.calm)) tl.to(stage, { opacity: 0, duration: 0.35, ease: 'sine.inOut' }, S.dur - 0.35);
+    else if (S.dur > 1) tl.to(stage, { opacity: 0, scale: 1.08, filter: 'blur(10px)', duration: 0.3, ease: 'power2.in' }, S.dur - 0.3);
     tl.eventCallback('onUpdate', () => renders.forEach((f) => f()));
     renders.forEach((f) => f());
     window.__timelines[id] = tl;
@@ -665,7 +669,10 @@
   // Campos: src (assets/media/…), focus [fx,fy] 0–1, zoom [z0,z1], label? (rich), label_at?,
   //         highlights [{x,y,w,h,at}] (0–1 na imagem) — caixa âmbar que aparece na deixa.
   V2.P.media = function (box, s, c) {
-    const t = def(s.at, c.T0 + 0.05), X = 90, Y = s.label ? 150 : 170, W = 1330, Hh = s.label ? 700 : 780;
+    const t = def(s.at, c.T0 + 0.05), Y = s.label ? 150 : 170;
+    let X = 90, W = 1330, Hh = s.label ? 700 : 780;
+    // calm (2.7): moldura no formato da imagem — a ilustração aparece INTEIRA no zoom 1 (nada cortado embaixo)
+    if (s.calm && s.iw && s.ih) { const ar = s.iw / s.ih, w2 = Math.min(W, Hh * ar); X += (W - w2) / 2; Hh = w2 / ar; W = w2; }
     const fr = h(box, 'div', 'md-frame', `left:${X}px;top:${Y}px;width:${W}px;height:${Hh}px`);
     // imagem e destaques no MESMO contêiner: o zoom move os dois juntos (o destaque fica na palavra certa)
     const inn = h(fr, 'div', 'md-in', '');
@@ -676,12 +683,18 @@
     // escala mínima para a imagem cobrir a moldura inteira (imagem panorâmica não deixa faixa vazia)
     const zmin = Math.max(1, Hh / IH);
     z0 = Math.max(z0, zmin); z1 = Math.max(z1, zmin);
-    const pos = (z) => ({ scale: z,
-      x: Math.min(0, Math.max(W - W * z, W / 2 - fx * W * z)),
-      y: Math.min(0, Math.max(Hh - IH * z, Hh / 2 - fy * IH * z)) });
+    const pos = (z, ax, ay) => { ax = ax == null ? fx : ax; ay = ay == null ? fy : ay; return { scale: z,
+      x: Math.min(0, Math.max(W - W * z, W / 2 - ax * W * z)),
+      y: Math.min(0, Math.max(Hh - IH * z, Hh / 2 - ay * IH * z)) }; };
     inn.style.transformOrigin = '0 0';
-    c.tl.fromTo(fr, { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'power3.out' }, t);
-    c.tl.fromTo(inn, pos(z0), Object.assign(pos(z1), { duration: Math.max(1, c.T1 - t), ease: 'sine.inOut' }), t);
+    if (s.cont) c.tl.fromTo(fr, { opacity: 0 }, { opacity: 1, duration: 0.01, immediateRender: true }, t);  // set() não esconde antes de t  // mesma imagem do shot anterior: sem entrada, a câmera só desliza
+    else if (s.calm) c.tl.fromTo(fr, { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'sine.inOut' }, t);
+    else c.tl.fromTo(fr, { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'power3.out' }, t);
+    if (s.from) {  // parte de onde a câmera do shot anterior parou e desliza devagar até o novo foco
+      const d = Math.min(2.2, Math.max(0.8, (c.T1 - t) * 0.45)), zf = Math.max(s.from.zoom, zmin);
+      c.tl.fromTo(inn, pos(zf, s.from.focus[0], s.from.focus[1]), Object.assign(pos(z0), { duration: d, ease: 'sine.inOut' }), t);
+      c.tl.to(inn, Object.assign(pos(z1), { duration: Math.max(0.5, c.T1 - t - d), ease: 'none' }), t + d);
+    } else c.tl.fromTo(inn, pos(z0), Object.assign(pos(z1), { duration: Math.max(1, c.T1 - t), ease: s.calm ? 'none' : 'sine.inOut' }), t);
     (s.highlights || []).forEach((r) => {
       const b = h(inn, 'div', 'md-hl', `left:${r.x * 100}%;top:${r.y * 100}%;width:${r.w * 100}%;height:${r.h * 100}%`);
       c.tl.fromTo(b, { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, def(r.at, t + 1));
