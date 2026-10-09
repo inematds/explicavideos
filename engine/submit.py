@@ -6,6 +6,14 @@ root=ROOT;path=root/'blocos/manifest.json'
 def save(a):
  t=path.with_suffix('.tmp');t.write_text(json.dumps(a,ensure_ascii=False,indent=2)+'\n');t.replace(path)
 subprocess.run(['xdpyinfo','-display',':99'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True)
+# 2.6.7: o perfil do HeyGen é um só; se outra produção está com o navegador aberto (SingletonLock de PID vivo), espera até 2 h
+# em vez de lançar o Chrome, que aborta e deixava o bloco em needs_review (FALHAS 07/10 e 08/10).
+lock=Path(CFG['profile'])/'SingletonLock'
+for _ in range(720):
+ pid=os.readlink(lock).rsplit('-',1)[-1] if lock.is_symlink() else ''
+ if not (pid.isdigit() and Path('/proc/'+pid).exists()):break
+ time.sleep(10)
+else:raise SystemExit('HeyGen profile still locked after 2 h')
 a=json.loads(path.read_text())
 for j in a:
  if j.get('id'):continue

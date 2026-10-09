@@ -1,0 +1,13 @@
+{
+  "id": "consultoria-ia-caminhos",
+  "title": "Consultoria de IA: 24 cursos e 10 kits, e como usar no trabalho e no cliente",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/consultoria-ia-caminhos",
+  "output": "/home/nmaldaner/projetos/output/consultoria-ia-caminhos/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/consultoria-ia-caminhos/v1",
+  "languages": ["pt"],
+  "github_repo": "inematds/consultoria-ia-caminhos",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77",
+  "cold_open": true
+}

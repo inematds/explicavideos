@@ -1,0 +1,21 @@
+{
+  "id": "consultoria-ia-caminhos",
+  "title": "Consultoria de IA: 24 cursos e 10 kits, e como usar no trabalho e no cliente",
+  "source_repo": "/home/nmaldaner/projetos/consultoria-ia-caminhos",
+  "output": "/home/nmaldaner/projetos/output/consultoria-ia-caminhos/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/consultoria-ia-caminhos/roteiro/pt.json"
+  },
+  "github_repo": "inematds/consultoria-ia-caminhos",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA ponto club, eventos ponto inema ponto pro, consultoria de IA, Prospector Agent, Raio-X de Margem, AIV, inemaSEO, Gestoria, LOOP-R, Mentor-Especialista, IA Cultivada, Infinite Brain OS, Claude Code, CAIO, PMEs, LGPD, workflow, 2027.",
+  "balanced_blocks": true
+}
