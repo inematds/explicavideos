@@ -107,12 +107,23 @@ async function buscar(termo) {
   await campo.fill('');
   await campo.fill(termo);
 }
+// Oferta de troca de plano ("Switch to Creator", "Your new plan"): o Nei NUNCA troca de plano.
+// Só clica em "Keep my plan"/fechar; nunca no botão de aceitar. (09/10/2026)
+async function recusarPlano() {
+  const txt = (await pg.locator('[role=dialog]').allTextContents().catch(() => [])).join(' ');
+  if (!/new plan|Switch to|Keep my plan/i.test(txt)) return;
+  const manter = pg.getByRole('button', { name: /^(Keep my plan|Manter (meu )?plano)$/i }).first();
+  if (await manter.count()) { await manter.click(); passo('oferta de troca de plano recusada'); }
+  else { await pg.keyboard.press('Escape'); passo('oferta de troca de plano fechada (Esc)'); }
+  await pg.waitForTimeout(1_500);
+}
 const CAMPO_TITULO = 'input[placeholder*="sem título" i], input[placeholder*="Untitled" i]';
 
 try {
   passo('abrindo Projetos');
   await pg.goto('https://app.heygen.com/projects', { waitUntil: 'domcontentloaded', timeout: 90_000 });
   await pg.waitForTimeout(5_000);
+  await recusarPlano();
   if (!(await pg.locator(BUSCA).count())) {
     await morrer('a sessão do HeyGen não está logada neste perfil');
   }
@@ -184,6 +195,11 @@ try {
   if (!(await gerar.count())) await morrer('botão Gerar não encontrado');
   await gerar.click();
   await pg.waitForTimeout(4_000);
+  await recusarPlano();
+  // o modal pode demorar; e se vier outro aviso (ex.: "voice engine" da voz), ele aparece no erro
+  for (let i = 0; i < 10 && !(await pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).count()); i++) await pg.waitForTimeout(2_000);
+  if (!(await pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).count()))
+    await morrer('modal de geração sem botão "Enviar": ' + (await pg.locator('[role=dialog]').allTextContents()).join(' | ').replace(/\s+/g, ' ').slice(-300));
 
   // O passo que não estava no prompt do agente.
   const enviar = pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).first();
