@@ -103,6 +103,8 @@ Todo vídeo, não só o reel, precisa prender nos primeiros 2 s pela voz e pela 
 
 No roteiro, a 1ª frase já é a de impacto: nada de "Imagine que…", "Pense num…", "Se você…" como abertura.
 
+**Capa = o ganho da pessoa (09/10/2026).** A 1ª imagem da abertura (frame 0, `g0`) é a PROMESSA, o que o espectador ganha (ex.: "SEU AGENTE TRABALHANDO HORAS OU DIAS / DE FORMA SEGURA"; "QUALQUER UM CONSTRÓI SEU ASSISTENTE JARVIS"), e a 1ª frase da fala diz esse ganho. Só depois vêm a provocação (o problema/flagrante) e as peças. Abrir direto na provocação, sem o ganho, o Nei reprovou no vídeo Execução Longa.
+
 Com `reel_profile`:
 - **Frame 0 = capa.** A 1ª cena abre com um shot `hook` em `"at": "@start"` (só o `hook` aceita esse marcador; em qualquer
   outro shot "start" é deixa comum) — frase de 3–6 palavras (`**destaque**`),
