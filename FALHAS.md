@@ -1,4 +1,5 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-10-10 | saudeviral sem avatar (curto e longo): "ProcessSingleton", o download do lote de tradução segurava o perfil por horas esperando o vídeo | heygen-perfil.mjs (fila no lançamento) + download abre/confere/fecha a cada ciclo | infra |
 | 2026-10-09 | contexto-portatil v2: shots de continuação apareciam no frame 0 por cima da capa | `tl.set()` em t>0 não esconde antes de t → `fromTo({opacity:0},…, immediateRender)` | prompt |
 | 2026-10-09 | consultoria-ia-caminhos v2: `hyperframes check` reprovou b01/b02 (content_overlap) — 5 shots `media` com `label` de 52–60 caracteres, regra ≤36 de 07/10 repetida | rótulos encurtados para ≤45; proteção: `build_block --strict` deveria reprovar `label` > 36 em vez de esperar o check | prompt |
 | 2026-10-08 | consultoria-ia-caminhos: submit marcou `needs_review` sem enviar — perfil HeyGen com `SingletonLock` de outra produção (`heygen-estudio-baixar.mjs`), 2ª vez (1ª em 07/10) | `submit.py` espera o lock de PID vivo sumir (até 2 h) antes de abrir o Chrome (2.6.7) | infra |
