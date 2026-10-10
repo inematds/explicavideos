@@ -1,6 +1,13 @@
 # Explicavideos
 Leia README.md e context/current-state.md. Autor: inematds <inematds@gmail.com>. Credenciais apenas em runtime. Não repita submissão ambígua ao HeyGen. Não altere o manifesto depois de IDs gerados. Artefatos em output; nunca commitar MP4s ou segredos.
 
+## Perfil do HeyGen: um só, com fila (2.7.8, 10/10/2026)
+
+Muitos projetos usam o estúdio (finviral, saudeviral, traduções, reelcomenta, docflow, istoreal, refazvideo…) e todos passam por `engine/heygen-studio.mjs` ou `engine/heygen-estudio-baixar.mjs`. Os dois abrem o perfil por `engine/heygen-perfil.mjs`: espera o dono atual sair (PID do `SingletonLock` vivo), volta para a fila se perder a corrida ("ProcessSingleton") e desiste depois de `HEYGEN_ESPERA_MIN` minutos (padrão 180). O download abre, confere e FECHA o navegador a cada ciclo, e espera o intervalo com o perfil livre. Antes ficava aberto horas.
+- Ver quem está usando e quem está na fila: `engine/heygen-fila.sh`. Histórico em `~/.cache/inemaccbot/heygen-uso.log`.
+- Não abra o perfil por outro caminho (`launchPersistentContext` direto): use os dois scripts ou importe `abrirPerfil`.
+- Quem chama os scripts com `timeout` precisa contar a espera na fila.
+
 ## Ao pedir autorização do HeyGen, explique as opções
 
 Todo pedido de ok ao Nei para gerar ou reenviar avatar (novo `APROVADO_HEYGEN`) diz, em texto, sem menu:

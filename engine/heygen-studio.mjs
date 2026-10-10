@@ -23,6 +23,7 @@
 // Sai 0 com `RESULT: <titulo>` na última linha; 3 com `ERRO: <motivo>`.
 import { readFileSync } from 'node:fs';
 import { chromium } from '/home/nmaldaner/projetos/inemaccbot/node_modules/playwright/index.mjs';
+import { abrirPerfil } from './heygen-perfil.mjs';
 
 const arg = (n, d) => {
   const i = process.argv.indexOf(`--${n}`);
@@ -66,13 +67,13 @@ const morrer = async (m) => {
 // falhar com a mensagem de sempre do que não rodar.
 const COM_TELA = Boolean(process.env.DISPLAY);
 passo(COM_TELA ? `com janela (DISPLAY=${process.env.DISPLAY})` : 'sem DISPLAY — headless');
-ctx = await chromium.launchPersistentContext(PERFIL, {
+ctx = await abrirPerfil(chromium, PERFIL, {
   headless: !COM_TELA,
   // `--password-store=basic`: é assim que o Chromium do snap cifra os cookies.
   // Sem isto a sessão do HeyGen parece deslogada.
   args: ['--password-store=basic', '--no-first-run', '--no-default-browser-check'],
   viewport: { width: 1440, height: 900 },
-});
+}, `envio "${arg('titulo')}"`);
 const pg = ctx.pages()[0] ?? await ctx.newPage(); for(const extra of ctx.pages().slice(1))await extra.close();
 pg.setDefaultTimeout(45_000);
 const BUSCA = 'input[placeholder*="esquisar" i], input[placeholder*="earch" i]';
