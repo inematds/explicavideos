@@ -33,6 +33,9 @@ for j in a:
   j['status']='needs_review';save(a);raise SystemExit('Browser timed out; reconcile existing job before retry')
  raw=logfile.read_text();ids=re.findall(r'create-v4/([a-f0-9]{32})',raw)
  if ids:j['id']=ids[-1];save(a)
+ # 2.6.8: outra produção pegou o perfil entre a espera e o lançamento — o Chrome nem abriu, nada foi enviado: volta para a fila.
+ if p.returncode and not ids and 'ProcessSingleton' in raw:
+  j['status']='prepared';save(a);raise SystemExit('HeyGen profile taken at launch; block back to prepared, retry')
  if p.returncode or not ids:
   j['status']='needs_review';save(a);raise SystemExit('Submission needs review: '+j['title'])
  for attempt in range(6):
