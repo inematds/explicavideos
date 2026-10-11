@@ -56,6 +56,10 @@ def frame(cfg):
 SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'radar', 'lanes', 'compare', 'chat', 'terminal',
               'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg',
               'hook', 'media'}
+# perfil viral (2.9, PADRAO-VIRAL.md): peças de tela cheia do runtime/viral.js
+VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta'}
+SHOT_TYPES |= VIRAL_TYPES
+OPENERS = ('hook', 'capa')   # nascem visíveis no frame 0 ("@start")
 MEDIA_EXT = {'.png', '.jpg', '.jpeg', '.webp'}
 
 
@@ -206,7 +210,7 @@ def resolve_scene(timing, k, scene_start, spec, warnings, n, strict):
         if 'at' not in sh:
             raise BuildError(f'cena {n}: shot {i} sem deixa "at"')
         raw = sh['at']
-        if sh['type'] == 'hook' and raw in ('@start', 'start'):
+        if sh['type'] in OPENERS and raw in ('@start', 'start'):
             # abertura do reel: t = 0 da cena. Só o hook aceita o marcador — "start" continua deixa normal nos outros
             sh['at'], gi = 0.0, cursor
         else:
@@ -397,6 +401,29 @@ SCENE = '''<!doctype html>
 '''
 
 
+def viral_index(idx, rostos, fontes, marca, selo, capa=None):
+    """Perfil viral: runtime viral.css/js, faixa de marca no topo, fonte do dado e avatar em tela cheia nos "rosto"."""
+    head = '<script src="assets/v2.js"></script>'
+    idx = idx.replace(head, head + '<link rel="stylesheet" href="assets/viral.css"><script src="assets/viral.js"></script>')
+    fts = ''.join(f'<div class="fonte" id="ft{i}">{html.escape("Fonte: " + f[2])}</div>' for i, f in enumerate(fontes))
+    topo = f'<div id="topo"><span>{html.escape(marca)}</span>' + (f'<span class="ao">{html.escape(selo)}</span>' if selo else '') + fts + '</div>'
+    rich = lambda t: re.sub(r'\*\*(.+?)\*\*', r'<span class="hl">\1</span>', html.escape(t))
+    rtx = ''.join(f'<div class="rtx" id="rt{i}">{rich(r[2])}</div>' for i, r in enumerate(rostos) if r[2])
+    cc = f'<div id="capa-cheia" style="background-image:url(\'{capa[0]}\')"></div>' if capa else ''
+    idx = idx.replace(' <div id="caps"></div>', cc + ' <div id="caps"></div>\n ' + topo + rtx)
+    js = ('<script>(function(){const tl=window.__timelines["main"],R=%s,F=%s,v9=document.getElementById("root").classList.contains("v916");'
+          'const W=+document.getElementById("root").dataset.width,H=+document.getElementById("root").dataset.height;'
+          'const pc=getComputedStyle(document.getElementById("pip")),sm={left:parseFloat(pc.left),top:parseFloat(pc.top),width:parseFloat(pc.width),height:parseFloat(pc.height),borderRadius:parseFloat(pc.borderTopLeftRadius)};'
+          'const big={left:0,top:0,width:W,height:H,borderRadius:0};'
+          'R.forEach(([a,b])=>{tl.fromTo("#pip",Object.assign({},sm),Object.assign({duration:.35,ease:"expo.out",immediateRender:false},big),a);'
+          'tl.fromTo("#pip",Object.assign({},big),Object.assign({duration:.3,ease:"expo.inOut",immediateRender:false},sm),Math.max(a+.4,b-.3));});'
+          'R.forEach(([a,b,t,ta],i)=>{if(!t)return;tl.fromTo("#rt"+i,{opacity:0,scale:1.4},{opacity:1,scale:1,duration:.3,ease:"back.out(2)",immediateRender:false},ta);tl.to("#rt"+i,{opacity:0,duration:.2},Math.max(ta+.3,b-.25));});'
+          + ('tl.fromTo("#capa-cheia",{opacity:1,scale:1},{scale:1.06,duration:%.3f,ease:"none",immediateRender:true},0);tl.to("#capa-cheia",{opacity:0,duration:.25},%.3f);' % (max(.3, capa[1] - .25), max(0, capa[1] - .25)) if capa else '') +
+          'F.forEach(([a,b],i)=>{tl.fromTo("#ft"+i,{opacity:0,y:-8},{opacity:1,y:0,duration:.25},a);tl.to("#ft"+i,{opacity:0,duration:.2},Math.max(a+.3,b-.2));});'
+          '})();</script>') % (json.dumps(rostos), json.dumps([[a, b] for a, b, _ in fontes]))
+    return idx.replace('</body></html>', js + '\n</body></html>')
+
+
 def build(part, strict=False, spec_path=None, out=None):
     lang = CFG['languages'][0]
     W, H, mode = frame(CFG)
@@ -405,6 +432,11 @@ def build(part, strict=False, spec_path=None, out=None):
         if aspect_of(CFG) != '9:16':
             raise BuildError(f'reel_profile {reel["name"]!r} exige "aspect": "9:16" na config (está {aspect_of(CFG)})')
         mode = (mode + ' reel').strip()
+    viral = CFG.get('profile_visual') == 'viral'
+    if viral:
+        mode = (mode + ' viral').strip()
+    VW, VH = (1080, 1150) if (viral and aspect_of(CFG) == '9:16') else (1920, 1080)
+    rostos, fontes, capa_cheia = [], [], None
     key = f'{lang}-b{part:02d}'
     # Relatório velho não pode sobreviver a um build que falhou no meio: o produtor o leria como aprovado.
     (ROOT / 'verification' / f'build-v2-{key}.json').unlink(missing_ok=True)
@@ -474,15 +506,33 @@ def build(part, strict=False, spec_path=None, out=None):
                 sh['iw'], sh['ih'] = image_size(dest / sh['src'])
             if sh['type'] == 'hook' and sh.get('src'):
                 sh['src'] = copy_media(sh['src'], dest, n, i)
+            if sh['type'] in VIRAL_TYPES and sh.get('src'):
+                if viral and aspect_of(CFG) == '9:16' and sh.get('src_916'):
+                    sh['src'] = sh['src_916']
+                sh.pop('src_916', None)
+                sh['src'] = copy_media(sh['src'], dest, n, i)
+        if viral:
+            # trechos absolutos: avatar em tela cheia ("rosto") e fonte do dado na faixa do topo
+            for i, sh in enumerate(shots):
+                j = i + 1
+                while j < len(shots) and shots[j].get('keep'):
+                    j += 1
+                a, b = s0 + sh['at'], s0 + (shots[j]['at'] if j < len(shots) else sdur)
+                if sh['type'] == 'capa' and k == 0 and aspect_of(CFG) == '9:16':
+                    capa_cheia = [sh['src'], round(b, 3)]   # 9:16: a capa cobre o quadro inteiro (sobre o avatar) até o 1º corte
+                if sh['type'] == 'rosto':
+                    rostos.append([round(a, 3), round(b, 3), sh.get('txt', ''), round(s0 + sh.get('txt_at', sh['at'] + 0.3), 3)])
+                if sh.get('fonte'):
+                    fontes.append([round(a, 3), round(b, 3), sh['fonte']])
         if reel and k > 0 and shots and shots[0]['at'] > 0.5:
             warnings.append(f'cena {n}: topo vazio por {shots[0]["at"]}s até o 1º shot (use uma deixa do começo da fala)')
-        if reel and k == 0 and not (shots and shots[0]['type'] == 'hook' and shots[0]['at'] <= 0.05):
+        if reel and k == 0 and not (shots and shots[0]['type'] in OPENERS and shots[0]['at'] <= 0.05):
             msg = f'cena {n}: reel precisa abrir com shot "hook" em "start" (frame 0 completo)'
             if strict:
                 raise BuildError(msg)
             warnings.append(msg)
         if (not reel and part == 1 and k == 0 and not CFG.get('cold_open') and not CFG.get('allow_cold_start')
-                and not (shots and shots[0]['type'] == 'hook' and shots[0]['at'] <= 0.05)):
+                and not (shots and shots[0]['type'] in OPENERS and shots[0]['at'] <= 0.05)):
             # 2.6.6: no 16:9 o frame 0 também não pode nascer vazio — shot com "at" 0 ainda entra animado e o 1º frame
             # sai só com o fundo (trilogia gestão de agentes, 08/10/2026). Só o "hook" nasce visível em t = 0.
             msg = (f'cena {n}: o vídeo abre sem gancho — 1º shot "hook" em "@start", ou "cold_open" na config (abertura com '
@@ -490,7 +540,10 @@ def build(part, strict=False, spec_path=None, out=None):
             if strict:
                 raise BuildError(msg)
             warnings.append(msg)
-        if reel:
+        if viral:
+            limit = 2.0   # PADRAO-VIRAL: nunca > 2 s sem troca de conteúdo
+            ts = [0.0] + all_times(shots, words=False, effects=False) + [sdur]
+        elif reel:
             # no reel conta só troca de conteúdo (at/*_at), não palavra aparecendo (wt); e a cauda inteira
             limit = reel['rhythm']['static_review_s']
             ts = [0.0] + all_times(shots, words=False, effects=False) + [sdur]
@@ -502,7 +555,9 @@ def build(part, strict=False, spec_path=None, out=None):
             warnings.append(f'cena {n}: {g}s sem mudança visual a partir de {a}s (limite {limit}s)')
         sid = f'scene-{n:03d}'
         S = {'lang': lang, 'n': n, 'total': total, 'chapter': sc['chapter'], 'title': sc['title'], 'takeaway': sc.get('takeaway') if entry is None or entry.get('takeaway', True) is not False else None,
-             'dur': sdur, 'shots': shots, 'reel': bool(reel), 'header': bool(entry and entry.get('header'))}
+             'dur': sdur, 'shots': shots, 'reel': bool(reel), 'header': bool(entry and entry.get('header')), 'viral': viral, 'vw': VW, 'vh': VH}
+        if viral and entry and entry.get('fundo'):
+            S['fundo'] = copy_media(entry['fundo'], dest, n, 'fundo')
         if entry and isinstance(entry.get('takeaway'), str):
             S['takeaway'] = entry['takeaway']
         pending.append((dest / 'compositions' / f'{sid}.html', SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=mode, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/'))))
@@ -513,11 +568,14 @@ def build(part, strict=False, spec_path=None, out=None):
     for path, content in pending:
         path.write_text(content)
     caps = captions(timing, starts, block['scenes'], dur,
-                    max_words=reel['captions']['max_words'] if reel else 7,
-                    max_chars=reel['captions']['max_chars'] if reel else None)
+                    max_words=3 if viral else (reel['captions']['max_words'] if reel else 7),
+                    max_chars=(18 if aspect_of(CFG) == '9:16' else 24) if viral else (reel['captions']['max_chars'] if reel else None))
     idx = INDEX.replace('__CAPS__', json.dumps(caps, ensure_ascii=False)).replace('__DUR__', str(dur)).replace('__HOSTS__', '\n'.join(hosts)).replace('__SEED__', str(7 + part)).replace('{LANG}', lang)
     idx = idx.replace('__W__', str(W)).replace('__H__', str(H)).replace('__MODE__', mode)
+    if viral:
+        idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia)
     report['aspect'] = aspect_of(CFG)
+    report['rostos'] = [r[:2] for r in rostos]
     report['reel_profile'] = reel and {'name': reel['name'], 'contract_version': reel['version']}
     (dest / 'index.html').write_text(idx)
     (dest / 'captions.srt').write_text(srt(caps, reel['captions']['min_cue_s'] if reel else 0.5))
@@ -545,6 +603,6 @@ if __name__ == '__main__':
     print(json.dumps({'key': r['key'], 'ratio': r['ratio'], 'scenes': len(r['scenes']), 'warnings': r['warnings']}, indent=1, ensure_ascii=False))
     # --strict no reel reprova de verdade: qualquer aviso bloqueia. Fora do reel mantém o comportamento
     # antigo (avisos não mudam o código de saída) para não quebrar as filas em produção.
-    if strict and r['warnings'] and r.get('reel_profile'):
+    if strict and r['warnings'] and (r.get('reel_profile') or CFG.get('profile_visual') == 'viral'):
         print('REPROVADO (--strict): corrija os avisos acima')
         sys.exit(3)
