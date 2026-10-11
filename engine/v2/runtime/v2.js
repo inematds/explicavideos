@@ -73,7 +73,7 @@
 
     const shots = S.shots || [];
     // reel (2.4): cena que abre com "hook" em t≈0 nasce pronta — o frame 0 já é a capa (nada surge do vazio)
-    const openHook = shots.length && shots[0].type === 'hook' && shots[0].at <= 0.05;
+    const openHook = shots.length && (shots[0].type === 'hook' || shots[0].type === 'capa') && shots[0].at <= 0.05;
     if (openHook) tl.set(stage, { opacity: 1 }, 0);
     else tl.fromTo(stage, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
     // Palco nunca vazio: o shot anterior só sai quando o PRÓXIMO já mostra conteúdo (1º tween de um
@@ -97,8 +97,8 @@
       return { t0, t1, j, box, first };
     });
     // no reel o cabeçalho (capítulo/título) não ocupa o topo — a tela é do gancho e da prova
-    if (!S.reel || S.header) header(ctx, built.length ? built[0].first : S.dur);
-    side(ctx);
+    if (!S.viral && (!S.reel || S.header)) header(ctx, built.length ? built[0].first : S.dur);
+    if (!S.viral) side(ctx);
     built.forEach((b) => {
       if (b.t1 >= S.dur - 0.05) return;
       const out = Math.min(S.dur - 0.4, Math.max(b.t1, built[b.j].first + 0.15));

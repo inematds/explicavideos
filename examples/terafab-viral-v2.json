@@ -1,0 +1,18 @@
+{
+  "id": "terafab-viral",
+  "title": "O maior prédio da história é uma fábrica de chips",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-DeQDKiBglmh",
+  "output": "/home/nmaldaner/projetos/output/explica-DeQDKiBglmh/v2-viral",
+  "v1_output": "/home/nmaldaner/projetos/output/explica-DeQDKiBglmh/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/terafab",
+  "release_tag": "video-v1.0.0",
+  "hyperframes": "0.8.77",
+  "aspect": "16:9",
+  "profile_visual": "viral",
+  "marca": "INEMA · TECNOLOGIA",
+  "selo_topo": "NOTÍCIA"
+}
