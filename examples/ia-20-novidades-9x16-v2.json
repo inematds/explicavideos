@@ -1,0 +1,16 @@
+{
+  "id": "ia-20-novidades-9x16",
+  "title": "20 novidades de IA da semana, cada uma demonstrada",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-PJ6DdcstudE",
+  "output": "/home/nmaldaner/projetos/output/explica-PJ6DdcstudE/v2-9x16",
+  "v1_output": "/home/nmaldaner/projetos/output/explica-PJ6DdcstudE/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/ia-20-novidades",
+  "release_tag": "video-v2.0.0",
+  "hyperframes": "0.8.77",
+  "aspect": "9:16",
+  "cold_open": true
+}

@@ -1,4 +1,6 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-10-11 | ia-20-novidades v2: `hyperframes check` reprovou b02 (content_overlap) — counter com valor "~1 milhão" largo demais encostou no item vizinho; o 16:9 perdeu uma volta de render | valor encurtado para "~1 mi"; proteção: `build_block --strict` deveria reprovar valor de counter (prefixo+número+sufixo) > 7 caracteres com 3 itens | prompt |
+| 2026-10-11 | ia-20-novidades: laço `while read` de cortes ffmpeg sobre heredoc — o ffmpeg comeu o stdin e o laço parou no 1º clipe ("Enter command:") | `ffmpeg -nostdin` em todo ffmpeg dentro de laço | prompt |
 | 2026-10-10 | saudeviral sem avatar (curto e longo): "ProcessSingleton", o download do lote de tradução segurava o perfil por horas esperando o vídeo | heygen-perfil.mjs (fila no lançamento) + download abre/confere/fecha a cada ciclo | infra |
 | 2026-10-09 | contexto-portatil v2: shots de continuação apareciam no frame 0 por cima da capa | `tl.set()` em t>0 não esconde antes de t → `fromTo({opacity:0},…, immediateRender)` | prompt |
 | 2026-10-09 | consultoria-ia-caminhos v2: `hyperframes check` reprovou b01/b02 (content_overlap) — 5 shots `media` com `label` de 52–60 caracteres, regra ≤36 de 07/10 repetida | rótulos encurtados para ≤45; proteção: `build_block --strict` deveria reprovar `label` > 36 em vez de esperar o check | prompt |

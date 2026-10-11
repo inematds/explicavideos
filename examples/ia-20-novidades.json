@@ -1,0 +1,21 @@
+{
+  "id": "ia-20-novidades",
+  "title": "20 novidades de IA da semana, cada uma demonstrada",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-PJ6DdcstudE",
+  "output": "/home/nmaldaner/projetos/output/explica-PJ6DdcstudE/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/explica-PJ6DdcstudE/roteiro/pt.json"
+  },
+  "github_repo": "inematds/ia-20-novidades",
+  "release_tag": "video-v2.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Claude, Anthropic, Claude Code, Opus 5.5, OpenAI, ChatGPT, Codex, Gemini, Google Docs, Sheets, Slides, /motion, /dashboard, /design, BigQuery, Snowflake, Salesforce, Intelligent UI, Karpathy, HTML, subagentes, mods, You Should Know, VPS, MCP, computer use, Uber, Boris Cherny, Garry Tan, Y Combinator, skill, finviral, Claude for Startups, Decisions API, Jev, Replit, REA, Granola, Ata, Madhu Guru, Meta, inema mods, inema ponto club.",
+  "balanced_blocks": true
+}
