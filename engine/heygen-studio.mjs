@@ -147,10 +147,13 @@ try {
     if (n !== 1) await morrer(`${n} cards com o nome exato "${TEMPLATE}" (esperado 1)`);
 
     const card = alvo.first().locator('xpath=ancestor::*[.//img or .//video][1]');
-    await card.hover();
-    await card.locator('button').first().click();     // o ⋮ do CARD
-    await pg.waitForTimeout(1_200);
     const item = pg.getByText(/Editar como Novo|Edit as New/i).first();
+    for (let t = 1; t <= 3 && !(await item.count()); t++) {  // o menu às vezes não abre no 1º clique (saudeviral 11/10)
+      if (t > 1) { await pg.keyboard.press('Escape'); await pg.waitForTimeout(1_500); }
+      await card.hover();
+      await card.locator('button').first().click();     // o ⋮ do CARD
+      await pg.waitForTimeout(1_200 * t);
+    }
     if (!(await item.count())) await morrer('o menu do card não tem "Editar como Novo"');
     passo('Editar como Novo');
     await item.click();
