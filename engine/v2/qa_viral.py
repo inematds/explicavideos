@@ -37,7 +37,9 @@ for i, f in enumerate(fr):
         dif.append(float(np.abs(f - fr[i - 1]).mean()))
 
 # trechos com o avatar em tela cheia ("rosto") não contam como tela vazia (relatório do build)
-rostos = json.loads(Path(opt['--relatorio']).read_text()).get('rostos', []) if '--relatorio' in opt else []
+_rel = json.loads(Path(opt['--relatorio']).read_text()) if '--relatorio' in opt else {}
+# avatar em tela cheia e mapa: grandes áreas sólidas que são conteúdo, não tela vazia
+rostos = _rel.get('rostos', []) + _rel.get('mapas', [])
 em_rosto = lambda t: any(a - 0.3 <= t <= b + 0.3 for a, b in rostos)
 ruim = [v > LIM_VAZIO and not em_rosto(i * PASSO) for i, v in enumerate(vazios)]
 # um quadro isolado (o mergulho de 0,3 s entre cenas) não reprova: só 2 amostras seguidas (≥ 1 s)

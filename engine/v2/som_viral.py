@@ -11,8 +11,27 @@ from pathlib import Path
 args = [a for a in sys.argv[1:] if not a.startswith('--')]
 opt = {a.split('=')[0]: a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--') and '=' in a}
 blk, video, saida = Path(args[0]), args[1], args[2]
-TRILHA = opt.get('--trilha', str(Path.home() / 'projetos/cardshorts/musicas/tensa.mp3'))
-SFX = Path(opt.get('--sfx', str(Path.home() / 'projetos/mkivideos/motion-sfx')))
+# biblioteca local (~/projetos/biblioteca-sons: trilhas MusicGen + efeitos sintetizados, sem API); --trilha aceita nome ou caminho
+BIB = Path(opt.get('--biblioteca', str(Path.home() / 'projetos/biblioteca-sons')))
+TRILHA = opt.get('--trilha', 'noticia-urgente')
+if not Path(TRILHA).exists():
+    TRILHA = str(BIB / 'trilhas' / f'{TRILHA}.wav')
+if not Path(TRILHA).exists():
+    TRILHA = str(Path.home() / 'projetos/cardshorts/musicas/tensa.mp3')
+SFX = Path(opt.get('--sfx', str(BIB / 'sfx')))
+# evento → famílias da biblioteca (gira entre as variações para não repetir o mesmo som)
+FAM = {'whoosh': ['whoosh', 'swoosh'], 'boom': ['impacto', 'boom'], 'riser': ['riser'], 'pop': ['pop', 'clique'],
+       'buzz': ['glitch'], 'braam': ['braam'], 'ding': ['ding']}
+_giro = {}
+
+
+def arquivo(e):
+    vs = sorted(p for f in FAM.get(e, [e]) for p in SFX.glob(f'{f}-*.wav')) or sorted(SFX.glob(f'{e}*.wav'))
+    if not vs:
+        raise SystemExit(f'sem efeito {e!r} em {SFX}')
+    i = _giro.get(e, 0)
+    _giro[e] = i + 1
+    return vs[i % len(vs)]
 
 idx = (blk / 'index.html').read_text()
 starts = {m[0]: float(m[1]) for m in re.findall(r'id="(scene-\d+)" class="clip"[^>]*data-start="([\d.]+)"', idx)}
@@ -32,7 +51,10 @@ for f in sorted((blk / 'compositions').glob('scene-*.html')):
             ev.append((t + 0.24, 'boom', 0.7))
             continue
         if tp == 'capitulo':
-            ev.append((max(0, t - 0.6), 'riser', 0.5))
+            ev.append((max(0, t - 0.6), 'riser', 0.45))
+            ev.append((t + 0.1, 'braam', 0.5))
+        if tp == 'cta':
+            ev.append((t + 0.4, 'ding', 0.45))
         if not sh.get('keep'):
             ev.append((t, 'whoosh', 0.45))
         if tp == 'bignum':
@@ -49,13 +71,20 @@ for f in sorted((blk / 'compositions').glob('scene-*.html')):
             ev.append((s0 + p['at'], 'whoosh', 0.3))
 ev.sort()
 dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', video], capture_output=True, text=True).stdout)
-ins, fil = ['-i', video, '-stream_loop', '-1', '-i', TRILHA], []
-fil.append(f'[1:a]atrim=0:{dur:.2f},volume=0.075,afade=t=in:d=0.6,afade=t=out:st={max(0, dur - 2):.2f}:d=2[mus]')
+# trilha repetida com emenda em crossfade (2 s) até cobrir o vídeo — sem corte seco no loop
+tdur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', TRILHA], capture_output=True, text=True).stdout)
+nrep = max(1, int((dur + 4) // max(1.0, tdur - 2)) + 1)
+ins, fil = ['-i', video] + sum([['-i', TRILHA] for _ in range(nrep)], []), []
+cad = '[1:a]'
+for r in range(2, nrep + 1):
+    fil.append(f'{cad}[{r}:a]acrossfade=d=2:c1=tri:c2=tri[x{r}]')
+    cad = f'[x{r}]'
+fil.append(f'{cad}atrim=0:{dur:.2f},volume=0.075,afade=t=in:d=0.6,afade=t=out:st={max(0, dur - 2):.2f}:d=2[mus]')
 labs = ['[0:a]', '[mus]']
 for i, (t, e, v) in enumerate(ev):
-    ins += ['-i', str(SFX / f'{e}.wav')]
+    ins += ['-i', str(arquivo(e))]
     ms = int(max(0, t) * 1000)
-    fil.append(f'[{i + 2}:a]volume={v},adelay={ms}|{ms}[s{i}]')
+    fil.append(f'[{i + 1 + nrep}:a]volume={v},adelay={ms}|{ms}[s{i}]')
     labs.append(f'[s{i}]')
 fil.append(f'{"".join(labs)}amix=inputs={len(labs)}:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[a]')
 cmd = ['ffmpeg', '-v', 'error', '-nostdin', '-y'] + ins + ['-filter_complex', ';'.join(fil), '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', saida]

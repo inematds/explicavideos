@@ -95,3 +95,16 @@
 .vr-contain{background-size:contain;background-repeat:no-repeat}
 #capa-cheia{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:38;background-size:cover;background-position:50% 30%;transform-origin:50% 40%}
 .vr-fill{filter:blur(24px) brightness(.8) saturate(1.2)!important}
+.vr-mapa-tint{position:absolute;left:0;top:0;background:radial-gradient(ellipse at 50% 50%,rgba(4,18,40,.45),rgba(2,6,14,.85))}
+.vr-mapa{position:absolute;left:0;top:0;overflow:visible}
+.vr-terra{fill:#1b2c48;fill-opacity:.82;stroke:rgba(140,190,255,.55);stroke-width:var(--sw,1.2);stroke-linejoin:round}
+.vr-terra.hl{fill:var(--amber);stroke:#fff3c4;stroke-width:calc(var(--sw,1.2) * 2.5);filter:drop-shadow(0 0 8px rgba(255,194,58,.8))}
+.vr-pino{position:absolute;width:0;height:0;opacity:0;z-index:5}
+.vr-pino .dot{position:absolute;left:-13px;top:-13px;width:26px;height:26px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 5px #fff,0 0 30px rgba(255,59,48,.9)}
+.vr-pino .ring{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;border:4px solid var(--rose);opacity:0}
+.vr-pino .stem{position:absolute;left:-2px;top:-170px;width:4px;height:160px;background:linear-gradient(#fff,rgba(255,255,255,.2));transform-origin:50% 100%}
+.vr-pino .lab{position:absolute;left:-10px;top:-250px;white-space:nowrap;font-family:"MontBlack";font-size:52px;color:#111;background:var(--amber);padding:8px 22px;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.6);transform:translateX(-30%)}
+.vr-pino .lab small{display:block;font-family:"MontX";font-size:28px;color:#111;letter-spacing:.02em}
+.v916 .vr-pino .lab{font-size:46px}
+.vr-cond{fill:none;stroke:rgba(60,30,0,.55);stroke-width:var(--sw,1.2)}
+.vr-pino .lab small .hl{color:#b3261e}

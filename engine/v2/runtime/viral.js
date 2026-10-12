@@ -193,6 +193,62 @@
     fundo(box, s, c, t);
   };
 
+  // mapa — contornos reais (mapa_geo.py no build), câmera que voa/aproxima nas deixas, regiões que acendem e
+  // pinos com haste e rótulo (molde eventosextremospub). Fundo = foto da cena desfocada (nunca oceano liso).
+  P.mapa = function (box, s, c) {
+    const t = def(s.at, c.T0 + 0.05), [W, H] = WH(c), G = s.geo || { feats: [], cam: [], pinos: [] };
+    fundo(box, Object.assign({}, s, { src: null }), c, t);
+    const tint = h(box, 'div', 'vr-mapa-tint', `width:${W}px;height:${H}px`);
+    const NS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('class', 'vr-mapa');
+    box.appendChild(svg);
+    const g = document.createElementNS(NS, 'g'); svg.appendChild(g);
+    const hl = {};
+    G.feats.forEach((f) => {
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', f.d); p.setAttribute('class', 'vr-terra' + (f.hl ? ' hl' : ''));
+      g.appendChild(p);
+      if (f.hl) hl[f.n] = p;
+    });
+    if (G.cond) {
+      const cp = document.createElementNS(NS, 'path');
+      cp.setAttribute('d', G.cond); cp.setAttribute('class', 'vr-cond'); g.appendChild(cp);
+      c.tl.fromTo(cp, { opacity: 0 }, { opacity: 1, duration: 0.6 }, def((s.destaques || [])[0] && s.destaques[0].at, t + 0.3) + 0.4);
+    }
+    const cams = G.cam.length ? G.cam : [{ at: t, xy: [W / 2, H / 2], z: 1 }];
+    const cam = { x: cams[0].xy[0], y: cams[0].xy[1], z: cams[0].z };
+    c.tl.fromTo(svg, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, t);
+    cams.forEach((k, i) => {
+      if (i === 0) return;
+      c.tl.to(cam, { x: k.xy[0], y: k.xy[1], z: k.z, duration: 1.1, ease: 'expo.inOut' }, k.at);
+    });
+    const last = cams[cams.length - 1];
+    c.tl.to(cam, { z: last.z * 1.06, duration: Math.max(0.5, c.T1 - last.at - 1.1), ease: 'none' }, Math.max(t, last.at) + 1.1);
+    (s.destaques || []).forEach((d) => {
+      const p = hl[d.nome]; if (!p) return;
+      c.tl.fromTo(p, { fillOpacity: 0.15 }, { fillOpacity: 0.62, duration: 0.45, ease: 'power2.out' }, def(d.at, t + 0.3));
+    });
+    const pins = G.pinos.map((p) => {
+      const el = h(box, 'div', 'vr-pino', '', `<i class="ring"></i><i class="dot"></i><b class="stem"></b><div class="lab">${esc(p.txt || '')}${p.sub ? `<small>${rich(p.sub)}</small>` : ''}</div>`);
+      const ta = def(p.at, t + 0.6);
+      c.tl.fromTo(el.querySelector('.dot'), { scale: 0 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' }, ta);
+      c.tl.fromTo(el.querySelector('.ring'), { scale: 0.2, opacity: 1 }, { scale: 3.5, opacity: 0, duration: 1.1, ease: 'power2.out', repeat: Math.max(0, Math.floor((c.T1 - ta) / 1.2)), immediateRender: false }, ta);
+      c.tl.fromTo(el.querySelector('.stem'), { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: 'expo.out' }, ta + 0.1);
+      c.tl.fromTo(el.querySelector('.lab'), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: 'back.out(2)' }, ta + 0.3);
+      if (p.sub) c.tl.fromTo(el.querySelector('small'), { opacity: 0 }, { opacity: 1, duration: 0.3 }, def(p.sub_at, ta + 0.8));
+      c.tl.set(el, { opacity: 1 }, ta);
+      return { el, xy: p.xy };
+    });
+    c.render(() => {
+      g.setAttribute('transform', `translate(${W / 2} ${H / 2}) scale(${cam.z}) translate(${-cam.x} ${-cam.y})`);
+      g.style.setProperty('--sw', (1.2 / cam.z).toFixed(3));
+      pins.forEach((p) => { p.el.style.left = ((p.xy[0] - cam.x) * cam.z + W / 2) + 'px'; p.el.style.top = ((p.xy[1] - cam.y) * cam.z + H / 2) + 'px'; });
+    });
+    void tint;
+  };
+
   // cta — cartão final: print do site inclinado + url pulsando
   P.cta = function (box, s, c) {
     const t = def(s.at, c.T0 + 0.05), [W, H] = WH(c);

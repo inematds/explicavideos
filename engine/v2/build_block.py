@@ -57,7 +57,7 @@ SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'rada
               'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg',
               'hook', 'media'}
 # perfil viral (2.9, PADRAO-VIRAL.md): peças de tela cheia do runtime/viral.js
-VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta'}
+VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta', 'mapa'}
 SHOT_TYPES |= VIRAL_TYPES
 OPENERS = ('hook', 'capa')   # nascem visíveis no frame 0 ("@start")
 MEDIA_EXT = {'.png', '.jpg', '.jpeg', '.webp'}
@@ -436,7 +436,7 @@ def build(part, strict=False, spec_path=None, out=None):
     if viral:
         mode = (mode + ' viral').strip()
     VW, VH = (1080, 1150) if (viral and aspect_of(CFG) == '9:16') else (1920, 1080)
-    rostos, fontes, capa_cheia = [], [], None
+    rostos, fontes, capa_cheia, mapas = [], [], None, []
     key = f'{lang}-b{part:02d}'
     # Relatório velho não pode sobreviver a um build que falhou no meio: o produtor o leria como aprovado.
     (ROOT / 'verification' / f'build-v2-{key}.json').unlink(missing_ok=True)
@@ -511,6 +511,9 @@ def build(part, strict=False, spec_path=None, out=None):
                     sh['src'] = sh['src_916']
                 sh.pop('src_916', None)
                 sh['src'] = copy_media(sh['src'], dest, n, i)
+            if sh['type'] == 'mapa':
+                import mapa_geo   # contornos locais → SVG (perfil viral)
+                sh['geo'] = mapa_geo.geo(sh, VW, VH)
         if viral:
             # trechos absolutos: avatar em tela cheia ("rosto") e fonte do dado na faixa do topo
             for i, sh in enumerate(shots):
@@ -520,6 +523,8 @@ def build(part, strict=False, spec_path=None, out=None):
                 a, b = s0 + sh['at'], s0 + (shots[j]['at'] if j < len(shots) else sdur)
                 if sh['type'] == 'capa' and k == 0 and aspect_of(CFG) == '9:16':
                     capa_cheia = [sh['src'], round(b, 3)]   # 9:16: a capa cobre o quadro inteiro (sobre o avatar) até o 1º corte
+                if sh['type'] == 'mapa':
+                    mapas.append([round(a, 3), round(b, 3)])
                 if sh['type'] == 'rosto':
                     rostos.append([round(a, 3), round(b, 3), sh.get('txt', ''), round(s0 + sh.get('txt_at', sh['at'] + 0.3), 3)])
                 if sh.get('fonte'):
@@ -578,6 +583,7 @@ def build(part, strict=False, spec_path=None, out=None):
         idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia)
     report['aspect'] = aspect_of(CFG)
     report['rostos'] = [r[:2] for r in rostos]
+    report['mapas'] = mapas   # o qa_viral não mede 'área lisa' em mapa (oceano/terra sólidos são informação)
     report['reel_profile'] = reel and {'name': reel['name'], 'contract_version': reel['version']}
     (dest / 'index.html').write_text(idx)
     (dest / 'captions.srt').write_text(srt(caps, reel['captions']['min_cue_s'] if reel else 0.5))
