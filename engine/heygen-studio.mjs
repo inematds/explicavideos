@@ -134,7 +134,8 @@ try {
   await buscar(TITULO);
   await pg.waitForTimeout(3_500);
   const rascunho = pg.getByText(TITULO, { exact: true }).first();
-  if (await rascunho.count()) {
+  const retomando = (await rascunho.count()) > 0;
+  if (retomando) {
     passo(`rascunho "${TITULO}" existe — continuando dele`);
     await rascunho.locator('xpath=ancestor::*[.//img or .//video][1]').click();
     await pg.waitForURL(/create-v4|editor/, { timeout: 60_000 });
@@ -164,13 +165,17 @@ try {
   // TÍTULO PRIMEIRO: o clone nasce com o nome do template, e enquanto não
   // renomear existem dois `TEMPLATE-AVATAR` — a busca da rodada seguinte fica
   // ambígua e o passo do `!== 1` acima recusaria o fluxo inteiro.
-  passo('renomeando');
-  const campo = pg.locator(CAMPO_TITULO).first();
-  if (!(await campo.count())) await morrer('campo de título não encontrado no estúdio');
-  await campo.click();
-  await campo.fill(TITULO);
-  await campo.press('Tab');
-  await pg.waitForTimeout(1_500);
+  // Rascunho retomado já tem este título; o input "Untitled" fica escondido e o
+  // clique estourava 45 s (reel REA 12/10). Só renomeia o clone novo.
+  if (!retomando) {
+    passo('renomeando');
+    const campo = pg.locator(CAMPO_TITULO).first();
+    if (!(await campo.count())) await morrer('campo de título não encontrado no estúdio');
+    await campo.click();
+    await campo.fill(TITULO);
+    await campo.press('Tab');
+    await pg.waitForTimeout(1_500);
+  }
 
   passo('trocando a fala');
   const editor = pg.locator('[contenteditable="true"]').first();
@@ -178,7 +183,10 @@ try {
   await editor.locator('[data-node-view-content-react]').first().click();
   await editor.press('ControlOrMeta+a');
   await editor.press('Backspace');
-  await pg.keyboard.insertText(FALA); await campo.click(); await campo.press('Tab'); await pg.waitForTimeout(10000);
+  await pg.keyboard.insertText(FALA);
+  if (retomando) await editor.evaluate((e) => e.blur());  // sem o input do título visível
+  else { const campo = pg.locator(CAMPO_TITULO).first(); await campo.click(); await campo.press('Tab'); }
+  await pg.waitForTimeout(10000);
   await pg.waitForTimeout(2_000);
 
   // Conferência pelo DOM, não por screenshot: `read_page` mostra o placeholder
@@ -212,6 +220,16 @@ try {
   passo('Enviar');
   await enviar.click();
   await pg.waitForTimeout(8_000);
+  // O Submit às vezes não pega e o card fica Draft (01/10, 11/10, 12/10): conferir que o modal fechou.
+  for (let t = 2; t <= 3 && (await enviar.isVisible().catch(() => false)); t++) {
+    console.log('MODAL AINDA ABERTO', (await pg.locator('[role=dialog]').allInnerTexts()).join(' | ').slice(0, 600));
+    await pg.screenshot({ path: `/tmp/heygen-submit-${t}.png` }).catch(() => {});
+    passo(`Enviar (tentativa ${t})`);
+    await enviar.click({ force: true });
+    await pg.waitForTimeout(8_000);
+  }
+  await pg.screenshot({ path: '/tmp/heygen-submit-fim.png' }).catch(() => {});
+  console.log('DEPOIS', pg.url(), (await pg.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 300));
 
   await ctx.close();
   console.log(`RESULT: ${TITULO}`);
