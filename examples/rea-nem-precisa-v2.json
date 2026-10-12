@@ -1,0 +1,18 @@
+{
+  "id": "rea-nem-precisa",
+  "title": "Clonar qualquer software: o barulho e o que muda de verdade",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-dAzs_rU6080",
+  "output": "/home/nmaldaner/projetos/output/explica-dAzs_rU6080/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/explica-dAzs_rU6080/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/rea-nem-precisa-video",
+  "release_tag": "video-v1.0.0",
+  "hyperframes": "0.8.77",
+  "aspect": "16:9",
+  "profile_visual": "viral",
+  "marca": "INEMA · TECNOLOGIA",
+  "selo_topo": "NOTÍCIA"
+}
