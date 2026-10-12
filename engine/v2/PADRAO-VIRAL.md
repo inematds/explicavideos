@@ -16,6 +16,9 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 - **Número = peça própria** (`bignum`): gigante, contagem curta (≤ 0,8 s) que termina na deixa, fonte embaixo.
 - **Comparação de escala** (`escala`), **mapa** (`mapa`), **tipografia cinética** (`cinetica`),
   **carimbo** (`carimbo`), **barra/percentual** (`barra`), **capítulo** (`capitulo`: tela limpa + assunto grande).
+- **Mapa** (`mapa`): contornos reais locais (`mapa_geo.py`, us-atlas/world-atlas em `~/projetos/biblioteca-mapas`),
+  `base` eua|mundo|brasil, `camera` [{at, centro:[lon,lat], zoom}], `destaques` [{nome, at}] (estado dos EUA ganha os
+  condados), `pinos` [{lon, lat, txt, at, sub, sub_at}]. O qa_viral não mede área lisa nos trechos de mapa.
 - **Imagem** (`foto`): sempre em movimento (pan + zoom ≤ 1,25 + leve parallax de camadas), com vinheta e grão.
 - **Avatar**: grande. 16:9 = janela redonda grande no canto inferior direito, que cresce para tela cheia nos
   shots `rosto`; 9:16 = metade de baixo, e `rosto` toma a tela.
@@ -24,7 +27,10 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 - Sem vídeo de terceiros nem b-roll pago por padrão (imagens locais/Codex).
 
 ## Som
-- Trilha baixa (−24 LUFS sob a voz) e efeitos nos cortes e números (whoosh, impacto), do inemavox.
+- Trilha baixa sob a voz e efeitos nos cortes e números: `som_viral.py --trilha=<nome>` usa a biblioteca local
+  `~/projetos/biblioteca-sons` (6 trilhas MusicGen: noticia-urgente, tech-epico, tech-otimista, sombrio-pulso,
+  inspirador, beat-viral; 30 efeitos sintetizados que giram). O buscador do inemavox (Pixabay/Freesound) não funciona
+  sem FREESOUND_API_KEY.
 
 ## QA (`engine/v2/qa_viral.py`, reprova)
 - Quadro com > 40% de área lisa (fundo vazio), amostra a cada 0,5 s.
