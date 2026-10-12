@@ -19,6 +19,7 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 - **Mapa** (`mapa`): contornos reais locais (`mapa_geo.py`, us-atlas/world-atlas em `~/projetos/biblioteca-mapas`),
   `base` eua|mundo|brasil, `camera` [{at, centro:[lon,lat], zoom}], `destaques` [{nome, at}] (estado dos EUA ganha os
   condados), `pinos` [{lon, lat, txt, at, sub, sub_at}]. O qa_viral não mede área lisa nos trechos de mapa.
+- **Cor da imagem**: luz neutra, branco que parece branco, uma cor forte de destaque; nada de "paleta âmbar", "luz dourada" ou objeto dourado em toda cena (o gerador do Codex já puxa para o amarelo). O âmbar da marca fica só no texto e nas peças desenhadas. Depois de gerar: `refazvideo/ferramentas/cor_neutra.py corrigir media/*.png` (corrige amarelo > 18, guarda `-orig`).
 - **Imagem** (`foto`): sempre em movimento (pan + zoom ≤ 1,25 + leve parallax de camadas), com vinheta e grão.
 - **Avatar**: grande. 16:9 = janela redonda grande no canto inferior direito, que cresce para tela cheia nos
   shots `rosto`; 9:16 = metade de baixo, e `rosto` toma a tela.
