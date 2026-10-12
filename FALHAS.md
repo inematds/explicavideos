@@ -1,4 +1,5 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-10-11 | repos-claude-10: SRT montado começou em `-1:59:59,860` (bloco com 1ª legenda em −0,14 s) e o monta_gancho quebrou ao ler o tempo | `stamp()` do assemble_languages com `max(0, …)`; 2ª repetição do ffmpeg sem `-nostdin` em laço (linha abaixo) | infra + prompt |
 | 2026-10-11 | ia-20-novidades v2: `hyperframes check` reprovou b02 (content_overlap) — counter com valor "~1 milhão" largo demais encostou no item vizinho; o 16:9 perdeu uma volta de render | valor encurtado para "~1 mi"; proteção: `build_block --strict` deveria reprovar valor de counter (prefixo+número+sufixo) > 7 caracteres com 3 itens | prompt |
 | 2026-10-11 | ia-20-novidades: laço `while read` de cortes ffmpeg sobre heredoc — o ffmpeg comeu o stdin e o laço parou no 1º clipe ("Enter command:") | `ffmpeg -nostdin` em todo ffmpeg dentro de laço | prompt |
 | 2026-10-10 | saudeviral sem avatar (curto e longo): "ProcessSingleton", o download do lote de tradução segurava o perfil por horas esperando o vídeo | heygen-perfil.mjs (fila no lançamento) + download abre/confere/fecha a cada ciclo | infra |

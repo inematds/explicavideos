@@ -10,7 +10,7 @@ QA=Path(os.path.expanduser(CFG.get('reel_qa','~/projetos/makeshorts/.claude/skil
 def ts(s):
  h,m,rest=s.split(':');sec,ms=rest.split(',');return int(h)*3600+int(m)*60+int(sec)+int(ms)/1000
 def stamp(t):
- n=round(t*1000);return f'{n//3600000:02d}:{n//60000%60:02d}:{n//1000%60:02d},{n%1000:03d}'
+ n=max(0,round(t*1000));return f'{n//3600000:02d}:{n//60000%60:02d}:{n//1000%60:02d},{n%1000:03d}'
 def assemble(lang):
  blocks=[b for b in json.loads((ROOT/'blocos/manifest.json').read_text()) if b['language']==lang]
  if not (ROOT/'verification/production.json').exists():return None
