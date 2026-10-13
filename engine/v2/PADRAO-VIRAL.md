@@ -28,7 +28,10 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 - Sem vídeo de terceiros nem b-roll pago por padrão (imagens locais/Codex).
 
 ## Som
-- Trilha baixa sob a voz e efeitos nos cortes e números: `som_viral.py --trilha=<nome>` usa a biblioteca local
+- Sem som de movimento de tela (13/10/2026, pedido do Nei): nada de whoosh nas trocas, pop nas palavras nem riser.
+  Efeito só onde marca algo: carimbo, selo da capa, impacto do bignum/barra, capítulo (braam), cta (ding).
+  Voz na frente: comprimida e levada a -13 LUFS, trilha abaixa sob a fala (sidechain), limitador no fim.
+- Trilha baixa sob a voz e efeitos nos números: `som_viral.py --trilha=<nome>` usa a biblioteca local
   `~/projetos/biblioteca-sons` (6 trilhas MusicGen: noticia-urgente, tech-epico, tech-otimista, sombrio-pulso,
   inspirador, beat-viral; 30 efeitos sintetizados que giram). O buscador do inemavox (Pixabay/Freesound) não funciona
   sem FREESOUND_API_KEY.

@@ -3,8 +3,11 @@
 
 Uso: som_viral.py <pasta-do-bloco final/pt-bNN> <video.mp4> <saida.mp4> [--trilha=<mp3>] [--sfx=<pasta>]
 Lê os tempos dos shots das composições (scene-*.html) e dos hosts (index.html). Tudo local, sem API.
-- whoosh no início de cada shot que troca a tela; boom no impacto do bignum e no carimbo; pop nas palavras
-  da cinetica; riser antes do capitulo. Trilha a -24 dB sob a voz, com fade no fim."""
+- Só efeito que marca algo (13/10/2026, o Nei não quer som de movimento de tela): boom no carimbo, no selo
+  da capa e no impacto do bignum/barra; braam no capitulo; ding no cta; buzz no risca da cinetica.
+  Nada de whoosh nas trocas de tela, pop nas palavras nem riser.
+- Voz na frente: a voz é normalizada sozinha a -13 LUFS, a trilha (-26 dB) abaixa quando há fala
+  (sidechain) e o fim passa só por limitador, para os efeitos não puxarem a voz para baixo."""
 import json, re, subprocess, sys
 from pathlib import Path
 
@@ -51,24 +54,17 @@ for f in sorted((blk / 'compositions').glob('scene-*.html')):
             ev.append((t + 0.24, 'boom', 0.7))
             continue
         if tp == 'capitulo':
-            ev.append((max(0, t - 0.6), 'riser', 0.45))
             ev.append((t + 0.1, 'braam', 0.5))
         if tp == 'cta':
             ev.append((t + 0.4, 'ding', 0.45))
-        if not sh.get('keep'):
-            ev.append((t, 'whoosh', 0.45))
         if tp == 'bignum':
             ev.append((s0 + sh.get('hit_at', sh['at'] + 0.8), 'boom', 0.6))
         if tp == 'barra' and sh.get('hit_at') is not None:
             ev.append((s0 + sh['hit_at'], 'boom', 0.55))
         if tp == 'cinetica':
             for p in sh.get('palavras', []):
-                if p.get('at') is not None:
-                    ev.append((s0 + p['at'], 'pop', 0.5))
                 if p.get('risca_at') is not None:
                     ev.append((s0 + p['risca_at'], 'buzz', 0.3))
-        for p in sh.get('pontos', []):
-            ev.append((s0 + p['at'], 'whoosh', 0.3))
 ev.sort()
 dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', video], capture_output=True, text=True).stdout)
 # trilha repetida com emenda em crossfade (2 s) até cobrir o vídeo — sem corte seco no loop
@@ -79,14 +75,20 @@ cad = '[1:a]'
 for r in range(2, nrep + 1):
     fil.append(f'{cad}[{r}:a]acrossfade=d=2:c1=tri:c2=tri[x{r}]')
     cad = f'[x{r}]'
-fil.append(f'{cad}atrim=0:{dur:.2f},volume=0.075,afade=t=in:d=0.6,afade=t=out:st={max(0, dur - 2):.2f}:d=2[mus]')
-labs = ['[0:a]', '[mus]']
+fil.append(f'{cad}atrim=0:{dur:.2f},volume=0.05,afade=t=in:d=0.6,afade=t=out:st={max(0, dur - 2):.2f}:d=2[mus]')
+# ganho linear medido (dois passos): a voz chega a -13 LUFS sem o bombeamento do loudnorm dinâmico
+COMP = 'acompressor=threshold=0.08:ratio=3:attack=5:release=150'   # segura os picos para a voz subir sem bater no limitador
+_m = subprocess.run(['ffmpeg', '-nostdin', '-i', video, '-map', '0:a', '-af', COMP + ',loudnorm=print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
+ganho = -13.0 - float(json.loads(_m[_m.rindex('{'):_m.rindex('}') + 1])['input_i'])
+fil.append(f'[0:a]{COMP},volume={ganho:.2f}dB,aresample=48000,asplit[voz][vsc]')
+fil.append('[mus][vsc]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]')
+labs = ['[voz]', '[musd]']
 for i, (t, e, v) in enumerate(ev):
     ins += ['-i', str(arquivo(e))]
     ms = int(max(0, t) * 1000)
     fil.append(f'[{i + 1 + nrep}:a]volume={v},adelay={ms}|{ms}[s{i}]')
     labs.append(f'[s{i}]')
-fil.append(f'{"".join(labs)}amix=inputs={len(labs)}:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[a]')
+fil.append(f'{"".join(labs)}amix=inputs={len(labs)}:duration=first:normalize=0,alimiter=limit=0.89:level=false,aresample=48000[a]')
 cmd = ['ffmpeg', '-v', 'error', '-nostdin', '-y'] + ins + ['-filter_complex', ';'.join(fil), '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', saida]
 subprocess.run(cmd, check=True)
 print(f'{len(ev)} efeitos + trilha → {saida}')
