@@ -47,6 +47,7 @@ const passo = (m) => console.log(`${new Date().toISOString().slice(11, 19)} ${m}
 if(FALA.length>4500){console.error("ERRO: bloco excede teto local de4500 caracteres");process.exit(3);}
 let ctx;
 const morrer = async (m) => {
+  try { await pg.screenshot({ path: '/tmp/heygen-erro.png' }); } catch {}   // o que estava na tela quando parou (pg pode ainda não existir)
   await ctx?.close().catch(() => {});
   console.error(`ERRO: ${m}`);
   process.exit(3);
