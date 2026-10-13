@@ -211,12 +211,13 @@ try {
   await recusarPlano();
   // o modal pode demorar; e se vier outro aviso (ex.: "voice engine" da voz), ele aparece no erro
   for (let i = 0; i < 10 && !(await pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).count()); i++) await pg.waitForTimeout(2_000);
-  if (!(await pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).count()))
-    await morrer('modal de geração sem botão "Enviar": ' + (await pg.locator('[role=dialog]').allTextContents()).join(' | ').replace(/\s+/g, ' ').slice(-300));
-
-  // O passo que não estava no prompt do agente.
+  // Desde 12/10 ~19:30 o Generate envia direto, sem modal: os 8 vídeos que "morreram" aqui foram gerados.
   const enviar = pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).first();
-  if (!(await enviar.count())) await morrer('modal de geração sem botão "Enviar"');
+  if (!(await enviar.count())) {
+    await pg.screenshot({ path: '/tmp/heygen-submit-fim.png' }).catch(() => {});
+    console.log('SEM MODAL: Generate enviou direto', pg.url());
+    await ctx.close(); console.log(`RESULT: ${TITULO}`); process.exit(0);
+  }
   console.log('MODAL', (await pg.locator('[role=dialog]').allTextContents()).join(' | ').slice(0,4000));
   passo('Enviar');
   await enviar.click();
