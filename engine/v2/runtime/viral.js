@@ -172,10 +172,10 @@
     fundo(box, s, c, t);
     corte(box, c, t);
     const tw = TW(c), x = v916 ? 50 : 70, pw = tw - x * 2;
-    const pnl = h(box, 'div', 'vr-rpanel', `left:${x - 30}px;top:${H * (v916 ? 0.17 : 0.13)}px;width:${pw + 60}px;height:${H * (v916 ? 0.76 : 0.68)}px`);
+    const pnl = h(box, 'div', 'vr-rpanel', `left:${x - 30}px;top:${H * (v916 ? 0.17 : 0.13)}px;width:${pw + 60}px;height:${H * (v916 ? 0.66 : 0.68)}px`);
     c.tl.fromTo(pnl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t);
     if (s.titulo) manchete(box, s.titulo, t + 0.05, c, 'top', `font-size:${v916 ? 56 : 68}px`);
-    const top = H * (v916 ? 0.27 : 0.255), bot = H * (v916 ? 0.86 : 0.755);
+    const top = H * (v916 ? 0.25 : 0.255), bot = H * (v916 ? 0.78 : 0.755);
     const rh = Math.min(v916 ? 150 : 130, (bot - top) / n), bh = rh * 0.42;
     const lw = v916 ? pw : (s.lw || 380), bx = v916 ? x : x + lw + 20, bw = (v916 ? pw : pw - lw - 20) - (v916 ? 190 : 200);
     const mx = Number(s.max) || Math.max(...it.map((r) => Number(r.v) || 0)) || 1;
@@ -193,7 +193,7 @@
       c.tl.fromTo(st, { v: 0 }, { v: Number(r.v) || 0, duration: 0.6, ease: 'power2.out' }, ti + 0.05);
       if (r.hl) c.tl.to(bar, { boxShadow: '0 0 70px rgba(255,182,56,.95)', duration: 0.18, yoyo: true, repeat: 1 }, ti + 0.65);
     });
-    if (s.fonte) { const f = h(box, 'div', 'vr-rfonte', `left:${x}px;top:${H * (v916 ? 0.885 : 0.765)}px`, esc(s.fonte)); c.tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.4); }
+    if (s.fonte) { const f = h(box, 'div', 'vr-rfonte', `left:${x}px;top:${H * (v916 ? 0.785 : 0.765)}px`, esc(s.fonte)); c.tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.4); }
   };
 
   // carimbo — bate por cima do shot anterior (use "keep": true)
