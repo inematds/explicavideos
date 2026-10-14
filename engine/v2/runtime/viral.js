@@ -1,7 +1,7 @@
 /* Explicavideos v2 — perfil VIRAL (2.9): peças de tela cheia com muito movimento, para notícia/reel.
    Mesmo contrato do v2: fn(box, shot, ctx), tempos em segundos relativos à cena, tudo em c.tl (seek-safe).
    O palco tem o tamanho da área de cena do perfil: S.vw × S.vh (16:9 = 1920×1080; 9:16 = 1080×1150).
-   Peças: capa, foto, capitulo, bignum, escala, barra, carimbo, cinetica, rosto, cta. Padrão: PADRAO-VIRAL.md */
+   Peças: capa, foto, capitulo, bignum, escala, barra, ranking, carimbo, cinetica, rosto, cta. Padrão: PADRAO-VIRAL.md */
 (function () {
   const { h, esc, rich, fs } = V2.util;
   const def = (v, d) => (v == null || Number.isNaN(v) ? d : v);
@@ -162,6 +162,38 @@
     c.tl.fromTo(big, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, hit - 0.4);
     c.tl.fromTo(st, { v: 0 }, { v: pct, duration: 0.4, ease: 'power2.out' }, hit - 0.4);
     if (s.parte) { const lp = h(box, 'div', 'vr-blab', `left:${x + 260}px;top:${y + bh + 60}px;width:${bw - 260}px`, rich(s.parte)); c.tl.fromTo(lp, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.35 }, hit); }
+  };
+
+  // ranking — gráfico comparativo: barras horizontais que crescem uma a uma (cada item pode ter a sua deixa),
+  // valor contando no fim da barra; "hl": true pinta a barra de âmbar (o destaque). "max" fixa a escala (padrão: maior valor).
+  P.ranking = function (box, s, c) {
+    const t = def(s.at, c.T0 + 0.05), [W, H] = WH(c), it = s.itens || [], n = Math.max(1, it.length);
+    const v916 = W < 1500;
+    fundo(box, s, c, t);
+    corte(box, c, t);
+    const tw = TW(c), x = v916 ? 50 : 70, pw = tw - x * 2;
+    const pnl = h(box, 'div', 'vr-rpanel', `left:${x - 30}px;top:${H * (v916 ? 0.17 : 0.13)}px;width:${pw + 60}px;height:${H * (v916 ? 0.76 : 0.68)}px`);
+    c.tl.fromTo(pnl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t);
+    if (s.titulo) manchete(box, s.titulo, t + 0.05, c, 'top', `font-size:${v916 ? 56 : 68}px`);
+    const top = H * (v916 ? 0.27 : 0.255), bot = H * (v916 ? 0.86 : 0.755);
+    const rh = Math.min(v916 ? 150 : 130, (bot - top) / n), bh = rh * 0.42;
+    const lw = v916 ? pw : (s.lw || 380), bx = v916 ? x : x + lw + 20, bw = (v916 ? pw : pw - lw - 20) - (v916 ? 190 : 200);
+    const mx = Number(s.max) || Math.max(...it.map((r) => Number(r.v) || 0)) || 1;
+    it.forEach((r, i) => {
+      const ti = def(r.at, t + 0.35 + i * 0.32), y = top + i * rh;
+      const lab = h(box, 'div', 'vr-rlab' + (r.hl ? ' hl' : ''), `left:${x}px;top:${v916 ? y - 4 : y + rh * 0.5 - 26}px;width:${lw}px`, esc(r.n || ''));
+      const by = v916 ? y + 44 : y + rh * 0.5 - bh / 2;
+      const bar = h(box, 'div', 'vr-rbar' + (r.hl ? ' hl' : ''), `left:${bx}px;top:${by}px;height:${bh}px;width:${Math.max(6, bw * (Number(r.v) || 0) / mx)}px`);
+      const val = h(box, 'div', 'vr-rval' + (r.hl ? ' hl' : ''), `left:${bx + Math.max(6, bw * (Number(r.v) || 0) / mx) + 18}px;top:${by + bh / 2 - (v916 ? 30 : 34)}px`);
+      const st = { v: 0 };
+      c.render(() => { val.innerHTML = `${s.pre ? esc(s.pre) : ''}${fmt(st.v, s.dec)}${s.unid ? `<small>${esc(s.unid)}</small>` : ''}`; });
+      c.tl.fromTo(lab, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power3.out' }, ti);
+      c.tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'expo.out' }, ti + 0.05);
+      c.tl.fromTo(val, { opacity: 0 }, { opacity: 1, duration: 0.2 }, ti + 0.1);
+      c.tl.fromTo(st, { v: 0 }, { v: Number(r.v) || 0, duration: 0.6, ease: 'power2.out' }, ti + 0.05);
+      if (r.hl) c.tl.to(bar, { boxShadow: '0 0 70px rgba(255,182,56,.95)', duration: 0.18, yoyo: true, repeat: 1 }, ti + 0.65);
+    });
+    if (s.fonte) { const f = h(box, 'div', 'vr-rfonte', `left:${x}px;top:${H * (v916 ? 0.885 : 0.765)}px`, esc(s.fonte)); c.tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.4); }
   };
 
   // carimbo — bate por cima do shot anterior (use "keep": true)

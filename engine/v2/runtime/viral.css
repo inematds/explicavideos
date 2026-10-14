@@ -72,6 +72,15 @@
 .vr-bpct{position:absolute;font-family:"MontBlack";font-size:190px;line-height:1;color:var(--amber);text-shadow:0 0 60px rgba(255,194,58,.5)}
 .vr-bpct small{font-size:.55em}
 .v916 .vr-blab{font-size:34px}.v916 .vr-bpct{font-size:150px}
+.vr-rpanel{position:absolute;border-radius:28px;background:rgba(8,12,22,.62);border:2px solid rgba(255,255,255,.14);box-sizing:border-box}
+.vr-rlab{position:absolute;font-family:"MontX";font-size:40px;line-height:52px;color:#fff;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;text-align:right;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+.vr-rlab.hl{color:var(--amber)}
+.vr-rbar{position:absolute;border-radius:0 14px 14px 0;background:linear-gradient(90deg,rgba(62,230,255,.55),rgba(62,230,255,.9));transform-origin:0 50%;box-shadow:0 0 30px rgba(62,230,255,.35)}
+.vr-rbar.hl{background:linear-gradient(90deg,#ff9a1f,var(--amber));box-shadow:0 0 40px rgba(255,182,56,.7)}
+.vr-rval{position:absolute;font-family:"MontBlack";font-size:60px;line-height:68px;color:#fff;white-space:nowrap;text-shadow:0 2px 14px rgba(0,0,0,.8)}
+.vr-rval.hl{color:var(--amber)}.vr-rval small{font-size:.6em}
+.vr-rfonte{position:absolute;font-family:"Mono";font-size:22px;letter-spacing:.12em;color:rgba(255,255,255,.75);text-transform:uppercase}
+.v916 .vr-rlab{font-size:34px;text-align:left}.v916 .vr-rval{font-size:52px}.v916 .vr-rfonte{font-size:20px}
 .vr-carimbo{position:absolute;font-family:"MontBlack";font-size:92px;padding:10px 36px;border:10px solid;border-radius:16px;background:rgba(0,0,0,.55);text-transform:uppercase;white-space:nowrap;letter-spacing:.04em;z-index:55}
 .v916 .vr-carimbo{font-size:68px}
 .vr-kin{position:absolute;left:0;width:100%;top:50%;transform:translateY(-50%);text-align:center;font-family:"MontBlack";line-height:1.04;color:#fff;text-transform:uppercase;padding:0 70px;box-sizing:border-box}

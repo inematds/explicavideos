@@ -57,7 +57,7 @@ SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'rada
               'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg',
               'hook', 'media'}
 # perfil viral (2.9, PADRAO-VIRAL.md): peças de tela cheia do runtime/viral.js
-VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta', 'mapa'}
+VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta', 'mapa', 'ranking'}
 SHOT_TYPES |= VIRAL_TYPES
 OPENERS = ('hook', 'capa')   # nascem visíveis no frame 0 ("@start")
 MEDIA_EXT = {'.png', '.jpg', '.jpeg', '.webp'}
