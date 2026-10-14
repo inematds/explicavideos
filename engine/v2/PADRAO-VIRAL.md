@@ -18,7 +18,8 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   **carimbo** (`carimbo`), **barra/percentual** (`barra`), **capítulo** (`capitulo`: tela limpa + assunto grande).
 - **Gráfico comparativo** (`ranking`, 14/10/2026): barras horizontais que crescem uma a uma, valor contando no fim;
   `itens` [{n, v, hl, at}] (até 5–6; `hl` = destaque âmbar), `titulo`, `unid`, `dec`, `max`, `fonte`. Cada item com a
-  sua deixa na fala, senão o shot fica parado. Painel translúcido sobre a foto desfocada (passa no QA de área lisa).
+  sua deixa na fala, senão o shot fica parado. `v_at` (opcional, 14/10/2026): a barra cresce numa 2ª deixa — pergunta no
+  `at`, resposta no `v_at` ("Acha pela palavra exata?" → "Nível um"), duas trocas por item. Painel translúcido sobre a foto desfocada (passa no QA de área lisa).
 - **Mapa** (`mapa`): contornos reais locais (`mapa_geo.py`, us-atlas/world-atlas em `~/projetos/biblioteca-mapas`),
   `base` eua|mundo|brasil, `camera` [{at, centro:[lon,lat], zoom}], `destaques` [{nome, at}] (estado dos EUA ganha os
   condados), `pinos` [{lon, lat, txt, at, sub, sub_at}]. O qa_viral não mede área lisa nos trechos de mapa.

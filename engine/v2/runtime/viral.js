@@ -188,10 +188,11 @@
       const st = { v: 0 };
       c.render(() => { val.innerHTML = `${s.pre ? esc(s.pre) : ''}${fmt(st.v, s.dec)}${s.unid ? `<small>${esc(s.unid)}</small>` : ''}`; });
       c.tl.fromTo(lab, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power3.out' }, ti);
-      c.tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'expo.out' }, ti + 0.05);
-      c.tl.fromTo(val, { opacity: 0 }, { opacity: 1, duration: 0.2 }, ti + 0.1);
-      c.tl.fromTo(st, { v: 0 }, { v: Number(r.v) || 0, duration: 0.6, ease: 'power2.out' }, ti + 0.05);
-      if (r.hl) c.tl.to(bar, { boxShadow: '0 0 70px rgba(255,182,56,.95)', duration: 0.18, yoyo: true, repeat: 1 }, ti + 0.65);
+      const tb = def(r.v_at, ti);   // "v_at": a barra cresce numa 2ª deixa (pergunta no "at", resposta no "v_at")
+      c.tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'expo.out' }, tb + 0.05);
+      c.tl.fromTo(val, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tb + 0.1);
+      c.tl.fromTo(st, { v: 0 }, { v: Number(r.v) || 0, duration: 0.6, ease: 'power2.out' }, tb + 0.05);
+      if (r.hl) c.tl.to(bar, { boxShadow: '0 0 70px rgba(255,182,56,.95)', duration: 0.18, yoyo: true, repeat: 1 }, tb + 0.65);
     });
     if (s.fonte) { const f = h(box, 'div', 'vr-rfonte', `left:${x}px;top:${H * (v916 ? 0.785 : 0.765)}px`, esc(s.fonte)); c.tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.4); }
   };
