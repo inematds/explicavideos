@@ -202,6 +202,15 @@ try {
 
   if (SECO) { console.log(JSON.stringify({url:pg.url(),ui:(await pg.locator('body').innerText()).slice(-1200),chars:conferido.texto.length})); await pg.screenshot({path:'/tmp/astra-studio-draft.png'}); passo('--seco: parando antes de gerar'); await ctx.close(); process.exit(0); }
 
+  // 14/10: depois de trocar a fala o painel lateral às vezes fica em "Edit Voice" e esconde o Motion Engine;
+  // volta para o painel Avatar (botão da barra direita) antes de conferir.
+  if(!(await pg.locator('body').innerText()).includes('Avatar III')){
+    // seta "←" à esquerda do título "Edit Voice" (não clicar em botão do painel: o último é "Update default settings")
+    const ev=await pg.getByText('Edit Voice',{exact:true}).first().boundingBox().catch(()=>null);
+    if(ev)await pg.mouse.click(ev.x-16,ev.y+ev.height/2);
+    await pg.waitForTimeout(1_500);
+    if(!(await pg.locator('body').innerText()).includes('Avatar III')){await pg.getByText('Avatar',{exact:true}).last().click({force:true}).catch(()=>{});await pg.waitForTimeout(2_500);}
+  }
   if(!(await pg.locator('body').innerText()).includes('Avatar III'))await morrer('Avatar III não confirmado');
   passo('Gerar');
   const gerar = pg.getByRole('button', { name: /^(Gerar|Generate)/i }).first();
