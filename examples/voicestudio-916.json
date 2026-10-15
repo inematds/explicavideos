@@ -1,0 +1,23 @@
+{
+  "id": "voicestudio-916",
+  "title": "Esqueça o ElevenLabs: VoiceStudio grátis e local",
+  "source_repo": "/home/nmaldaner/projetos/output/voicestudio-916",
+  "output": "/home/nmaldaner/projetos/output/voicestudio-916/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/voicestudio-916/roteiro/pt.json"
+  },
+  "github_repo": "inematds/VoiceStudio",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA ponto club, VoiceStudio, ElevenLabs, OmniVoice, CosyVoice, IndexTTS, MCP, Claude Code, Codex, NVIDIA, dublagem, seiscentos e quarenta e seis idiomas, VOZ.",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}

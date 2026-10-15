@@ -1,0 +1,23 @@
+{
+  "id": "carreira-robotica-916",
+  "title": "Esqueça o SaaS: robótica ou mentor nas empresas",
+  "source_repo": "/home/nmaldaner/projetos/output/carreira-robotica-916",
+  "output": "/home/nmaldaner/projetos/output/carreira-robotica-916/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/carreira-robotica-916/roteiro/pt.json"
+  },
+  "github_repo": "inematds/carreira-robotica-916",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA ponto club, SaaS, vibe code, gerente, executivo, operacional, commodity, robótica, área Robot, humanoides, Consultoria de IA, consultor, acompanhamento, mentor, auditor, MENTOR.",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}

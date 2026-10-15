@@ -1,0 +1,19 @@
+{
+  "id": "voicestudio-916-v2",
+  "title": "Esqueça o ElevenLabs: VoiceStudio grátis e local",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/voicestudio-916",
+  "output": "/home/nmaldaner/projetos/output/voicestudio-916/v2-916",
+  "v1_output": "/home/nmaldaner/projetos/output/voicestudio-916/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/VoiceStudio",
+  "release_tag": "video-v1.0.0",
+  "hyperframes": "0.8.77",
+  "aspect": "9:16",
+  "profile_visual": "viral",
+  "marca": "INEMA · VOZ",
+  "selo_topo": "VOZ LOCAL E GRÁTIS",
+  "reel_profile": "mini-aula"
+}
