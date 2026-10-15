@@ -29,6 +29,9 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.9.9: **formatos** — 16:9 viral (`"profile_visual": "viral"`), 16:9 aula (padrão v2), 9:16 simples (`"aspect": "9:16"`) e 9:16 reel (`"reel_profile"`), com quadros de exemplo e quando usar cada um: [guia, seção Formatos](https://inematds.github.io/explicavideos/guia/#formatos).
+
+
 > 2.7.7: shot `media` com `calm: true` (troca por dissolve, ilustração inteira na moldura, aproximação lenta) e `cont`+`from` (a câmera desliza na mesma imagem em vez de cortar). Opcional; vídeos antigos não mudam.
 
 > 2.6.7: `submit.py` espera o perfil do HeyGen ficar livre (SingletonLock de outra produção) antes de abrir o navegador, em vez de deixar o bloco em `needs_review`.

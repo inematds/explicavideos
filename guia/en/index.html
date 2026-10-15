@@ -108,6 +108,7 @@
 <a class="sec" href="#oque">What it is</a>
 <a class="sec" href="#fluxo">How it works</a>
 <a class="sec" href="#guia">User guide</a>
+<a class="sec" href="#formatos">Formats</a>
 <a class="sec" href="#exemplos">Examples</a>
 <a class="sec" href="#roadmap">Roadmap</a>
 <button aria-label="Toggle theme" class="tgl" id="themeToggle" title="Toggle theme">🌙</button>
@@ -192,6 +193,20 @@ python3 engine/v2/build_block.py 1 --strict <span class="c"># cues → timings; 
 engine/v2/run_lane.sh 1 2 3                 <span class="c"># check + render verified per block</span>
 python3 engine/assemble_languages.py &amp;&amp; python3 engine/publish_finished.py</pre>
 </div></section>
+<section id="formatos"><div class="wrap">
+<span class="chip">Formats · 16:9 and 9:16</span>
+<h2>Four formats, one avatar recording</h2>
+<p class="sub">The same speech from Nei becomes a horizontal or vertical video, in a lesson or viral profile. Pick by subject: lesson for courses and projects; viral for news, numbers, weather and reels. The format comes only from the v2 config.</p>
+<div class="grid g2">
+<div class="card"><img alt="16:9 viral format: full-screen image, big number and avatar in a box at the bottom right" loading="lazy" src="../assets/formato-169-viral.jpg" style="width:100%;height:auto;border-radius:10px"/><h3>16:9 viral</h3><p><strong>When to use:</strong> news, numbers, weather, YouTube videos that need to hook the viewer.</p><p><strong>What it looks like:</strong> frame 0 is the cover, with a striking image and a big title already in the artwork. Then full-screen Codex images changing every 1.5–3 s, a giant number (<code>bignum</code>) and full-screen charts (<code>ranking</code>, <code>barra</code>, <code>mapa</code>). The avatar sits in a box with an amber frame at the bottom right and grows to full screen in <code>rosto</code> shots. Large captions of 1–3 words, with the spoken word in amber.</p><pre>"profile_visual": "viral"</pre><p>Rules and QA (<code>qa_viral.py</code>): <code>engine/v2/PADRAO-VIRAL.md</code>.</p></div>
+<div class="card"><img alt="16:9 lesson format: dark background, cards on the left and a small avatar at the top right" loading="lazy" src="../assets/formato-169-aula.jpg" style="width:100%;height:auto;border-radius:10px"/><h3>16:9 lesson</h3><p><strong>When to use:</strong> courses, projects, step-by-step explanations.</p><p><strong>What it looks like:</strong> dark background, usable area on the left (x 90–1420) with cards and diagrams built from the 21 primitives (flow, radar, terminal, comparison…). The avatar is small at the top right, with <code>CENA n/N</code> and the TAKEAWAY card below. Captions follow the speech.</p><pre><span class="c"># v2 default: no profile_visual</span>
+"engine": "v2"</pre><p>Visual script: <code>engine/v2/AUTHORING.md</code>.</p></div>
+<div class="card"><img alt="Simple 9:16 format: lesson scene on top and avatar in the bottom strip" loading="lazy" src="../assets/formato-916-simples.jpg" style="width:100%;height:auto;border-radius:10px"/><h3>Simple 9:16</h3><p><strong>When to use:</strong> vertical version of a lesson or an informative short (30–40 s).</p><p><strong>What it looks like:</strong> scenes are still drawn at 1920×1080 and scaled to the top. The cropped 16:9 avatar fills the bottom strip. The right column (CENA n/N, TAKEAWAY) does not appear: use <code>"takeaway": false</code>. 46 px captions in 2 lines inside the safe zone.</p><pre>"aspect": "9:16"</pre></div>
+<div class="card"><img alt="9:16 viral reel format: full-screen cover on frame 0, then image on top and avatar on the bottom half" loading="lazy" src="../assets/formato-916-viral.jpg" style="width:100%;height:auto;border-radius:10px"/><h3>9:16 reel</h3><p><strong>When to use:</strong> Reels, Shorts and TikTok.</p><p><strong>What it looks like:</strong> frame 0 is the cover (<code>hook</code> shot at <code>"@start"</code>, visible at t = 0). Captions of up to 3 words at 70 px, no header on top, rendered at 30 fps and −14 LUFS. With the viral profile, the image fills the top half and the avatar the bottom half; <code>rosto</code> takes the whole screen. Publishing requires <code>APROVADO_REEL</code> with the MP4 sha.</p><pre>"aspect": "9:16",
+"reel_profile": "divulgacao" | "tutorial" | "mini-aula",
+"profile_visual": "viral"   <span class="c"># optional</span></pre></div>
+</div>
+</div></section>
 <section id="exemplos"><div class="wrap">
 <span class="chip">Examples</span>
 <h2>The origin of the method</h2>
@@ -210,7 +225,7 @@ python3 engine/assemble_languages.py &amp;&amp; python3 engine/publish_finished.
 <footer>
 <div class="wrap">
 <div class="pill">HeyGen Studio</div><div class="pill">HyperFrames</div><div class="pill">Python + FFmpeg</div>
-<p style="margin-top:18px">Explicavideos · Documented process · v2.1.1 ·
+<p style="margin-top:18px">Explicavideos · Documented process · v2.9.9 ·
       <a href="https://github.com/inematds/explicavideos">inematds/explicavideos</a> ·
       <a href="https://inema.club">INEMA.CLUB</a></p>
 </div>

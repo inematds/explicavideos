@@ -29,6 +29,9 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animación explicativa (2.0.0)
 
+> 2.9.9: **formatos** — 16:9 viral (`"profile_visual": "viral"`), 16:9 clase (predeterminado del v2), 9:16 simple (`"aspect": "9:16"`) y 9:16 reel (`"reel_profile"`), con cuadros de ejemplo y cuándo usar cada uno: [guía, sección Formatos](https://inematds.github.io/explicavideos/guia/es/#formatos).
+
+
 > 2.2.3: Whisper local — los fragmentos omitidos (huecos > 3 s entre palabras) se vuelven a transcribir por separado, con hasta 3 inicios; la comprobación de alineación (v1 y v2) considera acertado el número hablado en dígitos ("83%") frente al guion escrito con todas las letras. LOOP-R PT: 10 bloques reprobados entre 0,79 y 0,88 pasaron a 0,97–0,99.
 >
 > 2.2.2: los servicios (`start`) se ejecutan dentro de `explica.slice` (`~/.config/systemd/user/explica.slice`: MemoryMax=40G, sin swap). Si el lote de renders excede el límite, el kernel termina un render, no las terminales de la sesión (incidente de 2026-09-27 04:01).

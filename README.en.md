@@ -29,6 +29,9 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Format v2: explainer animation (2.0.0)
 
+> 2.9.9: **formats** — 16:9 viral (`"profile_visual": "viral"`), 16:9 lesson (v2 default), simple 9:16 (`"aspect": "9:16"`) and 9:16 reel (`"reel_profile"`), with sample frames and when to use each: [guide, Formats section](https://inematds.github.io/explicavideos/guia/en/#formatos).
+
+
 > 2.2.3: Local Whisper — skipped segments (gaps > 3 s between words) are retranscribed automatically, with up to 3 attempts; the alignment check (v1 and v2) counts a spoken number in digits ("83%") as a match against the spelled-out script. LOOP-R PT: 10 failed blocks scoring between 0,79 and 0,88 passed with scores of 0,97–0,99.
 >
 > 2.2.2: services (`start`) run inside `explica.slice` (`~/.config/systemd/user/explica.slice`: MemoryMax=40G, no swap). If the render batch runs out of memory, the kernel kills a render, not the session terminals (incident on 2026-09-27 04:01).

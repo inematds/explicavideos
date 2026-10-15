@@ -108,6 +108,7 @@
 <a class="sec" href="#oque">O que é</a>
 <a class="sec" href="#fluxo">Como funciona</a>
 <a class="sec" href="#guia">Guia de uso</a>
+<a class="sec" href="#formatos">Formatos</a>
 <a class="sec" href="#exemplos">Exemplos</a>
 <a class="sec" href="#roadmap">Roadmap</a>
 <button aria-label="Alternar tema" class="tgl" id="themeToggle" title="Alternar tema">🌙</button>
@@ -192,6 +193,20 @@ python3 engine/v2/build_block.py 1 --strict <span class="c"># deixas → tempos;
 engine/v2/run_lane.sh 1 2 3                 <span class="c"># check + render verificado por bloco</span>
 python3 engine/assemble_languages.py &amp;&amp; python3 engine/publish_finished.py</pre>
 </div></section>
+<section id="formatos"><div class="wrap">
+<span class="chip">Formatos · 16:9 e 9:16</span>
+<h2>Quatro formatos, uma gravação do avatar</h2>
+<p class="sub">A mesma fala do Nei vira vídeo horizontal ou vertical, em perfil de aula ou viral. Escolha pelo assunto: aula para curso e projeto; viral para notícia, número, clima e reel. O formato vem só da config v2.</p>
+<div class="grid g2">
+<div class="card"><img alt="Formato 16:9 viral: imagem em tela cheia, número grande e avatar numa caixa no canto inferior direito" loading="lazy" src="assets/formato-169-viral.jpg" style="width:100%;height:auto;border-radius:10px"/><h3>16:9 viral</h3><p><strong>Quando usar:</strong> notícia, número, clima, vídeo para o YouTube que precisa prender.</p><p><strong>Como fica:</strong> o quadro 0 é a capa, com imagem impactante e título grande já na arte. Depois, imagem do Codex em tela cheia trocando a cada 1,5–3 s, número gigante (<code>bignum</code>) e gráficos em tela cheia (<code>ranking</code>, <code>barra</code>, <code>mapa</code>). O avatar fica numa caixa com moldura âmbar no canto inferior direito e cresce para tela cheia nos shots <code>rosto</code>. Legenda grande de 1–3 palavras, com a palavra falada em âmbar.</p><pre>"profile_visual": "viral"</pre><p>Regras e QA (<code>qa_viral.py</code>): <code>engine/v2/PADRAO-VIRAL.md</code>.</p></div>
+<div class="card"><img alt="Formato 16:9 aula: fundo escuro, cartões à esquerda e avatar pequeno no canto superior direito" loading="lazy" src="assets/formato-169-aula.jpg" style="width:100%;height:auto;border-radius:10px"/><h3>16:9 aula</h3><p><strong>Quando usar:</strong> curso, projeto, explicação passo a passo.</p><p><strong>Como fica:</strong> fundo escuro, área útil à esquerda (x 90–1420) com cartões e diagramas montados pelos 21 primitivos (fluxo, radar, terminal, comparação…). O avatar fica pequeno no canto superior direito, com <code>CENA n/N</code> e o cartão PARA LEVAR embaixo. A legenda acompanha a fala.</p><pre><span class="c"># padrão do v2: sem profile_visual</span>
+"engine": "v2"</pre><p>Roteiro visual: <code>engine/v2/AUTHORING.md</code>.</p></div>
+<div class="card"><img alt="Formato 9:16 simples: cena da aula no topo e avatar na faixa de baixo" loading="lazy" src="assets/formato-916-simples.jpg" style="width:100%;height:auto;border-radius:10px"/><h3>9:16 simples</h3><p><strong>Quando usar:</strong> versão vertical de uma aula ou short informativo (30–40 s).</p><p><strong>Como fica:</strong> as cenas continuam desenhadas em 1920×1080 e são escaladas para o topo. O avatar 16:9 recortado ocupa a faixa de baixo. A coluna direita (CENA n/N, PARA LEVAR) não aparece: use <code>"takeaway": false</code>. Legenda de 46 px em 2 linhas na zona segura.</p><pre>"aspect": "9:16"</pre></div>
+<div class="card"><img alt="Formato 9:16 reel viral: capa em tela cheia no quadro 0, depois imagem no topo e avatar na metade de baixo" loading="lazy" src="assets/formato-916-viral.jpg" style="width:100%;height:auto;border-radius:10px"/><h3>9:16 reel</h3><p><strong>Quando usar:</strong> Reels, Shorts e TikTok.</p><p><strong>Como fica:</strong> o quadro 0 é a capa (shot <code>hook</code> em <code>"@start"</code>, visível em t = 0). Legenda de até 3 palavras em 70 px, sem cabeçalho no topo, render a 30 fps e −14 LUFS. Com o perfil viral, a imagem ocupa a metade de cima e o avatar a metade de baixo; <code>rosto</code> toma a tela. Publicar exige <code>APROVADO_REEL</code> com o sha do MP4.</p><pre>"aspect": "9:16",
+"reel_profile": "divulgacao" | "tutorial" | "mini-aula",
+"profile_visual": "viral"   <span class="c"># opcional</span></pre></div>
+</div>
+</div></section>
 <section id="exemplos"><div class="wrap">
 <span class="chip">Exemplos</span>
 <h2>A origem do método</h2>
@@ -210,7 +225,7 @@ python3 engine/assemble_languages.py &amp;&amp; python3 engine/publish_finished.
 <footer>
 <div class="wrap">
 <div class="pill">HeyGen Studio</div><div class="pill">HyperFrames</div><div class="pill">Python + FFmpeg</div>
-<p style="margin-top:18px">Explicavideos · Processo documentado · v2.1.1 ·
+<p style="margin-top:18px">Explicavideos · Processo documentado · v2.9.9 ·
       <a href="https://github.com/inematds/explicavideos">inematds/explicavideos</a> ·
       <a href="https://inema.club">INEMA.CLUB</a></p>
 </div>
