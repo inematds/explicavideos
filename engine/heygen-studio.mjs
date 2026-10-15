@@ -212,6 +212,32 @@ try {
     if(!(await pg.locator('body').innerText()).includes('Avatar III')){await pg.getByText('Avatar',{exact:true}).last().click({force:true}).catch(()=>{});await pg.waitForTimeout(2_500);}
   }
   if(!(await pg.locator('body').innerText()).includes('Avatar III'))await morrer('Avatar III não confirmado');
+  // 14/10 (oscoach): com o painel "Edit Voice" aberto o Generate não envia e o rascunho fica parado.
+  // Fecha o painel lateral antes de gerar, mesmo quando o Avatar III já aparece.
+  if (await pg.getByText('Edit Voice', { exact: true }).first().isVisible().catch(() => false)) {
+    const ev = await pg.getByText('Edit Voice', { exact: true }).first().boundingBox().catch(() => null);
+    if (ev) await pg.mouse.click(ev.x - 16, ev.y + ev.height / 2);
+    await pg.waitForTimeout(1_500);
+    if (await pg.getByText('Edit Voice', { exact: true }).first().isVisible().catch(() => false)) {
+      await pg.keyboard.press('Escape'); await pg.waitForTimeout(1_500);
+    }
+    if (await pg.getByText('Edit Voice', { exact: true }).first().isVisible().catch(() => false)) await morrer('painel Edit Voice não fechou antes do Gerar');
+  }
+  // Enviado de verdade = a página sai do editor OU o card em Projetos não é mais Draft.
+  async function confirmarEnvio() {
+    for (let i = 0; i < 15 && /create-v4|editor/.test(pg.url()); i++) await pg.waitForTimeout(2_000);
+    if (!/create-v4|editor/.test(pg.url())) return;
+    passo('ainda no editor: conferindo o card em Projetos');
+    await pg.goto('https://app.heygen.com/projects', { waitUntil: 'domcontentloaded', timeout: 90_000 });
+    await pg.waitForTimeout(5_000);
+    await recusarPlano();
+    await buscar(TITULO);
+    await pg.waitForTimeout(4_000);
+    const t = pg.getByText(TITULO, { exact: true }).first();
+    if (!(await t.count())) await morrer(`card "${TITULO}" não apareceu em Projetos depois do Gerar`);
+    const txt = await t.locator('xpath=ancestor::*[.//img or .//video][1]').innerText().catch(() => '');
+    if (/\b(Draft|Rascunho)\b/i.test(txt)) await morrer(`card "${TITULO}" ficou Draft: o Generate não enviou`);
+  }
   passo('Gerar');
   const gerar = pg.getByRole('button', { name: /^(Gerar|Generate)/i }).first();
   if (!(await gerar.count())) await morrer('botão Gerar não encontrado');
@@ -224,7 +250,8 @@ try {
   const enviar = pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).first();
   if (!(await enviar.count())) {
     await pg.screenshot({ path: '/tmp/heygen-submit-fim.png' }).catch(() => {});
-    console.log('SEM MODAL: Generate enviou direto', pg.url());
+    console.log('SEM MODAL: conferindo se o Generate enviou', pg.url());
+    await confirmarEnvio();
     await ctx.close(); console.log(`RESULT: ${TITULO}`); process.exit(0);
   }
   console.log('MODAL', (await pg.locator('[role=dialog]').allTextContents()).join(' | ').slice(0,4000));
@@ -241,6 +268,7 @@ try {
   }
   await pg.screenshot({ path: '/tmp/heygen-submit-fim.png' }).catch(() => {});
   console.log('DEPOIS', pg.url(), (await pg.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 300));
+  await confirmarEnvio();
 
   await ctx.close();
   console.log(`RESULT: ${TITULO}`);
