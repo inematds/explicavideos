@@ -1,0 +1,18 @@
+{
+  "id": "itaipu-romper",
+  "title": "Itaipu pode romper? O que o estudo da UFPR mostra e a chuva de 2026",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-itaipu-viral",
+  "output": "/home/nmaldaner/projetos/output/explica-itaipu-viral/v2-romper",
+  "v1_output": "/home/nmaldaner/projetos/output/explica-itaipu-viral/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/eventosextremospub",
+  "release_tag": "video-itaipu-romper-v1",
+  "hyperframes": "0.8.77",
+  "aspect": "16:9",
+  "profile_visual": "viral",
+  "marca": "INEMA · EVENTOS EXTREMOS",
+  "selo_topo": "ITAIPU · 15/10/2026"
+}
