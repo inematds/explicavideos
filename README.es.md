@@ -29,6 +29,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animación explicativa (2.0.0)
 
+> 2.10.9: el perfil viral gana la pieza `colunas` (serie temporal con destacados), el sello lateral (`x`) para no tapar gráficos y la base de mapa `brasil-uf` (27 estados de Brasil).
+
 > 2.9.9: **formatos** — 16:9 viral (`"profile_visual": "viral"`), 16:9 clase (predeterminado del v2), 9:16 simple (`"aspect": "9:16"`) y 9:16 reel (`"reel_profile"`), con cuadros de ejemplo y cuándo usar cada uno: [guía, sección Formatos](https://inematds.github.io/explicavideos/guia/es/#formatos).
 
 

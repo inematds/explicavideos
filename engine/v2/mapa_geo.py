@@ -2,7 +2,7 @@
 projeta em Mercator e devolve caminhos SVG prontos + câmera e pinos já projetados. Sem rede, sem API.
 
 Shot `mapa` (visual JSON):
-  "base": "eua" | "mundo" | "brasil" (eua = estados dos EUA + países vizinhos),
+  "base": "eua" | "mundo" | "brasil" | "brasil-uf" (brasil-uf = 27 estados com nome completo; eua = estados dos EUA + países vizinhos),
   "destaques": [{"nome": "Texas", "at": "deixa"}],          regiões que acendem em âmbar
   "camera": [{"at": "deixa", "centro": [lon, lat], "zoom": 1}],   zoom 1 = enquadra a área toda
   "pinos": [{"lon": -95.98, "lat": 30.4, "txt": "TERAFAB", "at": "deixa", "sub": "...", "sub_at": "deixa"}]
@@ -17,8 +17,12 @@ BASES = {
             ('world-atlas-2.0.2/countries-50m.json', 'countries', {'Mexico', 'Canada', 'Cuba', 'Guatemala', 'Belize', 'Bahamas'})],
     'mundo': [('world-atlas-2.0.2/countries-110m.json', 'countries', None)],
     'brasil': [('world-atlas-2.0.2/countries-50m.json', 'countries', None)],
+    # brasil-uf (15/10/2026): países vizinhos (world-atlas) + as 27 UFs (GeoJSON local brasil-uf/uf.geojson, nomes completos)
+    'brasil-uf': [('world-atlas-2.0.2/countries-50m.json', 'countries', {'Argentina', 'Bolivia', 'Paraguay', 'Uruguay', 'Peru', 'Colombia',
+                                                                          'Venezuela', 'Guyana', 'Suriname', 'Chile', 'Ecuador'}),
+                  ('brasil-uf/uf.geojson', 'geojson', None)],
 }
-EXTENT = {'eua': (-127, 22, -64, 51), 'mundo': (-180, -58, 180, 80), 'brasil': (-80, -36, -32, 7)}
+EXTENT = {'eua': (-127, 22, -64, 51), 'mundo': (-180, -58, 180, 80), 'brasil': (-80, -36, -32, 7), 'brasil-uf': (-80, -36, -32, 7)}
 _cache = {}
 
 
@@ -69,6 +73,24 @@ def geo(shot, W, H):
     feats, hl_ids = [], set()
     for path, obj, filtro in BASES[base]:
         t = _topo(path)
+        if obj == 'geojson':   # anéis já em lon/lat (sem arcos TopoJSON)
+            for ft in t['features']:
+                nome, gm = ft['properties'].get('name', ''), ft['geometry']
+                polys = gm['coordinates'] if gm['type'] == 'MultiPolygon' else [gm['coordinates']]
+                d = []
+                for poly in polys:
+                    for ring in poly:
+                        pts, last = [], None
+                        for lon, lat in ring:
+                            x, y = P(lon, lat)
+                            if last and abs(x - last[0]) + abs(y - last[1]) < 1.2:
+                                continue
+                            pts.append(f'{x:.1f},{y:.1f}'); last = (x, y)
+                        if len(pts) > 2:
+                            d.append('M' + 'L'.join(pts) + 'Z')
+                if d:
+                    feats.append({'n': nome, 'd': ''.join(d), 'hl': nome in hl})
+            continue
         arcs = _arcs(t)
         for g in t['objects'][obj]['geometries']:
             nome = (g.get('properties') or {}).get('name', '')

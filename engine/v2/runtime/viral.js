@@ -197,10 +197,47 @@
     if (s.fonte) { const f = h(box, 'div', 'vr-rfonte', `left:${x}px;top:${H * (v916 ? 0.785 : 0.765)}px`, esc(s.fonte)); c.tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.4); }
   };
 
+  // colunas — série no tempo (até ~30 barras verticais): sobem da esquerda para a direita; o "at" do item é a deixa em que
+  // ele acende ("hl" âmbar, "alerta" vermelho) e mostra o valor (também com "mostra"); "rot"/"todos_rotulos" = ano embaixo (15/10/2026)
+  P.colunas = function (box, s, c) {
+    const t = def(s.at, c.T0 + 0.05), [W, H] = WH(c), it = s.itens || [], n = Math.max(1, it.length);
+    const v916 = W < 1500;
+    fundo(box, s, c, t);
+    corte(box, c, t);
+    const tw = TW(c), x = v916 ? 40 : 70, pw = tw - x * 2;
+    const pnl = h(box, 'div', 'vr-rpanel', `left:${x - 30}px;top:${H * (v916 ? 0.17 : 0.13)}px;width:${pw + 60}px;height:${H * (v916 ? 0.66 : 0.7)}px`);
+    c.tl.fromTo(pnl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t);
+    if (s.titulo) manchete(box, s.titulo, t + 0.05, c, 'top', `font-size:${v916 ? 56 : 68}px`);
+    const top = H * (v916 ? 0.3 : 0.31), base = H * (v916 ? 0.74 : 0.74);
+    const gap = n > 16 ? 8 : 18, cw = (pw - gap * (n - 1)) / n;
+    const mx = Number(s.max) || Math.max(...it.map((r) => Number(r.v) || 0)) || 1;
+    const passo = Math.min(0.09, 1.4 / n);
+    it.forEach((r, i) => {
+      const v = Number(r.v) || 0, bh = Math.max(4, (base - top) * v / mx), bx = x + i * (cw + gap);
+      const cls = r.alerta ? ' alerta' : (r.hl ? ' hl' : '');
+      const tg = t + 0.3 + i * passo, ti = Math.max(tg + 0.3, def(r.at, tg + 0.3));   // barra sobe em sequência; "at" = destaque
+      const bar = h(box, 'div', 'vr-cbar', `left:${bx}px;top:${base - bh}px;width:${cw}px;height:${bh}px`);
+      c.tl.fromTo(bar, { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: 'expo.out' }, tg);
+      if (cls) { const on = h(bar, 'div', 'vr-cbar-on' + cls, ''); c.tl.fromTo(on, { opacity: 0 }, { opacity: 1, duration: 0.2 }, ti); }
+      if (r.n != null && (s.todos_rotulos || r.hl || r.alerta || r.rot)) {
+        const lab = h(box, 'div', 'vr-clab' + cls, `left:${bx + cw / 2}px;top:${base + 14}px`, esc(r.n));
+        c.tl.fromTo(lab, { opacity: 0 }, { opacity: 1, duration: 0.25 }, ti);
+      }
+      if (r.hl || r.alerta || r.mostra) {
+        const val = h(box, 'div', 'vr-cval' + cls, `left:${bx + cw / 2}px;top:${base - bh - (v916 ? 64 : 74)}px`);
+        const st = { v: 0 };
+        c.render(() => { val.innerHTML = `${fmt(st.v, s.dec)}${s.unid ? `<small>${esc(s.unid)}</small>` : ''}`; });
+        c.tl.fromTo(val, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.25 }, ti + 0.15);
+        c.tl.fromTo(st, { v: 0 }, { v, duration: 0.5, ease: 'power2.out' }, ti + 0.05);
+        if (r.hl || r.alerta) c.tl.to(bar.firstChild || bar, { boxShadow: r.alerta ? '0 0 70px rgba(255,70,70,.95)' : '0 0 70px rgba(255,182,56,.95)', duration: 0.18, yoyo: true, repeat: 1 }, ti + 0.55);
+      }
+    });
+    if (s.fonte) { const f = h(box, 'div', 'vr-rfonte', `left:${x}px;top:${H * (v916 ? 0.8 : 0.79)}px`, esc(s.fonte)); c.tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.4); }
+  };
   // carimbo — bate por cima do shot anterior (use "keep": true)
   P.carimbo = function (box, s, c) {
     const t = def(s.at, c.T0 + 0.05), [W, H] = WH(c), cor = s.cor || 'var(--rose)';
-    const k = h(box, 'div', 'vr-carimbo', `color:${cor};border-color:${cor};left:${TW(c) / 2}px;top:${H * (s.y || 0.62)}px`, esc(s.txt || 'ALERTA'));
+    const k = h(box, 'div', 'vr-carimbo', `color:${cor};border-color:${cor};left:${s.x != null ? W * s.x : TW(c) / 2}px;top:${H * (s.y || 0.62)}px`, esc(s.txt || 'ALERTA'));   // "x" (0–1): 0,82 = acima do avatar, livre nos gráficos
     c.tl.fromTo(k, { opacity: 0, scale: 2.4, rotation: -8, xPercent: -50, yPercent: -50 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.26, ease: 'power4.in' }, t);
     c.tl.fromTo(k, { x: 0 }, { x: 7, duration: 0.05, yoyo: true, repeat: 3, immediateRender: false }, t + 0.26);
   };

@@ -1,0 +1,18 @@
+{
+  "id": "itaipu-viral",
+  "title": "E se Itaipu rompesse? O estudo, a chuva de 2026 e a previsão",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-itaipu-viral",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/eventosextremospub",
+  "release_tag": "video-itaipu-viral-v1",
+  "hyperframes": "0.8.77",
+  "engine": "v2",
+  "output": "/home/nmaldaner/projetos/output/explica-itaipu-viral/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/explica-itaipu-viral/v1",
+  "aspect": "16:9",
+  "profile_visual": "viral",
+  "marca": "INEMA · EVENTOS EXTREMOS",
+  "selo_topo": "ITAIPU · 15/10"
+}

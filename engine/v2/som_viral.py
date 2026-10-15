@@ -59,6 +59,10 @@ for f in sorted((blk / 'compositions').glob('scene-*.html')):
             ev.append((t + 0.4, 'ding', 0.45))
         if tp == 'bignum':
             ev.append((s0 + sh.get('hit_at', sh['at'] + 0.8), 'boom', 0.6))
+        if tp == 'colunas':
+            for r in sh.get('itens', []):
+                if (r.get('hl') or r.get('alerta')) and isinstance(r.get('at'), (int, float)):
+                    ev.append((s0 + r['at'] + 0.55, 'boom', 0.5))
         if tp == 'ranking':
             hl=[r for r in sh.get('itens',[]) if r.get('hl')]
             if hl and isinstance(hl[0].get('at'),(int,float)):

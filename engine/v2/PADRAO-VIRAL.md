@@ -20,12 +20,14 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   `itens` [{n, v, hl, at}] (até 5–6; `hl` = destaque âmbar), `titulo`, `unid`, `dec`, `max`, `fonte`. Cada item com a
   sua deixa na fala, senão o shot fica parado. `v_at` (opcional, 14/10/2026): a barra cresce numa 2ª deixa — pergunta no
   `at`, resposta no `v_at` ("Acha pela palavra exata?" → "Nível um"), duas trocas por item. Painel translúcido sobre a foto desfocada (passa no QA de área lisa).
+- **Série no tempo** (`colunas`, 15/10/2026): até ~30 barras verticais que sobem em sequência (ex.: focos 2003–2026); `itens` [{n, v, hl|alerta|mostra, rot, at}] — o `at` do item é a deixa em que ele acende (âmbar `hl`, vermelho `alerta`) e mostra o valor; `todos_rotulos` põe o ano em todas; `titulo`, `unid`, `dec`, `max`, `fonte`. Molde: `~/projetos/output/explica-queimadas-viral/visual/gerar_visual.py`.
+- **Carimbo ao lado** (`carimbo` com `x`, 15/10/2026): em cena de gráfico/número o carimbo central cobre título, rótulo e barras (o `hyperframes check` reprova `content_overlap`). Use `x: 0.82` (área livre acima da caixa do avatar, y 0,22–0,50) e texto ≤ ~10 caracteres; carimbos com `keep` empilham — varie o `y`.
 - **Mapa** (`mapa`): contornos reais locais (`mapa_geo.py`, us-atlas/world-atlas em `~/projetos/biblioteca-mapas`),
-  `base` eua|mundo|brasil, `camera` [{at, centro:[lon,lat], zoom}], `destaques` [{nome, at}] (estado dos EUA ganha os
+  `base` eua|mundo|brasil|brasil-uf (27 estados com nome completo, para acender Pará, Amazonas…; contornos em `biblioteca-mapas/brasil-uf/`), `camera` [{at, centro:[lon,lat], zoom}], `destaques` [{nome, at}] (estado dos EUA ganha os
   condados), `pinos` [{lon, lat, txt, at, sub, sub_at}]. O qa_viral não mede área lisa nos trechos de mapa.
 - **Cor da imagem**: luz neutra, branco que parece branco, uma cor forte de destaque; nada de "paleta âmbar", "luz dourada" ou objeto dourado em toda cena (o gerador do Codex já puxa para o amarelo). O âmbar da marca fica só no texto e nas peças desenhadas. Depois de gerar: `refazvideo/ferramentas/cor_neutra.py corrigir media/*.png` (corrige amarelo > 18, guarda `-amarela`).
 - **Imagem** (`foto`): sempre em movimento (pan + zoom ≤ 1,25 + leve parallax de camadas), com vinheta e grão.
-- **Avatar**: grande. 16:9 = janela redonda grande no canto inferior direito, que cresce para tela cheia nos
+- **Avatar**: grande. 16:9 = caixa com moldura âmbar no canto inferior direito, que cresce para tela cheia nos
   shots `rosto`; 9:16 = metade de baixo, e `rosto` toma a tela.
 - **Marca**: faixa fina no topo (INEMA · assunto · fonte do dado da vez). Legenda grande, 1–3 palavras, palavra
   falada em âmbar.

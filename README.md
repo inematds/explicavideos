@@ -29,6 +29,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.10.9: perfil viral ganha a peça `colunas` (série no tempo com destaques), o carimbo ao lado (`x`) para não cobrir gráficos e a base de mapa `brasil-uf` (27 estados). Primeiro uso: queimadas e Itaipu refeitos com avatar reaproveitado (15/10/2026).
+
 > 2.9.9: **formatos** — 16:9 viral (`"profile_visual": "viral"`), 16:9 aula (padrão v2), 9:16 simples (`"aspect": "9:16"`) e 9:16 reel (`"reel_profile"`), com quadros de exemplo e quando usar cada um: [guia, seção Formatos](https://inematds.github.io/explicavideos/guia/#formatos).
 
 

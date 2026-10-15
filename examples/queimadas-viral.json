@@ -1,0 +1,23 @@
+{
+  "id": "queimadas-viral",
+  "title": "Queimadas na Amazônia: 2026 ano a ano e por estado",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-queimadas-viral",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/eventosextremospub",
+  "release_tag": "video-queimadas-viral-v1",
+  "hyperframes": "0.8.77",
+  "output": "/home/nmaldaner/projetos/output/explica-queimadas-viral/v1",
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/explica-queimadas-viral/roteiro/pt.json"
+  },
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, INPE, Amazônia, focos, Pará, Amazonas, Mato Grosso, Rondônia, Roraima, Amapá, Acre, Maranhão, Altamira, São Félix do Xingu, Itaituba, Apuí, El Niño, NOAA, PFF2, Manaus, inema ponto club.",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}
