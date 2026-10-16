@@ -1,0 +1,23 @@
+{
+  "id": "trapaca-anim",
+  "title": "Trapaça nos jogos online mudou de nível com IA",
+  "source_repo": "/home/nmaldaner/projetos/output/trapaca-anim",
+  "output": "/home/nmaldaner/projetos/output/trapaca-anim/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/trapaca-anim/roteiro/pt.json"
+  },
+  "github_repo": "inematds/rea-engenharia-reversa",
+  "release_tag": "video-v1.0.0",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, REA, inema ponto club, minimapa, tanque, engenharia reversa, inteligência artificial.",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}

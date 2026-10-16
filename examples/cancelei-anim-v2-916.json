@@ -1,0 +1,23 @@
+{
+  "id": "cancelei-anim-v2",
+  "title": "Cancelei a assinatura e fiz o meu programa com IA",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/cancelei-anim",
+  "output": "/home/nmaldaner/projetos/output/cancelei-anim/v2-916",
+  "v1_output": "/home/nmaldaner/projetos/output/cancelei-anim/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/rea-engenharia-reversa",
+  "release_tag": "video-v1.0.0",
+  "hyperframes": "0.8.77",
+  "aspect": "9:16",
+  "profile_visual": "viral",
+  "marca": "INEMA · REA",
+  "selo_topo": "SEU PROGRAMA SEM MENSALIDADE",
+  "reel_profile": "divulgacao",
+  "avatar_916": "pip",
+  "pip_cena": 2,
+  "pip_move": true,
+  "capa_segura": true
+}

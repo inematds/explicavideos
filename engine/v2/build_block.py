@@ -410,10 +410,11 @@ SCENE = '''<!doctype html>
 '''
 
 
-def viral_index(idx, rostos, fontes, marca, selo, capa=None, pip_t=None):
+def viral_index(idx, rostos, fontes, marca, selo, capa=None, pip_t=None, pip_moves=None):
     """Perfil viral: runtime viral.css/js, faixa de marca no topo, fonte do dado e avatar em MEIA tela nos "rosto"
     (nunca tela cheia, Nei 15/10/2026). pip_t (9:16 com "avatar_916": "pip"): a partir dele o avatar vira PiP no canto
-    e a cena ocupa o quadro inteiro."""
+    e a cena ocupa o quadro inteiro; pip_moves ("pip_move": true): em cada um desses tempos o PiP desliza para o
+    outro canto de baixo (direita ↔ esquerda) e a legenda vai junto para o lado livre."""
     head = '<script src="assets/v2.js"></script>'
     idx = idx.replace(head, head + '<link rel="stylesheet" href="assets/viral.css"><script src="assets/viral.js"></script>')
     fts = ''.join(f'<div class="fonte" id="ft{i}">{html.escape("Fonte: " + f[2])}</div>' for i, f in enumerate(fontes))
@@ -426,16 +427,19 @@ def viral_index(idx, rostos, fontes, marca, selo, capa=None, pip_t=None):
           'const W=+document.getElementById("root").dataset.width,H=+document.getElementById("root").dataset.height;'
           'const pc=getComputedStyle(document.getElementById("pip")),sm={left:parseFloat(pc.left),top:parseFloat(pc.top),width:parseFloat(pc.width),height:parseFloat(pc.height),borderRadius:parseFloat(pc.borderTopLeftRadius)};'
           'const big=v9?{left:0,top:H/2,width:W,height:H/2,borderRadius:0}:{left:W/2,top:0,width:W/2,height:H,borderRadius:0};'
-          'const P=%s,pg={left:W-380,top:H-520,width:340,height:440,borderRadius:24};'
+          'const P=%s,MV=%s,pg={left:W-380,top:H-520,width:340,height:440,borderRadius:24},pgL=Object.assign({},pg,{left:40});'
+          'const cn=t=>MV.filter(m=>t>=m).length%%2?pgL:pg,cl=c=>({left:c===pgL?400:40});'
           'if(P!==null){tl.fromTo("#pip",Object.assign({},sm),Object.assign({duration:.6,ease:"expo.inOut",immediateRender:false},pg),P);'
           'tl.fromTo("#caps",{left:40,top:1020,width:1000},{left:40,top:H-330,width:W-440,duration:.4,immediateRender:false},P);'
-          'tl.fromTo("#caps .cap",{width:1000,fontSize:84},{width:W-440,fontSize:64,duration:.4,immediateRender:false},P);}'
-          'R.forEach(([a,b])=>{const s0=(P!==null&&a>=P)?pg:sm;tl.fromTo("#pip",Object.assign({},s0),Object.assign({duration:.35,ease:"expo.out",immediateRender:false},big),a);'
+          'tl.fromTo("#caps .cap",{width:1000,fontSize:84},{width:W-440,fontSize:64,duration:.4,immediateRender:false},P);'
+          'MV.forEach((m,i)=>{const a0=i%%2?pgL:pg,a1=i%%2?pg:pgL;tl.fromTo("#pip",Object.assign({},a0),Object.assign({duration:.6,ease:"expo.inOut",immediateRender:false},a1),m);'
+          'tl.fromTo("#caps",cl(a0),Object.assign({duration:.6,ease:"expo.inOut",immediateRender:false},cl(a1)),m);});}'
+          'R.forEach(([a,b])=>{const s0=(P!==null&&a>=P)?cn(a):sm;tl.fromTo("#pip",Object.assign({},s0),Object.assign({duration:.35,ease:"expo.out",immediateRender:false},big),a);'
           'tl.fromTo("#pip",Object.assign({},big),Object.assign({duration:.3,ease:"expo.inOut",immediateRender:false},s0),Math.max(a+.4,b-.3));});'
           'R.forEach(([a,b,t,ta],i)=>{if(!t)return;tl.fromTo("#rt"+i,{opacity:0,scale:1.4},{opacity:1,scale:1,duration:.3,ease:"back.out(2)",immediateRender:false},ta);tl.to("#rt"+i,{opacity:0,duration:.2},Math.max(ta+.3,b-.25));});'
           + ('tl.fromTo("#capa-cheia",{opacity:1,scale:1},{scale:1.06,duration:%.3f,ease:"none",immediateRender:true},0);tl.to("#capa-cheia",{opacity:0,duration:.25},%.3f);' % (max(.3, capa[1] - .25), max(0, capa[1] - .25)) if capa else '') +
           'F.forEach(([a,b],i)=>{tl.fromTo("#ft"+i,{opacity:0,y:-8},{opacity:1,y:0,duration:.25},a);tl.to("#ft"+i,{opacity:0,duration:.2},Math.max(a+.3,b-.2));});'
-          '})();</script>') % (json.dumps(rostos), json.dumps([[a, b] for a, b, _ in fontes]), json.dumps(pip_t))
+          '})();</script>') % (json.dumps(rostos), json.dumps([[a, b] for a, b, _ in fontes]), json.dumps(pip_t), json.dumps(pip_moves or []))
     return idx.replace('</body></html>', js + '\n</body></html>')
 
 
@@ -456,6 +460,7 @@ def build(part, strict=False, spec_path=None, out=None):
     # dela em diante vira PiP no canto e o palco ocupa o quadro inteiro (1080×1920).
     pip916 = viral and aspect_of(CFG) == '9:16' and CFG.get('avatar_916') == 'pip'
     pip_cena, pip_t = int(CFG.get('pip_cena', 2)), None
+    pip_moves = []   # "pip_move": true (16/10/2026): a cada cena seguinte o PiP troca de canto (direita ↔ esquerda)
     key = f'{lang}-b{part:02d}'
     # Relatório velho não pode sobreviver a um build que falhou no meio: o produtor o leria como aprovado.
     (ROOT / 'verification' / f'build-v2-{key}.json').unlink(missing_ok=True)
@@ -509,6 +514,8 @@ def build(part, strict=False, spec_path=None, out=None):
         sVH, smode = VH, mode
         if pip916 and n >= pip_cena:
             sVH, smode = 1920, mode + ' pipfull'
+            if pip_t is not None and CFG.get('pip_move'):
+                pip_moves.append(round(s0, 3))
             pip_t = round(s0, 3) if pip_t is None else pip_t
         entry = spec.get('scenes', {}).get(str(n))
         fb = entry is None or not entry.get('shots')
@@ -640,7 +647,7 @@ def build(part, strict=False, spec_path=None, out=None):
     idx = INDEX.replace('__CAPS__', json.dumps(caps, ensure_ascii=False)).replace('__DUR__', str(dur)).replace('__HOSTS__', '\n'.join(hosts)).replace('__SEED__', str(7 + part)).replace('{LANG}', lang)
     idx = idx.replace('__W__', str(W)).replace('__H__', str(H)).replace('__MODE__', mode)
     if viral:
-        idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia, pip_t)
+        idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia, pip_t, pip_moves)
     report['aspect'] = aspect_of(CFG)
     report['rostos'] = [r[:2] for r in rostos]
     report['mapas'] = mapas   # o qa_viral não mede 'área lisa' em mapa (oceano/terra sólidos são informação)

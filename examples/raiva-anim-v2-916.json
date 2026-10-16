@@ -1,0 +1,23 @@
+{
+  "id": "raiva-anim-v2",
+  "title": "Software por raiva: o cliente vai fazer o próprio",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/raiva-anim",
+  "output": "/home/nmaldaner/projetos/output/raiva-anim/v2-916",
+  "v1_output": "/home/nmaldaner/projetos/output/raiva-anim/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/rea-engenharia-reversa",
+  "release_tag": "video-v1.0.0",
+  "hyperframes": "0.8.77",
+  "aspect": "9:16",
+  "profile_visual": "viral",
+  "marca": "INEMA · REA",
+  "selo_topo": "POR RAIVA, NÃO POR DINHEIRO",
+  "reel_profile": "divulgacao",
+  "avatar_916": "pip",
+  "pip_cena": 2,
+  "pip_move": true,
+  "capa_segura": true
+}
