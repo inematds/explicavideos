@@ -3,6 +3,7 @@
 /* palco = área de cena do perfil (sem coluna lateral) */
 .viral .v2-fit,.viral .v2-stage,.viral .v2-shot{width:1920px;height:1080px;transform:none}
 .viral.v916 .v2-fit,.viral.v916 .v2-stage,.viral.v916 .v2-shot{width:1080px;height:1150px;transform:none!important}
+.viral.v916.pipfull .v2-fit,.viral.v916.pipfull .v2-stage,.viral.v916.pipfull .v2-shot{height:1920px}   /* avatar_916 "pip": cena no quadro inteiro */
 .viral .v2-shot{perspective:1400px}
 .viral #bg .bg-grad{background:radial-gradient(1200px 800px at 50% 40%,#1a1408 0%,#07070b 60%,#020203 100%)}
 /* avatar: 16:9 = janela grande no canto; 9:16 = metade de baixo. "rosto" cresce para tela cheia (index) */

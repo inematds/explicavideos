@@ -401,8 +401,10 @@ SCENE = '''<!doctype html>
 '''
 
 
-def viral_index(idx, rostos, fontes, marca, selo, capa=None):
-    """Perfil viral: runtime viral.css/js, faixa de marca no topo, fonte do dado e avatar em tela cheia nos "rosto"."""
+def viral_index(idx, rostos, fontes, marca, selo, capa=None, pip_t=None):
+    """Perfil viral: runtime viral.css/js, faixa de marca no topo, fonte do dado e avatar em MEIA tela nos "rosto"
+    (nunca tela cheia, Nei 15/10/2026). pip_t (9:16 com "avatar_916": "pip"): a partir dele o avatar vira PiP no canto
+    e a cena ocupa o quadro inteiro."""
     head = '<script src="assets/v2.js"></script>'
     idx = idx.replace(head, head + '<link rel="stylesheet" href="assets/viral.css"><script src="assets/viral.js"></script>')
     fts = ''.join(f'<div class="fonte" id="ft{i}">{html.escape("Fonte: " + f[2])}</div>' for i, f in enumerate(fontes))
@@ -414,13 +416,17 @@ def viral_index(idx, rostos, fontes, marca, selo, capa=None):
     js = ('<script>(function(){const tl=window.__timelines["main"],R=%s,F=%s,v9=document.getElementById("root").classList.contains("v916");'
           'const W=+document.getElementById("root").dataset.width,H=+document.getElementById("root").dataset.height;'
           'const pc=getComputedStyle(document.getElementById("pip")),sm={left:parseFloat(pc.left),top:parseFloat(pc.top),width:parseFloat(pc.width),height:parseFloat(pc.height),borderRadius:parseFloat(pc.borderTopLeftRadius)};'
-          'const big={left:0,top:0,width:W,height:H,borderRadius:0};'
-          'R.forEach(([a,b])=>{tl.fromTo("#pip",Object.assign({},sm),Object.assign({duration:.35,ease:"expo.out",immediateRender:false},big),a);'
-          'tl.fromTo("#pip",Object.assign({},big),Object.assign({duration:.3,ease:"expo.inOut",immediateRender:false},sm),Math.max(a+.4,b-.3));});'
+          'const big=v9?{left:0,top:H/2,width:W,height:H/2,borderRadius:0}:{left:W/2,top:0,width:W/2,height:H,borderRadius:0};'
+          'const P=%s,pg={left:W-380,top:H-520,width:340,height:440,borderRadius:24};'
+          'if(P!==null){tl.fromTo("#pip",Object.assign({},sm),Object.assign({duration:.6,ease:"expo.inOut",immediateRender:false},pg),P);'
+          'tl.fromTo("#caps",{left:40,top:1020,width:1000},{left:40,top:H-330,width:W-440,duration:.4,immediateRender:false},P);'
+          'tl.fromTo("#caps .cap",{width:1000,fontSize:84},{width:W-440,fontSize:64,duration:.4,immediateRender:false},P);}'
+          'R.forEach(([a,b])=>{const s0=(P!==null&&a>=P)?pg:sm;tl.fromTo("#pip",Object.assign({},s0),Object.assign({duration:.35,ease:"expo.out",immediateRender:false},big),a);'
+          'tl.fromTo("#pip",Object.assign({},big),Object.assign({duration:.3,ease:"expo.inOut",immediateRender:false},s0),Math.max(a+.4,b-.3));});'
           'R.forEach(([a,b,t,ta],i)=>{if(!t)return;tl.fromTo("#rt"+i,{opacity:0,scale:1.4},{opacity:1,scale:1,duration:.3,ease:"back.out(2)",immediateRender:false},ta);tl.to("#rt"+i,{opacity:0,duration:.2},Math.max(ta+.3,b-.25));});'
           + ('tl.fromTo("#capa-cheia",{opacity:1,scale:1},{scale:1.06,duration:%.3f,ease:"none",immediateRender:true},0);tl.to("#capa-cheia",{opacity:0,duration:.25},%.3f);' % (max(.3, capa[1] - .25), max(0, capa[1] - .25)) if capa else '') +
           'F.forEach(([a,b],i)=>{tl.fromTo("#ft"+i,{opacity:0,y:-8},{opacity:1,y:0,duration:.25},a);tl.to("#ft"+i,{opacity:0,duration:.2},Math.max(a+.3,b-.2));});'
-          '})();</script>') % (json.dumps(rostos), json.dumps([[a, b] for a, b, _ in fontes]))
+          '})();</script>') % (json.dumps(rostos), json.dumps([[a, b] for a, b, _ in fontes]), json.dumps(pip_t))
     return idx.replace('</body></html>', js + '\n</body></html>')
 
 
@@ -437,6 +443,10 @@ def build(part, strict=False, spec_path=None, out=None):
         mode = (mode + ' viral').strip()
     VW, VH = (1080, 1150) if (viral and aspect_of(CFG) == '9:16') else (1920, 1080)
     rostos, fontes, capa_cheia, mapas = [], [], None, []
+    # 9:16 "avatar_916": "pip" (Nei 15/10/2026): até a cena "pip_cena" o avatar fica em meio tamanho (palco 1080×1150);
+    # dela em diante vira PiP no canto e o palco ocupa o quadro inteiro (1080×1920).
+    pip916 = viral and aspect_of(CFG) == '9:16' and CFG.get('avatar_916') == 'pip'
+    pip_cena, pip_t = int(CFG.get('pip_cena', 2)), None
     key = f'{lang}-b{part:02d}'
     # Relatório velho não pode sobreviver a um build que falhou no meio: o produtor o leria como aprovado.
     (ROOT / 'verification' / f'build-v2-{key}.json').unlink(missing_ok=True)
@@ -487,6 +497,10 @@ def build(part, strict=False, spec_path=None, out=None):
         s0 = starts[k]
         s1 = starts[k + 1] if k + 1 < len(starts) else dur
         sdur = round(s1 - s0, 3)
+        sVH, smode = VH, mode
+        if pip916 and n >= pip_cena:
+            sVH, smode = 1920, mode + ' pipfull'
+            pip_t = round(s0, 3) if pip_t is None else pip_t
         entry = spec.get('scenes', {}).get(str(n))
         fb = entry is None or not entry.get('shots')
         if fb:
@@ -513,7 +527,7 @@ def build(part, strict=False, spec_path=None, out=None):
                 sh['src'] = copy_media(sh['src'], dest, n, i)
             if sh['type'] == 'mapa':
                 import mapa_geo   # contornos locais → SVG (perfil viral)
-                sh['geo'] = mapa_geo.geo(sh, VW, VH)
+                sh['geo'] = mapa_geo.geo(sh, VW, sVH)
         if viral:
             # trechos absolutos: avatar em tela cheia ("rosto") e fonte do dado na faixa do topo
             for i, sh in enumerate(shots):
@@ -556,18 +570,22 @@ def build(part, strict=False, spec_path=None, out=None):
             limit = 10
             ts = [0.0] + all_times(shots) + [sdur - 2]
         gaps = [(round(a, 1), round(b - a, 1)) for a, b in zip(ts, ts[1:]) if b - a > limit]
+        if viral and k == 0 and CFG.get('capa_segura') and len(shots) > 1 and shots[0]['type'] == 'capa':
+            # "capa_segura" (Nei 15/10/2026: "o texto inicial tem que ficar mais segundos aberto"): a capa parada
+            # de propósito não conta como trecho sem troca
+            gaps = [(a, g) for a, g in gaps if a >= shots[1]['at'] - 0.05]
         for a, g in gaps:
             warnings.append(f'cena {n}: {g}s sem mudança visual a partir de {a}s (limite {limit}s)')
         sid = f'scene-{n:03d}'
         S = {'lang': lang, 'n': n, 'total': total, 'chapter': sc['chapter'], 'title': sc['title'], 'takeaway': sc.get('takeaway') if entry is None or entry.get('takeaway', True) is not False else None,
              'dur': sdur, 'shots': shots, 'reel': bool(reel), 'header': bool(entry and entry.get('header'))}
         if viral:
-            S.update(viral=True, vw=VW, vh=VH)
+            S.update(viral=True, vw=VW, vh=sVH)
         if viral and entry and entry.get('fundo'):
             S['fundo'] = copy_media(entry['fundo'], dest, n, 'fundo')
         if entry and isinstance(entry.get('takeaway'), str):
             S['takeaway'] = entry['takeaway']
-        pending.append((dest / 'compositions' / f'{sid}.html', SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=mode, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/'))))
+        pending.append((dest / 'compositions' / f'{sid}.html', SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=smode, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/'))))
         hosts.append(f' <div id="{sid}" class="clip" data-composition-id="{sid}" data-composition-src="compositions/{sid}.html" data-start="{s0}" data-duration="{sdur}" data-track-index="1"></div>')
         report['scenes'].append({'scene': n, 'start': s0, 'dur': sdur, 'shots': [sh['type'] for sh in shots], 'fallback': fb, 'max_gap': max([b - a for a, b in zip(ts, ts[1:])] or [0])})
     for old in (dest / 'compositions').glob('*.html'):
@@ -580,7 +598,7 @@ def build(part, strict=False, spec_path=None, out=None):
     idx = INDEX.replace('__CAPS__', json.dumps(caps, ensure_ascii=False)).replace('__DUR__', str(dur)).replace('__HOSTS__', '\n'.join(hosts)).replace('__SEED__', str(7 + part)).replace('{LANG}', lang)
     idx = idx.replace('__W__', str(W)).replace('__H__', str(H)).replace('__MODE__', mode)
     if viral:
-        idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia)
+        idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia, pip_t)
     report['aspect'] = aspect_of(CFG)
     report['rostos'] = [r[:2] for r in rostos]
     report['mapas'] = mapas   # o qa_viral não mede 'área lisa' em mapa (oceano/terra sólidos são informação)

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Som do perfil viral (PADRAO-VIRAL.md): trilha baixa sob a voz + efeitos nos cortes e números.
 
-Uso: som_viral.py <pasta-do-bloco final/pt-bNN> <video.mp4> <saida.mp4> [--trilha=<mp3>] [--sfx=<pasta>]
+Uso: som_viral.py <pasta-do-bloco final/pt-bNN> <video.mp4> <saida.mp4> [--trilha=<mp3>] [--sfx=<pasta>] [--sem-efeitos]
+- --sem-efeitos (Nei 15/10/2026, "não quero sons no meio"): só voz + trilha baixa, nenhum efeito.
 Lê os tempos dos shots das composições (scene-*.html) e dos hosts (index.html). Tudo local, sem API.
 - Só efeito que marca algo (13/10/2026, o Nei não quer som de movimento de tela): boom no carimbo, no selo
   da capa e no impacto do bignum/barra; braam no capitulo; ding no cta; buzz no risca da cinetica.
@@ -74,6 +75,8 @@ for f in sorted((blk / 'compositions').glob('scene-*.html')):
                 if p.get('risca_at') is not None:
                     ev.append((s0 + p['risca_at'], 'buzz', 0.3))
 ev.sort()
+if '--sem-efeitos' in sys.argv:
+    ev = []
 dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', video], capture_output=True, text=True).stdout)
 # trilha repetida com emenda em crossfade (2 s) até cobrir o vídeo — sem corte seco no loop
 tdur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', TRILHA], capture_output=True, text=True).stdout)

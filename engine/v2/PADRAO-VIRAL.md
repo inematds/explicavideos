@@ -27,13 +27,18 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   condados), `pinos` [{lon, lat, txt, at, sub, sub_at}]. O qa_viral não mede área lisa nos trechos de mapa.
 - **Cor da imagem**: luz neutra, branco que parece branco, uma cor forte de destaque; nada de "paleta âmbar", "luz dourada" ou objeto dourado em toda cena (o gerador do Codex já puxa para o amarelo). O âmbar da marca fica só no texto e nas peças desenhadas. Depois de gerar: `refazvideo/ferramentas/cor_neutra.py corrigir media/*.png` (corrige amarelo > 18, guarda `-amarela`).
 - **Imagem** (`foto`): sempre em movimento (pan + zoom ≤ 1,25 + leve parallax de camadas), com vinheta e grão.
-- **Avatar**: grande. 16:9 = caixa com moldura âmbar no canto inferior direito, que cresce para tela cheia nos
-  shots `rosto`; 9:16 = metade de baixo, e `rosto` toma a tela.
+- **Avatar** (D8 do inema-design, 15/10/2026): **nunca em tela cheia** — no máximo meia tela. 16:9 = caixa no canto
+  inferior direito; `rosto` cresce até a metade direita. 9:16 = metade de baixo; `rosto` = metade de baixo. Com
+  `"avatar_916": "pip"` + `"pip_cena": N` na config: capa sem avatar → meio tamanho até a cena N → PiP pequeno no canto
+  e a cena no quadro inteiro (1080×1920, classe `pipfull`). `"capa_segura": true` deixa a capa parada uns segundos
+  (texto inicial mais tempo aberto) sem o build acusar "sem mudança".
+- **Imagens**: uma por momento, sem repetir; dado de lugar vira mapa real (satélite NASA HLS via GIBS, anotado).
 - **Marca**: faixa fina no topo (INEMA · assunto · fonte do dado da vez). Legenda grande, 1–3 palavras, palavra
   falada em âmbar.
 - Sem vídeo de terceiros nem b-roll pago por padrão (imagens locais/Codex).
 
 ## Som
+- **Sem efeitos no meio** (D7, 15/10/2026): `som_viral.py --sem-efeitos` = só voz + trilha baixa.
 - Sem som de movimento de tela (13/10/2026, pedido do Nei): nada de whoosh nas trocas, pop nas palavras nem riser.
   Efeito só onde marca algo: carimbo, selo da capa, impacto do bignum/barra, capítulo (braam), cta (ding).
   Voz na frente: comprimida e levada a -13 LUFS, trilha abaixa sob a fala (sidechain), limitador no fim.
