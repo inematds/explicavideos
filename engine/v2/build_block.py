@@ -61,6 +61,7 @@ VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo
 SHOT_TYPES |= VIRAL_TYPES
 OPENERS = ('hook', 'capa')   # nascem visíveis no frame 0 ("@start")
 MEDIA_EXT = {'.png', '.jpg', '.jpeg', '.webp'}
+VIDEO_EXT = {'.mp4'}   # clipe mudo curto: vira <video> estático na cena (2.8, refazvideo QKdH9DhlB1c)
 
 
 def norm(s):
@@ -296,7 +297,7 @@ def srt(caps, min_cue):
     return '\n'.join(f'{i + 1}\n{stamp(a)} --> {stamp(max(b, a + 0.05))}\n{t}\n' for i, (a, b, t) in enumerate(cues))
 
 
-def copy_media(src, dest, n, i):
+def copy_media(src, dest, n, i, allow_video=False):
     """Mídia local (print/foto do produto) congelada dentro do bloco: assets/media/. Sem rede no render."""
     if not src:
         raise BuildError(f'cena {n}: shot {i} sem "src"')
@@ -305,13 +306,21 @@ def copy_media(src, dest, n, i):
         p = ROOT / 'media' / p
     if not p.exists():
         raise BuildError(f'cena {n}: mídia não encontrada {p}')
+    if p.suffix.lower() in VIDEO_EXT and allow_video:
+        import hashlib, subprocess
+        (dest / 'assets/media').mkdir(parents=True, exist_ok=True)
+        name = hashlib.sha256(p.read_bytes()).hexdigest()[:10] + '-' + p.name
+        shutil.copy2(p, dest / 'assets/media' / name)
+        poster = name[:-4] + '.poster.jpg'
+        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(p), '-frames:v', '1', str(dest / 'assets/media' / poster)], check=True)
+        return f'assets/media/{poster}', f'assets/media/{name}'
     if p.suffix.lower() not in MEDIA_EXT:
         raise BuildError(f'cena {n}: mídia {p.name} — use imagem ({", ".join(sorted(MEDIA_EXT))}); vídeo ainda não é suportado')
     (dest / 'assets/media').mkdir(parents=True, exist_ok=True)
     import hashlib
     name = hashlib.sha256(p.read_bytes()).hexdigest()[:10] + '-' + p.name   # /a/print.png ≠ /b/print.png
     shutil.copy2(p, dest / 'assets/media' / name)
-    return f'assets/media/{name}'
+    return (f'assets/media/{name}', None) if allow_video else f'assets/media/{name}'
 
 
 def image_size(p):
@@ -394,7 +403,7 @@ __HOSTS__
 SCENE = '''<!doctype html>
 <html lang="{LANG}"><body><template>
 <div id="{id}-root" class="v2-scene {mode}" data-composition-id="{id}" data-width="{W}" data-height="{H}" data-duration="{dur}">
-<div class="v2-fit" data-layout-allow-overflow><div class="v2-stage" data-layout-allow-overflow></div></div>
+<div class="v2-fit" data-layout-allow-overflow><div class="v2-stage" data-layout-allow-overflow>{videos}</div></div>
 <script>V2.scene("{id}", {spec});</script>
 </div>
 </template></body></html>
@@ -516,15 +525,22 @@ def build(part, strict=False, spec_path=None, out=None):
                         sh['svg'] = sc['svg']
         for i, sh in enumerate(shots):
             if sh['type'] == 'media':
-                sh['src'] = copy_media(sh.get('src'), dest, n, i)
+                sh['src'], vid = copy_media(sh.get('src'), dest, n, i, allow_video=True)
                 sh['iw'], sh['ih'] = image_size(dest / sh['src'])
+                if vid:
+                    sh['vid'], sh['vidid'] = vid, f'v{i}'
             if sh['type'] == 'hook' and sh.get('src'):
                 sh['src'] = copy_media(sh['src'], dest, n, i)
             if sh['type'] in VIRAL_TYPES and sh.get('src'):
                 if viral and aspect_of(CFG) == '9:16' and sh.get('src_916'):
                     sh['src'] = sh['src_916']
                 sh.pop('src_916', None)
-                sh['src'] = copy_media(sh['src'], dest, n, i)
+                if sh['type'] == 'foto' and Path(os.path.expanduser(str(sh['src']))).suffix.lower() in VIDEO_EXT:
+                    # clipe .mp4 em tela cheia (voo 3D do mapa, 15/10/2026): o viral.js põe o <video> no lugar da imagem
+                    sh['src'], vid = copy_media(sh['src'], dest, n, i, allow_video=True)
+                    sh['vid'], sh['vidid'], sh['vfull'] = vid, f'v{i}', True
+                else:
+                    sh['src'] = copy_media(sh['src'], dest, n, i)
             if sh['type'] == 'mapa':
                 import mapa_geo   # contornos locais → SVG (perfil viral)
                 sh['geo'] = mapa_geo.geo(sh, VW, sVH)
@@ -537,12 +553,29 @@ def build(part, strict=False, spec_path=None, out=None):
                 a, b = s0 + sh['at'], s0 + (shots[j]['at'] if j < len(shots) else sdur)
                 if sh['type'] == 'capa' and k == 0 and aspect_of(CFG) == '9:16':
                     capa_cheia = [sh['src'], round(b, 3)]   # 9:16: a capa cobre o quadro inteiro (sobre o avatar) até o 1º corte
-                if sh['type'] == 'mapa':
+                if sh['type'] == 'mapa' or sh.get('vfull'):   # voo 3D de satélite também é mapa (área sólida = conteúdo)
                     mapas.append([round(a, 3), round(b, 3)])
                 if sh['type'] == 'rosto':
                     rostos.append([round(a, 3), round(b, 3), sh.get('txt', ''), round(s0 + sh.get('txt_at', sh['at'] + 0.3), 3)])
                 if sh.get('fonte'):
                     fontes.append([round(a, 3), round(b, 3), sh['fonte']])
+        videos = ''
+        for i, sh in enumerate(shots):
+            if sh.get('vid'):
+                j = i + 1
+                while j < len(shots) and shots[j].get('keep'):
+                    j += 1
+                t0 = sh['at']; t1 = min(sdur, (shots[j]['at'] if j < len(shots) else sdur) + 0.7)
+                if sh.get('vfull'):
+                    videos += (f'<video id="scene-{n:03d}-clip{i}" class="clip vr-vid" data-vid="{sh["vidid"]}" src="{sh["vid"]}" muted playsinline data-start="{round(t0, 3)}" '
+                               f'data-duration="{round(t1 - t0, 3)}" data-track-index="{10 + i}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover"></video>\n')
+                    continue
+                lab = bool(sh.get('label')); Y = 150 if lab else 170; Hh = 700 if lab else 780; Wd = 1330; X = 90
+                if sh.get('calm') and sh.get('iw') and sh.get('ih'):
+                    w2 = min(Wd, Hh * sh['iw'] / sh['ih']); X += (Wd - w2) / 2; Hh = w2 * sh['ih'] / sh['iw']; Wd = w2
+                videos += (f'<video id="scene-{n:03d}-clip{i}" class="clip" data-vid="{sh["vidid"]}" src="{sh["vid"]}" muted playsinline data-start="{round(t0, 3)}" '
+                           f'data-duration="{round(t1 - t0, 3)}" data-track-index="{10 + i}" style="position:absolute;left:{X + 3:.1f}px;top:{Y + 3}px;'
+                           f'width:{Wd - 6:.1f}px;height:{Hh - 6:.1f}px;object-fit:cover;border-radius:22px;opacity:0"></video>\n')
         if reel and k > 0 and shots and shots[0]['at'] > 0.5:
             warnings.append(f'cena {n}: topo vazio por {shots[0]["at"]}s até o 1º shot (use uma deixa do começo da fala)')
         if reel and k == 0 and not (shots and shots[0]['type'] in OPENERS and shots[0]['at'] <= 0.05):
@@ -562,6 +595,15 @@ def build(part, strict=False, spec_path=None, out=None):
         if viral:
             limit = 2.0   # PADRAO-VIRAL: nunca > 2 s sem troca de conteúdo
             ts = [0.0] + all_times(shots, words=False, effects=False) + [sdur]
+            # clipe .mp4 em tela cheia (voo 3D) é movimento contínuo: conta como troca a cada 1 s enquanto aparece
+            for i, sh in enumerate(shots):
+                if sh.get('vfull'):
+                    j = i + 1
+                    while j < len(shots) and shots[j].get('keep'):
+                        j += 1
+                    fim = shots[j]['at'] if j < len(shots) else sdur
+                    ts += [x / 10 for x in range(int(sh['at'] * 10), int(fim * 10), 10)]
+            ts = sorted(ts)
         elif reel:
             # no reel conta só troca de conteúdo (at/*_at), não palavra aparecendo (wt); e a cauda inteira
             limit = reel['rhythm']['static_review_s']
@@ -585,7 +627,7 @@ def build(part, strict=False, spec_path=None, out=None):
             S['fundo'] = copy_media(entry['fundo'], dest, n, 'fundo')
         if entry and isinstance(entry.get('takeaway'), str):
             S['takeaway'] = entry['takeaway']
-        pending.append((dest / 'compositions' / f'{sid}.html', SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=smode, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/'))))
+        pending.append((dest / 'compositions' / f'{sid}.html', SCENE.format(id=sid, dur=sdur, LANG=lang, W=W, H=H, mode=smode, videos=videos, spec=json.dumps(S, ensure_ascii=False).replace('</', '<\\/'))))
         hosts.append(f' <div id="{sid}" class="clip" data-composition-id="{sid}" data-composition-src="compositions/{sid}.html" data-start="{s0}" data-duration="{sdur}" data-track-index="1"></div>')
         report['scenes'].append({'scene': n, 'start': s0, 'dur': sdur, 'shots': [sh['type'] for sh in shots], 'fallback': fb, 'max_gap': max([b - a for a, b in zip(ts, ts[1:])] or [0])})
     for old in (dest / 'compositions').glob('*.html'):

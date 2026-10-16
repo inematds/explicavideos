@@ -676,7 +676,8 @@
     const fr = h(box, 'div', 'md-frame', `left:${X}px;top:${Y}px;width:${W}px;height:${Hh}px`);
     // imagem e destaques no MESMO contêiner: o zoom move os dois juntos (o destaque fica na palavra certa)
     const inn = h(fr, 'div', 'md-in', '');
-    const im = h(inn, 'img', 'md-img', ''); im.src = s.src;
+    let im = null;
+    if (s.vid) { fr.style.background = 'transparent'; } else { im = h(inn, 'img', 'md-img', ''); im.src = s.src; }
     let [fx, fy] = s.focus || [0.5, 0.5], [z0, z1] = s.zoom || (c.S.reel ? [1.35, 1.6] : [1.0, 1.12]);
     // zoom que CENTRALIZA o foco (fx, fy) na moldura, sem mostrar borda vazia (limites por eixo)
     const IH = W * (s.ih && s.iw ? s.ih / s.iw : Hh / W);
@@ -699,6 +700,13 @@
       const b = h(inn, 'div', 'md-hl', `left:${r.x * 100}%;top:${r.y * 100}%;width:${r.w * 100}%;height:${r.h * 100}%`);
       c.tl.fromTo(b, { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, def(r.at, t + 1));
     });
+    if (s.vid) {  // clipe real: <video> estático na cena (build_block.py); aqui só a opacidade acompanha o shot
+      const ve = c.root.querySelector('video[data-vid="' + s.vidid + '"]');
+      if (ve) {
+        c.tl.fromTo(ve, { opacity: 0 }, { opacity: 1, duration: s.cont ? 0.01 : 0.6, ease: 'sine.inOut' }, t);
+        if (c.T1 < c.S.dur - 0.4) c.tl.to(ve, { opacity: 0, duration: 0.5, ease: 'sine.inOut' }, c.T1 + 0.1);
+      }
+    }
     if (s.label) { const lb = h(box, 'div', 'md-lb', `top:${Y + Hh + 22}px`, rich(s.label)); c.rise(lb, def(s.label_at, t + 0.4), 16); }
   };
 

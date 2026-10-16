@@ -16,7 +16,9 @@
     const wrap = h(box, 'div', 'vr-bleed', `width:${W}px;height:${H}px`);
     const inteira = s.texto && W < 1500;
     if (inteira) h(wrap, 'div', 'vr-img vr-fill', `background-image:url("${s.src}")`);
-    const im = h(wrap, 'div', 'vr-img' + (inteira ? ' vr-contain' : ''), `background-image:url("${s.src}")`);
+    let im = h(wrap, 'div', 'vr-img' + (inteira ? ' vr-contain' : ''), `background-image:url("${s.src}")`);
+    const ve = s.vid && c.root.querySelector('video[data-vid="' + s.vidid + '"]');
+    if (ve) { wrap.insertBefore(ve, im); im.remove(); im = ve; ve.classList.add('vr-img'); }   // clipe .mp4 (voo 3D) no lugar da foto
     h(wrap, 'div', 'vr-grain', '');
     h(wrap, 'div', 'vr-shade' + (opt && opt.dark ? ' dark' : ''), '');
     const pts = [{ t, f: s.focus || [0.5, 0.5], z: (s.zoom || [1.05, 1.18])[0] }].concat((s.pontos || []).map((p) => ({ t: p.at, f: p.focus || [0.5, 0.5], z: p.zoom || 1.15 })));
