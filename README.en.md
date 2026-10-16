@@ -29,6 +29,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Format v2: explainer animation (2.0.0)
 
+> 2.11.9: `qa_viral` only fails single-color (> 90% flat) or frozen screens; 40% flat area becomes a warning with a sheet of the flagged moments (`sheet-marcados-*.jpg`) and writes `<video>.qa.json`, which the bot uses to send the video with 🔴 REPROVADO and the reason. In 9:16 the `ranking` panel now fits its rows (15/10/2026).
+
 > 2.10.9: the viral profile gains the `colunas` piece (time series with highlights), the side stamp (`x`) so charts stay uncovered, and the `brasil-uf` map base (27 Brazilian states).
 
 > 2.9.9: **formats** — 16:9 viral (`"profile_visual": "viral"`), 16:9 lesson (v2 default), simple 9:16 (`"aspect": "9:16"`) and 9:16 reel (`"reel_profile"`), with sample frames and when to use each: [guide, Formats section](https://inematds.github.io/explicavideos/guia/en/#formatos).
