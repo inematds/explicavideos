@@ -3,7 +3,7 @@ Leia README.md e context/current-state.md. Autor: inematds <inematds@gmail.com>.
 
 ## Perfil do HeyGen: um só, com fila (2.7.8, 10/10/2026)
 
-Muitos projetos usam o estúdio (finviral, saudeviral, traduções, reelcomenta, docflow, istoreal, refazvideo…) e todos passam por `engine/heygen-studio.mjs` ou `engine/heygen-estudio-baixar.mjs`. Os dois abrem o perfil por `engine/heygen-perfil.mjs`: espera o dono atual sair (PID do `SingletonLock` vivo), volta para a fila se perder a corrida ("ProcessSingleton") e desiste depois de `HEYGEN_ESPERA_MIN` minutos (padrão 180). O download abre, confere e FECHA o navegador a cada ciclo, e espera o intervalo com o perfil livre. Antes ficava aberto horas.
+Muitos projetos usam o estúdio (finviral, saudeviral, traduções, reelcomenta, docflow, istoreal, refazvideo…) e todos passam por `engine/heygen-studio.mjs` ou `engine/heygen-estudio-baixar.mjs`. **Desde 17/10/2026 o `heygen-estudio-baixar.mjs` confere e baixa pela API de leitura** (`GET /v3/videos/<id>` + `video_url`, autorizado pelo Nei; mesma linha de comando, `--perfil` ignorado): não abre navegador nem entra na fila do perfil, e quem chama não precisa segurar `heygen-estudio.lock` durante a espera. Limite: a API mostra rascunho (Draft) como `pending` — quem pega Draft é o `heygen-studio.mjs` no envio. Só o envio abre o perfil por `engine/heygen-perfil.mjs`: espera o dono atual sair (PID do `SingletonLock` vivo), volta para a fila se perder a corrida ("ProcessSingleton") e desiste depois de `HEYGEN_ESPERA_MIN` minutos (padrão 180).
 - Ver quem está usando e quem está na fila: `engine/heygen-fila.sh`. Histórico em `~/.cache/inemaccbot/heygen-uso.log`.
 - Não abra o perfil por outro caminho (`launchPersistentContext` direto): use os dois scripts ou importe `abrirPerfil`.
 - Quem chama os scripts com `timeout` precisa contar a espera na fila.
@@ -13,7 +13,7 @@ Muitos projetos usam o estúdio (finviral, saudeviral, traduções, reelcomenta,
 Todo pedido de ok ao Nei para gerar ou reenviar avatar (novo `APROVADO_HEYGEN`) diz, em texto, sem menu:
 - **o que será gerado:** produção, blocos, idiomas e minutos estimados (~800 caracteres ≈ 1 min);
 - **como, no modelo atual (padrão):** gerar pelo estúdio com script, na assinatura; conferir e baixar pela API, só leitura, com a chave do `openpcbotv2/.env`;
-- **a alternativa:** estúdio de ponta a ponta, sem chave de API (usada pela 1ª vez em 01/10/2026 no Codex + Claude EN/ES: envio com `engine/heygen-studio.mjs` e conferência/download com `engine/heygen-estudio-baixar.mjs`, rodados à mão, sem `submit.py`/`monitor.py`, que chamam a API; ganhos e riscos no README, seção "HeyGen: como o motor gera, confere e baixa");
+- **a alternativa:** estúdio de ponta a ponta, sem chave de API (usada pela 1ª vez em 01/10/2026 no Codex + Claude EN/ES: envio com `engine/heygen-studio.mjs` e conferência/download com `engine/heygen-estudio-baixar.mjs` (pelo navegador até 16/10/2026; pela API de leitura desde 17/10), rodados à mão, sem `submit.py`/`monitor.py`, que chamam a API; ganhos e riscos no README, seção "HeyGen: como o motor gera, confere e baixa");
 - **o que acontece depois:** render, montagem, publicação e portal, tudo local e sem custo.
 
 Bloco `pending` por horas: antes de propor reenvio, olhe Projetos no estúdio, só leitura (modelo: `~/projetos/output/oswork-v62/verification-estudio-2026-09-29/olhar-travados.mjs`). A API chama rascunho de `pending`. Se estiver em Draft, nada foi cobrado; se estiver fora de Draft, o envio anterior valeu e não se reenvia.

@@ -1,75 +1,62 @@
-// Confere e baixa um vídeo de avatar SÓ pelo estúdio do HeyGen — sem chave de API.
+// Confere e baixa um vídeo de avatar enviado pelo estúdio do HeyGen — pela API de LEITURA.
 //
-//   DISPLAY=:99 node engine/heygen-estudio-baixar.mjs --id <id32> --saida <arq.mp4> \
-//     --perfil <dir> [--minutos 120] [--intervalo 120]
+//   node engine/heygen-estudio-baixar.mjs --id <id32> --saida <arq.mp4> \
+//     [--perfil <dir>] [--minutos 120] [--intervalo 120]
 //
-// Só leitura no estúdio: abre /videos/<id>, recarrega até o player aparecer e baixa
-// o MP4 que o próprio player usa (URL assinada do CDN), pelo contexto logado.
-// Não clica em Gerar/Enviar/Editar. Se a página mostrar Draft, para (nada foi
-// enviado — não é caso de esperar).
-// O perfil do HeyGen é um só: cada conferência abre, lê e FECHA o navegador, e espera o
-// intervalo com o perfil livre para os outros projetos (antes ficava aberto horas; 10/10/2026).
+// Desde 17/10/2026 a verificação e o download são pela API (GET /v3/videos/<id> + video_url),
+// autorizado pelo Nei (leitura não gasta crédito). Gerar/enviar continua só pelo estúdio
+// (heygen-studio.mjs). Não abre navegador nem ocupa o perfil do HeyGen; --perfil é aceito e
+// ignorado para não quebrar quem já chama assim.
 // Sai 0 com `RESULT: <arquivo>`; 3 com `ERRO: <motivo>`; 4 se estourou o tempo.
-import { renameSync, writeFileSync } from 'node:fs';
-import { chromium } from '/home/nmaldaner/projetos/inemaccbot/node_modules/playwright/index.mjs';
-import { abrirPerfil } from './heygen-perfil.mjs';
+import { readFileSync, renameSync, writeFileSync } from 'node:fs';
+import { homedir } from 'node:os';
 
 const arg = (n, d) => { const i = process.argv.indexOf(`--${n}`); return i > 0 && process.argv[i + 1] ? process.argv[i + 1] : d; };
-const ID = arg('id'), SAIDA = arg('saida'), PERFIL = arg('perfil');
-const MINUTOS = Number(arg('minutos', '120')), INTERVALO = Number(arg('intervalo', '120'));
-if (!/^[a-f0-9]{32}$/.test(ID ?? '') || !SAIDA || !PERFIL) { console.error('ERRO: uso: --id <id32> --saida <arq.mp4> --perfil <dir>'); process.exit(3); }
+const ID = arg('id'), SAIDA = arg('saida');
+const MINUTOS = Number(arg('minutos', '120'));
+const INTERVALO = Math.min(Number(arg('intervalo', '120')), 60);
+if (!/^[a-f0-9]{32}$/.test(ID ?? '') || !SAIDA) { console.error('ERRO: uso: --id <id32> --saida <arq.mp4>'); process.exit(3); }
 const passo = (m) => console.log(`${new Date().toISOString().slice(11, 19)} ${m}`);
+const sair = (cod, m) => { console[cod ? 'error' : 'log'](m); process.exit(cod); };
 
-const OPC = {
-  headless: !process.env.DISPLAY,
-  args: ['--password-store=basic', '--no-first-run', '--no-default-browser-check'],
-  viewport: { width: 1440, height: 900 },
-};
-const QUEM = `download ${ID}`;
-let ctx = null;
-const fechar = async () => { if (ctx) { const c = ctx; ctx = null; await c.close().catch(() => {}); } };
-const sair = async (cod, m) => { await fechar(); console[cod ? 'error' : 'log'](m); process.exit(cod); };
+let CHAVE = null;
+for (const linha of readFileSync(`${homedir()}/projetos/openpcbotv2/.env`, 'utf8').split('\n')) {
+  const m = linha.match(/^\s*HEYGEN_API_KEY\s*=\s*(.+?)\s*$/);
+  if (m) CHAVE = m[1].replace(/^['"]|['"]$/g, '');
+}
+if (!CHAVE) sair(3, 'ERRO: HEYGEN_API_KEY ausente em ~/projetos/openpcbotv2/.env');
 
-// uma conferência: abre o perfil, lê a página do vídeo; baixa se estiver pronto; fecha
-async function conferir() {
-  ctx = await abrirPerfil(chromium, PERFIL, OPC, QUEM);
-  const pg = ctx.pages()[0] ?? await ctx.newPage();
-  for (const extra of ctx.pages().slice(1)) await extra.close();
-  await pg.goto(`https://app.heygen.com/videos/${ID}`, { waitUntil: 'domcontentloaded', timeout: 90_000 });
-  await pg.waitForTimeout(12_000);
-  // A página se recarrega sozinha quando o vídeo fica pronto: se a leitura cair no meio, lê de novo.
-  let v = null;
-  for (let i = 0; i < 3 && !v; i++) {
-    v = await pg.evaluate(() => ({
-      texto: document.body.innerText.replace(/\s+/g, ' ').slice(0, 600),
-      src: [...document.querySelectorAll('video, video source')].map((e) => e.currentSrc || e.src).find((s) => /^https:.*\.mp4/i.test(s ?? '')) ?? null,
-    })).catch(async () => { await pg.waitForTimeout(8_000); return null; });
-  }
-  if (!v) { passo('página recarregando — tento no próximo ciclo'); return; }
-  if (/doesn't exist or has been moved|não existe/i.test(v.texto) && !v.src) await sair(3, 'ERRO: o estúdio diz que este ID de vídeo não existe — conferir o título em Projetos');
-  if (/\bdraft\b|rascunho/i.test(v.texto) && !v.src) await sair(3, `ERRO: vídeo está em Draft — o envio não pegou (${v.texto.slice(0, 160)})`);
-  if (/failed|falhou|error generating/i.test(v.texto) && !v.src) await sair(3, `ERRO: estúdio mostra falha (${v.texto.slice(0, 160)})`);
-  if (v.src) {
-    passo('pronto no estúdio — baixando');
-    const r = await ctx.request.get(v.src, { timeout: 600_000 });
-    if (!r.ok()) await sair(3, `ERRO: download HTTP ${r.status()}`);
-    const corpo = await r.body();
-    if (corpo.length < 1_000_000) await sair(3, `ERRO: arquivo pequeno demais (${corpo.length} bytes)`);
-    const temp = SAIDA.replace(/\.mp4$/, '.part.mp4');
-    writeFileSync(temp, corpo); renameSync(temp, SAIDA);
-    await sair(0, `RESULT: ${SAIDA}`);
-  }
-  passo(`ainda gerando: ${(v.texto.match(/\d{1,3}%/) ?? ['?'])[0]}`);
+async function status() {
+  const r = await fetch(`https://api.heygen.com/v3/videos/${ID}`, { headers: { 'X-Api-Key': CHAVE }, signal: AbortSignal.timeout(30_000) });
+  if (r.status === 404) return { status: 'nao_existe' };
+  if (!r.ok) return { status: 'indisponivel', http: r.status };
+  const j = await r.json();
+  return j.data ?? j;
+}
+
+async function baixar(url) {
+  const r = await fetch(url, { signal: AbortSignal.timeout(900_000) });
+  if (!r.ok) sair(3, `ERRO: download HTTP ${r.status}`);
+  const corpo = Buffer.from(await r.arrayBuffer());
+  if (corpo.length < 1_000_000) sair(3, `ERRO: arquivo pequeno demais (${corpo.length} bytes)`);
+  const temp = SAIDA.replace(/\.mp4$/, '') + '.part.mp4';
+  writeFileSync(temp, corpo); renameSync(temp, SAIDA);
+  sair(0, `RESULT: ${SAIDA}`);
 }
 
 const fim = Date.now() + MINUTOS * 60_000;
-try {
-  while (Date.now() < fim) {
-    await conferir();
-    await fechar();
-    await new Promise((r) => setTimeout(r, INTERVALO * 1000));
-  }
-  await sair(4, 'ERRO: tempo esgotado esperando o estúdio');
-} catch (e) {
-  await sair(3, `ERRO: ${(e?.message ?? String(e)).split('\n')[0].slice(0, 200)}`);
+let semId = 0;
+while (Date.now() < fim) {
+  let d;
+  try { d = await status(); } catch (e) { d = { status: 'indisponivel', erro: String(e?.message ?? e).slice(0, 120) }; }
+  const st = String(d.status ?? '').toLowerCase();
+  if (st === 'completed' && d.video_url) { passo(`pronto (${d.title ?? ID}) — baixando pela API`); await baixar(d.video_url); }
+  if (st === 'failed') sair(3, `ERRO: HeyGen falhou (${String(d.failure_message ?? d.error ?? '').slice(0, 160)})`);
+  if (st === 'draft') sair(3, 'ERRO: vídeo está em Draft — o envio não pegou');
+  // 404 logo após o envio pode ser atraso de indexação; 3 seguidos = ID errado ou rascunho nunca enviado
+  if (st === 'nao_existe') { if (++semId >= 3) sair(3, 'ERRO: a API não acha este ID (404) — conferir o título em Projetos no estúdio (Draft?)'); }
+  else semId = 0;
+  passo(`status: ${st || '?'}${d.http ? ` (HTTP ${d.http})` : ''}`);
+  await new Promise((r) => setTimeout(r, INTERVALO * 1000));
 }
+sair(4, 'ERRO: tempo esgotado esperando o HeyGen');
