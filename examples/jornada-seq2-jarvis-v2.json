@@ -1,0 +1,14 @@
+{
+  "id": "jornada-seq2-jarvis",
+  "title": "Sequência 2 · o seu Jarvis com o INTELECTO",
+  "source_repo": "/home/nmaldaner/projetos/jornada-agentes",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/jornada-agentes",
+  "release_tag": "video-v2.0.0",
+  "engine": "v2",
+  "output": "/home/nmaldaner/projetos/output/jornada-agentes/seq2-jarvis/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/jornada-agentes/seq2-jarvis/v1",
+  "hyperframes": "0.8.77"
+}

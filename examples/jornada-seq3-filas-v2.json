@@ -1,0 +1,14 @@
+{
+  "id": "jornada-seq3-filas",
+  "title": "Sequência 3 · filas com o inemaccbot",
+  "source_repo": "/home/nmaldaner/projetos/jornada-agentes",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/jornada-agentes",
+  "release_tag": "video-v2.0.0",
+  "engine": "v2",
+  "output": "/home/nmaldaner/projetos/output/jornada-agentes/seq3-filas/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/jornada-agentes/seq3-filas/v1",
+  "hyperframes": "0.8.77"
+}

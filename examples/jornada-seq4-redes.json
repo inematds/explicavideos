@@ -1,0 +1,20 @@
+{
+  "id": "jornada-seq4-redes",
+  "title": "Sequência 4 · redes no automático",
+  "source_repo": "/home/nmaldaner/projetos/jornada-agentes",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/jornada-agentes",
+  "release_tag": "video-v2.0.0",
+  "output": "/home/nmaldaner/projetos/output/jornada-agentes/seq4-redes/v1",
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/jornada-agentes/seq4-redes/roteiro/pt.json"
+  },
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, OSWork, AGENTS.md, Claude Code, Codex, INTELECTO, Jarvis, OpenRouter, Ollama, inemaccbot, r7e, promoavatar, finviral, saudeviral, advviral, inema ponto club."
+}

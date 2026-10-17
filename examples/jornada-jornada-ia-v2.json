@@ -1,0 +1,14 @@
+{
+  "id": "jornada-jornada-ia",
+  "title": "Do chat ao agente · as 4 sequências",
+  "source_repo": "/home/nmaldaner/projetos/jornada-agentes",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/jornada-agentes",
+  "release_tag": "video-v2.0.0",
+  "engine": "v2",
+  "output": "/home/nmaldaner/projetos/output/jornada-agentes/jornada-ia/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/jornada-agentes/jornada-ia/v1",
+  "hyperframes": "0.8.77"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "jornada-seq4-redes",
+  "title": "Sequência 4 · redes no automático",
+  "source_repo": "/home/nmaldaner/projetos/jornada-agentes",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/jornada-agentes",
+  "release_tag": "video-v2.0.0",
+  "engine": "v2",
+  "output": "/home/nmaldaner/projetos/output/jornada-agentes/seq4-redes/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/jornada-agentes/seq4-redes/v1",
+  "hyperframes": "0.8.77"
+}

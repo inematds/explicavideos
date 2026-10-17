@@ -97,7 +97,7 @@
       return { t0, t1, j, box, first };
     });
     // no reel o cabeçalho (capítulo/título) não ocupa o topo — a tela é do gancho e da prova
-    if (!S.viral && (!S.reel || S.header)) header(ctx, built.length ? built[0].first : S.dur);
+    if (!S.viral && S.header !== false && (!S.reel || S.header)) header(ctx, built.length ? built[0].first : S.dur);
     if (!S.viral) side(ctx);
     built.forEach((b) => {
       if (b.t1 >= S.dur - 0.05) return;

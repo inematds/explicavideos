@@ -627,7 +627,7 @@ def build(part, strict=False, spec_path=None, out=None):
             warnings.append(f'cena {n}: {g}s sem mudança visual a partir de {a}s (limite {limit}s)')
         sid = f'scene-{n:03d}'
         S = {'lang': lang, 'n': n, 'total': total, 'chapter': sc['chapter'], 'title': sc['title'], 'takeaway': sc.get('takeaway') if entry is None or entry.get('takeaway', True) is not False else None,
-             'dur': sdur, 'shots': shots, 'reel': bool(reel), 'header': bool(entry and entry.get('header'))}
+             'dur': sdur, 'shots': shots, 'reel': bool(reel), 'header': (entry or {}).get('header')}  # True liga no reel; False tira o cabeçalho da cena no 16:9 (2.13.10)
         if viral:
             S.update(viral=True, vw=VW, vh=sVH)
         if viral and entry and entry.get('fundo'):

@@ -101,6 +101,8 @@ Todo vídeo, não só o reel, precisa prender nos primeiros 2 s pela voz e pela 
 - `"cold_open": true` — a abertura é montada depois do `assemble`: o trecho da frase de impacto que o avatar já fala adiante (2–6 s, sem conectivo tipo "Então"), sobre imagem ligada ao assunto (Codex `image_gen`) com o texto JÁ NA IMAGEM — o Codex escreve bem; legenda sobreposta ficou feia — e o avatar no canto livre. Abertura curta (< 5 s) = UMA imagem só (duas se atropelam); de 5–6 s cabem thumb + imagem. A fala precisa ter o sujeito ("Por que ele vai…" sem dizer quem é "ele" não prende): se preciso, a abertura é o começo da fala sem o "Imagine que…" e o original continua dali (`resume`); a última imagem dissolve sobre o 1º segundo do original. Receita usada na trilogia gestão de agentes: `~/projetos/output/gestor-de-agentes/gancho/monta_gancho.py` (gera `<id>-pt-gancho.mp4/.srt/.json`, legendas e capítulos deslocados).
 - `"allow_cold_start": true` — só quando abrir sem gancho for de propósito.
 
+Capa com texto no topo da imagem: `"header": false` na cena tira o cabeçalho (capítulo/título) daquela cena no 16:9, para ele não cobrir o texto da capa (2.13.10).
+
 No roteiro, a 1ª frase já é a de impacto: nada de "Imagine que…", "Pense num…", "Se você…" como abertura.
 
 **Capa = o ganho da pessoa (09/10/2026).** A 1ª imagem da abertura (frame 0, `g0`) é a PROMESSA, o que o espectador ganha (ex.: "SEU AGENTE TRABALHANDO HORAS OU DIAS / DE FORMA SEGURA"; "QUALQUER UM CONSTRÓI SEU ASSISTENTE JARVIS"), e a 1ª frase da fala diz esse ganho. Só depois vêm a provocação (o problema/flagrante) e as peças. Abrir direto na provocação, sem o ganho, o Nei reprovou no vídeo Execução Longa.
