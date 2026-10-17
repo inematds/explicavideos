@@ -1,0 +1,23 @@
+{
+  "id": "clima24h-1710-viral",
+  "title": "Clima 24 h 17/10: casa desaba em Niterói e o fogo dobra no Brasil",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-clima24h-1710-viral",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/eventosextremospub",
+  "release_tag": "video-clima24h-1710-viral-v1",
+  "hyperframes": "0.8.77",
+  "output": "/home/nmaldaner/projetos/output/explica-clima24h-1710-viral/v1",
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/explica-clima24h-1710-viral/roteiro/pt.json"
+  },
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Niterói, Caramujo, Mongaguá, Cubatão, Curitiba, Maranhão, Teresina, INMET, CEMADEN, inema.club, milímetros, pluviômetros",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}

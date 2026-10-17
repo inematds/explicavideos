@@ -1,0 +1,18 @@
+{
+  "id": "clima24h-1710-viral",
+  "title": "Clima 24 h 17/10: casa desaba em Niterói e o fogo dobra no Brasil",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-clima24h-1710-viral",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/eventosextremospub",
+  "release_tag": "video-clima24h-1710-viral-v1",
+  "hyperframes": "0.8.77",
+  "engine": "v2",
+  "output": "/home/nmaldaner/projetos/output/explica-clima24h-1710-viral/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/explica-clima24h-1710-viral/v1",
+  "aspect": "16:9",
+  "profile_visual": "viral",
+  "marca": "INEMA · EVENTOS EXTREMOS",
+  "selo_topo": "CEMADEN · INMET · 17/10"
+}
