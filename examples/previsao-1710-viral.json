@@ -1,0 +1,23 @@
+{
+  "id": "previsao-1710-viral",
+  "title": "Previsão do Dia 17/10/2026: geada e frio abaixo de zero na Serra Catarinense",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-previsao-1710-viral",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/eventosextremospub",
+  "release_tag": "video-previsao-1710-viral-v1",
+  "hyperframes": "0.8.77",
+  "output": "/home/nmaldaner/projetos/output/explica-previsao-1710-viral/v1",
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/explica-previsao-1710-viral/roteiro/pt.json"
+  },
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Previsão do dia, Serra Catarinense, Campos de Palmas, geada, ciclone extratropical, Minas, Rio de Janeiro, inema ponto club",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}
