@@ -20,7 +20,7 @@ def local(audio,language):
    pcm=whisper.load_audio(str(audio));end=len(pcm)/16000;edges=[0.0]+[x for w in words for x in (w['start'],w['end'])]+[end]
    for a,b in [(edges[i],edges[i+1]) for i in range(0,len(edges),2) if edges[i+1]-edges[i]>3]:
     extra=[]
-    for s in [a+d for d in (0,1.5,3) if a+d<b-2]:
+    for s in [max(0.0,a+d) for d in (-0.2,0,1.5,3) if a+d<b-2]:
      got=[w for w in get(model.transcribe(pcm[int(s*16000):int(b*16000)],**opts),s) if w['start']>=a-.2 and w['end']<=b+.2]
      if len(got)>len(extra):extra=got
      if len(extra)>=(b-s)*1.5:break
