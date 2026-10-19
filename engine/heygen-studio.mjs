@@ -228,6 +228,7 @@ try {
     for (let i = 0; i < 15 && /create-v4|editor/.test(pg.url()); i++) await pg.waitForTimeout(2_000);
     if (!/create-v4|editor/.test(pg.url())) return;
     passo('ainda no editor: conferindo o card em Projetos');
+    const urlEditor = pg.url();
     await pg.goto('https://app.heygen.com/projects', { waitUntil: 'domcontentloaded', timeout: 90_000 });
     await pg.waitForTimeout(5_000);
     await recusarPlano();
@@ -236,7 +237,16 @@ try {
     const t = pg.getByText(TITULO, { exact: true }).first();
     if (!(await t.count())) await morrer(`card "${TITULO}" não apareceu em Projetos depois do Gerar`);
     const txt = await t.locator('xpath=ancestor::*[.//img or .//video][1]').innerText().catch(() => '');
-    if (/\b(Draft|Rascunho)\b/i.test(txt)) await morrer(`card "${TITULO}" ficou Draft: o Generate não enviou`);
+    if (/\b(Draft|Rascunho)\b/i.test(txt)) {
+      // alerta vermelho no bot v3 com o nome do rascunho: o Nei gera à mão no estúdio (Nei, 19/10/2026)
+      if (!SECO) {
+        const { spawnSync } = await import('node:child_process');
+        const r = spawnSync('python3', [`${process.env.HOME}/projetos/wifi/heygen-aviso/rascunho.py`, TITULO, urlEditor],
+          { encoding: 'utf8', timeout: 150_000 });
+        console.log('ALERTA RASCUNHO', r.status === 0 ? 'enviado ao v3' : `falhou: ${(r.stderr || r.error || '').toString().slice(-200)}`);
+      }
+      await morrer(`card "${TITULO}" ficou Draft: o Generate não enviou`);
+    }
   }
   passo('Gerar');
   const gerar = pg.getByRole('button', { name: /^(Gerar|Generate)/i }).first();
