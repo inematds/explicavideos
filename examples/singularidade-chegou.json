@@ -1,0 +1,23 @@
+{
+  "id": "singularidade-chegou",
+  "title": "A singularidade chegou: US$ 44 trilhões e o lado que ninguém mostra",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-wS3lJpOs9Uw",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-singularidade-chegou-v1",
+  "hyperframes": "0.8.77",
+  "output": "/home/nmaldaner/projetos/output/explica-wS3lJpOs9Uw/v1",
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/explica-wS3lJpOs9Uw/roteiro/pt.json"
+  },
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Anthropic, Jack Clark, Fundo Monetário Internacional, singularidade, Claude Opus, FrontierMath, Último Exame da Humanidade, PIB, inema ponto club.",
+  "balanced_blocks": true,
+  "min_block_seconds": 15,
+  "min_words": 30
+}
