@@ -6,7 +6,7 @@
 // Agora: espera o dono do perfil sair (PID do SingletonLock vivo) e entra; se perder a
 // corrida no lançamento, espera e tenta de novo. Cada entrada/saída vai para
 // ~/.cache/inemaccbot/heygen-uso.log (ver quem está usando: engine/heygen-fila.sh).
-import { appendFileSync, mkdirSync, readlinkSync, lstatSync } from 'node:fs';
+import { appendFileSync, mkdirSync, readlinkSync, lstatSync, readdirSync, existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import path from 'node:path';
 
@@ -41,8 +41,24 @@ export async function esperarLivre(perfil, ateMs, quem) {
 
 // Abre o perfil com fila. `quem` = rótulo para o log (script + título/id).
 // Espera até HEYGEN_ESPERA_MIN minutos (padrão 180).
+// O perfil é compartilhado com o r7ex (Playwright mais novo). Depois que um Chrome novo abre
+// o perfil, o Chrome antigo cai com SIGTRAP (18/10/2026). Por isso: sempre o Chrome mais novo
+// instalado (ou HEYGEN_CHROME), nunca o que vem com o Playwright local.
+function chromeMaisNovo() {
+  if (process.env.HEYGEN_CHROME) return process.env.HEYGEN_CHROME;
+  const base = path.join(homedir(), '.cache/ms-playwright');
+  try {
+    const vs = readdirSync(base).filter((d) => /^chromium-\d+$/.test(d)).sort((a, b) => Number(b.split('-')[1]) - Number(a.split('-')[1]));
+    for (const v of vs) for (const sub of ['chrome-linux-arm64', 'chrome-linux']) {
+      const exe = path.join(base, v, sub, 'chrome'); if (existsSync(exe)) return exe;
+    }
+  } catch {}
+  return undefined;
+}
+
 export async function abrirPerfil(chromium, perfil, opcoes, quem) {
   const ate = Date.now() + Number(process.env.HEYGEN_ESPERA_MIN || 180) * 60_000;
+  const exe = chromeMaisNovo(); if (exe && !opcoes.executablePath) opcoes = { ...opcoes, executablePath: exe };
   for (;;) {
     await esperarLivre(perfil, ate, quem);
     try {
