@@ -6,11 +6,19 @@
 // Agora: espera o dono do perfil sair (PID do SingletonLock vivo) e entra; se perder a
 // corrida no lançamento, espera e tenta de novo. Cada entrada/saída vai para
 // ~/.cache/inemaccbot/heygen-uso.log (ver quem está usando: engine/heygen-fila.sh).
-import { appendFileSync, mkdirSync, readlinkSync, lstatSync, readdirSync, existsSync } from 'node:fs';
+//
+// Trava do estúdio (19/10/2026): olhar o SingletonLock e depois abrir não é atômico. Dois
+// envios no mesmo segundo viam "livre" e o segundo morria com "Opening in existing browser
+// session" (r7ex, 01:32). Agora quem abre o estúdio pega antes a trava
+// ~/.cache/inemaccbot/heygen-estudio.trava (mkdir é atômico; arquivo `dono` = pid + quem).
+// Trava de pid morto é tomada. Ela é da FERRAMENTA, não de um projeto: as cópias deste
+// arquivo (explicavideos/engine, r7ex/heygen) usam o mesmo caminho.
+import { appendFileSync, mkdirSync, readlinkSync, lstatSync, readdirSync, existsSync, readFileSync, writeFileSync, rmSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import path from 'node:path';
 
 const LOG = path.join(homedir(), '.cache/inemaccbot/heygen-uso.log');
+const TRAVA = process.env.HEYGEN_TRAVA || path.join(homedir(), '.cache/inemaccbot/heygen-estudio.trava');   // HEYGEN_TRAVA só para teste
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 const agora = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset() * 60_000).toISOString().replace('T', ' ').slice(0, 19); };
 
@@ -26,6 +34,43 @@ export function donoDoPerfil(perfil) {
   try { pid = Number(readlinkSync(lock).split('-').pop()); } catch { return null; }
   if (!pid) return null;
   try { process.kill(pid, 0); return pid; } catch { return null; }
+}
+
+// pid vivo dono da trava do estúdio, ou null (trava velha é apagada)
+export function donoDaTrava() {
+  let st; try { st = statSync(TRAVA); } catch { return null; }
+  let pid = 0; try { pid = Number(readFileSync(path.join(TRAVA, 'dono'), 'utf8').split(' ')[0]); } catch {}
+  if (pid) { try { process.kill(pid, 0); return pid; } catch {} }
+  else if (Date.now() - st.mtimeMs < 60_000) return -1;            // acabou de ser criada, dono ainda escrevendo
+  try { rmSync(TRAVA, { recursive: true, force: true }); registrar(`TRAVA velha removida (pid ${pid || '?'})`); } catch {}
+  return null;
+}
+
+let tenhoTrava = false;
+function soltarTrava() {
+  if (!tenhoTrava) return;
+  tenhoTrava = false;
+  try { if (Number(readFileSync(path.join(TRAVA, 'dono'), 'utf8').split(' ')[0]) === process.pid) rmSync(TRAVA, { recursive: true, force: true }); } catch {}
+}
+process.on('exit', soltarTrava);
+for (const s of ['SIGTERM', 'SIGINT', 'SIGHUP']) process.on(s, () => { soltarTrava(); process.exit(128 + ({ SIGHUP: 1, SIGINT: 2, SIGTERM: 15 })[s]); });
+
+async function pegarTrava(ateMs, quem) {
+  let avisou = 0;
+  mkdirSync(path.dirname(TRAVA), { recursive: true });
+  for (;;) {
+    try {
+      mkdirSync(TRAVA);
+      writeFileSync(path.join(TRAVA, 'dono'), `${process.pid} ${quem} ${agora()}\n`);
+      tenhoTrava = true;
+      return;
+    } catch (e) { if (e.code !== 'EEXIST') throw e; }
+    const dono = donoDaTrava();
+    if (dono === null) continue;
+    if (Date.now() > ateMs) throw new Error(`ERRO: estúdio do HeyGen ocupado (trava do pid ${dono}) além do tempo de espera`);
+    if (Date.now() - avisou > 300_000) { console.log(`${agora().slice(11)} estúdio do HeyGen em uso pelo pid ${dono}; na fila (${quem})`); avisou = Date.now(); }
+    await espera(10_000 + Math.random() * 5_000);
+  }
 }
 
 export async function esperarLivre(perfil, ateMs, quem) {
@@ -59,17 +104,18 @@ function chromeMaisNovo() {
 export async function abrirPerfil(chromium, perfil, opcoes, quem) {
   const ate = Date.now() + Number(process.env.HEYGEN_ESPERA_MIN || 180) * 60_000;
   const exe = chromeMaisNovo(); if (exe && !opcoes.executablePath) opcoes = { ...opcoes, executablePath: exe };
+  await pegarTrava(ate, quem);
   for (;;) {
-    await esperarLivre(perfil, ate, quem);
+    await esperarLivre(perfil, ate, quem);   // ainda vale: login à mão ou script antigo sem a trava
     try {
       const ctx = await chromium.launchPersistentContext(perfil, opcoes);
       registrar(`ENTRA ${quem} (cwd ${process.cwd()})`);
       const fechar = ctx.close.bind(ctx);
-      ctx.close = async () => { await fechar().catch(() => {}); registrar(`SAI ${quem}`); await liberado(perfil); };
+      ctx.close = async () => { await fechar().catch(() => {}); registrar(`SAI ${quem}`); await liberado(perfil); soltarTrava(); };
       return ctx;
     } catch (e) {
       const m = e?.message ?? String(e);
-      if (!/ProcessSingleton|SingletonLock|profile directory/i.test(m) || Date.now() > ate) throw e;
+      if (!/ProcessSingleton|SingletonLock|profile directory|existing browser session|has been closed/i.test(m) || Date.now() > ate) { soltarTrava(); throw e; }
       console.log(`${agora().slice(11)} outro processo abriu o perfil antes; volto para a fila (${quem})`);
       await espera(20_000 + Math.random() * 10_000);
     }
