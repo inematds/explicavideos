@@ -36,6 +36,8 @@ async function status() {
 
 async function baixar(url) {
   const r = await fetch(url, { signal: AbortSignal.timeout(900_000) });
+  // 403 logo depois do "completed" = arquivo ainda não gravado no armazenamento (20/10: apareceu 12 min depois); segue esperando
+  if (r.status === 403) { passo('completed, mas o arquivo ainda não existe (403); espero'); return; }
   if (!r.ok) sair(3, `ERRO: download HTTP ${r.status}`);
   const corpo = Buffer.from(await r.arrayBuffer());
   if (corpo.length < 1_000_000) sair(3, `ERRO: arquivo pequeno demais (${corpo.length} bytes)`);
