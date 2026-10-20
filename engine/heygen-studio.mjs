@@ -46,8 +46,15 @@ if (!TITULO || !PERFIL || !FALA) {
 const passo = (m) => console.log(`${new Date().toISOString().slice(11, 19)} ${m}`);
 if(FALA.length>4500){console.error("ERRO: bloco excede teto local de4500 caracteres");process.exit(3);}
 let ctx;
+// Prova por envio (20/10/2026): capturas com o título no nome, para um envio não apagar a prova do outro.
+const PROVA = `${process.env.HOME}/.cache/inemaccbot/heygen-prova/${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '')}-${TITULO.replace(/[^\w.-]+/g, '_')}`;
+const foto = async (nome) => {
+  try { (await import('node:fs')).mkdirSync(PROVA, { recursive: true }); await pg.screenshot({ path: `${PROVA}/${nome}.png` }); } catch {}
+};
 const morrer = async (m) => {
   try { await pg.screenshot({ path: '/tmp/heygen-erro.png' }); } catch {}   // o que estava na tela quando parou (pg pode ainda não existir)
+  await foto('erro');
+  console.error(`PROVA: ${PROVA}`);
   await ctx?.close().catch(() => {});
   console.error(`ERRO: ${m}`);
   process.exit(3);
@@ -248,11 +255,19 @@ try {
       await morrer(`card "${TITULO}" ficou Draft: o Generate não enviou`);
     }
   }
+  // Observação do envio (20/10/2026): erros de rede/console e avisos na tela entre o Gerar e a saída do editor.
+  const avisosTela = async () => (await pg.locator('[role=alert], [role=status], [data-sonner-toast], [class*=toast i], [role=dialog]')
+    .allInnerTexts().catch(() => [])).map((s) => s.replace(/\s+/g, ' ').trim()).filter(Boolean).join(' | ').slice(0, 600);
+  pg.on('response', (r) => { if (r.status() >= 400 && /heygen/.test(r.url())) console.log(`REDE ${r.status()} ${r.request().method()} ${r.url().slice(0, 160)}`); });
+  pg.on('console', (m) => { if (m.type() === 'error') console.log(`CONSOLE ${m.text().slice(0, 200)}`); });
+  pg.on('pageerror', (e) => console.log(`PAGEERROR ${String(e).slice(0, 200)}`));
+  await foto('01-antes-gerar');
   passo('Gerar');
   const gerar = pg.getByRole('button', { name: /^(Gerar|Generate)/i }).first();
   if (!(await gerar.count())) await morrer('botão Gerar não encontrado');
   await gerar.click();
   await pg.waitForTimeout(4_000);
+  await foto('02-depois-gerar');
   await recusarPlano();
   // o modal pode demorar; e se vier outro aviso (ex.: "voice engine" da voz), ele aparece no erro
   for (let i = 0; i < 10 && !(await pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).count()); i++) await pg.waitForTimeout(2_000);
@@ -260,14 +275,23 @@ try {
   const enviar = pg.getByRole('button', { name: /^(Enviar|Submit)$/i }).first();
   if (!(await enviar.count())) {
     await pg.screenshot({ path: '/tmp/heygen-submit-fim.png' }).catch(() => {});
-    console.log('SEM MODAL: conferindo se o Generate enviou', pg.url());
+    await foto('03-sem-modal');
+    console.log('SEM MODAL: conferindo se o Generate enviou', pg.url(), `avisos=${await avisosTela()}`, `PROVA: ${PROVA}`);
     await confirmarEnvio();
     await ctx.close(); console.log(`RESULT: ${TITULO}`); process.exit(0);
   }
   console.log('MODAL', (await pg.locator('[role=dialog]').allTextContents()).join(' | ').slice(0,4000));
+  await foto('03-antes-enviar');
   passo('Enviar');
   await enviar.click();
-  await pg.waitForTimeout(8_000);
+  // 90 s olhando a tela: foto a cada 5 s + avisos, até sair do editor (só então vai a Projetos).
+  for (let i = 1; i <= 18; i++) {
+    await pg.waitForTimeout(5_000);
+    await foto(`04-obs-${String(i).padStart(2, '0')}`);
+    console.log(`OBS ${i * 5}s url=${pg.url().slice(0, 90)} submit=${await enviar.isVisible().catch(() => false)} avisos=${await avisosTela()}`);
+    if (!/create-v4|editor/.test(pg.url())) break;
+    if (i === 2 && (await enviar.isVisible().catch(() => false))) break;   // modal ainda aberto: segue para as tentativas abaixo
+  }
   // O Submit às vezes não pega e o card fica Draft (01/10, 11/10, 12/10): conferir que o modal fechou.
   for (let t = 2; t <= 3 && (await enviar.isVisible().catch(() => false)); t++) {
     console.log('MODAL AINDA ABERTO', (await pg.locator('[role=dialog]').allInnerTexts()).join(' | ').slice(0, 600));
@@ -277,7 +301,9 @@ try {
     await pg.waitForTimeout(8_000);
   }
   await pg.screenshot({ path: '/tmp/heygen-submit-fim.png' }).catch(() => {});
+  await foto('05-fim');
   console.log('DEPOIS', pg.url(), (await pg.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 300));
+  console.log(`PROVA: ${PROVA}`);
   await confirmarEnvio();
 
   await ctx.close();
