@@ -1,4 +1,5 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-10-20 | estúdio HeyGen: card ficou Draft (viral ia-crescendo 02:51) apesar do Submit; prova de 20/10 mostra tela de carregamento por 90 s+ após o Submit e o script antigo saía p/ Projetos aos ~38 s (provável corte do envio) | esperar 90 s olhando a tela antes de sair do editor (0e3239c); completo b01/b02 geraram de primeira | infra |
 | 2026-10-20 | baixador do HeyGen saía com "download HTTP 403" logo após o completed (arquivo ainda não gravado; apareceu 12 min depois) | 403 no download = continuar esperando no laço | infra |
 | 2026-10-20 | explicavideo bigtech-paga: render travou no quadro 88 ("screenshot capture stalled 60000ms") com load 1084 e 1 GB livre na máquina | esperar a carga cair e rodar de novo; falta um portão de carga antes do render | infra |
 | 2026-10-20 | bigtech-paga: roteiro visual viral com 49 peças em 2,8 min reprovou no `--strict` (24 trechos > 2 s sem troca) | `pontos` (re-enquadramento) em deixa falada no meio de cada buraco; script em output/explica-24j6YmsTVng/visual/ritmo.py calcula a partir de um build sem --strict | prompt |
