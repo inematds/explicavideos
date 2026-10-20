@@ -55,7 +55,7 @@ def frame(cfg):
 
 SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'radar', 'lanes', 'compare', 'chat', 'terminal',
               'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg',
-              'hook', 'media'}
+              'hook', 'media', 'diagrama'}
 # perfil viral (2.9, PADRAO-VIRAL.md): peças de tela cheia do runtime/viral.js
 VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta', 'mapa', 'ranking', 'colunas'}
 SHOT_TYPES |= VIRAL_TYPES
@@ -236,6 +236,45 @@ def resolve_scene(timing, k, scene_start, spec, warnings, n, strict):
     if any(b < a for a, b in zip(ats, ats[1:])):
         raise BuildError(f'cena {n}: shots fora de ordem temporal {ats}')
     return shots
+
+
+def check_diagrama(sh, n, i, warnings):
+    """diagrama (2.14): referências válidas e escala de vídeo. Erro só no próprio tipo novo (nada antigo muda)."""
+    where = f'cena {n}: shot {i} (diagrama)'
+    nos = sh.get('nos') or []
+    if not nos:
+        raise BuildError(f'{where}: sem "nos"')
+    ids = [nd.get('id') for nd in nos]
+    if any(not x for x in ids) or len(set(ids)) != len(ids):
+        raise BuildError(f'{where}: todo nó precisa de "id" único ({ids})')
+    if len(nos) > 6:
+        warnings.append(f'{where}: {len(nos)} nós — acima de 6 a letra encolhe; divida em dois diagramas')
+    for nd in nos:
+        if len(re.sub(r'\*\*|\+\+|~~', '', str(nd.get('label', '')))) > 22:
+            warnings.append(f'{where}: rótulo {nd.get("label")!r} > 22 caracteres (use "sub" para o detalhe)')
+    pares = set()
+    for ed in sh.get('ligacoes') or []:
+        if ed.get('de') not in ids or ed.get('para') not in ids:
+            raise BuildError(f'{where}: ligação {ed.get("de")!r}→{ed.get("para")!r} cita nó inexistente')
+        pares.add((ed['de'], ed['para']))
+    for k, ps in enumerate(sh.get('passos') or []):
+        if 'at' not in ps:
+            raise BuildError(f'{where}: passo {k} sem deixa "at"')
+        foco = ps.get('foco')
+        if foco not in (None, 'todos') and any(x not in ids for x in ([foco] if isinstance(foco, str) else foco)):
+            raise BuildError(f'{where}: passo {k} foco em nó inexistente {foco!r}')
+        pk = ps.get('pacote')
+        if pk and (pk.get('de'), pk.get('para')) not in pares and (pk.get('para'), pk.get('de')) not in pares:
+            raise BuildError(f'{where}: passo {k} pacote {pk.get("de")!r}→{pk.get("para")!r} sem ligação entre os dois')
+        for key in ('estado',):
+            for nid in (ps.get(key) or {}):
+                if nid not in ids:
+                    raise BuildError(f'{where}: passo {k} estado de nó inexistente {nid!r}')
+        for key, campo in (('nota', 'no'), ('troca', 'no')):
+            if ps.get(key) and ps[key].get(campo) not in ids:
+                raise BuildError(f'{where}: passo {k} {key} em nó inexistente {ps[key].get(campo)!r}')
+        if ps.get('nota') and len(str(ps['nota'].get('texto', ''))) > 70:
+            warnings.append(f'{where}: passo {k} nota com {len(ps["nota"]["texto"])} caracteres (máx. 70: a tela não repete a fala)')
 
 
 def word_times(timing, k, text, gi, scene_start):
@@ -531,6 +570,8 @@ def build(part, strict=False, spec_path=None, out=None):
                     if sh['type'] == 'svg' and not sh.get('svg'):
                         sh['svg'] = sc['svg']
         for i, sh in enumerate(shots):
+            if sh['type'] == 'diagrama':
+                check_diagrama(sh, n, i, warnings)
             if sh['type'] == 'media':
                 sh['src'], vid = copy_media(sh.get('src'), dest, n, i, allow_video=True)
                 sh['iw'], sh['ih'] = image_size(dest / sh['src'])

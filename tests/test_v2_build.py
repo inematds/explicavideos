@@ -88,3 +88,44 @@ class V2Build(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class V2Diagrama(unittest.TestCase):
+    """diagrama (2.14): deixas aninhadas resolvidas, refs checadas, passos contam no ritmo."""
+    def setUp(self):
+        self.t = B.Timing(SCENES, WORDS)
+
+    def spec(self, **extra):
+        sh = {'type': 'diagrama', 'at': 'Bem-vindo',
+              'nos': [{'id': 'a', 'label': 'OSWORK', 'at': 'Bem-vindo'}, {'id': 'b', 'label': 'NEI', 'at': 'Eu sou'}],
+              'ligacoes': [{'de': 'a', 'para': 'b', 'at': 'Eu sou'}],
+              'passos': [{'at': 'Vamos percorrer', 'foco': 'b', 'pacote': {'de': 'a', 'para': 'b', 'texto': 'x'}},
+                         {'at': 'oito módulos', 'estado': {'a': 'ok'}, 'nota': {'no': 'a', 'texto': 'oito'}}]}
+        sh.update(extra)
+        return sh
+
+    def resolve(self, sh):
+        shots = B.resolve_scene(self.t, 0, 0.0, {'shots': [sh]}, [], 1, True)
+        w = []
+        B.check_diagrama(shots[0], 1, 0, w)
+        return shots[0], w
+
+    def test_ok_and_steps_count_for_rhythm(self):
+        sh, w = self.resolve(self.spec())
+        self.assertEqual(w, [])
+        ts = B.all_times([sh], words=False, effects=False)
+        self.assertIn(sh['passos'][1]['at'], ts)
+        self.assertGreater(sh['passos'][1]['at'], sh['passos'][0]['at'])
+
+    def test_bad_refs_rejected(self):
+        for bad in ({'ligacoes': [{'de': 'a', 'para': 'zz', 'at': 'Eu sou'}]},
+                    {'passos': [{'at': 'Eu sou', 'foco': 'zz'}]},
+                    {'passos': [{'at': 'Eu sou', 'pacote': {'de': 'b', 'para': 'zz'}}]},
+                    {'nos': [{'id': 'a', 'label': 'X', 'at': 'Bem-vindo'}, {'id': 'a', 'label': 'Y', 'at': 'Eu sou'}]}):
+            with self.assertRaises(B.BuildError):
+                self.resolve(self.spec(**bad))
+
+    def test_long_label_warns(self):
+        _, w = self.resolve(self.spec(nos=[{'id': 'a', 'label': 'UM RÓTULO COMPRIDO DEMAIS AQUI', 'at': 'Bem-vindo'},
+                                           {'id': 'b', 'label': 'NEI', 'at': 'Eu sou'}]))
+        self.assertTrue(any('22 caracteres' in x for x in w))

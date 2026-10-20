@@ -68,16 +68,49 @@ As regras de tempo:
 | `counter` | números | `items:[{value, label, prefix?, suffix?, decimals?, at}]` (1-3) |
 | `keyword` | palavra ou número de impacto | `text`, `sub?`, `sub_at?` |
 | `module_intro` | abertura "Módulo N" | `n`, `title`, `goal`, `goal_at`, `exercise`, `exercise_at` |
+| `diagrama` | **um mecanismo explicado na cena inteira** (2.14) — preferir a vários shots curtos | `nos:[{id, label, icon?, sub?, x?, y?, forma?:"nucleo", at}]` (≤6), `ligacoes:[{de, para, at, label?, curva?}]`, `passos:[{at, foco?, pacote?, estado?, nota?, troca?}]` |
 | `svg` | diagrama original da fonte (último recurso) | `marks?:[{text, at}]` |
 
 Os ícones (`icon`) disponíveis são: doc, folder, chat, terminal, key, lock, cloud, server, ai, user, team, check, x, clock,
 money, star, search, gear, git, send, book, bulb, warn, target, list, image, video, code, link, shield, eye, pencil,
 calendar, chart, cpu, play, pause, refresh, phone, globe, upload, download, bot, memory, flag e box.
 
+## Diagrama que cresce (2.14) — o padrão para explicar
+
+Cena de conceito ("como funciona", "as peças", "o caminho") é **um `diagrama` só**, que fica na tela a cena inteira
+e cresce no tempo da fala. Não troque de shot a cada frase: cada **passo** com deixa conta como troca no ritmo.
+
+- **Peças** (`nos`): entram quando são nomeadas. `x`/`y` de 0 a 1 na área útil (sem eles, ficam em linha). `forma:"nucleo"`
+  = o centro do mecanismo (círculo). Rótulo ≤ 22 caracteres em caixa alta; o detalhe vai em `sub`. Até 6 peças.
+- **Ligações**: setas que se desenham; depois um ponto corre por elas o tempo todo (mostra a direção). `curva` de −1 a 1.
+- **Passos** — o que acontece em cada deixa:
+  - `foco`: id, lista de ids ou `"todos"`. Apaga o resto e a câmera aproxima (1,16 em 1 peça, 1,08 em várias; `"todos"` volta).
+  - `pacote: {de, para, texto}`: um chip âmbar corre pela seta (o dado, o pedido, os tokens indo de uma peça à outra).
+  - `estado: {id: "ok"|"erro"|"ativo"|"normal"}`: borda verde/vermelha com selo, ou brilho de "trabalhando".
+  - `nota: {no, texto, lado?}`: balão grande junto da peça (≤ 70 caracteres). Uma por vez; sai quando o foco muda.
+  - `troca: {no, label}`: o rótulo da peça muda no lugar.
+- **A tela não repete a fala**: a nota diz o que a fala não mostra (o resultado, a relação, o número), em poucas palavras.
+- Escala de vídeo: rótulo 30–44 px, sub 26 px, nota 34 px. O validador recusa id inexistente e avisa rótulo/nota longos.
+
+```json
+{"type":"diagrama","at":"Os modelos",
+ "nos":[{"id":"ex","label":"EXEMPLOS","icon":"book","sub":"treinamento","x":0.14,"y":0.18,"at":"Durante o treinamento"},
+        {"id":"mod","label":"MODELO","forma":"nucleo","x":0.5,"y":0.5,"at":"Os modelos"},
+        {"id":"r","label":"RESPOSTA","icon":"doc","x":0.86,"y":0.5,"at":"para produzir"}],
+ "ligacoes":[{"de":"ex","para":"mod","at":"ajusta parâmetros","label":"ajusta parâmetros","curva":0.25},
+             {"de":"mod","para":"r","at":"para produzir"}],
+ "passos":[{"at":"chamadas tokens","foco":"mod","nota":{"no":"mod","texto":"pensa em **tokens**"}},
+           {"at":"a partir de exemplos","foco":"todos","pacote":{"de":"ex","para":"mod","texto":"exemplos"}},
+           {"at":"uma resposta","pacote":{"de":"mod","para":"r","texto":"tokens"}},
+           {"at":"pode conter","estado":{"r":"erro"},"nota":{"no":"r","texto":"convincente ≠ **correto**"}}]}
+```
+
+Protótipo comparado (antes × depois): `~/projetos/output/explica-KjKlBvX9G7w/prototipo-diagrama/`.
+
 ## Padrões para as cenas recorrentes
 
 - **"Módulo N. …":** use `module_intro`.
-- **Conceito (cenas longas, de 40 a 90 s):** 4 a 8 shots, variando os tipos. Termine em "Pontos para lembrar" com `bullets`.
+- **Conceito (cenas longas, de 40 a 90 s):** um `diagrama` que cresce pela cena (2.14); outros tipos só onde o conteúdo não é mecanismo. `keyword`/`statement` são pontuação, não a cena. Termine em "Pontos para lembrar" com `bullets`.
 - **"Na prática":** a parte "Vamos a um exemplo" vira `compare`, `chat`, `terminal`, `lanes` ou `fields`, conforme o exemplo. A parte "Agora é sua vez" vira `bullets` (row, `title:"SUA AÇÃO"`), `fields` ou `terminal`.
 - **"Vamos ao laboratório":** use `steps`, com um card por "Passo N" e deixas "Passo 1", "Passo 2"… Depois, `bullets` ou `fields` para o registro.
 - **"Antes de avançar… pergunta":** use `quiz` (a deixa `answer_at` é "A resposta é").

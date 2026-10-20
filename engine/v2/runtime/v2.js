@@ -729,6 +729,152 @@
     });
   };
 
+  // diagrama (2.14) — UM diagrama grande que fica na tela a cena inteira e CRESCE por passos falados.
+  // Em vez de 5 shots piscando, as peças entram, a câmera vai ao que está sendo dito, um "pacote" corre
+  // pela seta (o mecanismo acontecendo), o nó muda de estado (certo/erro/ativo) e uma nota grande explica.
+  // Campos: nos[{id,label,icon?,sub?,x?,y?(0–1 na área útil),forma?:"nucleo",at}],
+  //         ligacoes[{de,para,at,label?,curva?(-1..1)}],
+  //         passos[{at, foco?:id|[ids]|"todos", pacote?:{de,para,texto}, estado?:{id:"ok"|"erro"|"ativo"|"normal"},
+  //                 nota?:{no,texto,lado?:"baixo"|"cima"}, troca?:{no,label}}]
+  V2.P.diagrama = function (box, s, c) {
+    const X0 = 90, Y0 = 175, AW = 1330, AH = 740, CX = X0 + AW / 2, CY = Y0 + AH / 2;
+    const N = s.nos || [], L = s.ligacoes || [], P = s.passos || [], n = N.length;
+    // recorte: a câmera aproxima dentro da área útil (nunca invade a coluna do avatar nem a legenda)
+    const clip = h(box, 'div', 'dg-clip', '');
+    const world = h(clip, 'div', 'dg-world', '');
+    const svg = fullSvg(world, 1);
+    const defs = svgEl(svg, 'defs', {});
+    const mkId = 'dga' + c.S.n + '_' + Math.round(c.T0 * 10);
+    const mk = svgEl(defs, 'marker', { id: mkId, markerWidth: 12, markerHeight: 12, refX: 9, refY: 6, orient: 'auto', markerUnits: 'userSpaceOnUse' });
+    svgEl(mk, 'path', { d: 'M0,0 L12,6 L0,12 z', fill: '#ffb638' });
+    const T = times(N, c, 0.9), node = {};
+    N.forEach((nd, i) => {
+      const core = nd.forma === 'nucleo';
+      // largura pela palavra (MontBlack caixa alta ≈ 0,72 em): cresce até 440 px; acima disso a letra reduz (mín. 30)
+      const chars = plain(nd.label).length, fsz0 = core ? fs(nd.label, 38, 28, 6, 16) : fs(nd.label, 44, 30, 8, 22);
+      const w = core ? 270 : Math.min(440, Math.max(320, 148 + chars * fsz0 * 0.72));
+      const fsz = core ? fsz0 : Math.max(30, Math.min(fsz0, Math.floor((w - 148) / (chars * 0.72))));
+      const hh = core ? 270 : (nd.sub ? 186 : 150);
+      const fx = def(nd.x, (i + 0.5) / Math.max(1, n)), fy = def(nd.y, 0.5);
+      const cx = Math.min(X0 + AW - w / 2, Math.max(X0 + w / 2, X0 + fx * AW));
+      const cy = Math.min(Y0 + AH - hh / 2, Math.max(Y0 + hh / 2, Y0 + fy * AH));
+      const col = COLORS[i % COLORS.length];
+      const el = h(world, 'div', 'dg-node' + (core ? ' dg-core' : ''), `left:${cx - w / 2}px;top:${cy - hh / 2}px;width:${w}px;height:${hh}px;--c:${col}`,
+        `<div class="ic">${icon(nd.icon || (core ? 'ai' : 'dot'), core ? 64 : 52, col)}</div>` +
+        `<div class="lb" style="font-size:${fsz}px"><span class="a">${rich(nd.label)}</span><span class="b"></span></div>` +
+        (nd.sub ? `<div class="sb">${esc(nd.sub)}</div>` : ''));
+      node[nd.id] = { el, cx, cy, w, h: hh, t: T[i], col, core };
+      c.pop(el, T[i], { y: 50, scale: 0.7 });
+    });
+    // borda do retângulo/círculo do nó na direção (ux, uy): a seta começa e termina fora da caixa
+    const edgeOut = (nd, ux, uy) => nd.core ? nd.w / 2 + 8 : Math.min(Math.abs(ux) > 1e-6 ? (nd.w / 2 + 8) / Math.abs(ux) : 1e9, Math.abs(uy) > 1e-6 ? (nd.h / 2 + 8) / Math.abs(uy) : 1e9);
+    const edge = {};
+    L.forEach((ed, k) => {
+      const a = node[ed.de], b = node[ed.para]; if (!a || !b) return;
+      const dx = b.cx - a.cx, dy = b.cy - a.cy, len = Math.hypot(dx, dy) || 1, ux = dx / len, uy = dy / len;
+      const x1 = a.cx + ux * edgeOut(a, ux, uy), y1 = a.cy + uy * edgeOut(a, ux, uy);
+      const x2 = b.cx - ux * (edgeOut(b, ux, uy) + 6), y2 = b.cy - uy * (edgeOut(b, ux, uy) + 6);
+      const bend = def(ed.curva, 0) * len * 0.35, mx = (x1 + x2) / 2 - uy * bend, my = (y1 + y2) / 2 + ux * bend;
+      const p = svgEl(svg, 'path', { d: `M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`, stroke: '#ffb638', 'stroke-width': 5, fill: 'none', 'stroke-linecap': 'round', 'marker-end': `url(#${mkId})`, opacity: 0 });
+      const t = Math.max(def(ed.at, c.T0 + 1 + k * 0.6), a.t + 0.25, b.t + 0.25);
+      c.tl.set(p, { opacity: 1 }, t);
+      drawLine(c, p, t, 0.55);
+      let lb = null;
+      if (ed.label) {
+        lb = h(world, 'div', 'dg-elb', `left:${mx - 200}px;top:${my - 58}px;width:400px`, rich(ed.label));
+        c.rise(lb, t + 0.35, 12);
+      }
+      // fluxo contínuo: um ponto percorre a seta enquanto o diagrama está na tela (direção do mecanismo)
+      const Lp = () => p.getTotalLength();
+      const dot = svgEl(svg, 'circle', { r: 7, cx: x1, cy: y1, fill: '#fff', opacity: 0 });
+      const run = { p: 0 }, cyc = 2.4, reps = Math.max(0, Math.floor((c.T1 - t - 0.8) / cyc) - 1);
+      c.tl.set(dot, { opacity: 0.85 }, t + 0.6);
+      c.tl.fromTo(run, { p: 0 }, { p: 1, duration: cyc, ease: 'none', repeat: reps }, t + 0.6);
+      c.render(() => { const q = p.getPointAtLength(run.p * Lp()); dot.setAttribute('cx', q.x); dot.setAttribute('cy', q.y); });
+      edge[ed.de + '>' + ed.para] = { p, lb, dot, de: ed.de, para: ed.para };
+    });
+    // câmera: o mundo inteiro aproxima até o nó em foco (1,16 — abaixo do teto 1,25 de zoom com texto) e volta no "todos"
+    world.style.transformOrigin = '0 0';
+    let notaEl = null;
+    const lastBadge = {};
+    P.forEach((ps, k) => {
+      const t = def(ps.at, c.T0 + 2 + k);
+      if (ps.foco != null) {
+        // nota velha sai quando a câmera muda de assunto
+        if (notaEl && !ps.nota) { c.tl.to(notaEl, { opacity: 0, duration: 0.25 }, t); notaEl = null; }
+        const ids = ps.foco === 'todos' ? [] : [].concat(ps.foco);
+        Object.keys(node).forEach((id) => c.tl.to(node[id].el, { opacity: !ids.length || ids.includes(id) ? 1 : 0.28, duration: 0.45 }, t));
+        Object.values(edge).forEach((e) => {
+          const on = !ids.length || (ids.includes(e.de) && ids.includes(e.para)) || (ids.length === 1 && (ids.includes(e.de) || ids.includes(e.para)));
+          c.tl.to([e.p, e.lb].filter(Boolean), { opacity: on ? 1 : 0.22, duration: 0.45 }, t);
+        });
+        if (ids.length === 1 && node[ids[0]]) {
+          const nd = node[ids[0]], z = 1.16;
+          c.tl.to(world, { scale: z, x: CX - nd.cx * z, y: CY - nd.cy * z, duration: 0.9, ease: 'power2.inOut' }, t);
+        } else if (ids.length > 1) {
+          const sel = ids.map((id) => node[id]).filter(Boolean);
+          const mx = sel.reduce((a, nd) => a + nd.cx, 0) / sel.length, my = sel.reduce((a, nd) => a + nd.cy, 0) / sel.length, z = 1.08;
+          c.tl.to(world, { scale: z, x: CX - mx * z, y: CY - my * z, duration: 0.9, ease: 'power2.inOut' }, t);
+        } else c.tl.to(world, { scale: 1, x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, t);
+      }
+      if (ps.pacote) {
+        const e = edge[ps.pacote.de + '>' + ps.pacote.para];
+        const rev = !e && edge[ps.pacote.para + '>' + ps.pacote.de];
+        const ee = e || rev;
+        if (ee) {
+          // posição no portador (left/top pelo render), escala/opacidade no chip (GSAP): um não apaga o outro
+          const car = h(world, 'div', 'dg-pkc', '');
+          const chip = h(car, 'div', 'dg-pk', '', esc(ps.pacote.texto || ''));
+          const st = { p: 0 }, Lp = ee.p.getTotalLength();
+          c.render(() => {
+            const q = ee.p.getPointAtLength((rev ? 1 - st.p : st.p) * Lp);
+            car.style.left = q.x + 'px'; car.style.top = q.y + 'px';
+          });
+          c.tl.fromTo(chip, { opacity: 0, scale: 0.6, xPercent: -50, yPercent: -50 }, { opacity: 1, scale: 1, xPercent: -50, yPercent: -50, duration: 0.25, ease: 'back.out(2)' }, t);
+          c.tl.fromTo(st, { p: 0 }, { p: 1, duration: 1.3, ease: 'power1.inOut' }, t + 0.2);
+          c.tl.to(chip, { opacity: 0, scale: 0.7, duration: 0.25 }, t + 1.55);
+          const dst = node[rev ? ee.de : ee.para];
+          if (dst) c.tl.fromTo(dst.el, { boxShadow: '0 0 0 rgba(255,182,56,0)' }, { boxShadow: '0 0 70px rgba(255,182,56,.65)', duration: 0.3, yoyo: true, repeat: 1 }, t + 1.45);
+        }
+      }
+      if (ps.estado) {
+        Object.entries(ps.estado).forEach(([id, kind]) => {
+          const nd = node[id]; if (!nd) return;
+          const colr = kind === 'ok' ? '#3ef0a0' : kind === 'erro' ? '#ff5d7a' : kind === 'ativo' ? '#ffb638' : nd.col;
+          c.tl.to(nd.el, { borderColor: colr, duration: 0.3 }, t);
+          // um selo por mudança de estado (nada de callback: o render salta quadros e precisa ser só tween)
+          if (lastBadge[id]) c.tl.to(lastBadge[id], { opacity: 0, duration: 0.2 }, t);
+          lastBadge[id] = null;
+          if (kind === 'ok' || kind === 'erro') {
+            const bd = h(nd.el, 'div', 'dg-bd ' + kind, '', kind === 'ok' ? icon('check', 30, '#05070d', 3.4) : icon('x', 30, '#05070d', 3.4));
+            c.tl.fromTo(bd, { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2.2)', immediateRender: true }, t);
+            lastBadge[id] = bd;
+            if (kind === 'erro') c.tl.fromTo(nd.el, { x: 0 }, { x: 10, duration: 0.06, yoyo: true, repeat: 5, ease: 'none', immediateRender: false }, t + 0.05);
+          }
+          if (kind === 'ativo') c.tl.fromTo(nd.el, { boxShadow: '0 0 0 rgba(255,182,56,0)' }, { boxShadow: '0 0 80px rgba(255,182,56,.55)', duration: 0.6, yoyo: true, repeat: 3, ease: 'sine.inOut' }, t);
+        });
+      }
+      if (ps.troca) {
+        const nd = node[ps.troca.no];
+        if (nd) {
+          const a = nd.el.querySelector('.lb .a'), b = nd.el.querySelector('.lb .b');
+          b.innerHTML = rich(ps.troca.label);
+          c.tl.to(a, { opacity: 0, y: -24, duration: 0.25 }, t);
+          c.tl.fromTo(b, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out' }, t + 0.2);
+        }
+      }
+      if (ps.nota) {
+        const nd = node[ps.nota.no] || { cx: CX, cy: CY, h: 0 };
+        const below = (ps.nota.lado || (nd.cy < CY + 60 ? 'baixo' : 'cima')) === 'baixo';
+        const W = 560, x = Math.min(X0 + AW - W, Math.max(X0, nd.cx - W / 2));
+        const nt = h(world, 'div', 'dg-nota', `left:${x}px;width:${W}px;${below ? `top:${nd.cy + nd.h / 2 + 34}px` : `bottom:${1080 - (nd.cy - nd.h / 2 - 34)}px`}`, rich(ps.nota.texto));
+        if (notaEl) c.tl.to(notaEl, { opacity: 0, duration: 0.25 }, t);
+        c.tl.fromTo(nt, { opacity: 0, y: below ? -16 : 16 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, t + 0.1);
+        notaEl = nt;
+      }
+    });
+  };
+
   // svg — diagrama da fonte animado (fallback para cenas "diagram")
   V2.P.svg = function (box, s, c) {
     const w = h(box, 'div', 'sv-wrap', '', s.svg || '');

@@ -170,6 +170,22 @@ html,body{margin:0;background:var(--bg);overflow:hidden}
 .mi-row{position:absolute;left:100px;width:1300px;min-height:70px;border-radius:18px;background:var(--panel);border:1.5px solid var(--line);box-sizing:border-box;padding:16px 24px 16px 210px}
 .mi-row .k{position:absolute;left:24px;top:20px;font-family:"Mono";font-size:18px;letter-spacing:.2em}
 .mi-row .v{font-family:"MontX";font-size:26px;line-height:1.28}
+/* diagrama (2.14) — diagrama grande que cresce por passos; escala de vídeo (letra ≥ 26px, rótulo 30–44px) */
+.dg-clip{position:absolute;left:0;top:0;width:1446px;height:944px;overflow:hidden}
+.dg-world{position:absolute;left:0;top:0;width:1920px;height:1080px}
+.dg-pkc{position:absolute;left:0;top:0;width:0;height:0;z-index:4}
+.dg-node{position:absolute;z-index:2;border-radius:26px;background:linear-gradient(160deg,rgba(24,36,64,.96),rgba(12,18,34,.96));border:3px solid var(--c);box-shadow:0 24px 70px rgba(0,0,0,.5);box-sizing:border-box;padding:0 24px 0 100px;display:flex;flex-direction:column;justify-content:center}
+.dg-node .ic{position:absolute;left:24px;top:50%;margin-top:-30px;width:60px;height:60px}
+.dg-node .lb{position:relative;font-family:"MontBlack";line-height:1.05;letter-spacing:-.01em}
+.dg-node .lb .b{position:absolute;left:0;top:0;opacity:0;white-space:nowrap}
+.dg-node .sb{margin-top:8px;font-family:"MontX";font-size:26px;line-height:1.2;color:#aab6d0}
+.dg-core{border-radius:50%;padding:0 24px;align-items:center;text-align:center;background:radial-gradient(circle at 36% 30%,rgba(255,243,220,.22) 0%,rgba(255,182,56,.28) 32%,#171107 74%);border-color:var(--amber)}
+.dg-core .ic{position:static;margin:0 0 10px;width:64px;height:64px}
+.dg-bd{position:absolute;right:-20px;top:-20px;width:52px;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.dg-bd.ok{background:var(--mint)}.dg-bd.erro{background:var(--rose)}
+.dg-elb{position:absolute;z-index:3;text-align:center;font-family:"MontX";font-size:28px;color:#eef3ff;text-shadow:0 3px 14px rgba(0,0,0,.9)}
+.dg-pk{position:absolute;left:0;top:0;opacity:0;padding:10px 20px;border-radius:16px;background:var(--amber);color:#120c02;font-family:"MontBlack";font-size:30px;white-space:nowrap;box-shadow:0 0 40px rgba(255,182,56,.6)}
+.dg-nota{position:absolute;z-index:5;padding:20px 26px;border-radius:20px;background:rgba(8,12,22,.94);border:2px solid rgba(255,182,56,.75);font-family:"MontX";font-size:34px;line-height:1.22;color:#f3f6ff;box-shadow:0 20px 60px rgba(0,0,0,.55);box-sizing:border-box}
 /* svg da fonte */
 .sv-wrap{position:absolute;left:120px;top:190px;width:1270px;height:660px;display:flex;align-items:center;justify-content:center}
 .sv-wrap svg{width:1270px;height:660px}
