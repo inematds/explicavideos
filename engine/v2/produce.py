@@ -17,6 +17,7 @@ import render_guard as G  # noqa: E402
 CFG = json.loads(Path(os.environ.get('EXPLICAVIDEOS_CONFIG', PROJECT / 'examples/oswork-v2.json')).read_text())
 ROOT = Path(CFG['output'])
 HV = CFG.get('hyperframes', '0.8.77')
+GPU_FILA = os.environ.get('GPU_FILA', '/home/nmaldaner/projetos/wifi/scripts/gpu-fila')
 STATE = ROOT / 'verification/production.json'
 # Reel (2.4): com "reel_profile" na config, render a 30 fps, loudness -14 LUFS e QA do makeshorts.
 REEL = CFG.get('reel_profile')
@@ -44,7 +45,8 @@ def render(key):
     project, output = ROOT / 'final' / key, ROOT / 'final' / f'{key}.mp4'
     log = ROOT / 'logs' / f'render-{key}.log'
     with log.open('w') as f:
-        subprocess.run(['npx', '--yes', f'hyperframes@{HV}', 'render', '.', '--fps', FPS, '--quality', 'delivery', '--crf', '20',
+        # fila única de GPU da máquina (wifi/scripts/gpu-fila, 20/10/2026): renders juntos esgotaram a memória
+        subprocess.run([GPU_FILA, f'explicavideo-{key}', '--', 'npx', '--yes', f'hyperframes@{HV}', 'render', '.', '--fps', FPS, '--quality', 'delivery', '--crf', '20',
                         '--workers', '2', '--output', str(output)], cwd=project, stdout=f, stderr=subprocess.STDOUT, check=True)
     return output
 
