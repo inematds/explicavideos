@@ -184,14 +184,28 @@
     if (s.titulo) manchete(box, s.titulo, t + 0.05, c, 'top', `font-size:${v916 ? 56 : 68}px`);
     const lw = v916 ? pw : (s.lw || 380), bx = v916 ? x : x + lw + 20, bw = (v916 ? pw : pw - lw - 20) - (v916 ? 190 : 200);
     const mx = Number(s.max) || Math.max(...it.map((r) => Number(r.v) || 0)) || 1;
+    // "log": true (2.18) — barras em escala de potências de dez (ex.: +30% × 1 milhão de vezes); "txt" no item = valor escrito
+    const lo = s.log ? Math.log10(Number(s.min) || Math.min(...it.map((r) => Number(r.v) || 1))) - 0.5 : 0;
+    const fr = (v) => s.log ? Math.max(0, (Math.log10(Math.max(Number(v) || 1e-9, 1e-9)) - lo) / (Math.log10(mx) - lo)) : (Number(v) || 0) / mx;
+    if (s.log && !v916) {
+      const ty = top + n * rh + 6, tl = h(box, 'div', 'vr-rlog', `left:${bx}px;top:${ty}px;width:${bw}px`);
+      for (let p = Math.ceil(lo); p <= Math.log10(mx) + 1e-9; p++) {
+        const tk = h(tl, 'div', 'vr-rtick', `left:${bw * (p - lo) / (Math.log10(mx) - lo)}px`, p <= 0 ? '1×' : p < 3 ? `${10 ** p}×` : `10<sup>${p}</sup>`);
+        void tk;
+      }
+      c.tl.fromTo(tl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.3);
+    }
     it.forEach((r, i) => {
       const ti = def(r.at, t + 0.35 + i * 0.32), y = top + i * rh;
       const lab = h(box, 'div', 'vr-rlab' + (r.hl ? ' hl' : ''), `left:${x}px;top:${v916 ? y - 4 : y + rh * 0.5 - 26}px;width:${lw}px`, esc(r.n || ''));
       const by = v916 ? y + 44 : y + rh * 0.5 - bh / 2;
-      const bar = h(box, 'div', 'vr-rbar' + (r.hl ? ' hl' : ''), `left:${bx}px;top:${by}px;height:${bh}px;width:${Math.max(6, bw * (Number(r.v) || 0) / mx)}px`);
-      const val = h(box, 'div', 'vr-rval' + (r.hl ? ' hl' : ''), `left:${bx + Math.max(6, bw * (Number(r.v) || 0) / mx) + 18}px;top:${by + bh / 2 - (v916 ? 30 : 34)}px`);
+      const bwi = Math.max(6, bw * fr(r.v)), fim = bx + bwi + 18, dentro = r.txt && fim > bx + bw - 120;
+      const bar = h(box, 'div', 'vr-rbar' + (r.hl ? ' hl' : ''), `left:${bx}px;top:${by}px;height:${bh}px;width:${bwi}px`);
+      const val = h(box, 'div', 'vr-rval' + (r.hl ? ' hl' : ''), dentro ? `right:${W - (bx + bwi) + 18}px;top:${by + bh / 2 - (v916 ? 30 : 34)}px;color:#111;text-shadow:none`
+        : `left:${fim}px;top:${by + bh / 2 - (v916 ? 30 : 34)}px`);
       const st = { v: 0 };
-      c.render(() => { val.innerHTML = `${s.pre ? esc(s.pre) : ''}${fmt(st.v, s.dec)}${s.unid ? `<small>${esc(s.unid)}</small>` : ''}`; });
+      if (r.txt) val.innerHTML = esc(r.txt).replace(/\^(\d+)/g, '<sup>$1</sup>');
+      else c.render(() => { val.innerHTML = `${s.pre ? esc(s.pre) : ''}${fmt(st.v, s.dec)}${s.unid ? `<small>${esc(s.unid)}</small>` : ''}`; });
       c.tl.fromTo(lab, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power3.out' }, ti);
       const tb = def(r.v_at, ti);   // "v_at": a barra cresce numa 2ª deixa (pergunta no "at", resposta no "v_at")
       c.tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'expo.out' }, tb + 0.05);

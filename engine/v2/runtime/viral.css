@@ -142,3 +142,5 @@
 .vr-lval.hl{color:var(--amber)}.vr-lval.alerta{color:#ff5a5a}.vr-lval small{font-size:.55em}
 .vr-lval i{display:block;font-style:normal;font-family:"MontX";font-size:22px;line-height:26px;color:#fff}
 .v916 .vr-lval{font-size:38px;line-height:42px}.v916 .vr-lval i{font-size:19px}
+.vr-rlog{position:absolute;height:40px;border-top:2px solid rgba(255,255,255,.35)}
+.vr-rtick{position:absolute;top:8px;transform:translateX(-50%);font-family:"Mono";font-size:30px;color:rgba(255,255,255,.8);white-space:nowrap}.vr-rtick sup{font-size:.65em}.vr-rval sup{font-size:.55em}

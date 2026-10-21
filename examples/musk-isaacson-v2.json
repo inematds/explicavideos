@@ -1,0 +1,16 @@
+{
+  "id": "musk-isaacson",
+  "title": "Musk: não vai sobrar nada que você faça melhor que a IA",
+  "engine": "v2",
+  "profile_visual": "viral",
+  "source_repo": "/home/nmaldaner/projetos/output/musk-isaacson-2026-10-21",
+  "output": "/home/nmaldaner/projetos/output/musk-isaacson-2026-10-21/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/musk-isaacson-2026-10-21/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-musk-isaacson",
+  "hyperframes": "0.8.77",
+  "capa_segura": true
+}

@@ -1,0 +1,17 @@
+{
+  "id": "musk-isaacson",
+  "title": "Musk: não vai sobrar nada que você faça melhor que a IA",
+  "source_repo": "/home/nmaldaner/projetos/output/musk-isaacson-2026-10-21",
+  "output": "/home/nmaldaner/projetos/output/musk-isaacson-2026-10-21/v1",
+  "languages": ["pt"],
+  "scene_files": {"pt": "/home/nmaldaner/projetos/output/musk-isaacson-2026-10-21/roteiro/pt.json"},
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-musk-isaacson",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Elon Musk, Musk, Walter Isaacson, inteligência artificial, superinteligência, Real to Sim, prompt, agentes, robótica, inema ponto club.",
+  "balanced_blocks": true
+}
