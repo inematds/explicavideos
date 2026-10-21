@@ -70,6 +70,10 @@ As regras de tempo:
 | `module_intro` | abertura "Módulo N" | `n`, `title`, `goal`, `goal_at`, `exercise`, `exercise_at` |
 | `diagrama` | **um mecanismo explicado na cena inteira** (2.14) — preferir a vários shots curtos | `nos:[{id, label, icon?, sub?, x?, y?, forma?:"nucleo", at}]` (≤6), `ligacoes:[{de, para, at, label?, curva?}]`, `passos:[{at, foco?, pacote?, estado?, nota?, troca?}]` |
 | `svg` | diagrama original da fonte (último recurso) | `marks?:[{text, at}]` |
+| `tokens` | texto que o modelo lê em pedaços (2.15, perfil interface) | `linhas:[{texto?, pedacos[], ids?[], rotulo?, at, corta_at?, ids_at?}]` (1–3), `nota?:{texto, at}` |
+| `probs` | o próximo pedaço mais provável (2.15) | `contexto` (≤38), `opcoes:[{texto, p 0–1, tom?:"certo"\|"erro"}]` (2–5), `barras_at?`, `escolhe?`, `escolhe_at?`, `tons_at?`, `nota?` |
+| `arcos` | atenção: uma palavra olhando as outras (2.15) | `frase` (≤44), `passos:[{at, foco, arcos:[{para, peso 0–1}], frase?, nota?}]` |
+| `etapas` | lista-mapa do vídeo com a etapa atual acesa (2.15) | `itens[]` (2–7, ≤26), `atual` (1..n), `titulo?`, `sub?`, `sub_at?` |
 
 Os ícones (`icon`) disponíveis são: doc, folder, chat, terminal, key, lock, cloud, server, ai, user, team, check, x, clock,
 money, star, search, gear, git, send, book, bulb, warn, target, list, image, video, code, link, shield, eye, pencil,
@@ -106,6 +110,29 @@ e cresce no tempo da fala. Não troque de shot a cada frase: cada **passo** com 
 ```
 
 Protótipo comparado (antes × depois): `~/projetos/output/explica-KjKlBvX9G7w/prototipo-diagrama/`.
+
+## Perfil interface (2.15) — diagramas animados de interface
+
+`"profile_visual": "interface"` na config v2 liga o estilo dos explicativos de "UI motion" (referência: hhHkaZRwBBU,
+"o que acontece quando você aperta enviar"): fundo escuro chapado (sem estrelas nem grade), **um acento só**
+(amarelo INEMA `#FACC15`, V7 do kit), peças grafite que se montam no tempo da fala, texto "de máquina" em fonte mono.
+É opcional: sem a chave nada muda. O `diagrama` fica grafite com núcleo e setas amarelos.
+
+As 4 peças novas (`tokens`, `probs`, `arcos`, `etapas`) também funcionam fora do perfil: o build carrega
+`runtime/interface.css/js` quando o perfil está ligado ou alguma delas aparece no roteiro.
+
+Como montar um vídeo nesse estilo:
+- **Mapa recorrente:** o vídeo tem 4–7 etapas; cada "Etapa N" abre com `etapas` (mesma lista, `atual` = N, `sub` curto).
+  O público sempre sabe onde está.
+- **Mecanismo:** `diagrama` (a cena inteira cresce); o dado andando é o `pacote`.
+- **O que a máquina vê:** `tokens` (a palavra se parte, `corta_at` na frase que diz "vira N pedaços").
+- **Escolha do modelo:** `probs` (barras contando; o escolhido entra no texto; `tom:"erro"` para a alucinação).
+- **Relação entre palavras:** `arcos` (foco aceso, arcos com peso, `frase` troca o exemplo no mesmo shot).
+- **Prova:** `media` com `highlights` (print com o trecho marcado); números: `counter`; frase-chave: `statement`.
+- Exemplo inventado na tela (pedaços, porcentagens) é ilustração: siga o que a fala diz e não invente ids de token.
+
+Protótipo (cenas 5, 6, 8 e 9 do ia-crescendo, mesma fala e avatar): `~/projetos/output/ia-crescendo-interface/`
+(`visual/gerar.py`, config `examples/ia-crescendo-interface-v2.json`).
 
 ## Padrões para as cenas recorrentes
 

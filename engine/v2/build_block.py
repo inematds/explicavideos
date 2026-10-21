@@ -59,6 +59,10 @@ SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'rada
 # perfil viral (2.9, PADRAO-VIRAL.md): peças de tela cheia do runtime/viral.js
 VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta', 'mapa', 'ranking', 'colunas'}
 SHOT_TYPES |= VIRAL_TYPES
+# perfil interface (2.15, AUTHORING.md "Perfil interface"): peças do runtime/interface.js. Valem em qualquer perfil;
+# o build só carrega interface.css/js quando o perfil é "interface" ou alguma delas aparece (roteiro antigo não muda).
+IFACE_TYPES = {'tokens', 'probs', 'arcos', 'etapas'}
+SHOT_TYPES |= IFACE_TYPES
 OPENERS = ('hook', 'capa')   # nascem visíveis no frame 0 ("@start")
 MEDIA_EXT = {'.png', '.jpg', '.jpeg', '.webp'}
 VIDEO_EXT = {'.mp4'}   # clipe mudo curto: vira <video> estático na cena (2.8, refazvideo QKdH9DhlB1c)
@@ -277,6 +281,67 @@ def check_diagrama(sh, n, i, warnings):
             warnings.append(f'{where}: passo {k} nota com {len(ps["nota"]["texto"])} caracteres (máx. 70: a tela não repete a fala)')
 
 
+def check_iface(sh, n, i, warnings):
+    """Peças do perfil interface (2.15): estrutura mínima e escala de vídeo. Só os tipos novos (nada antigo muda)."""
+    where = f'cena {n}: shot {i} ({sh["type"]})'
+    t = sh['type']
+    if t == 'tokens':
+        linhas = sh.get('linhas') or [sh]
+        if not 1 <= len(linhas) <= 3:
+            raise BuildError(f'{where}: "linhas" de 1 a 3')
+        for j, ln in enumerate(linhas):
+            P = ln.get('pedacos') or ([ln['texto']] if ln.get('texto') else [])
+            if not P:
+                raise BuildError(f'{where}: linha {j} sem "pedacos" nem "texto"')
+            if len(P) > 12:
+                warnings.append(f'{where}: linha {j} com {len(P)} pedaços (acima de 12 a letra fica pequena demais)')
+            if ln.get('ids') and len(ln['ids']) != len(P):
+                raise BuildError(f'{where}: linha {j} tem {len(ln["ids"])} ids para {len(P)} pedaços')
+            if ln.get('texto') and ln.get('pedacos') and ''.join(ln['pedacos']) != ln['texto']:
+                raise BuildError(f'{where}: linha {j}: os pedaços juntos não formam o texto ({"".join(ln["pedacos"])!r} ≠ {ln["texto"]!r})')
+    elif t == 'probs':
+        O = sh.get('opcoes') or []
+        if not 2 <= len(O) <= 5:
+            raise BuildError(f'{where}: "opcoes" de 2 a 5')
+        if any(not isinstance(o.get('p'), (int, float)) or not 0 <= o['p'] <= 1 for o in O):
+            raise BuildError(f'{where}: toda opção precisa de "p" entre 0 e 1')
+        if sum(o['p'] for o in O) > 1.001:
+            raise BuildError(f'{where}: as probabilidades somam {sum(o["p"] for o in O):.2f} (> 1)')
+        if len(str(sh.get('contexto', ''))) > 38:
+            warnings.append(f'{where}: contexto com {len(sh["contexto"])} caracteres (máx. 38 para caber com a palavra nova)')
+    elif t == 'arcos':
+        frases = [sh.get('frase', '')] + [ps['frase'] for ps in sh.get('passos') or [] if ps.get('frase')]
+        if not frases[0]:
+            raise BuildError(f'{where}: sem "frase"')
+        if not sh.get('passos'):
+            raise BuildError(f'{where}: sem "passos" (cada passo acende uma palavra e desenha os arcos)')
+        frase = frases[0]
+        for k, ps in enumerate(sh['passos']):
+            frase = ps.get('frase') or frase
+            ws = [norm(w) for w in str(frase).split()]
+            def tem(ref):
+                return (isinstance(ref, int) and 0 <= ref < len(ws)) or (isinstance(ref, str) and any(w == norm(ref) or w.startswith(norm(ref)) for w in ws))
+            if ps.get('foco') is not None and not tem(ps['foco']):
+                raise BuildError(f'{where}: passo {k} foco {ps["foco"]!r} não está na frase {frase!r}')
+            for a in ps.get('arcos') or []:
+                if not tem(a.get('para')):
+                    raise BuildError(f'{where}: passo {k} arco para {a.get("para")!r} não está na frase {frase!r}')
+            if ps.get('nota') and len(str(ps['nota'])) > 70:
+                warnings.append(f'{where}: passo {k} nota com {len(ps["nota"])} caracteres (máx. 70)')
+        for f in frases:
+            if len(str(f)) > 44:
+                warnings.append(f'{where}: frase {f!r} com {len(f)} caracteres (máx. 44: a letra encolhe)')
+    elif t == 'etapas':
+        I = sh.get('itens') or []
+        if not 2 <= len(I) <= 7:
+            raise BuildError(f'{where}: "itens" de 2 a 7')
+        if not isinstance(sh.get('atual'), int) or not 1 <= sh['atual'] <= len(I):
+            raise BuildError(f'{where}: "atual" precisa ser de 1 a {len(I)}')
+        for it in I:
+            if len(str(it)) > 26:
+                warnings.append(f'{where}: item {it!r} > 26 caracteres')
+
+
 def word_times(timing, k, text, gi, scene_start):
     """Para cada palavra da frase, o tempo em que ela é falada (se estiver na fala logo adiante)."""
     hi = timing.bounds[k + 1]
@@ -493,6 +558,10 @@ def build(part, strict=False, spec_path=None, out=None):
     viral = CFG.get('profile_visual') == 'viral'
     if viral:
         mode = (mode + ' viral').strip()
+    iface = CFG.get('profile_visual') == 'interface'
+    if iface:
+        mode = (mode + ' iface').strip()
+    usa_iface = iface
     VW, VH = (1080, 1150) if (viral and aspect_of(CFG) == '9:16') else (1920, 1080)
     rostos, fontes, capa_cheia, mapas = [], [], None, []
     # 9:16 "avatar_916": "pip" (Nei 15/10/2026): até a cena "pip_cena" o avatar fica em meio tamanho (palco 1080×1150);
@@ -572,6 +641,9 @@ def build(part, strict=False, spec_path=None, out=None):
         for i, sh in enumerate(shots):
             if sh['type'] == 'diagrama':
                 check_diagrama(sh, n, i, warnings)
+            if sh['type'] in IFACE_TYPES:
+                check_iface(sh, n, i, warnings)
+                usa_iface = True
             if sh['type'] == 'media':
                 sh['src'], vid = copy_media(sh.get('src'), dest, n, i, allow_video=True)
                 sh['iw'], sh['ih'] = image_size(dest / sh['src'])
@@ -671,6 +743,8 @@ def build(part, strict=False, spec_path=None, out=None):
              'dur': sdur, 'shots': shots, 'reel': bool(reel), 'header': (entry or {}).get('header')}  # True liga no reel; False tira o cabeçalho da cena no 16:9 (2.13.10)
         if viral:
             S.update(viral=True, vw=VW, vh=sVH)
+        if iface:
+            S['iface'] = True
         if viral and entry and entry.get('fundo'):
             S['fundo'] = copy_media(entry['fundo'], dest, n, 'fundo')
         if entry and isinstance(entry.get('takeaway'), str):
@@ -687,6 +761,9 @@ def build(part, strict=False, spec_path=None, out=None):
                     max_chars=(18 if aspect_of(CFG) == '9:16' else 24) if viral else (reel['captions']['max_chars'] if reel else None))
     idx = INDEX.replace('__CAPS__', json.dumps(caps, ensure_ascii=False)).replace('__DUR__', str(dur)).replace('__HOSTS__', '\n'.join(hosts)).replace('__SEED__', str(7 + part)).replace('{LANG}', lang)
     idx = idx.replace('__W__', str(W)).replace('__H__', str(H)).replace('__MODE__', mode)
+    if usa_iface:
+        head = '<script src="assets/v2.js"></script>'
+        idx = idx.replace(head, head + '<link rel="stylesheet" href="assets/interface.css"><script src="assets/interface.js"></script>')
     if viral:
         idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia, pip_t, pip_moves)
     report['aspect'] = aspect_of(CFG)

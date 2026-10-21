@@ -1,0 +1,14 @@
+{
+  "id": "ia-crescendo-interface",
+  "title": "IA por dentro: o que acontece quando você aperta enviar",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/ia-crescendo-refaz",
+  "output": "/home/nmaldaner/projetos/output/ia-crescendo-interface/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/ia-crescendo-refaz/v1",
+  "languages": [
+    "pt"
+  ],
+  "hyperframes": "0.8.77",
+  "profile_visual": "interface",
+  "allow_cold_start": true
+}

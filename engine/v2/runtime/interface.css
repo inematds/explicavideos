@@ -1,0 +1,57 @@
+/* Explicavideos v2 — perfil "interface" (2.15). Peças (tk-, pb-, ar-, et-, if-) valem em qualquer perfil;
+   o TEMA (.iface) só com "profile_visual": "interface": fundo chapado, acento único amarelo INEMA #FACC15 (V7),
+   cartões cinza-grafite, sem estrelas nem grade. Fonte do texto "de máquina": Mono (DejaVu Sans Mono). */
+
+/* ---------- tema */
+.iface{--amber:#FACC15;--bg:#0c0c10;--panel:rgba(24,24,30,.94);--line:rgba(255,255,255,.12);--dim:#8b8b96}
+.iface #stars,.iface #bg-grid-wrap{display:none}
+.iface #bg .bg-grad{background:radial-gradient(1500px 900px at 38% 40%,#18181d 0%,#0e0e12 58%,#09090b 100%)}
+.iface #bg .vignette{background:radial-gradient(ellipse at 45% 45%,transparent 55%,rgba(0,0,0,.55) 100%)}
+.iface .pip{box-shadow:0 0 0 2px rgba(250,204,21,.45),0 18px 60px rgba(0,0,0,.6)}
+.iface .v2-take{background:rgba(22,22,27,.94);border-color:rgba(250,204,21,.5)}
+.iface .v2-card,.iface .b-card{background:var(--panel);border-color:var(--line)}
+/* diagrama no tema: peças grafite, só o núcleo e as setas em amarelo */
+.iface .dg-node{--c:rgba(255,255,255,.2)!important;background:linear-gradient(160deg,#1d1d23,#131317)}
+.iface .dg-node .ic svg{stroke:#e5e7eb}
+.iface .dg-core{--c:#FACC15!important;background:radial-gradient(circle at 36% 30%,rgba(255,250,220,.16) 0%,rgba(250,204,21,.22) 34%,#15130a 74%)}
+.iface .dg-core .ic svg{stroke:#FACC15}
+.iface .dg-world svg path[stroke]{stroke:#FACC15}
+.iface .dg-world marker path{fill:#FACC15}
+.iface .dg-nota{background:rgba(14,14,18,.96);border-color:rgba(250,204,21,.7)}
+
+/* ---------- comuns */
+.if-nota{position:absolute;z-index:5;text-align:center;font-family:"MontX";font-size:38px;line-height:1.25;color:#f3f4f6}
+
+/* ---------- tokens */
+.tk-chip{position:absolute;box-sizing:border-box;font-family:"Mono";white-space:pre;color:#f3f4f6;border:3px solid transparent;border-radius:14px;background:transparent}
+.tk-id{position:absolute;text-align:center;font-family:"Mono";font-size:30px;letter-spacing:.04em}
+.tk-rot{position:absolute;font-family:"Mono";font-size:24px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
+.tk-cnt{position:absolute;text-align:center;font-family:"Mono";font-size:30px;letter-spacing:.12em;color:var(--dim)}
+.tk-cnt b{font-family:"MontBlack";font-size:44px;color:#FACC15;letter-spacing:0;margin-right:6px}
+
+/* ---------- probs */
+.pb-ctx{position:absolute;box-sizing:border-box;border-radius:20px;background:rgba(24,24,30,.94);border:2px solid rgba(255,255,255,.14)}
+.pb-tx{position:absolute;left:40px;top:30px;height:60px;line-height:60px;font-family:"Mono";color:#f3f4f6;white-space:pre}
+.pb-cur{position:absolute;top:32px;width:5px;height:56px;background:#FACC15}
+.pb-fly{position:absolute;height:60px;line-height:60px;font-family:"Mono";color:#FACC15;white-space:pre;transform-origin:0 50%}
+.pb-lb{position:absolute;font-family:"Mono";font-size:56px;color:#e5e7eb;white-space:pre}
+.pb-tr{position:absolute;height:44px;border-radius:22px;background:rgba(255,255,255,.07);overflow:hidden}
+.pb-tr i{position:absolute;left:0;top:0;height:44px;border-radius:22px;background:rgba(229,231,235,.55)}
+.pb-pc{position:absolute;width:150px;font-family:"MontBlack";font-size:52px;color:#f3f4f6}
+.pb-tag{position:absolute;font-family:"Mono";font-size:22px;letter-spacing:.18em;text-transform:uppercase}
+.pb-tag.erro{color:#ff5d7a}.pb-tag.certo{color:#3ef0a0}
+
+/* ---------- arcos */
+.ar-w{position:absolute;font-family:"Mono";color:#e5e7eb;white-space:pre;border-radius:10px;padding:0;line-height:1.3}
+
+/* ---------- etapas */
+.et-tt{position:absolute;font-family:"Mono";font-size:24px;letter-spacing:.24em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
+.et-mk{position:absolute;border-radius:16px;background:rgba(250,204,21,.12);border:2px solid #FACC15;box-sizing:border-box}
+.et-row{position:absolute;font-family:"MontX";font-size:38px;color:#e5e7eb;white-space:nowrap}
+.et-row .nb{display:inline-block;width:58px;font-family:"Mono";font-size:30px;color:var(--dim)}
+.et-row.done .nb{color:#3ef0a0}
+.et-row.now .nb{color:#FACC15}.et-row.now .tx{color:#ffffff}
+.et-big{position:absolute}
+.et-big .k{font-family:"Mono";font-size:24px;letter-spacing:.24em;color:#FACC15}
+.et-big .t{margin-top:12px;font-family:"MontBlack";font-size:58px;line-height:1.05;color:#ffffff}
+.et-big .s{margin-top:20px;font-family:"MontX";font-size:32px;line-height:1.3;color:#c9cad1}

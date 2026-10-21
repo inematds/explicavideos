@@ -129,3 +129,59 @@ class V2Diagrama(unittest.TestCase):
         _, w = self.resolve(self.spec(nos=[{'id': 'a', 'label': 'UM RÓTULO COMPRIDO DEMAIS AQUI', 'at': 'Bem-vindo'},
                                            {'id': 'b', 'label': 'NEI', 'at': 'Eu sou'}]))
         self.assertTrue(any('22 caracteres' in x for x in w))
+
+
+class Interface(unittest.TestCase):
+    """Perfil interface (2.15): tokens, probs, arcos e etapas — deixas resolvidas e referências conferidas."""
+
+    def setUp(self):
+        self.t = B.Timing(SCENES, WORDS)
+
+    def resolve(self, sh):
+        shots = B.resolve_scene(self.t, 0, 0.0, {'shots': [sh]}, [], 1, True)
+        w = []
+        B.check_iface(shots[0], 1, 0, w)
+        return shots[0], w
+
+    def test_types_registered(self):
+        self.assertTrue({'tokens', 'probs', 'arcos', 'etapas'} <= B.SHOT_TYPES)
+
+    def test_tokens_cues_and_pieces(self):
+        sh, w = self.resolve({'type': 'tokens', 'at': 'Bem-vindo', 'linhas': [
+            {'texto': 'strawberry', 'pedacos': ['str', 'aw', 'berry'], 'at': 'Bem-vindo', 'corta_at': 'Eu sou', 'ids_at': 'Vamos percorrer'}]})
+        ln = sh['linhas'][0]
+        self.assertEqual(w, [])
+        self.assertLess(ln['at'], ln['corta_at'])
+        self.assertLess(ln['corta_at'], ln['ids_at'])
+        self.assertIn(ln['corta_at'], B.all_times([sh], words=False, effects=False))
+        with self.assertRaises(B.BuildError):   # pedaços que não formam o texto
+            self.resolve({'type': 'tokens', 'at': 'Bem-vindo', 'linhas': [{'texto': 'abc', 'pedacos': ['a', 'x'], 'at': 'Bem-vindo'}]})
+
+    def test_probs_sum_and_range(self):
+        ok = {'type': 'probs', 'at': 'Bem-vindo', 'contexto': 'A capital é', 'opcoes': [{'texto': 'A', 'p': 0.6}, {'texto': 'B', 'p': 0.3}], 'escolhe_at': 'Eu sou'}
+        sh, w = self.resolve(ok)
+        self.assertEqual(w, [])
+        for bad in ([{'texto': 'A', 'p': 0.8}, {'texto': 'B', 'p': 0.5}], [{'texto': 'A', 'p': 0.5}]):
+            with self.assertRaises(B.BuildError):
+                self.resolve(dict(ok, opcoes=bad))
+
+    def test_arcos_words_must_exist(self):
+        base = {'type': 'arcos', 'at': 'Bem-vindo', 'frase': 'sentei no banco perto do rio',
+                'passos': [{'at': 'Eu sou', 'foco': 'banco', 'arcos': [{'para': 'rio', 'peso': 0.9}]},
+                           {'at': 'Vamos percorrer', 'frase': 'pedi no banco um empréstimo', 'foco': 'banco', 'arcos': [{'para': 'emprestimo', 'peso': 0.9}]}]}
+        _, w = self.resolve(base)
+        self.assertEqual(w, [])
+        bad = json_copy(base); bad['passos'][1]['arcos'][0]['para'] = 'rio'   # "rio" não está na frase trocada
+        with self.assertRaises(B.BuildError):
+            self.resolve(bad)
+
+    def test_etapas_atual_range(self):
+        _, w = self.resolve({'type': 'etapas', 'at': 'Bem-vindo', 'itens': ['A', 'B', 'C'], 'atual': 2})
+        self.assertEqual(w, [])
+        with self.assertRaises(B.BuildError):
+            self.resolve({'type': 'etapas', 'at': 'Bem-vindo', 'itens': ['A', 'B', 'C'], 'atual': 4})
+
+
+def json_copy(o):
+    import json
+    return json.loads(json.dumps(o))
