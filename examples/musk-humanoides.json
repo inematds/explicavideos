@@ -1,0 +1,21 @@
+{
+  "id": "musk-humanoides",
+  "title": "Elon Musk: os humanoides vão mudar tudo",
+  "source_repo": "/home/nmaldaner/projetos/output/musk-humanoides",
+  "output": "/home/nmaldaner/projetos/output/musk-humanoides/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/musk-humanoides/roteiro/pt.json"
+  },
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-musk-humanoides",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Elon Musk, Walter Isaacson, The Builders, humanoide, humanoides, Optimus, Tesla, SpaceX, xAI, golfinhos, baleias, gigawatts, painel solar, inema ponto club.",
+  "balanced_blocks": true
+}

@@ -1,0 +1,16 @@
+{
+  "id": "musk-humanoides",
+  "title": "Elon Musk: os humanoides vão mudar tudo",
+  "engine": "v2",
+  "profile_visual": "viral",
+  "source_repo": "/home/nmaldaner/projetos/output/musk-humanoides",
+  "output": "/home/nmaldaner/projetos/output/musk-humanoides/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/musk-humanoides/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-musk-humanoides",
+  "hyperframes": "0.8.77",
+  "capa_segura": true
+}
