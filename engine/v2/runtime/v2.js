@@ -328,7 +328,22 @@
       return ln;
     };
     const top = s.pos === 'top';
-    const y1 = top ? 165 : (s.then ? 330 : 430);
+    let y1 = top ? 165 : (s.then ? 330 : 430);
+    // 2.16: "src" = imagem ilustrativa atrás da frase (só em tela que seria só texto). A imagem ocupa a área útil,
+    // aproxima devagar (≤ 1,08) e escurece embaixo; a frase vai grande na parte de baixo, legível sobre a imagem.
+    if (s.src && !top && !s.then) {
+      const t = def(s.at, c.T0 + 0.1);
+      const fr = h(box, 'div', 'st-img', '');
+      const im = h(fr, 'img', '', ''); im.src = s.src;
+      h(fr, 'div', 'st-img-sh', '');
+      c.tl.fromTo(fr, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'sine.inOut' }, Math.max(c.T0, t - 0.2));
+      c.tl.fromTo(im, { scale: 1 }, { scale: 1.08, duration: Math.max(1, c.T1 - t + 0.6), ease: 'none' }, Math.max(c.T0, t - 0.2));
+      // texto GRANDE sobre a imagem (Nei 21/10/2026): 96 px em frase curta, 80 px em frase longa (até 2–3 linhas)
+      const size = s.size || (plain(s.text).length <= 26 ? 96 : 80);
+      const nl = Math.min(3, Math.ceil(plain(s.text).length * 0.6 * size / 1250));
+      y1 = 905 - nl * size * 1.15;
+      s = Object.assign({}, s, { size });
+    }
     const l1 = mk(s.text, s.wt, def(s.at, c.T0 + 0.1), y1, s.size);
     if (s.then) {
       const ta = def(s.then.at, c.T1 - 2);

@@ -54,7 +54,7 @@ As regras de tempo:
 | `flow` | caminho e arquitetura | `nodes:[{id, label, icon?, col 0-4, row 0-3, at}]`, `edges:[{from, to, at, label?}]` |
 | `orbs` | opções diferentes (nomes, tamanhos, custos) | `items:[{name, size 0.6-1.8, tag?}]` (≤7), `names_at?`, `sizes_at?`, `tags_at?`, `pick?:{name, at, note}` |
 | `podium` | "qual é o melhor?" desmontado | `question`, `question_at`, `names[]` (3-6), `collapse_at` |
-| `statement` | frase-chave, mito → verdade | `text`, `pos?:"top"`, `strike_at?`, `then?:{text, at, replace?:false}` |
+| `statement` | frase-chave, mito → verdade | `text`, `pos?:"top"`, `strike_at?`, `then?:{text, at, replace?:false}`, `src?` (2.16: imagem ilustrativa atrás, texto grande embaixo) |
 | `radar` | critérios de escolha e encaixe | `axes:[{label, at, value 0-1}]` (3-6), `candidates:[{name, values[], fit, note, at}]` |
 | `lanes` | separar por função ou categoria | `lanes:[{title, sub?, icon?}]` (2-4), `items:[{lane, text, at}]`, `chips?:[{label, lane, at}]`, `chaos_at?`, `sort_at?`, `lanes_at?` |
 | `compare` | antes/depois, errado/certo | `left:{title, at, tone?, lines:[{text, at}]}`, `right:{...}`, `verdict?:{text, at}` (`tone` pode ser bad, good ou neutral) |
@@ -129,6 +129,9 @@ Como montar um vídeo nesse estilo:
 - **Escolha do modelo:** `probs` (barras contando; o escolhido entra no texto; `tom:"erro"` para a alucinação).
 - **Relação entre palavras:** `arcos` (foco aceso, arcos com peso, `frase` troca o exemplo no mesmo shot).
 - **Prova:** `media` com `highlights` (print com o trecho marcado); números: `counter`; frase-chave: `statement`.
+- **Tela que seria só texto** (2.16, Nei 21/10/2026): `statement` com `src` = imagem ilustrativa (flux2-klein local, luz neutra,
+  um assunto, terço de baixo escuro) com a frase grande por cima. No máximo uma a cada 30–40 s; diagrama e peças ficam sem imagem.
+  Havendo prova real (artigo, página), use o print com `highlights` em vez de imagem gerada.
 - Exemplo inventado na tela (pedaços, porcentagens) é ilustração: siga o que a fala diz e não invente ids de token.
 
 Protótipo (cenas 5, 6, 8 e 9 do ia-crescendo, mesma fala e avatar): `~/projetos/output/ia-crescendo-interface/`

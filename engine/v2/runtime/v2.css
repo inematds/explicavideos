@@ -229,3 +229,8 @@ html,body{margin:0;background:var(--bg);overflow:hidden}
 .v916.reel .v2-fit{transform:translate(11px,130px) scale(.70)}
 .v916.reel #caps{left:65px;width:950px}
 .v916.reel .cap{width:950px}
+/* statement com imagem (2.16) */
+.st-img{position:absolute;left:90px;top:150px;width:1330px;height:780px;border-radius:22px;overflow:hidden;background:#000}
+.st-img img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 45%}
+.st-img-sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.55) 62%,rgba(0,0,0,.88) 100%)}
+.st-img ~ .s-line{text-shadow:0 4px 24px rgba(0,0,0,.95),0 0 4px rgba(0,0,0,.8)}

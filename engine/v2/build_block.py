@@ -649,6 +649,8 @@ def build(part, strict=False, spec_path=None, out=None):
                 sh['iw'], sh['ih'] = image_size(dest / sh['src'])
                 if vid:
                     sh['vid'], sh['vidid'] = vid, f'v{i}'
+            if sh['type'] == 'statement' and sh.get('src'):   # 2.16: imagem ilustrativa atrás da frase
+                sh['src'] = copy_media(sh['src'], dest, n, i)
             if sh['type'] == 'hook' and sh.get('src'):
                 sh['src'] = copy_media(sh['src'], dest, n, i)
             if sh['type'] in VIRAL_TYPES and sh.get('src'):
