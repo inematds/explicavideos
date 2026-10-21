@@ -174,8 +174,11 @@
     fundo(box, s, c, t);
     corte(box, c, t);
     const tw = TW(c), x = v916 ? 50 : 70, pw = tw - x * 2;
-    const top = H * (v916 ? 0.25 : 0.255), bot = H * (v916 ? 0.78 : 0.755);
-    const rh = Math.min(v916 ? 190 : 130, (bot - top) / n), bh = rh * (v916 ? 0.36 : 0.42);
+    // "grande": true (2.19, 21/10/2026) — 16:9 com até 3–4 itens: linhas altas, barras grossas e o bloco centrado no painel
+    const G = !!s.grande && !v916;
+    const top0 = H * (v916 ? 0.25 : 0.255), bot = H * (v916 ? 0.78 : 0.755);
+    const rh = Math.min(v916 ? 190 : (G ? 175 : 130), (bot - top0 - (G && s.log ? 70 : 0)) / n), bh = rh * (v916 ? 0.36 : (G ? 0.52 : 0.42));
+    const top = G ? top0 + Math.max(0, ((bot - top0) - n * rh - (s.log ? 50 : 0)) / 2) : top0;
     // 9:16 (15/10/2026): o painel acompanha as linhas; com 0,66 da altura fixo, 3 itens deixavam ~60% do painel vazio
     const ptop = H * (v916 ? 0.17 : 0.13), fy = v916 ? top + n * rh + 20 : H * 0.765;
     const ph = v916 ? fy - ptop + (s.fonte ? 70 : 20) : H * 0.68;
@@ -197,12 +200,13 @@
     }
     it.forEach((r, i) => {
       const ti = def(r.at, t + 0.35 + i * 0.32), y = top + i * rh;
-      const lab = h(box, 'div', 'vr-rlab' + (r.hl ? ' hl' : ''), `left:${x}px;top:${v916 ? y - 4 : y + rh * 0.5 - 26}px;width:${lw}px`, esc(r.n || ''));
+      const lab = h(box, 'div', 'vr-rlab' + (r.hl ? ' hl' : ''), `left:${x}px;top:${v916 ? y - 4 : y + rh * 0.5 - (G ? 30 : 26)}px;width:${lw}px${G ? ';font-size:46px;line-height:60px' : ''}`, esc(r.n || ''));
       const by = v916 ? y + 44 : y + rh * 0.5 - bh / 2;
       const bwi = Math.max(6, bw * fr(r.v)), fim = bx + bwi + 18, dentro = r.txt && fim > bx + bw - 120;
       const bar = h(box, 'div', 'vr-rbar' + (r.hl ? ' hl' : ''), `left:${bx}px;top:${by}px;height:${bh}px;width:${bwi}px`);
-      const val = h(box, 'div', 'vr-rval' + (r.hl ? ' hl' : ''), dentro ? `right:${W - (bx + bwi) + 18}px;top:${by + bh / 2 - (v916 ? 30 : 34)}px;color:#111;text-shadow:none`
-        : `left:${fim}px;top:${by + bh / 2 - (v916 ? 30 : 34)}px`);
+      const vy = by + bh / 2 - (v916 ? 30 : (G ? 42 : 34)), vf = G ? ';font-size:74px;line-height:84px' : '';
+      const val = h(box, 'div', 'vr-rval' + (r.hl ? ' hl' : ''), dentro ? `right:${W - (bx + bwi) + 18}px;top:${vy}px;color:#111;text-shadow:none${vf}`
+        : `left:${fim}px;top:${vy}px${vf}`);
       const st = { v: 0 };
       if (r.txt) val.innerHTML = esc(r.txt).replace(/\^(\d+)/g, '<sup>$1</sup>');
       else c.render(() => { val.innerHTML = `${s.pre ? esc(s.pre) : ''}${fmt(st.v, s.dec)}${s.unid ? `<small>${esc(s.unid)}</small>` : ''}`; });
