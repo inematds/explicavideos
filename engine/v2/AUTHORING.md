@@ -79,7 +79,7 @@ Os ícones (`icon`) disponíveis são: doc, folder, chat, terminal, key, lock, c
 money, star, search, gear, git, send, book, bulb, warn, target, list, image, video, code, link, shield, eye, pencil,
 calendar, chart, cpu, play, pause, refresh, phone, globe, upload, download, bot, memory, flag e box.
 
-## Diagrama que cresce (2.14) — o padrão para explicar
+## Diagrama que cresce (2.14) — o padrão para explicar mecanismos
 
 Cena de conceito ("como funciona", "as peças", "o caminho") é **um `diagrama` só**, que fica na tela a cena inteira
 e cresce no tempo da fala. Não troque de shot a cada frase: cada **passo** com deixa conta como troca no ritmo.
@@ -137,7 +137,12 @@ Protótipo (cenas 5, 6, 8 e 9 do ia-crescendo, mesma fala e avatar): `~/projetos
 ## Padrões para as cenas recorrentes
 
 - **"Módulo N. …":** use `module_intro`.
-- **Conceito (cenas longas, de 40 a 90 s):** um `diagrama` que cresce pela cena (2.14); outros tipos só onde o conteúdo não é mecanismo. `keyword`/`statement` são pontuação, não a cena. Termine em "Pontos para lembrar" com `bullets`.
+- **Conceito (cenas longas, de 40 a 90 s):** um `diagrama` que cresce pela cena (2.14) **quando o conteúdo cabe num diagrama
+  certo** (peças que se ligam, um caminho, causa → efeito, entrada → saída) — decidir cena a cena; onde não é mecanismo, use os
+  outros tipos. `keyword`/`statement` são pontuação, não a cena. Termine em "Pontos para lembrar" com `bullets`.
+- **Entrada de tópico (Nei, 21/10/2026):** cada cena-tópico abre com um `hook` com imagem de impacto (`src`, 1 assunto forte,
+  luz neutra), `kicker` "PARTE n DE N" e o título do tópico; 2–3 s depois o `diagrama` (ou o shot seguinte) entra e o título e
+  a imagem somem. O primeiro nó do diagrama tem deixa igual ou posterior à do diagrama (senão todos entram juntos).
 - **"Na prática":** a parte "Vamos a um exemplo" vira `compare`, `chat`, `terminal`, `lanes` ou `fields`, conforme o exemplo. A parte "Agora é sua vez" vira `bullets` (row, `title:"SUA AÇÃO"`), `fields` ou `terminal`.
 - **"Vamos ao laboratório":** use `steps`, com um card por "Passo N" e deixas "Passo 1", "Passo 2"… Depois, `bullets` ou `fields` para o registro.
 - **"Antes de avançar… pergunta":** use `quiz` (a deixa `answer_at` é "A resposta é").
