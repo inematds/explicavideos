@@ -127,3 +127,18 @@
 .v916 .vr-pino .lab{font-size:46px}
 .vr-cond{fill:none;stroke:rgba(60,30,0,.55);stroke-width:var(--sw,1.2)}
 .vr-pino .lab small .hl{color:#b3261e}
+/* linha (2.17): gráfico de linha que se desenha no tempo da fala */
+.vr-lsvg{position:absolute;left:0;top:0;z-index:2;overflow:visible}
+.vr-lgrid{stroke:rgba(255,255,255,.14);stroke-width:2}
+.vr-ltick{fill:rgba(255,255,255,.72);font-family:"Mono";font-size:26px}
+.v916 .vr-ltick{font-size:22px}
+.vr-lmarco{stroke:rgba(255,255,255,.55);stroke-width:3;stroke-dasharray:10 10}
+.vr-lmtxt{fill:#fff;font-family:"MontX";font-size:30px}
+.vr-lpath{fill:none;stroke:var(--cyan);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 10px rgba(79,216,255,.6))}
+.vr-lpath.hl{stroke:var(--amber);filter:drop-shadow(0 0 10px rgba(255,194,58,.7))}
+.vr-lpath.alerta{stroke:#ff5a5a;filter:drop-shadow(0 0 12px rgba(255,90,90,.75))}
+.vr-ldot{fill:#fff;stroke:var(--cyan);stroke-width:5}.vr-ldot.hl{stroke:var(--amber)}.vr-ldot.alerta{stroke:#ff5a5a}
+.vr-lval{position:absolute;z-index:3;font-family:"MontBlack";font-size:48px;line-height:52px;color:var(--cyan);white-space:nowrap;text-shadow:0 2px 14px rgba(0,0,0,.85)}
+.vr-lval.hl{color:var(--amber)}.vr-lval.alerta{color:#ff5a5a}.vr-lval small{font-size:.55em}
+.vr-lval i{display:block;font-style:normal;font-family:"MontX";font-size:22px;line-height:26px;color:#fff}
+.v916 .vr-lval{font-size:38px;line-height:42px}.v916 .vr-lval i{font-size:19px}

@@ -12,10 +12,10 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 
 ## Visual
 - **Tela cheia**: a cena ocupa o quadro todo; nada de "área útil à esquerda" nem cartão lateral.
-- **Troca a cada 1,5–3 s** (corte, número, carimbo, pan para outro ponto da imagem). Nunca > 2 s parado.
+- **Troca a cada 1,5–3 s** (corte, número, carimbo, pan para outro ponto da imagem). Nunca > 2 s parado **em imagem**. Gráfico animado (`linha`, `colunas`, `ranking`, `barra`, `escala`, `mapa`) pode ficar até 9 s: tem de dar tempo de ler (Nei 21/10/2026).
 - **Número = peça própria** (`bignum`): gigante, contagem curta (≤ 0,8 s) que termina na deixa, fonte embaixo.
 - **Comparação de escala** (`escala`), **mapa** (`mapa`), **tipografia cinética** (`cinetica`),
-  **carimbo** (`carimbo`), **barra/percentual** (`barra`), **capítulo** (`capitulo`: tela limpa + assunto grande).
+  **carimbo** (`carimbo`), **barra/percentual** (`barra`), **capítulo** (`capitulo`: tela limpa + assunto grande), **linha** (`linha`, 2.17: gráfico de linha real que se desenha no tempo da fala; `series[{n, pts:[[x,v]], de, ate, at, ate_at, passos:[{x, at}], cor, teto_txt}]` (`passos` = a linha chega em x na deixa, trecho a trecho), `x`, `y`, `xticks`, `yticks`, `marcos[{x, txt, at}]`, `unid`, `dec`; repetir o mesmo gráfico em shots seguidos com `de` = onde parou dá a continuidade).
 - **Gráfico comparativo** (`ranking`, 14/10/2026): barras horizontais que crescem uma a uma, valor contando no fim;
   `itens` [{n, v, hl, at}] (até 5–6; `hl` = destaque âmbar), `titulo`, `unid`, `dec`, `max`, `fonte`. Cada item com a
   sua deixa na fala, senão o shot fica parado. `v_at` (opcional, 14/10/2026): a barra cresce numa 2ª deixa — pergunta no
@@ -49,5 +49,5 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 
 ## QA (`engine/v2/qa_viral.py`, reprova)
 - Quadro com > 40% de área lisa (fundo vazio), amostra a cada 0,5 s.
-- Trecho > 2 s sem mudança visual.
+- Trecho > 2 s sem mudança visual (fora de gráfico; gráfico até 9 s).
 - Folha de quadros (`verification/sheet-viral-*.jpg`) sempre gerada e olhada antes de entregar.

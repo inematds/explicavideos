@@ -57,8 +57,11 @@ SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'rada
               'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg',
               'hook', 'media', 'diagrama'}
 # perfil viral (2.9, PADRAO-VIRAL.md): peças de tela cheia do runtime/viral.js
-VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta', 'mapa', 'ranking', 'colunas'}
+VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta', 'mapa', 'ranking', 'colunas', 'linha'}
 SHOT_TYPES |= VIRAL_TYPES
+# 2.17 (Nei 21/10/2026): a regra de 2 s vale para IMAGEM; gráfico animado pode ficar mais tempo para dar para ler
+GRAFICOS = {'linha', 'colunas', 'ranking', 'barra', 'escala', 'mapa'}
+GRAFICO_MAX_S = 9.0
 # perfil interface (2.15, AUTHORING.md "Perfil interface"): peças do runtime/interface.js. Valem em qualquer perfil;
 # o build só carrega interface.css/js quando o perfil é "interface" ou alguma delas aparece (roteiro antigo não muda).
 IFACE_TYPES = {'tokens', 'probs', 'arcos', 'etapas'}
@@ -738,6 +741,12 @@ def build(part, strict=False, spec_path=None, out=None):
             # "capa_segura" (Nei 15/10/2026: "o texto inicial tem que ficar mais segundos aberto"): a capa parada
             # de propósito não conta como trecho sem troca
             gaps = [(a, g) for a, g in gaps if a >= shots[1]['at'] - 0.05]
+        if viral:
+            # gráfico (linha/colunas/ranking/barra/escala/mapa) no ar: vale o teto do gráfico, não os 2 s da imagem
+            def no_grafico(a):
+                ativo = [sh for sh in shots if sh['at'] <= a + 0.05]
+                return bool(ativo) and ativo[-1]['type'] in GRAFICOS
+            gaps = [(a, g) for a, g in gaps if not (no_grafico(a) and g <= GRAFICO_MAX_S)]
         for a, g in gaps:
             warnings.append(f'cena {n}: {g}s sem mudança visual a partir de {a}s (limite {limit}s)')
         sid = f'scene-{n:03d}'

@@ -239,6 +239,87 @@
     });
     if (s.fonte) { const f = h(box, 'div', 'vr-rfonte', `left:${x}px;top:${H * (v916 ? 0.8 : 0.79)}px`, esc(s.fonte)); c.tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.4); }
   };
+  // linha (2.17) — gráfico de linha REAL que se desenha no tempo da fala. Cada série tem pontos [[x, v], ...] e vai de
+  // "de" (já desenhado quando o shot entra: continuidade entre shots) até "ate", chegando lá na deixa "ate_at".
+  // "marcos" = linha vertical com rótulo numa deixa (ex.: 1993). Valor acima de y[1] encosta no teto e mostra "teto_txt".
+  P.linha = function (box, s, c) {
+    const t = def(s.at, c.T0 + 0.05), [W, H] = WH(c), v916 = W < 1500, NS = 'http://www.w3.org/2000/svg';
+    fundo(box, s, c, t);
+    corte(box, c, t);
+    const tw = TW(c), x = v916 ? 40 : 70, pw = tw - x * 2;
+    const pnl = h(box, 'div', 'vr-rpanel', `left:${x - 30}px;top:${H * (v916 ? 0.17 : 0.13)}px;width:${pw + 60}px;height:${H * (v916 ? 0.66 : 0.7)}px`);
+    c.tl.fromTo(pnl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t);
+    if (s.titulo) manchete(box, s.titulo, t + 0.05, c, 'top', `font-size:${v916 ? 50 : 62}px`);
+    const L = x + (v916 ? 70 : 90), R = x + pw - (v916 ? 210 : 200), T = H * (v916 ? 0.25 : 0.31), B = H * (v916 ? 0.6 : 0.72);   // 9:16: acima do avatar (pip)
+    const [x0, x1] = s.x || [0, 1], [y0, y1] = s.y || [0, 1];
+    const px = (v) => L + (R - L) * (v - x0) / (x1 - x0), py = (v) => B - (B - T) * (Math.min(v, y1) - y0) / (y1 - y0);
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'vr-lsvg'); svg.setAttribute('width', W); svg.setAttribute('height', H);
+    box.appendChild(svg);
+    const el = (tag, at, par) => { const e = document.createElementNS(NS, tag); Object.entries(at).forEach(([k, v]) => e.setAttribute(k, v)); (par || svg).appendChild(e); return e; };
+    const eixo = el('g', {});
+    (s.yticks || [y0, y1]).forEach((v) => {
+      el('line', { x1: L, x2: R, y1: py(v), y2: py(v), class: 'vr-lgrid' }, eixo);
+      const tx = el('text', { x: L - 14, y: py(v) + 9, class: 'vr-ltick', 'text-anchor': 'end' }, eixo); tx.textContent = fmt(v, 0);
+    });
+    (s.xticks || [x0, x1]).forEach((v) => { const tx = el('text', { x: px(v), y: B + 40, class: 'vr-ltick', 'text-anchor': 'middle' }, eixo); tx.textContent = String(v); });
+    c.tl.fromTo(eixo, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.1);
+    (s.marcos || []).forEach((m) => {
+      const g = el('g', {}), tm = def(m.at, t + 0.5);
+      el('line', { x1: px(m.x), x2: px(m.x), y1: T - 10, y2: B, class: 'vr-lmarco' }, g);
+      const esq = px(m.x) > R - 260;   // marco perto da borda direita: rótulo à esquerda da linha (a ponta da série fica à direita)
+      const tx = el('text', { x: px(m.x) + (esq ? -14 : 12), y: T + 26, class: 'vr-lmtxt', 'text-anchor': esq ? 'end' : 'start' }, g); tx.textContent = m.txt || String(m.x);
+      c.tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, tm);
+    });
+    const tips = [];
+    (s.series || []).forEach((se, i) => {
+      const pts = (se.pts || []).slice().sort((a, b) => a[0] - b[0]);
+      if (!pts.length) return;
+      const de = def(se.de, pts[0][0]), ate = def(se.ate, pts[pts.length - 1][0]);
+      const ta = def(se.at, t + 0.35), tb = Math.max(ta + 0.4, def(se.ate_at, ta + 2.5));
+      const cls = se.cor === 'alerta' ? ' alerta' : (se.cor === 'hl' ? ' hl' : '');
+      const path = el('path', { class: 'vr-lpath' + cls, d: '' });
+      const dot = el('circle', { r: v916 ? 9 : 11, class: 'vr-ldot' + cls });
+      const val = h(box, 'div', 'vr-lval' + cls, '');
+      const st = { p: de };
+      const ival = (p) => {   // valor interpolado na posição p
+        for (let k = 1; k < pts.length; k++) if (p <= pts[k][0]) { const [a, va] = pts[k - 1], [b, vb] = pts[k]; return va + (vb - va) * (p - a) / (b - a || 1); }
+        return pts[pts.length - 1][1];
+      };
+      const tip = { y: 0, val, se };
+      tips.push(tip);
+      c.render(() => {
+        const p = st.p, d = [];
+        pts.forEach(([a, v]) => { if (a <= p) d.push(`${px(a).toFixed(1)},${py(v).toFixed(1)}`); });
+        const v = ival(p), X = px(p), Y = py(v);
+        d.push(`${X.toFixed(1)},${Y.toFixed(1)}`);
+        path.setAttribute('d', 'M' + d.join(' L'));
+        dot.setAttribute('cx', X); dot.setAttribute('cy', Y);
+        const txt = v > y1 && se.teto_txt ? esc(se.teto_txt) : `${fmt(v, s.dec)}${s.unid ? `<small>${esc(s.unid)}</small>` : ''}`;
+        val.innerHTML = `${txt}${se.n ? `<i>${esc(se.n)}</i>` : ''}`;
+        tip.x = X + 22; tip.y = Y;
+        // rótulos das pontas não se encostam: empurra para baixo o que estiver a < 70 px de outro
+        // e nunca descem até os anos do eixo: a pilha sobe inteira se passar do limite
+        const ord = tips.filter((q) => q.x != null).sort((a, b) => a.y - b.y), lim = B - 100;
+        ord.forEach((q, k) => { q.yy = k > 0 && q.y - ord[k - 1].yy < 76 ? ord[k - 1].yy + 76 : q.y; });
+        const sobe = ord.length ? Math.max(0, ord[ord.length - 1].yy - lim) : 0;
+        ord.forEach((q) => { q.val.style.left = q.x + 'px'; q.val.style.top = (q.yy - sobe - 34) + 'px'; });
+      });
+      c.tl.fromTo([path, dot, val], { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.2 + i * 0.1);
+      c.tl.set(st, { p: de }, 0);
+      if (Array.isArray(se.passos) && se.passos.length) {
+        // "passos": [{x, at}] = a linha chega em x exatamente na deixa (anda no ritmo da fala, trecho a trecho)
+        let t0 = ta;
+        se.passos.forEach((pp) => {
+          const t1 = Math.max(t0 + 0.3, def(pp.at, t0 + 1.5));
+          c.tl.to(st, { p: pp.x, duration: t1 - t0, ease: 'none' }, t0);
+          t0 = t1;
+        });
+      } else c.tl.to(st, { p: ate, duration: tb - ta, ease: se.ease || 'none' }, ta);
+    });
+    if (s.fonte) { const f = h(box, 'div', 'vr-rfonte', `left:${x}px;top:${H * (v916 ? 0.8 : 0.79)}px`, esc(s.fonte)); c.tl.fromTo(f, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t + 0.4); }
+  };
+
   // carimbo — bate por cima do shot anterior (use "keep": true)
   P.carimbo = function (box, s, c) {
     const t = def(s.at, c.T0 + 0.05), [W, H] = WH(c), cor = s.cor || 'var(--rose)';
