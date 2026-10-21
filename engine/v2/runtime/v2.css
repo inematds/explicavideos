@@ -171,8 +171,8 @@ html,body{margin:0;background:var(--bg);overflow:hidden}
 .mi-row .k{position:absolute;left:24px;top:20px;font-family:"Mono";font-size:18px;letter-spacing:.2em}
 .mi-row .v{font-family:"MontX";font-size:26px;line-height:1.28}
 /* diagrama (2.14) — diagrama grande que cresce por passos; escala de vídeo (letra ≥ 26px, rótulo 30–44px) */
-.dg-clip{position:absolute;left:0;top:0;width:1446px;height:944px;overflow:hidden}
-.dg-world{position:absolute;left:0;top:0;width:1920px;height:1080px}
+.dg-clip{position:absolute;left:0;top:150px;width:1446px;height:794px;overflow:hidden}
+.dg-world{position:absolute;left:0;top:-150px;width:1920px;height:1080px}
 .dg-pkc{position:absolute;left:0;top:0;width:0;height:0;z-index:4}
 .dg-node{position:absolute;z-index:2;border-radius:26px;background:linear-gradient(160deg,rgba(24,36,64,.96),rgba(12,18,34,.96));border:3px solid var(--c);box-shadow:0 24px 70px rgba(0,0,0,.5);box-sizing:border-box;padding:0 24px 0 100px;display:flex;flex-direction:column;justify-content:center}
 .dg-node .ic{position:absolute;left:24px;top:50%;margin-top:-30px;width:60px;height:60px}
