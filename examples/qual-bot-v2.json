@@ -1,0 +1,14 @@
+{
+  "id": "qual-bot",
+  "title": "Qual bot você vai usar? Grok, Muse, Dots ou Duet",
+  "engine": "v2",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-D-pz8L1orVI",
+  "output": "/home/nmaldaner/projetos/output/explica-D-pz8L1orVI/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/explica-D-pz8L1orVI/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/refazvideo",
+  "release_tag": "video-qual-bot",
+  "hyperframes": "0.8.77"
+}

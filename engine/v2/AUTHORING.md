@@ -179,6 +179,8 @@ Com `reel_profile`:
 - **Frame 0 = capa.** A 1ª cena abre com um shot `hook` em `"at": "@start"` (só o `hook` aceita esse marcador; em qualquer
   outro shot "start" é deixa comum) — frase de 3–6 palavras (`**destaque**`),
   `kicker` opcional, `sub` opcional, `src` opcional (imagem de fundo com scrim). Nasce visível em t = 0, sem surgir do vazio.
+  **2.20.11:** capa que já traz o título desenhado (ex.: capa feita pelo Nei) → `"scrim": false` e sem `text`: a imagem
+  aparece inteira, sem escurecer e sem texto por cima (refazvideo "Qual bot", 22/10/2026).
   `--strict` reprova reel que não abre assim.
 - **Prova real.** Shot `media`: `src` (imagem local em `<output>/media/` ou caminho absoluto; é copiada para
   `assets/media/<hash>-<nome>` — render sem rede, sem colisão de nomes), `focus` [fx, fy] (o zoom centraliza o foco e nunca

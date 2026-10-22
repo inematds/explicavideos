@@ -667,10 +667,13 @@
   V2.P.hook = function (box, s, c) {
     const t = Math.max(0, def(s.at, 0)), still = t <= 0.05;
     if (s.src) {
-      const im = h(box, 'img', 'hk-img', ''); im.src = s.src;
-      h(box, 'div', 'hk-scrim', '');
-      c.tl.fromTo(im, { scale: 1.02 }, { scale: 1.1, duration: Math.max(1, c.T1 - t), ease: 'none', immediateRender: true }, t);
+      // scrim:false (2.19.12) — capa que já traz o título desenhado: imagem inteira, sem escurecer, sem texto por cima
+      const limpa = s.scrim === false;
+      const im = h(box, 'img', 'hk-img', limpa ? 'object-fit:contain' : ''); im.src = s.src;
+      if (!limpa) h(box, 'div', 'hk-scrim', '');
+      c.tl.fromTo(im, { scale: limpa ? 1 : 1.02 }, { scale: limpa ? 1.04 : 1.1, duration: Math.max(1, c.T1 - t), ease: 'none', immediateRender: true }, t);
     }
+    if (!s.text) return;
     const f = s.size || fs(s.text, 150, 92, 8, 42);
     if (s.kicker) { const k = h(box, 'div', 'hk-k', '', esc(s.kicker)); if (!still) c.fade(k, t); }
     const tx = h(box, 'div', 'hk-t', `font-size:${f}px`, rich(s.text));

@@ -1,0 +1,21 @@
+{
+  "id": "qual-bot",
+  "title": "Qual bot você vai usar? Grok, Muse, Dots ou Duet",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-D-pz8L1orVI",
+  "output": "/home/nmaldaner/projetos/output/explica-D-pz8L1orVI/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/explica-D-pz8L1orVI/roteiro/pt.json"
+  },
+  "github_repo": "inematds/refazvideo",
+  "release_tag": "video-qual-bot",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Claude Duet, Anthropic, Grok Bot, Muse, Meta, ChatGPT Dots, OpenAI, X, check-in, skills, briefing, Slack, YouTube, Uber, DoorDash, captcha, Pro, Max, inema ponto club.",
+  "balanced_blocks": true
+}
