@@ -1,0 +1,53 @@
+{
+  "nome": "explicavideo",
+  "prefixo": "EV",
+  "versao_def": 1,
+  "alvos": {
+    "unico": { "gatilho": "o Nei manda /explicavideo com o assunto, e se quiser o formato (16x9, 9x16, os dois) e o canal" }
+  },
+  "fases": [
+    {
+      "id": "ficha",
+      "escopo": "fluxo",
+      "fila": "texto",
+      "kind": "agent",
+      "tarefa": "fluxo-agente",
+      "prompt": "prompts/bot-ficha.md",
+      "max_tentativas": 1,
+      "perfil": { "modelo": "topo", "esforco": "high" },
+      "portao": { "mostrar": ["{{artefato:resumo}}"] }
+    },
+    {
+      "id": "avatar",
+      "escopo": "fluxo",
+      "fila": "io",
+      "kind": "function",
+      "tarefa": "cli.rodar",
+      "comando": "bash {{repo}}/bot/avatar.sh {{anterior:pasta}}",
+      "max_tentativas": 1,
+      "espera": { "intervalo": 60, "timeout": 36000 }
+    },
+    {
+      "id": "visual",
+      "escopo": "fluxo",
+      "fila": "texto",
+      "kind": "agent",
+      "tarefa": "fluxo-agente",
+      "prompt": "prompts/bot-visual.md",
+      "max_tentativas": 1,
+      "perfil": { "modelo": "topo", "esforco": "high" },
+      "portao": { "mostrar": ["{{artefato:resumo}}"] }
+    },
+    {
+      "id": "entrega",
+      "escopo": "fluxo",
+      "fila": "io",
+      "kind": "function",
+      "tarefa": "cli.rodar",
+      "comando": "bash {{repo}}/bot/entrega.sh {{anterior:pasta}}",
+      "max_tentativas": 1,
+      "espera": { "intervalo": 60, "timeout": 14400 },
+      "portao": { "mostrar": ["{{artefato:fim}}"] }
+    }
+  ]
+}

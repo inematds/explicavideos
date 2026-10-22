@@ -12,6 +12,21 @@ Source → scenes with coverage → blocks of up to 4.400 characters → HeyGen 
 
 The OSWork adapter covers all 48 topics, every explanatory field, eight labs, and reviews in 122 scenes. First production: Portuguese. The engine supports PT/ES/EN; other languages require reviewed scene files and are not translated automatically.
 
+## The process, start to finish
+
+Through the bot (2.21.11, 2026-10-22): Nei sends `/explicavideo <subject, format, channel>` to inemaccbot and approves nothing along the way. The command counts as the go-ahead for that request's avatar and publishing (`| portao` makes it stop for approval after the script and after the visuals). Help: [HELP.md](HELP.md).
+
+| # | Step | Command | Who |
+|---|---|---|---|
+| B1 | Reads the request (format, channel, style), researches, writes a 1-block script, writes the configs and prepares the block | `ficha` phase: [prompts/bot-ficha.md](prompts/bot-ficha.md) → `bot/configs.py` → `explica.py prepare` | 🤖 `claude -p` |
+| B2 | Sends the block to the HeyGen studio, downloads through the read-only API, runs v1 (render + transcription) in `explica.slice` | `avatar` phase: `bot/avatar.sh <folder>` | ⚙️ script |
+| B3 | Images from Codex, v2 visuals timed to the speech, `build_block --strict` | `visual` phase: [prompts/bot-visual.md](prompts/bot-visual.md) + `bot/imagens.py` | 🤖 `claude -p` |
+| B4 | Renders each format, sound, `qa_viral`, publishes to the channel(s) with yt-pubx, link to inemaytbot, file to bot v3, `BOT-FIM.md` in the chat | `entrega` phase: `bot/entrega.sh <folder>` | ⚙️ script |
+
+The request folder is `textos/EV<n>/` (not in git); the production is in `~/projetos/output/<id>/`. Long videos (more than 1 block), EN/ES, the portal and Telegram topics still go through a session, as below.
+
+Through a session: source → script (`examples/<id>.json` + scenes) → `explica.py prepare` 🧠 → avatar sent in the studio with Nei's OK (`APROVADO_HEYGEN`) 🧠 → download, v1 render and assembly ⚙️ → v2 visuals and `build_block --strict` 🧠 → `run_lane.sh` + `assemble_languages.py` ⚙️ → sound and QA ⚙️ → publishing 🧠. Long HeyGen wait: the `continua` watcher (`~/projetos/wifi/continua`).
+
 ## Operation
 
 Requires Python 3 with requests and beautifulsoup4, Node, FFmpeg, authenticated gh, user systemd, Xvfb, and the authenticated HeyGen profile. The browser adapter uses the Playwright installed in inemaccbot. This version is executable in the INEMA environment; adjust paths for another machine. This is not a public service.

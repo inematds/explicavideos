@@ -12,6 +12,21 @@ Fuente → escenas con cobertura → bloques de hasta 4.400 caracteres → HeyGe
 
 El adaptador OSWork cubre los 48 temas, todos los campos explicativos, ocho laboratorios y revisiones en 122 escenas. Primera producción: portugués. El motor admite PT/ES/EN; para otros idiomas se necesitan archivos de escenas revisados, no se traducen automáticamente.
 
+## El proceso, de principio a fin
+
+Por el bot (2.21.11, 22/10/2026): Nei envía `/explicavideo <tema, formato, canal>` al inemaccbot y no aprueba nada en el camino. El comando vale como el OK del avatar y de la publicación de ese pedido (`| portao` hace que se detenga para aprobar después del guion y de lo visual). Ayuda: [HELP.md](HELP.md).
+
+| # | Paso | Comando | Quién |
+|---|---|---|---|
+| B1 | Entiende el pedido (formato, canal, estilo), investiga, escribe un guion de 1 bloque, genera las configs y prepara el bloque | fase `ficha`: [prompts/bot-ficha.md](prompts/bot-ficha.md) → `bot/configs.py` → `explica.py prepare` | 🤖 `claude -p` |
+| B2 | Envía el bloque al estudio de HeyGen, descarga por la API de solo lectura, corre el v1 (render + transcripción) en `explica.slice` | fase `avatar`: `bot/avatar.sh <carpeta>` | ⚙️ script |
+| B3 | Imágenes con Codex, visual v2 al ritmo del habla, `build_block --strict` | fase `visual`: [prompts/bot-visual.md](prompts/bot-visual.md) + `bot/imagens.py` | 🤖 `claude -p` |
+| B4 | Render de cada formato, sonido, `qa_viral`, publica en el/los canal(es) con yt-pubx, enlace al inemaytbot, archivo al bot v3, `BOT-FIM.md` en el chat | fase `entrega`: `bot/entrega.sh <carpeta>` | ⚙️ script |
+
+La carpeta del pedido queda en `textos/EV<n>/` (fuera de git); la producción, en `~/projetos/output/<id>/`. Videos largos (más de 1 bloque), EN/ES, el portal y los temas de Telegram siguen por sesión, como abajo.
+
+Por sesión: fuente → guion (`examples/<id>.json` + escenas) → `explica.py prepare` 🧠 → envío del avatar en el estudio con el OK de Nei (`APROVADO_HEYGEN`) 🧠 → descarga, render v1 y montaje ⚙️ → visual v2 y `build_block --strict` 🧠 → `run_lane.sh` + `assemble_languages.py` ⚙️ → sonido y QA ⚙️ → publicación 🧠. Espera larga de HeyGen: el vigilante `continua` (`~/projetos/wifi/continua`).
+
 ## Operación
 
 Requiere Python 3 con requests y beautifulsoup4, Node, FFmpeg, gh autenticado, systemd de usuario, Xvfb y el perfil de HeyGen autenticado. El adaptador del navegador usa Playwright instalado en inemaccbot. Esta versión se puede ejecutar en el entorno INEMA; ajuste las rutas para otra máquina. No es un servicio público.
