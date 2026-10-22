@@ -38,13 +38,14 @@ if [ -z "$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))[0].get
   rc=$?
   HID=$(grep -o 'create-v4/[a-f0-9]\{32\}' "$SUB" | head -1 | cut -d/ -f2)
   [ -n "$HID" ] || fim "envio sem id (rc=$rc, ver $SUB): NÃO reenvio; olhe Projetos no estúdio"
-  grep -iq draft "$SUB" && fim "o log do envio fala em Draft ($SUB): confira no estúdio antes de seguir"
   python3 - "$M" "$HID" <<'PY'
 import json,sys
 p=sys.argv[1];d=json.load(open(p));d[0].update(status='submitted',id=sys.argv[2],via='estudio')
 open(p,'w').write(json.dumps(d,ensure_ascii=False,indent=2))
 PY
   log "enviado: id $HID"
+  # depois de gravar o id (nada pode perdê-lo): só AVISO, como no submeter.sh da Thwaites; o download confere
+  grep -iq draft "$SUB" && log "AVISO: o log do envio fala em Draft ($SUB); se o download não andar, olhe Projetos no estúdio"
 fi
 
 # 2. download pela API de leitura (baixa_blocos espera até 2 h por bloco)
