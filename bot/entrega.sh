@@ -83,7 +83,8 @@ $U" && echo ok > "$MARCA.avisado"; }
   # arquivo no bot v3 (sem links; Nei 12/10/2026)
   BX=$E/$NOME-720p.mp4
   if [ $FMT = 16x9 ]; then [ -s "$BX" ] || ffmpeg -v error -y -i "$F" -vf scale=1280:720 -c:v libx264 -b:v 850k -maxrate 1100k -bufsize 2200k -c:a aac -b:a 96k -movflags +faststart "$BX"
-  else BX=$F; fi
+  else BX=$E/$NOME-720p.mp4  # 9:16 cheio passa de 49 MB (limite do bot API) — acelera-1milhao, 23/10/2026
+    [ -s "$BX" ] || ffmpeg -v error -y -i "$F" -vf scale=720:1280 -c:v libx264 -b:v 1100k -maxrate 1400k -bufsize 2800k -c:a aac -b:a 96k -movflags +faststart "$BX"; fi
   if [ -n "${SEM_ENVIO:-}" ]; then echo "[ensaio] bot v3: $BX"; elif [ ! -s "$BX.envio-v3.json" ]; then
     node "$BOTV3" "$BX" "$TIT · explicavideo $FMT · ${DUR}s · com avatar · $CANAIS" >> "$OUT/bot.log" 2>&1 || FALHAS+=("- $FMT: bot v3 falhou (ver $OUT/bot.log)")
   fi
