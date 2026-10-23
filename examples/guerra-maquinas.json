@@ -1,0 +1,17 @@
+{
+  "id": "guerra-maquinas",
+  "title": "Querem destruir as máquinas",
+  "source_repo": "/home/nmaldaner/projetos/output/guerra-maquinas",
+  "output": "/home/nmaldaner/projetos/output/guerra-maquinas/v1",
+  "languages": ["pt"],
+  "scene_files": {"pt": "/home/nmaldaner/projetos/output/guerra-maquinas/roteiro/pt.json"},
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-guerra-maquinas",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Waymo, Tesla, robotáxi, humanoides, ludistas, teares, Fórum Econômico Mundial, São Francisco, Los Angeles, inema ponto club.",
+  "balanced_blocks": true
+}

@@ -1,0 +1,15 @@
+{
+  "id": "guerra-maquinas",
+  "title": "Querem destruir as máquinas",
+  "engine": "v2",
+  "profile_visual": "viral",
+  "source_repo": "/home/nmaldaner/projetos/output/guerra-maquinas",
+  "output": "/home/nmaldaner/projetos/output/guerra-maquinas/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/guerra-maquinas/v1",
+  "languages": ["pt"],
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-guerra-maquinas",
+  "hyperframes": "0.8.77",
+  "marca": "INEMA · ROBÓTICA",
+  "capa_segura": true
+}
