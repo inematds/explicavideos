@@ -4,17 +4,19 @@
   "engine": "v2",
   "profile_visual": "viral",
   "aspect": "9:16",
-  "reel_profile": "mini-aula",
   "avatar_916": "pip",
   "pip_cena": 2,
   "source_repo": "/home/nmaldaner/projetos/output/guerra-maquinas",
   "output": "/home/nmaldaner/projetos/output/guerra-maquinas/v2-916",
   "v1_output": "/home/nmaldaner/projetos/output/guerra-maquinas/v1",
-  "languages": ["pt"],
+  "languages": [
+    "pt"
+  ],
   "github_repo": "inematds/explicavideos",
   "release_tag": "video-guerra-maquinas",
   "hyperframes": "0.8.77",
   "marca": "INEMA · ROBÓTICA",
   "selo_topo": "AGORA",
-  "capa_segura": true
+  "capa_segura": true,
+  "pip_move": true
 }
