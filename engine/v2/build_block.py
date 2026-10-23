@@ -745,7 +745,8 @@ def build(part, strict=False, spec_path=None, out=None):
             # gráfico (linha/colunas/ranking/barra/escala/mapa) no ar: vale o teto do gráfico, não os 2 s da imagem
             def no_grafico(a):
                 ativo = [sh for sh in shots if sh['at'] <= a + 0.05]
-                return bool(ativo) and ativo[-1]['type'] in GRAFICOS
+                # 2.22.11: foto com "leitura": true (recorte de tela com tradução, refazvideo 23/10/2026) = tempo de ler
+                return bool(ativo) and (ativo[-1]['type'] in GRAFICOS or bool(ativo[-1].get('leitura')))
             gaps = [(a, g) for a, g in gaps if not (no_grafico(a) and g <= GRAFICO_MAX_S)]
         for a, g in gaps:
             warnings.append(f'cena {n}: {g}s sem mudança visual a partir de {a}s (limite {limit}s)')

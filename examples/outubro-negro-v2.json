@@ -1,0 +1,15 @@
+{
+  "id": "outubro-negro",
+  "title": "Outubro Negro: a IA e o maior ataque hacker",
+  "engine": "v2",
+  "profile_visual": "viral",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM",
+  "output": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM/v1",
+  "languages": ["pt"],
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-outubro-negro",
+  "hyperframes": "0.8.77",
+  "marca": "INEMA · SEGURANÇA",
+  "capa_segura": true
+}

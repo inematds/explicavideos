@@ -1,4 +1,5 @@
 | data | o que quebrou | menor correção | prompt ou infra |
+| 2026-10-23 | refazvideo Outubro Negro: recortes de tela com tradução (tempo de ler) reprovados pelo limite de 2 s do viral, 20 avisos | `foto` com `"leitura": true` usa o teto do gráfico (9 s); o resto com trocas extras nas deixas (2.22.11) | infra |
 | 2026-10-23 | guerra-maquinas: `--strict` reprovou 9 trechos de 2,0–3,4 s parados (3ª vez: musk 20 e 21/10); depois o check reprovou título de `foto` em 2 linhas sobre a legenda; e `: texto (com parênteses)` no cadeia.sh quebrou o bash | rodar `ritmo.py` num build solto ANTES de soltar a cadeia, e a cadeia não regerar o visual depois; título de foto ≤ ~18 caracteres; `bash -n` no script antes do systemd-run | prompt |
 | 2026-10-23 | acelera-1milhao: entrega.sh mandou o 9:16 cheio (83 MB) ao bot v3 e o bot API recusou (> 49 MB); 16:9 já ia em 720p | 9:16 também vira `-720p.mp4` (720×1280, 1,1 Mb/s, ~25 MB) antes do envio | infra |
 | 2026-10-23 | acelera-1milhao: selo da capa (`selo`) encostou na legenda aos 2,6 s — check reprovou content_overlap | tirar o `selo` quando a capa já traz o título desenhado | prompt |

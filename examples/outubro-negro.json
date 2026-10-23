@@ -1,0 +1,17 @@
+{
+  "id": "outubro-negro",
+  "title": "Outubro Negro: a IA e o maior ataque hacker",
+  "source_repo": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM",
+  "output": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM/v1",
+  "languages": ["pt"],
+  "scene_files": {"pt": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM/roteiro/pt.json"},
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-outubro-negro",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Outubro Negro, PHP, WordPress, Wall Street Journal, NSA, FBI, Signal, Califórnia, Ipsos, ABC, Washington Post, data centers, hacker, inema ponto club.",
+  "balanced_blocks": true
+}

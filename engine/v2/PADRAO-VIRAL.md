@@ -28,6 +28,7 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   `base` eua|mundo|brasil|brasil-uf (27 estados com nome completo, para acender Pará, Amazonas…; contornos em `biblioteca-mapas/brasil-uf/`), `camera` [{at, centro:[lon,lat], zoom}], `destaques` [{nome, at}] (estado dos EUA ganha os
   condados), `pinos` [{lon, lat, txt, at, sub, sub_at}]. O qa_viral não mede área lisa nos trechos de mapa.
 - **Cor da imagem**: luz neutra, branco que parece branco, uma cor forte de destaque; nada de "paleta âmbar", "luz dourada" ou objeto dourado em toda cena (o gerador do Codex já puxa para o amarelo). O âmbar da marca fica só no texto e nas peças desenhadas. Depois de gerar: `refazvideo/ferramentas/cor_neutra.py corrigir media/*.png` (corrige amarelo > 18, guarda `-amarela`).
+- **Recorte de leitura** (`foto` com `"leitura": true`, 2.22.11, 23/10/2026): print de tela do original (em inglês) + tradução PT grande desenhada na imagem (`src` 16:9 e `src_916`); vale o teto do gráfico (até 9 s), não os 2 s. Molde: `~/projetos/output/explica-vZD4PmureWM/media/recortar.py`.
 - **Imagem** (`foto`): sempre em movimento (pan + zoom ≤ 1,25 + leve parallax de camadas), com vinheta e grão.
 - **Avatar** (D8 do inema-design, 15/10/2026): **nunca em tela cheia** — no máximo meia tela. 16:9 = caixa no canto
   inferior direito; `rosto` cresce até a metade direita. 9:16 = metade de baixo; `rosto` = metade de baixo. Com
