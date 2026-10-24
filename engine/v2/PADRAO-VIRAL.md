@@ -33,7 +33,7 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 - **Avatar** (D8 do inema-design, 15/10/2026): **nunca em tela cheia** — no máximo meia tela. 16:9 = caixa no canto
   inferior direito; `rosto` cresce até a metade direita. 9:16 = metade de baixo; `rosto` = metade de baixo. Com
   `"avatar_916": "pip"` + `"pip_cena": N` na config: capa sem avatar → meio tamanho até a cena N → PiP pequeno no canto
-  e a cena no quadro inteiro (1080×1920, classe `pipfull`). `"capa_segura": true` deixa a capa parada uns segundos
+  e a cena no quadro inteiro (1080×1920, classe `pipfull`). Versão **sem avatar** (2.23.11): `"sem_avatar": true` + `"pip_cena": 1`, sem shot `rosto`. `"capa_segura": true` deixa a capa parada uns segundos
   (texto inicial mais tempo aberto) sem o build acusar "sem mudança".
 - **Imagens**: uma por momento, sem repetir; dado de lugar vira mapa real (satélite NASA HLS via GIBS, anotado).
 - **Marca**: faixa fina no topo (INEMA · assunto · fonte do dado da vez). Legenda grande, 1–3 palavras, palavra

@@ -44,6 +44,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.23.11: `"sem_avatar": true` na config v2 (perfil viral) gera a versão sem avatar com a mesma voz: a imagem do avatar some e a legenda ocupa a largura toda; com `"pip_cena": 1` a cena usa o quadro inteiro desde o início. O build reprova shot `rosto` nessa versão. `bot/entrega.sh` lê `variante` do pedido para a legenda do v3. Primeiro uso: Kimi K3.1 9:16 com e sem avatar (23/10/2026).
+
 > 2.11.9: `qa_viral` só reprova tela de uma cor só (> 90% lisa) ou parada; área lisa de 40% vira aviso com a folha dos momentos marcados (`sheet-marcados-*.jpg`) e grava `<video>.qa.json`, que o bot usa para mandar o vídeo com 🔴 REPROVADO e o motivo. No 9:16, o painel do `ranking` acompanha o número de linhas (15/10/2026).
 
 > 2.10.9: perfil viral ganha a peça `colunas` (série no tempo com destaques), o carimbo ao lado (`x`) para não cobrir gráficos e a base de mapa `brasil-uf` (27 estados). Primeiro uso: queimadas e Itaipu refeitos com avatar reaproveitado (15/10/2026).

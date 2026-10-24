@@ -778,6 +778,14 @@ def build(part, strict=False, spec_path=None, out=None):
         idx = idx.replace(head, head + '<link rel="stylesheet" href="assets/interface.css"><script src="assets/interface.js"></script>')
     if viral:
         idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia, pip_t, pip_moves)
+    if CFG.get('sem_avatar'):
+        # 2.23.11 (Nei, 23/10/2026: "uma versão sem avatar e outra com"): a voz do avatar fica, a imagem some;
+        # legenda na largura toda. Não use shot "rosto" nesta versão (o build reprova).
+        if rostos:
+            raise BuildError('sem_avatar: o visual tem shot "rosto" (avatar em meia tela); troque por outra peça')
+        idx = idx.replace('</head>', '<style>#pip,.pip,.pip-tag{display:none!important}'
+                          '#caps{left:40px!important;width:1000px!important}#caps .cap{width:1000px!important}</style></head>', 1)
+        report['sem_avatar'] = True
     report['aspect'] = aspect_of(CFG)
     report['rostos'] = [r[:2] for r in rostos]
     report['mapas'] = mapas   # o qa_viral não mede 'área lisa' em mapa (oceano/terra sólidos são informação)
