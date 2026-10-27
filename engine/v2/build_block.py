@@ -57,6 +57,7 @@ SHOT_TYPES = {'bullets', 'hub', 'pipeline', 'orbs', 'podium', 'statement', 'rada
               'filetree', 'counter', 'steps', 'quiz', 'timeline', 'flow', 'fields', 'keyword', 'module_intro', 'svg',
               'hook', 'media', 'diagrama'}
 # perfil viral (2.9, PADRAO-VIRAL.md): peças de tela cheia do runtime/viral.js
+AV_POSES = {'dir', 'esq', 'mini', 'mini-esq', 'alto-dir', 'alto-esq', 'grande', 'grande-esq', 'meia', 'meia-esq'}
 VIRAL_TYPES = {'capa', 'foto', 'capitulo', 'bignum', 'escala', 'barra', 'carimbo', 'cinetica', 'rosto', 'cta', 'mapa', 'ranking', 'colunas', 'linha'}
 SHOT_TYPES |= VIRAL_TYPES
 # 2.17 (Nei 21/10/2026): a regra de 2 s vale para IMAGEM; gráfico animado pode ficar mais tempo para dar para ler
@@ -517,7 +518,7 @@ SCENE = '''<!doctype html>
 '''
 
 
-def viral_index(idx, rostos, fontes, marca, selo, capa=None, pip_t=None, pip_moves=None):
+def viral_index(idx, rostos, fontes, marca, selo, capa=None, pip_t=None, pip_moves=None, poses=None):
     """Perfil viral: runtime viral.css/js, faixa de marca no topo, fonte do dado e avatar em MEIA tela nos "rosto"
     (nunca tela cheia, Nei 15/10/2026). pip_t (9:16 com "avatar_916": "pip"): a partir dele o avatar vira PiP no canto
     e a cena ocupa o quadro inteiro; pip_moves ("pip_move": true): em cada um desses tempos o PiP desliza para o
@@ -541,12 +542,20 @@ def viral_index(idx, rostos, fontes, marca, selo, capa=None, pip_t=None, pip_mov
           'tl.fromTo("#caps .cap",{width:1000,fontSize:84},{width:W-440,fontSize:64,duration:.4,immediateRender:false},P);'
           'MV.forEach((m,i)=>{const a0=i%%2?pgL:pg,a1=i%%2?pg:pgL;tl.fromTo("#pip",Object.assign({},a0),Object.assign({duration:.6,ease:"expo.inOut",immediateRender:false},a1),m);'
           'tl.fromTo("#caps",cl(a0),Object.assign({duration:.6,ease:"expo.inOut",immediateRender:false},cl(a1)),m);});}'
-          'R.forEach(([a,b])=>{const s0=(P!==null&&a>=P)?cn(a):sm;tl.fromTo("#pip",Object.assign({},s0),Object.assign({duration:.35,ease:"expo.out",immediateRender:false},big),a);'
+          'const PO=%s,PR={dir:sm,esq:{left:40,top:600,width:580,height:440,borderRadius:30},mini:{left:1580,top:780,width:300,height:240,borderRadius:22},'
+          '"mini-esq":{left:40,top:780,width:300,height:240,borderRadius:22},"alto-dir":{left:1300,top:110,width:580,height:440,borderRadius:30},'
+          '"alto-esq":{left:40,top:110,width:580,height:440,borderRadius:30},grande:{left:1040,top:230,width:840,height:810,borderRadius:30},'
+          '"grande-esq":{left:40,top:230,width:840,height:810,borderRadius:30},meia:{left:W/2,top:0,width:W/2,height:H,borderRadius:0},"meia-esq":{left:0,top:0,width:W/2,height:H,borderRadius:0}},'
+          'CL={esq:660,"mini-esq":380,"alto-esq":60,"grande-esq":900,"meia-esq":1000},CW={dir:1220,mini:1480,"alto-dir":1220,grande:960,meia:880,esq:1220,"mini-esq":1480,"alto-esq":1220,"grande-esq":960,"meia-esq":880};'
+          'const pz=t=>{let r=null;PO.forEach(([a,n])=>{if(a<=t+1e-3)r=n});return r};'
+          'PO.forEach(([a,n],i)=>{const p0=i?PO[i-1][1]:"dir";tl.fromTo("#pip",Object.assign({},PR[p0]),Object.assign({duration:.55,ease:"expo.inOut",immediateRender:false},PR[n]),a);'
+          'tl.fromTo("#caps",{left:CL[p0]||60,width:CW[p0]||1220},{left:CL[n]||60,width:CW[n]||1220,duration:.45,ease:"expo.inOut",immediateRender:false},a);});'
+          'R.forEach(([a,b])=>{const s0=(P!==null&&a>=P)?cn(a):(pz(a)?PR[pz(a)]:sm);tl.fromTo("#pip",Object.assign({},s0),Object.assign({duration:.35,ease:"expo.out",immediateRender:false},big),a);'
           'tl.fromTo("#pip",Object.assign({},big),Object.assign({duration:.3,ease:"expo.inOut",immediateRender:false},s0),Math.max(a+.4,b-.3));});'
           'R.forEach(([a,b,t,ta],i)=>{if(!t)return;tl.fromTo("#rt"+i,{opacity:0,scale:1.4},{opacity:1,scale:1,duration:.3,ease:"back.out(2)",immediateRender:false},ta);tl.to("#rt"+i,{opacity:0,duration:.2},Math.max(ta+.3,b-.25));});'
           + ('tl.fromTo("#capa-cheia",{opacity:1,scale:1},{scale:1.06,duration:%.3f,ease:"none",immediateRender:true},0);tl.to("#capa-cheia",{opacity:0,duration:.25},%.3f);' % (max(.3, capa[1] - .25), max(0, capa[1] - .25)) if capa else '') +
           'F.forEach(([a,b],i)=>{tl.fromTo("#ft"+i,{opacity:0,y:-8},{opacity:1,y:0,duration:.25},a);tl.to("#ft"+i,{opacity:0,duration:.2},Math.max(a+.3,b-.2));});'
-          '})();</script>') % (json.dumps(rostos), json.dumps([[a, b] for a, b, _ in fontes]), json.dumps(pip_t), json.dumps(pip_moves or []))
+          '})();</script>') % (json.dumps(rostos), json.dumps([[a, b] for a, b, _ in fontes]), json.dumps(pip_t), json.dumps(pip_moves or []), json.dumps(poses or []))
     return idx.replace('</body></html>', js + '\n</body></html>')
 
 
@@ -567,6 +576,7 @@ def build(part, strict=False, spec_path=None, out=None):
     usa_iface = iface
     VW, VH = (1080, 1150) if (viral and aspect_of(CFG) == '9:16') else (1920, 1080)
     rostos, fontes, capa_cheia, mapas = [], [], None, []
+    poses = []   # "av" no shot (16:9, 2.24.11, 27/10/2026): o avatar troca de posição/tamanho e fica até o próximo "av"
     # 9:16 "avatar_916": "pip" (Nei 15/10/2026): até a cena "pip_cena" o avatar fica em meio tamanho (palco 1080×1150);
     # dela em diante vira PiP no canto e o palco ocupa o quadro inteiro (1080×1920).
     pip916 = viral and aspect_of(CFG) == '9:16' and CFG.get('avatar_916') == 'pip'
@@ -680,6 +690,10 @@ def build(part, strict=False, spec_path=None, out=None):
                     capa_cheia = [sh['src'], round(b, 3)]   # 9:16: a capa cobre o quadro inteiro (sobre o avatar) até o 1º corte
                 if sh['type'] == 'mapa' or sh.get('vfull'):   # voo 3D de satélite também é mapa (área sólida = conteúdo)
                     mapas.append([round(a, 3), round(b, 3)])
+                if sh.get('av'):
+                    if sh['av'] not in AV_POSES or aspect_of(CFG) == '9:16':
+                        raise BuildError(f'cena {n} shot {i}: "av" {sh["av"]!r} inválido (16:9; use {sorted(AV_POSES)})')
+                    poses.append([round(a, 3), sh['av']])
                 if sh['type'] == 'rosto':
                     rostos.append([round(a, 3), round(b, 3), sh.get('txt', ''), round(s0 + sh.get('txt_at', sh['at'] + 0.3), 3)])
                 if sh.get('fonte'):
@@ -777,7 +791,7 @@ def build(part, strict=False, spec_path=None, out=None):
         head = '<script src="assets/v2.js"></script>'
         idx = idx.replace(head, head + '<link rel="stylesheet" href="assets/interface.css"><script src="assets/interface.js"></script>')
     if viral:
-        idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia, pip_t, pip_moves)
+        idx = viral_index(idx, rostos, fontes, CFG.get('marca', 'INEMA'), CFG.get('selo_topo', ''), capa_cheia, pip_t, pip_moves, poses)
     if CFG.get('sem_avatar'):
         # 2.23.11 (Nei, 23/10/2026: "uma versão sem avatar e outra com"): a voz do avatar fica, a imagem some;
         # legenda na largura toda. Não use shot "rosto" nesta versão (o build reprova).

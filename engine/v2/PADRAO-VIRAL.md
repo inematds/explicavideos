@@ -52,5 +52,6 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 
 ## QA (`engine/v2/qa_viral.py`, reprova)
 - Quadro com > 40% de área lisa (fundo vazio), amostra a cada 0,5 s.
+- Avatar que se move (16:9, 2.24.11): `"av"` no shot troca posição/tamanho do avatar até o próximo `"av"`. Em shot com texto, número ou gráfico, só `dir`, `mini` ou `alto-dir` (as poses `-esq`, `grande` e `meia` cobriram título, cinética e número no quadro de 27/10/2026); alternar entre elas dá o movimento, e o tamanho grande fica com o `rosto`.
 - Trecho > 2 s sem mudança visual (fora de gráfico; gráfico até 9 s).
 - Folha de quadros (`verification/sheet-viral-*.jpg`) sempre gerada e olhada antes de entregar.

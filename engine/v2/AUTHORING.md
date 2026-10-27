@@ -233,3 +233,7 @@ npx --yes hyperframes@0.8.77 snapshot --at <t1,t2,...> --no-end --describe false
 ```
 
 O exemplo completo e aprovado está em `visual-v2/pt-b01.json`.
+
+## Avatar que se move (16:9 viral, 2.24.11)
+
+`"av": "<pose>"` em qualquer shot: a partir dele o avatar vai para a pose (transição de 0,55 s) e a legenda acompanha. Poses: `dir` (padrão), `mini`, `alto-dir`, `grande`, `meia`, `esq`, `mini-esq`, `alto-esq`, `grande-esq`, `meia-esq`. O `rosto` volta para a pose em vigor. Em 9:16 o build reprova. Com texto/número/gráfico na tela use só `dir`, `mini` e `alto-dir`, alternando; as demais cobrem o conteúdo.

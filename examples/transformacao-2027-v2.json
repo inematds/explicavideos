@@ -1,0 +1,16 @@
+{
+  "id": "transformacao-2027",
+  "title": "2027: o ano da transformação — o que o Lula vai enfrentar",
+  "engine": "v2",
+  "profile_visual": "viral",
+  "source_repo": "/home/nmaldaner/projetos/output/2027-transformacao",
+  "output": "/home/nmaldaner/projetos/output/2027-transformacao/v2",
+  "v1_output": "/home/nmaldaner/projetos/output/2027-transformacao/v1",
+  "languages": [
+    "pt"
+  ],
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-transformacao-2027",
+  "hyperframes": "0.8.77",
+  "capa_segura": true
+}

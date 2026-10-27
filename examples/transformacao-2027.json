@@ -1,0 +1,21 @@
+{
+  "id": "transformacao-2027",
+  "title": "2027: o ano da transformação — o que o Lula vai enfrentar",
+  "source_repo": "/home/nmaldaner/projetos/output/2027-transformacao",
+  "output": "/home/nmaldaner/projetos/output/2027-transformacao/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/2027-transformacao/roteiro/pt.json"
+  },
+  "github_repo": "inematds/explicavideos",
+  "release_tag": "video-transformacao-2027",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, Lula, Flávio Bolsonaro, FMI, Kristalina Georgieva, Challenger, FGV, MIT, Gartner, CBS, PIS, Cofins, Bill Gates, escala seis por um, pejotização, Trump, Xi, Taiwan, Ormuz, El Niño, Inmet, Bolsa Família, Elon Musk, inema ponto club.",
+  "balanced_blocks": true
+}
