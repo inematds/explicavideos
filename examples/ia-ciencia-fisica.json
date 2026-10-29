@@ -1,0 +1,21 @@
+{
+  "id": "ia-ciencia-fisica",
+  "title": "A IA respondeu três perguntas que a ciência carregava há cem anos",
+  "source_repo": "/home/nmaldaner/projetos/output/ia-ciencia-fisica",
+  "output": "/home/nmaldaner/projetos/output/ia-ciencia-fisica/v1",
+  "languages": [
+    "pt"
+  ],
+  "scene_files": {
+    "pt": "/home/nmaldaner/projetos/output/ia-ciencia-fisica/roteiro/pt.json"
+  },
+  "github_repo": "inematds/ia-ciencia-fisica",
+  "release_tag": "video-ia-ciencia-fisica",
+  "template": "TEMPLATE-AVATAR16",
+  "profile": "/home/nmaldaner/.cache/inemaccbot/perfil-heygen",
+  "max_chars": 4400,
+  "hyperframes": "0.8.77",
+  "transcriber": "whisper-local",
+  "whisper_prompt": "Nei Maldaner, INEMA, inema ponto club, OpenAI, Yang, Mills, Chen Ning Yang, Robert Mills, Wolfgang Pauli, Oppenheimer, Princeton, Instituto Clay, David Gross, Modelo Padrão, quarks, glúons, Russell Impagliazzo, Ramamohan Paturi, San Diego, Kakeya, Besicovitch, Hong Wang, Medalha Fields, suavização local, Terence Tao, Fundação Simons, Anthropic, Sam Altman.",
+  "balanced_blocks": true
+}
