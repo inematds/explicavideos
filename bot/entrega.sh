@@ -85,7 +85,7 @@ $U" && echo ok > "$MARCA.avisado"; }
   if [ $FMT = 16x9 ]; then [ -s "$BX" ] || ffmpeg -v error -y -i "$F" -vf scale=1280:720 -c:v libx264 -b:v 850k -maxrate 1100k -bufsize 2200k -c:a aac -b:a 96k -movflags +faststart "$BX"
   else BX=$E/$NOME-720p.mp4  # 9:16 cheio passa de 49 MB (limite do bot API) — acelera-1milhao, 23/10/2026
     [ -s "$BX" ] || ffmpeg -v error -y -i "$F" -vf scale=720:1280 -c:v libx264 -b:v 1100k -maxrate 1400k -bufsize 2800k -c:a aac -b:a 96k -movflags +faststart "$BX"; fi
-  if [ -n "${SEM_ENVIO:-}" ]; then echo "[ensaio] bot v3: $BX"; elif [ ! -s "$BX.envio-v3.json" ]; then
+  if [ -n "${SEM_ENVIO:-}" ]; then echo "[ensaio] bot v3: $BX"; elif [ -n "${SEM_V3:-}" ]; then echo "bot v3: pulado (SEM_V3; publicação direta = só mensagem azul, Nei 01/11/2026)"; elif [ ! -s "$BX.envio-v3.json" ]; then
     node "$BOTV3" "$BX" "$TIT · explicavideo $FMT · ${DUR}s · ${VARIANTE:-com avatar} · $CANAIS" >> "$OUT/bot.log" 2>&1 || FALHAS+=("- $FMT: bot v3 falhou (ver $OUT/bot.log)")
   fi
   [ -s "$BX.envio-v3.json" ] && LINHAS+=("  bot v3 msg $(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['message_id'])" "$BX.envio-v3.json")")
