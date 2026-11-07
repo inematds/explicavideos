@@ -43,6 +43,10 @@ Com 9:16: `~/projetos/output/cancelei-anim/v2-916/visual-v2/pt-b01.json` (usa `s
    até passar com 0 avisos (corrija deixas que não casaram, shots sobrepostos, lacunas). Até 5 tentativas;
    não passou → `ERRO: build strict — <o que sobrou>`.
 6. Espere `FIM_IMAGENS` no `imagens.log` (até 30 min) e rode o strict de novo se trocou algum shot.
+   Depois, para cada formato: `cd <output do formato>/final/pt-b01 && npx --yes hyperframes@0.8.77 check --timeout 90000`
+   tem de sair com 0 erros (`✗`). O strict não vê texto sobre legenda (título de foto longo que quebra em 2
+   linhas, carimbo sobre bignum) e o render para no check. Corrija (título mais curto, carimbo → cinética) e
+   rode strict + check de novo. Até 3 tentativas; senão `ERRO: hyperframes check — <o que sobrou>`.
 7. Grave `{{pasta}}/VISUAL.md` (curto, vai para o chat): formatos, nº de shots, imagens geradas/falhadas,
    duração do avatar, "strict ok". Depois crie o arquivo vazio `{{pasta}}/VISUAL-OK` (libera o render).
 
