@@ -63,8 +63,9 @@ for cfg in "$B/v2.json" "$B/v2-916.json"; do
       THUMB=(--sem-thumb); [ $FMT = 16x9 ] && THUMB=(); [ $FMT = 16x9 ] && [ -s "$OUT/media/capa.png" ] && {
         ffmpeg -v error -y -i "$OUT/media/capa.png" -vf scale=1280:720 -q:v 3 "$E/thumb.jpg" && THUMB=(--thumb "$E/thumb.jpg"); }
       if [ -n "${SEM_ENVIO:-}" ]; then echo "[ensaio] yt-pubx publicar $F --canal $C"; YID=ENSAIO; else
-        timeout 2400 "$YT" publicar "$F" --canal "$C" --title "$(echo "$TIT" | cut -c1-100)" --contexto "$CTX" "${CARQ[@]}" "${THUMB[@]}" > "$OUT/publicar-$C-$FMT.log" 2>&1
-        YID=$(grep -o 'watch?v=[A-Za-z0-9_-]*\|shorts/[A-Za-z0-9_-]*' "$OUT/publicar-$C-$FMT.log" | tail -1 | sed 's#.*[=/]##')
+        TF=$(echo "$TIT" | cut -c1-100); [ $FMT = 9x16 ] && TF="$(echo "$TIT" | cut -c1-91) #shorts"  # título próprio: o yt-pubx barra título repetido (FALHAS 07/11)
+        timeout 2400 "$YT" publicar "$F" --canal "$C" --title "$TF" --contexto "$CTX" "${CARQ[@]}" "${THUMB[@]}" > "$OUT/publicar-$C-$FMT.log" 2>&1
+        YID=$(grep 'Publicado:' "$OUT/publicar-$C-$FMT.log" | grep -o 'watch?v=[A-Za-z0-9_-]*\|shorts/[A-Za-z0-9_-]*' | tail -1 | sed 's#.*[=/]##')  # só upload real, nunca o aviso de "já publicado"
       fi
       [ -n "$YID" ] && [ -z "${SEM_ENVIO:-}" ] && echo "$YID" > "$MARCA"
     fi
