@@ -120,6 +120,15 @@ async function buscar(termo) {
 // Só clica em "Keep my plan"/fechar; nunca no botão de aceitar. (09/10/2026)
 async function recusarPlano() {
   const txt = (await pg.locator('[role=dialog]').allTextContents().catch(() => [])).join(' ');
+  // Convite "Meet Avatar 6" (07/11/2026): manter o modelo atual, nunca "Try Avatar 6" (muda o modelo/custo).
+  const manterModelo = pg.getByText(/^Keep current model$/i).first();
+  if (await manterModelo.count().catch(() => 0)) {
+    await manterModelo.click(); passo('convite Avatar 6 recusado (Keep current model)'); await pg.waitForTimeout(1_500);
+  }
+  // "The draft is being edited" (rascunho ainda aberto por uma sessão anterior): editar aqui. (07/11/2026)
+  if (/draft is being edited/i.test(txt) || await pg.getByText(/The draft is being edited/i).count().catch(() => 0)) {
+    await pg.getByRole('button', { name: /^Edit here$/i }).first().click(); passo('rascunho retomado (Edit here)'); await pg.waitForTimeout(2_000);
+  }
   if (!/new plan|Switch to|Keep my plan/i.test(txt)) return;
   const manter = pg.getByRole('button', { name: /^(Keep my plan|Manter (meu )?plano)$/i }).first();
   if (await manter.count()) { await manter.click(); passo('oferta de troca de plano recusada'); }
@@ -147,6 +156,7 @@ try {
     passo(`rascunho "${TITULO}" existe — continuando dele`);
     await rascunho.locator('xpath=ancestor::*[.//img or .//video][1]').click();
     await pg.waitForURL(/create-v4|editor/, { timeout: 60_000 });
+    await pg.waitForTimeout(5_000); await recusarPlano();
   } else {
     passo(`buscando "${TEMPLATE}"`);
     await buscar(TEMPLATE);
@@ -169,6 +179,7 @@ try {
     await pg.waitForURL(/create-v4|editor/, { timeout: 60_000 });
   }
   await pg.waitForTimeout(6_000);
+  await recusarPlano();
 
   // TÍTULO PRIMEIRO: o clone nasce com o nome do template, e enquanto não
   // renomear existem dois `TEMPLATE-AVATAR` — a busca da rodada seguinte fica
