@@ -65,10 +65,13 @@ for cfg in "$B/v2.json" "$B/v2-916.json"; do
       if [ -n "${SEM_ENVIO:-}" ]; then echo "[ensaio] yt-pubx publicar $F --canal $C"; YID=ENSAIO; else
         TF=$(echo "$TIT" | cut -c1-100); [ $FMT = 9x16 ] && TF="$(echo "$TIT" | cut -c1-91) #shorts"  # título próprio: o yt-pubx barra título repetido (FALHAS 07/11)
         AVULSO=(); [ "$(campo avulso_ok)" = True ] && AVULSO=(--avulso-ok)  # só quando o Nei pediu este vídeo neste canal (pedido.json)
+        # ≥ 1 h entre publicações da mesma produção (Nei 12/11/2026); INTERVALO_PUB=0 desliga
+        ULT=$(cat "$OUT/.ultima-publicacao" 2>/dev/null || echo 0); FALTA=$(( ULT + ${INTERVALO_PUB:-3600} - $(date +%s) ))
+        [ "$FALTA" -gt 0 ] && { log "espero ${FALTA}s antes de publicar o $FMT (1 h entre publicações)"; sleep "$FALTA"; }
         timeout 2400 "$YT" publicar "$F" --canal "$C" --title "$TF" --contexto "$CTX" "${CARQ[@]}" "${THUMB[@]}" "${AVULSO[@]}" >"$OUT/publicar-$C-$FMT.log" 2>&1
         YID=$(grep 'Publicado:' "$OUT/publicar-$C-$FMT.log" | grep -o 'watch?v=[A-Za-z0-9_-]*\|shorts/[A-Za-z0-9_-]*' | tail -1 | sed 's#.*[=/]##')  # só upload real, nunca o aviso de "já publicado"
       fi
-      [ -n "$YID" ] && [ -z "${SEM_ENVIO:-}" ] && echo "$YID" > "$MARCA"
+      [ -n "$YID" ] && [ -z "${SEM_ENVIO:-}" ] && { echo "$YID" > "$MARCA"; date +%s > "$OUT/.ultima-publicacao"; }
     fi
     if [ -n "$YID" ]; then
       U="https://www.youtube.com/watch?v=$YID"; [ $FMT = 9x16 ] && U="https://youtube.com/shorts/$YID"
