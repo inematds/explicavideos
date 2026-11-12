@@ -36,6 +36,9 @@ Responda às perguntas pensando SÓ no título e nos primeiros 15 s (a fala comp
 2. comigo: eu sinto que é COMIGO (minha dor ou meu desejo), não um assunto técnico dos outros?
 3. importa: eu sei por que isso importa para mim (o que eu perco ou ganho)?
 4. nome: se há método, eu já ouvi o NOME da solução? (sem método: responda true)
+A 1ª fala é frase completa, como se fala com alguém (quem faz o quê, em que condição), ou slogan comprimido que eu
+tenho que decifrar? Slogan ('nunca mais diz pronto sem prova') = nota ≤ 6; frase de gente ('o seu agente nunca mais vai
+dizer pronto se não tiver provado. É isso que este método faz. Vou explicar como.') é o certo.
 Depois: liste palavras/expressões de máquina na fala (rótulo técnico sem explicação comum, sigla, nome de função) e
 diga se a fala vira catálogo (lista de mais de 3 itens). Nota 0–10: "eu continuo assistindo?".
 
