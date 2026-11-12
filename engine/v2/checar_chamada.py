@@ -28,7 +28,7 @@ NUM = (r"\d+|um|uma|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|onze
 INVENTARIO = re.compile(rf"\b({NUM})\s+(frases|t[eé]cnicas|dicas|solu[cç][oõ]es|passos|coisas|ferramentas|prompts|truques|"
                         r"segredos|erros|formas|jeitos|motivos|regras|li[cç][oõ]es|recursos|comandos|habilidades|skills|"
                         r"m[eé]todos|maneiras|h[aá]bitos|ideias|apps|sites)\b", re.I)
-CTA_PALAVRA = re.compile(r"\b[Cc]oment[ae]\s+(a\s+palavra\s+)?[\"'“]?[A-ZÁÉÍÓÚÂÊÔÃÕÇ]{3,}\b")   # "Comenta PROVA"
+CTA_PALAVRA = re.compile(r"\b[Cc]oment[ae]\s+(a\s+palavra\s+)?[\"'“]?[A-ZÁÉÍÓÚÂÊÔÃÕÇ]{2,}\b")   # "Comenta PROVA"
 CTA_PROIBIDO = re.compile(r"\bcoment[ae]\s+a\s+palavra\b|\bme\s+pe[cd]e\s+o\s+link\b|\bpe[cd]e\s+o\s+link\b|"
                           r"\blink\s+na\s+bio\b|\b(te|lhe)\s+(mando|envio|passo)\b|\bno\s+(direct|privado)\b|\bna\s+dm\b|"
                           r"\bfixad[oa]\b|\bcoment[ae]\s+\S+\s+que\s+(eu\s+)?(te\s+)?(mando|envio|passo)\b", re.I)
@@ -115,6 +115,15 @@ def checar(pasta, roteiro=None, sem_titulo=False):
     if m:
         erros.append(f"CTA pede palavra/link/recompensa ('{m.group(0)}'): faça uma pergunta de verdade e diga que está "
                      "no inema.club, direto na internet (chamada.md §4)")
+    ult = cenas[-1] if cenas else {}
+    tela = " · ".join([*(str(x) for x in (ult.get("labels") or [])), str(ult.get("takeaway") or ""), str(ult.get("title") or "")])
+    m = CTA_PALAVRA.search(tela) or CTA_PROIBIDO.search(tela)
+    if m:
+        erros.append(f"tela do fecho (labels/takeaway) pede palavra/link ('{m.group(0)}'): a tela leva a pergunta ou o inema.club")
+    if yt.exists():
+        m = CTA_PALAVRA.search(yt.read_text()) or CTA_PROIBIDO.search(yt.read_text())
+        if m:
+            erros.append(f"yt.txt pede palavra/link ('{m.group(0)}'): a descrição termina com a pergunta do fecho, sem pedir palavra")
     if "?" not in cta:
         erros.append("CTA sem pergunta: o fecho pergunta algo da vida/opinião da pessoa, ligado à dor/desejo")
     if not INEMA.search(cta):

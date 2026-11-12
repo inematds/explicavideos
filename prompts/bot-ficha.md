@@ -76,6 +76,10 @@ visual) e, como exemplo de roteiro aprovado, `~/projetos/output/thwaites-juizo-f
    `No inema.club você pode aprender sobre inteligência artificial: https://inema.club`.
 4b. **Portão**: `python3 engine/v2/checar_chamada.py {{pasta}}` tem de terminar em `chamada ok`. Erro →
    reescreva chamada/roteiro/título e rode de novo (a fase avatar roda o mesmo portão e para se falhar).
+   Depois, **crítico da atenção**: `python3 engine/v2/critico_chamada.py {{pasta}}` (pergunta como quem rola o feed:
+   nos 15 s sei o problema, que é comigo, por que importa e o nome da solução? fala de gente ou de máquina?). Saiu
+   `chamada fraca` → use o `melhorar`, troque o jargão listado por palavra comum, corte o catálogo e rode de novo;
+   no máximo 2 rodadas. Depois disso siga (não bloqueia) e escreva a nota no RESUMO.md.
 5. **Pedido** em `{{pasta}}/pedido.json`:
    ```json
    {"id": "<slug-curto>-<aaaammdd>", "ref": "{{ref}}", "pedido": "<o texto do Nei, sem quebras>",
@@ -96,7 +100,7 @@ visual) e, como exemplo de roteiro aprovado, `~/projetos/output/thwaites-juizo-f
    explicavideo: <título>
    Formato: <16:9 viral | 9:16 | 16:9 e 9:16> · Canal: <livesN …>
    Fala: <n> caracteres (~<n> min) · 1 bloco no HeyGen
-   Chamada: <nucleo> (<formato>, <dor|desejo>) · método: <nome ou —>
+   Chamada: <nucleo> (<formato>, <dor|desejo>) · método: <nome ou —> · crítico: nota <n> (<forte|fraca>)
    Gancho: <1ª frase da fala>
    Não fiz: <lista, ou "nada">
    Agora: avatar no HeyGen → visual → render → publica no <canal> (link no inemaytbot, arquivo no v3)
