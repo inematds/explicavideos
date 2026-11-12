@@ -77,7 +77,8 @@ visual) e, como exemplo de roteiro aprovado, `~/projetos/output/thwaites-juizo-f
 4b. **Portão**: `python3 engine/v2/checar_chamada.py {{pasta}}` tem de terminar em `chamada ok`. Erro →
    reescreva chamada/roteiro/título e rode de novo (a fase avatar roda o mesmo portão e para se falhar).
    Depois, **crítico da atenção**: `python3 engine/v2/critico_chamada.py {{pasta}}` (pergunta como quem rola o feed:
-   nos 15 s sei o problema, que é comigo, por que importa e o nome da solução? fala de gente ou de máquina?). Saiu
+   nos 15 s sei o problema, que é comigo, por que importa e o nome da solução? a manchete da capa — os `labels` da cena 1 —
+   é informação clara e completa, entendida sem som? fala de gente ou de máquina?). Saiu
    `chamada fraca` → use o `melhorar`, troque o jargão listado por palavra comum, corte o catálogo e rode de novo;
    no máximo 2 rodadas. Depois disso siga (não bloqueia) e escreva a nota no RESUMO.md.
 5. **Pedido** em `{{pasta}}/pedido.json`:

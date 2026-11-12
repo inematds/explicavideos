@@ -7,7 +7,7 @@ primeiros 15 s eu sei o problema, que é comigo, por que importa e o nome da sol
 
 Uso: critico_chamada.py <pasta> [--roteiro arquivo]   (lê roteiro-pt.json, yt.txt, chamada.json)
 Grava <pasta>/chamada-critica.json (com hash da entrada: mudou o roteiro, critica de novo). Chama `claude -p` pela
-assinatura (como o r7ex.py plano). Sai 0 se passou (nota ≥ 7 e as 4 perguntas sim), 1 se não passou, 2 se o crítico
+assinatura (como o r7ex.py plano). Sai 0 se passou (nota ≥ 7 e as 5 perguntas sim), 1 se não passou, 2 se o crítico
 não respondeu. NÃO bloqueia o avatar: quem chama decide (a ficha reescreve até 2 vezes e depois segue com a nota no
 RESUMO.md; lição 21/10: estilo vira sugestão, o Nei decide se refaz).
 """
@@ -25,6 +25,8 @@ Você não sabe como este vídeo foi feito. Julgue só o que está abaixo.
 
 TÍTULO: {titulo}
 
+MANCHETE DA CAPA (texto grande do 1º quadro): {manchete}
+
 PRIMEIROS ~15 SEGUNDOS DA FALA: {abertura}
 
 FALA COMPLETA: {fala}
@@ -36,6 +38,8 @@ Responda às perguntas pensando SÓ no título e nos primeiros 15 s (a fala comp
 2. comigo: eu sinto que é COMIGO (minha dor ou meu desejo), não um assunto técnico dos outros?
 3. importa: eu sei por que isso importa para mim (o que eu perco ou ganho)?
 4. nome: se há método, eu já ouvi o NOME da solução? (sem método: responda true)
+5. manchete: lendo SÓ a manchete da capa, sem som, eu entendo a informação (quem + o que acontece)? Enigmática
+   ("IA COM PROVA") ou sem sujeito = false; clara e completa ("SUA IA DIZ 'PRONTO' SEM TER FEITO") = true.
 A 1ª fala é frase completa, como se fala com alguém (quem faz o quê, em que condição), ou slogan comprimido que eu
 tenho que decifrar? Slogan ('nunca mais diz pronto sem prova') = nota ≤ 6; frase de gente ('o seu agente nunca mais vai
 dizer pronto se não tiver provado. É isso que este método faz. Vou explicar como.') é o certo.
@@ -43,8 +47,8 @@ Depois: liste palavras/expressões de máquina na fala (rótulo técnico sem exp
 diga se a fala vira catálogo (lista de mais de 3 itens). Nota 0–10: "eu continuo assistindo?".
 
 Responda SÓ com JSON numa linha:
-{{"problema": true|false, "comigo": true|false, "importa": true|false, "nome": true|false, "nota": 0-10,
-"jargao": ["..."], "catalogo": true|false, "melhorar": "<abertura reescrita em 1-2 frases, na voz do Nei, ou vazio se nota >= 9>",
+{{"problema": true|false, "comigo": true|false, "importa": true|false, "nome": true|false, "manchete": true|false, "nota": 0-10,
+"jargao": ["..."], "catalogo": true|false, "melhorar": "<abertura reescrita em 1-2 frases, na voz do Nei, ou vazio se nota >= 9>", "manchete_melhor": "<manchete clara, até 9 palavras, ou vazio>",
 "resumo": "<uma frase>"}}"""
 
 
@@ -60,7 +64,8 @@ def main():
     yt = p / "yt.txt"
     titulo = yt.read_text().splitlines()[0] if yt.exists() and yt.read_text().strip() else "(sem título ainda)"
     ch = json.loads((p / "chamada.json").read_text()) if (p / "chamada.json").exists() else {}
-    pedido = PEDIDO.format(titulo=titulo, abertura=" ".join(fala.split()[:45]), fala=fala,
+    manchete = " · ".join(str(x) for x in (cenas[0].get("labels") or [])) if cenas else ""
+    pedido = PEDIDO.format(titulo=titulo, manchete=manchete or "(sem)", abertura=" ".join(fala.split()[:45]), fala=fala,
                            nucleo=ch.get("nucleo") or "(sem chamada.json)", metodo=ch.get("metodo") or "nenhum")
     h = hashlib.sha1(pedido.encode()).hexdigest()
     arq = p / "chamada-critica.json"
@@ -78,13 +83,15 @@ def main():
             sys.exit(2)
         c["hash"] = h
         arq.write_text(json.dumps(c, ensure_ascii=False, indent=1))
-    sim = [k for k in ("problema", "comigo", "importa", "nome") if c.get(k)]
-    ok = int(c["nota"]) >= 7 and len(sim) == 4
+    sim = [k for k in ("problema", "comigo", "importa", "nome", "manchete") if c.get(k)]
+    ok = int(c["nota"]) >= 7 and len(sim) == 5
     print(f"crítico da chamada: nota {c['nota']} · sim: {', '.join(sim) or 'nenhuma'}"
           + (f" · jargão: {', '.join(c.get('jargao') or [])}" if c.get("jargao") else "")
           + (" · CATÁLOGO" if c.get("catalogo") else "") + f" — {c.get('resumo', '')}")
     if not ok:
         print(f"melhorar: {c.get('melhorar', '')}")
+        if c.get("manchete_melhor"):
+            print(f"manchete: {c['manchete_melhor']}")
         print("chamada fraca (nota < 7 ou alguma pergunta 'não'): reescreva a abertura/título")
         sys.exit(1)
     print("chamada forte")
