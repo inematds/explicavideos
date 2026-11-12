@@ -18,8 +18,8 @@ Pelo bot (2.21.11, 22/10/2026): o Nei manda `/explicavideo <assunto, formato, ca
 
 | # | Passo | Comando | Quem |
 |---|---|---|---|
-| B1 | Entende o pedido (formato, canal, estilo), pesquisa, escreve o roteiro de 1 bloco, gera as configs e prepara o bloco | fase `ficha`: [prompts/bot-ficha.md](prompts/bot-ficha.md) → `bot/configs.py` → `explica.py prepare` | 🤖 `claude -p` |
-| B2 | Envia o bloco ao estúdio HeyGen, baixa pela API de leitura, roda o v1 (render + transcrição) no `explica.slice` | fase `avatar`: `bot/avatar.sh <pasta>` | ⚙️ script |
+| B1 | Entende o pedido (formato, canal, estilo), pesquisa, escreve a **chamada** (`chamada.json`: dor/desejo, núcleo, método, gatilho) e o roteiro de 1 bloco, gera as configs e prepara o bloco | fase `ficha`: [prompts/bot-ficha.md](prompts/bot-ficha.md) → `engine/v2/checar_chamada.py` → `bot/configs.py` → `explica.py prepare` | 🤖 `claude -p` |
+| B2 | Portão da chamada (reprova abertura sem dor/desejo, método sem nome, título de inventário, CTA "comenta PALAVRA"/"me pede o link"); envia o bloco ao estúdio HeyGen, baixa pela API de leitura, roda o v1 (render + transcrição) no `explica.slice` | fase `avatar`: `bot/avatar.sh <pasta>` | ⚙️ script |
 | B3 | Imagens pelo Codex, visual v2 no tempo da fala, `build_block --strict` | fase `visual`: [prompts/bot-visual.md](prompts/bot-visual.md) + `bot/imagens.py` | 🤖 `claude -p` |
 | B4 | Render de cada formato, som, `qa_viral`, publica no(s) canal(is) com o yt-pubx, link no inemaytbot, arquivo no v3, `BOT-FIM.md` no chat | fase `entrega`: `bot/entrega.sh <pasta>` | ⚙️ script |
 
@@ -43,6 +43,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 `prepare` não sobrescreve produções já iniciadas. `start` lança cinco serviços persistentes; não interrompe os já ativos. Não reinicie uma submissão `needs_review`: confira primeiro se existe um ID no HeyGen. A produção em andamento já está preparada; use `status`, não `prepare`.
 
 ## Formato v2: animação explicativa (2.0.0)
+
+> 2.25.11: **chamada antes do roteiro** (D20, Nei 12/11/2026: "não adianta estar claro e correto se não chama atenção, não mexe na dor ou desejo"). A ficha grava `chamada.json` e `engine/v2/checar_chamada.py` reprova, antes do avatar, abertura sem dor/desejo em "você" nos primeiros segundos, método sem nome dito cedo e no fecho, título com contagem de inventário ("8 frases") e CTA que pede palavra ou link. Regra única: `~/projetos/inema-design/regras/chamada.md`.
 
 > 2.24.11: `"av"` no shot do perfil viral 16:9 move e redimensiona o avatar a partir daquele shot (`dir`, `mini`, `alto-dir`, `grande`, `meia` e as versões `-esq`), com a legenda acompanhando. O conteúdo viral fica à esquerda e no centro, então use as poses da direita (`dir`, `mini`, `alto-dir`) em shot com texto, número ou gráfico; `grande`/`meia`/`-esq` só em shot sem texto. Primeiro uso: "2027: o ano da transformação" (27/10/2026).
 > 2.23.11: `"sem_avatar": true` na config v2 (perfil viral) gera a versão sem avatar com a mesma voz: a imagem do avatar some e a legenda ocupa a largura toda; com `"pip_cena": 1` a cena usa o quadro inteiro desde o início. O build reprova shot `rosto` nessa versão. `bot/entrega.sh` lê `variante` do pedido para a legenda do v3. Primeiro uso: Kimi K3.1 9:16 com e sem avatar (23/10/2026).

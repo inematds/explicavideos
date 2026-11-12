@@ -46,6 +46,16 @@ visual) e, como exemplo de roteiro aprovado, `~/projetos/output/thwaites-juizo-f
      ou vídeos que o Nei não anexou. Publicar com data/hora marcada também não: publica ao terminar.
 2. **Pesquisa**: confira cada fato e número na web; guarde a fonte. Número sem fonte sai do roteiro.
    Nunca invente número; "grátis" só se a página disser.
+2b. **CHAMADA** em `{{pasta}}/chamada.json`, ANTES do roteiro. Leia `~/projetos/inema-design/regras/chamada.md`.
+   "Não adianta estar claro e correto se não chama atenção, não mexe na dor ou desejo" (Nei, 12/11/2026):
+   ```json
+   {"dor_ou_desejo": "dor|desejo", "quem": "<a pessoa, em 'você'>",
+    "nucleo": "<1 frase: o que a pessoa ganha ou deixa de perder, em língua de gente; nunca 'N técnicas/dicas'>",
+    "por_que_importa": "<o que custa hoje, concreto>", "metodo": "<nome do método/kit que o vídeo entrega, ou null>",
+    "formato": "<acusacao | promessa | perda | contrario | numero | pergunta | nome | noticia | terceiro | provocacao>"}
+   ```
+   Se as regras do vigia trazem uma estrutura (A, B, C…), a chamada vem ANTES dela e manda nela: a estrutura
+   que for inventário do kit vira o meio do vídeo, nunca a abertura nem o título.
 3. **Roteiro** em `{{pasta}}/roteiro-pt.json`: lista de 8 a 12 cenas no formato do exemplo
    (`chapter`, `title`, `kind: "statement"`, `labels` 2–3 rótulos curtos, `takeaway`, `source`,
    `svg: null`, `speech`). Regras do PADRAO-VIRAL: a 1ª frase diz o fato mais forte com o sujeito, a
@@ -53,9 +63,19 @@ visual) e, como exemplo de roteiro aprovado, `~/projetos/output/thwaites-juizo-f
    com "no inema.club você aprende … de graça" só se for verdade (senão "no inema.club"). Fala na voz
    do Nei, frases curtas, sem "morte/mortos". **Total da fala ≤ 4.200 caracteres** (1 bloco do HeyGen,
    ~800 caracteres por minuto); vídeo viral: 2.000–3.500.
-4. **Texto do YouTube** em `{{pasta}}/yt.txt`: 1ª linha = título (≤ 100 caracteres, gancho com número);
-   depois os fatos com fonte, uma pergunta para o comentário e a linha final
+   **Chamada na fala** (chamada.md §3): nos primeiros ~15 s a dor ou o desejo da pessoa, em "você", no
+   formato escolhido; nada de "Imagine…", "Neste vídeo…", "Você sabia…". Com `metodo`: o nome dito até
+   ~20 s e de novo no fecho. Lista falada com no máximo 3 itens em língua de gente (rótulo técnico só
+   com a frase comum ao lado); o resto "está no kit".
+   **Fecho/CTA** (chamada.md §4): uma pergunta de verdade sobre a vida ou a opinião da pessoa, ligada à
+   dor/desejo, e onde está: "o kit está grátis no inema ponto club, direto na internet" (grátis só se
+   for verdade). PROIBIDO "comenta PALAVRA", "me pede o link", "link na bio", "te mando".
+4. **Texto do YouTube** em `{{pasta}}/yt.txt`: 1ª linha = título (≤ 100 caracteres) que sai do `nucleo`:
+   a dor/desejo e o nome do método (se houver); número só de FATO (resultado medido), nunca contagem de
+   inventário ("8 frases", "9 soluções"). Depois os fatos com fonte, a pergunta do fecho e a linha final
    `No inema.club você pode aprender sobre inteligência artificial: https://inema.club`.
+4b. **Portão**: `python3 engine/v2/checar_chamada.py {{pasta}}` tem de terminar em `chamada ok`. Erro →
+   reescreva chamada/roteiro/título e rode de novo (a fase avatar roda o mesmo portão e para se falhar).
 5. **Pedido** em `{{pasta}}/pedido.json`:
    ```json
    {"id": "<slug-curto>-<aaaammdd>", "ref": "{{ref}}", "pedido": "<o texto do Nei, sem quebras>",
@@ -76,6 +96,7 @@ visual) e, como exemplo de roteiro aprovado, `~/projetos/output/thwaites-juizo-f
    explicavideo: <título>
    Formato: <16:9 viral | 9:16 | 16:9 e 9:16> · Canal: <livesN …>
    Fala: <n> caracteres (~<n> min) · 1 bloco no HeyGen
+   Chamada: <nucleo> (<formato>, <dor|desejo>) · método: <nome ou —>
    Gancho: <1ª frase da fala>
    Não fiz: <lista, ou "nada">
    Agora: avatar no HeyGen → visual → render → publica no <canal> (link no inemaytbot, arquivo no v3)

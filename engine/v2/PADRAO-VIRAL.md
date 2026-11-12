@@ -4,6 +4,12 @@ Para notícia, reel e vídeo com números (refazvideo `modo viral`, cortes de no
 padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei reprovou: "apresentação muito ruim".
 
 ## Roteiro (antes do HeyGen)
+- **Chamada antes de tudo (2.25.11, D20, Nei 12/11/2026):** "não adianta estar claro e correto se não chama atenção,
+  não mexe na dor ou desejo". `chamada.json` (dor/desejo, núcleo, por que importa, método, formato do gatilho) vem antes
+  do roteiro; nos primeiros ~15 s a dor/desejo em "você"; com método, o nome dito até ~20 s e no fecho; título sem
+  contagem de inventário; CTA com pergunta de verdade + "grátis no inema ponto club, direto na internet", nunca
+  "comenta PALAVRA" nem "me pede o link". Regra: `~/projetos/inema-design/regras/chamada.md`. Trava:
+  `engine/v2/checar_chamada.py <pasta>` (a fase avatar roda e para se falhar).
 - **Uma ideia só**, 45–75 s. A 1ª frase diz o fato mais forte com o sujeito ("O maior prédio da história…").
 - **Quadro 0 = capa**: imagem forte + o número/promessa mais forte, sem fade (vira thumbnail).
 - Promessa do que vem ("no fim, o que isso muda pra você") nos primeiros 8 s.

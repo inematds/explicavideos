@@ -22,6 +22,13 @@ N=$(python3 -c "import json,sys;print(len(json.load(open(sys.argv[1]))))" "$M")
 CH=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))[0]['chars'])" "$M")
 MIN=$(( (CH + 799) / 800 ))
 
+# Portão da CHAMADA (D20, Nei 12/11/2026): dor/desejo em "você" cedo, nome do método, título sem inventário, CTA sem
+# "comenta PALAVRA"/"me pede o link". Só antes do 1º envio (retomada com id já enviado não é barrada).
+if [ -z "$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))[0].get('id',''))" "$M")" ] \
+   && [ ! -s "$O/verification/submit-pt-01.log" ]; then
+  python3 "$EV/engine/v2/checar_chamada.py" "$B" || fim "chamada reprovada (acima); regra ~/projetos/inema-design/regras/chamada.md"
+fi
+
 # O comando do Nei no bot é o OK do avatar desta produção (Nei, 22/10/2026).
 [ -s "$O/APROVADO_HEYGEN" ] || printf '%s Nei pelo /explicavideo no inemaccbot (%s): "%s"; o comando vale como OK do avatar desta produção. 1 bloco PT, %s caracteres, ~%s min. Estúdio gera (assinatura, TEMPLATE-AVATAR16); API HeyGen só status/download.\n' \
   "$(date +%F)" "$REF" "$PEDIDO" "$CH" "$MIN" > "$O/APROVADO_HEYGEN"
