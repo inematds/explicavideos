@@ -67,7 +67,9 @@ for cfg in "$B/v2.json" "$B/v2-916.json"; do
         AVULSO=(); [ "$(campo avulso_ok)" = True ] && AVULSO=(--avulso-ok)  # só quando o Nei pediu este vídeo neste canal (pedido.json)
         # ≥ 1 h entre publicações da mesma produção (Nei 12/11/2026); INTERVALO_PUB=0 desliga
         ULT=$(cat "$OUT/.ultima-publicacao" 2>/dev/null || echo 0); FALTA=$(( ULT + ${INTERVALO_PUB:-3600} - $(date +%s) ))
-        [ "$FALTA" -gt 0 ] && { log "espero ${FALTA}s antes de publicar o $FMT (1 h entre publicações)"; sleep "$FALTA"; }
+        # a espera não segura a trava de render (fd 9 do nivel-serie/roda.sh): 13/11 o lives4-a dormiu 54 min com ela e parou as outras cadeias
+        [ "$FALTA" -gt 0 ] && { log "espero ${FALTA}s antes de publicar o $FMT (1 h entre publicações)"
+          T9=; [ -e /proc/$$/fd/9 ] && flock -u 9 2>/dev/null && T9=1; sleep "$FALTA"; [ -n "$T9" ] && flock 9; }
         timeout 2400 "$YT" publicar "$F" --canal "$C" --title "$TF" --contexto "$CTX" "${CARQ[@]}" "${THUMB[@]}" "${AVULSO[@]}" >"$OUT/publicar-$C-$FMT.log" 2>&1
         YID=$(grep 'Publicado:' "$OUT/publicar-$C-$FMT.log" | grep -o 'watch?v=[A-Za-z0-9_-]*\|shorts/[A-Za-z0-9_-]*' | tail -1 | sed 's#.*[=/]##')  # só upload real, nunca o aviso de "já publicado"
       fi
