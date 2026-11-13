@@ -14,6 +14,10 @@ def local(audio,language):
   get=lambda r,off=0:[{'word':w['word'].strip(),'start':float(w['start'])+off,'end':float(w['end'])+off} for s in r['segments'] for w in s.get('words',[]) if w['word'].strip()]
   try:
    r=model.transcribe(str(audio),**opts);words=get(r)
+   # It can also stretch one word over the skipped window ("sozinha." 31.5-59.0 s, nivel-ia-lives4-b,
+   # 13/11/2026), which hides the gap: clamp words longer than 3 s so the span below gets re-transcribed.
+   for w in words:
+    if w['end']-w['start']>3:w['end']=w['start']+.8
    # Whisper on the full file sometimes skips whole 30 s windows (after short lines like "Agora pause.");
    # the same span transcribes fine alone, but only from some start points. Re-transcribe every gap > 3 s
    # from up to three starts (+0, +1.5, +3 s), keep the richest result and splice the words in.
