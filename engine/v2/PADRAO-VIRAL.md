@@ -10,6 +10,39 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   contagem de inventário; CTA com pergunta de verdade + "grátis no inema ponto club, direto na internet", nunca
   "comenta PALAVRA" nem "me pede o link". Regra: `~/projetos/inema-design/regras/chamada.md`. Trava:
   `engine/v2/checar_chamada.py <pasta>` (a fase avatar roda e para se falhar). Atenção (não só forma): `engine/v2/critico_chamada.py <pasta>` (`claude -p`, nota ≥ 7 e as 4 perguntas sim; até 2 rodadas na ficha, depois segue com a nota no resumo).
+- **Retenção: gancho primeiro, conteúdo depois (2.26.11, Nei 13/11/2026).** Caso: /swarm lives7 e lives4
+  (`~/projetos/output/explica-swarm-*`), publicados e reprovados: "muito fraca, nem eu consigo ficar assistindo". O roteiro
+  era uma lista (5 regras, 8 conferências); o visual tinha 22–27 `cinetica` sobre fundo preto contra 11–19 `foto`; os clipes
+  de interface escura ficaram ilegíveis em tela cheia; o avatar ficou no canto o vídeo todo; o crítico deu 5 e o QA acusou
+  área lisa em quase tudo, e mesmo assim seguiu. A pergunta do Nei virou o checklist:
+  "como vc vai fazer eu ter atenção, o que eu vou ganhar ou perder, onde está o medo ou a curiosidade… tem passo a passo
+  que me mantém, promessas que me retêm até o fim, e o CTA me faz querer ser parte da comunidade".
+  1. **Pesquisa de ganchos antes do roteiro.** No YouTube, levante quem fala do assunto (títulos + 1ª fala de 0–35 s;
+     `yt-dlp --flat-playlist "ytsearch15:<termo>"` + legenda automática) e anote os gatilhos em `<OUT>/ganchos/LISTA.md`.
+     Modelo: `~/projetos/output/explica-gemini-swarm/ganchos/LISTA.md`. O que funciona: número antes/depois da mesma
+     coisa, perda concreta (dinheiro, semanas, conta), imagem fácil de ver (colmeia), "você também pode / sem ser técnico",
+     promessa do fim. O que não funciona: "INSANE" sem conteúdo, notícia de modelo sem dor, abrir pedindo like. Número de
+     terceiro não entra; use só o nosso medido ou o oficial.
+  2. **Arco do vídeo, nesta ordem** (o mesmo do rtex):
+     - **gancho 0–5 s:** uma cena de perda ou um número antes/depois, nunca conceito;
+     - **o que a pessoa ganha ou perde:** em "você";
+     - **loop aberto:** "no fim eu te conto…";
+     - **passo a passo:** 3 passos numerados no MESMO exemplo, com "passo 1 de 3" na tela, e uma promessa pequena entre os
+       passos ("o passo 3 é o que quase ninguém faz");
+     - **prova:** número real (ex.: nota 2/8 → 8/8);
+     - **o loop se fecha;**
+     - **CTA de pertencimento:** "é isso que a gente faz toda semana no inema ponto club: pega a novidade, testa e vira
+       kit grátis" + o tamanho real do catálogo + a pergunta de verdade.
+     Lista falada de mais de 3 itens não entra: o resto fica no kit.
+  3. **Visual de retenção:**
+     - toda cena tem imagem (Codex de impacto ou recorte AMPLIADO e legível da interface, zoom ≥ 1,6 na região que
+       importa; tela de UI escura nunca em tela cheia sem zoom);
+     - `cinetica` só por cima de imagem, nunca sobre preto, e no máximo ~1/3 das peças;
+     - número da prova vira `bignum`;
+     - avatar abre em meia tela (`rosto`) no gancho e depois vai para o canto.
+  4. **Portões que barram de verdade:**
+     - `critico_chamada.py` com nota < 7 depois de 2 rodadas: PARA e reescreve com outro gatilho, não segue;
+     - `qa_viral` com área lisa em mais de metade do vídeo: não publica, olha a folha e refaz o visual.
 - **Uma ideia só**, 45–75 s. A 1ª frase diz o fato mais forte com o sujeito ("O maior prédio da história…").
 - **Quadro 0 = capa**: imagem forte + o número/promessa mais forte, sem fade (vira thumbnail).
 - Promessa do que vem ("no fim, o que isso muda pra você") nos primeiros 8 s.
