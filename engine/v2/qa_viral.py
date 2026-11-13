@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """QA do perfil viral (PADRAO-VIRAL.md): reprova vídeo com tela vazia ou parada.
 
-Uso: qa_viral.py <video.mp4> [--saida <pasta>] [--vazio 0.90] [--liso 0.40] [--parado 2.0]
+Uso: qa_viral.py <video.mp4> [--saida=<pasta>] [--relatorio=<build.json>] [--vazio=0.90] [--liso=0.40] [--parado=2.0]
+                 [--liso-reprova=0.60] [--teto-liso=0.50] [--reprova-916]
 - em cada quadro (amostra a cada 0,5 s, reduzido a 192 px de largura), fração de blocos 8×8 lisos (desvio-padrão < 6 em cinza).
 - vazio (REPROVA): mais de 90% liso = tela de uma cor só (ex.: carimbo sem keep vira tela preta).
 - liso (AVISO, 15/10/2026): mais de 40% liso. Antes reprovava, mas foto escura boa (rio, céu, fumaça) mede 0,5–0,63 e painel
   meio vazio mede 0,48–0,52: o pixel não separa os dois. Vira aviso, com a folha dos momentos marcados para olhar.
 - parado (REPROVA): diferença média entre amostras vizinhas < 1,2 (0–255) por mais de 2 s seguidos = tela parada.
+- área lisa demais (REPROVA no 16:9, 2.27.11, Nei 13/11/2026 "aplica", PADRAO-VIRAL Retenção item 4): soma o tempo dos
+  quadros com mais de --liso-reprova (0,60) de área lisa; acima de --teto-liso (0,50) da duração = "área lisa em X% do
+  vídeo". Avatar em tela cheia, mapa e vídeo cheio (`vfull`) ficam fora da conta pelo relatório do build (--relatorio=, ou
+  achado sozinho em <id>/v2[-916]/verification/build-v2-pt-b01.json). Calibragem (13/11): no nível 0,40 do aviso o vídeo bom
+  (ia-no-bolso) mede 54% e não separa; no nível 0,60 os bons medem 6–39% e os /swarm reprovados 52–57%. No 9:16 o bom mede
+  51% e os ruins 61–63%: lá só avisa (--reprova-916 liga). Gráficos (ranking, linha…) ainda entram na conta.
 - grava a folha de quadros (sheet-viral-<nome>.jpg), a dos momentos marcados (sheet-marcados-<nome>.jpg, com o segundo
   escrito) e o relatório JSON ao lado; cópia em <video>.qa.json, que o enviar_bot_v3.mjs lê para pôr o veredito na mensagem.
 Saída: APROVADO / APROVADO COM AVISO (código 0) · REPROVADO (código 1)."""
@@ -21,6 +28,7 @@ opt = {a.split('=')[0]: a.split('=')[1] for a in sys.argv[1:] if a.startswith('-
 video = Path(args[0])
 out = Path(opt.get('--saida', video.parent))
 LIM_VAZIO, LIM_LISO, LIM_PARADO, PASSO = float(opt.get('--vazio', 0.90)), float(opt.get('--liso', 0.40)), float(opt.get('--parado', 2.0)), 0.5
+LIM_LISO_REPROVA, TETO_LISO = float(opt.get('--liso-reprova', 0.60)), float(opt.get('--teto-liso', 0.50))
 
 dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(video)],
                            capture_output=True, text=True).stdout)
@@ -40,7 +48,18 @@ for i, f in enumerate(fr):
         dif.append(float(np.abs(f - fr[i - 1]).mean()))
 
 # trechos com o avatar em tela cheia ("rosto") não contam como tela vazia (relatório do build)
-_rel = json.loads(Path(opt['--relatorio']).read_text()) if '--relatorio' in opt else {}
+VERTICAL = int(probe[1]) > int(probe[0])
+def _achar_relatorio():   # <id>/entrega/<nome>.mp4 → <id>/v2[-916]/verification/build-v2-pt-b01.json, se a duração bate
+    if '--relatorio' in opt:
+        return Path(opt['--relatorio'])
+    c = video.resolve().parent.parent / ('v2-916' if VERTICAL else 'v2') / 'verification/build-v2-pt-b01.json'
+    try:
+        sc = json.loads(c.read_text())['scenes']
+        return c if abs(sc[-1]['start'] + sc[-1]['dur'] - dur) < 1.5 else None
+    except Exception:
+        return None
+_arq_rel = _achar_relatorio()
+_rel = json.loads(_arq_rel.read_text()) if _arq_rel and _arq_rel.exists() else {}
 # avatar em tela cheia e mapa: grandes áreas sólidas que são conteúdo, não tela vazia
 rostos = _rel.get('rostos', []) + _rel.get('mapas', [])
 em_rosto = lambda t: any(a - 0.3 <= t <= b + 0.3 for a, b in rostos)
@@ -62,6 +81,10 @@ def trechos(qs):   # [(t, v)…] → [[início, fim]…] (amostras a ≤ 1 s vir
 
 ruins_vazio = marcados(LIM_VAZIO)
 lisos = [q for q in marcados(LIM_LISO) if q not in ruins_vazio]
+# 2.27.11: tempo em área lisa forte (fora de rosto/mapa/vfull) sobre a duração; acima do teto reprova (16:9)
+fortes = [q for q in marcados(LIM_LISO_REPROVA) if q not in ruins_vazio]
+liso_pct = len(fortes) * PASSO / dur if dur else 0.0
+liso_reprova = liso_pct > TETO_LISO and (not VERTICAL or '--reprova-916' in sys.argv)
 parados, run = [], 0
 for i, d in enumerate(dif):
     run = run + 1 if d < 1.2 else 0
@@ -113,16 +136,23 @@ if marc:
     img.save(sheet_m, quality=85)
 
 seg = lambda tr: ', '.join(f'{a:g}–{b:g} s' for a, b in tr)
-ok = not ruins_vazio and not parados
+ok = not ruins_vazio and not parados and not liso_reprova
+pct_txt = f'área lisa em {liso_pct * 100:.0f}% do vídeo'
 motivo = '; '.join(([f'tela vazia (uma cor só) em {seg(trechos(ruins_vazio))}'] if ruins_vazio else [])
-                   + ([f'tela parada em {seg(parados)}'] if parados else []))
-aviso = f'área lisa (foto escura ou painel vazio?) em {seg(trechos(lisos))}' if lisos else ''
+                   + ([f'tela parada em {seg(parados)}'] if parados else [])
+                   + ([f'{pct_txt} (teto {TETO_LISO * 100:.0f}%, quadros > {LIM_LISO_REPROVA:g} lisos): olhe a folha dos '
+                       'marcados e refaça o visual (PADRAO-VIRAL Retenção)'] if liso_reprova else []))
+aviso = '; '.join(([f'área lisa (foto escura ou painel vazio?) em {seg(trechos(lisos))}'] if lisos else [])
+                  + ([f'{pct_txt} (acima do teto de {TETO_LISO * 100:.0f}%; no 9:16 só avisa)'] if liso_pct > TETO_LISO and not liso_reprova else []))
 rel = {'video': str(video), 'dur': round(dur, 2), 'ok': ok, 'vazio_max': round(max(vazios), 2), 'vazio_medio': round(float(np.mean(vazios)), 2),
+       'liso_pct': round(liso_pct, 3), 'liso_reprova_nivel': LIM_LISO_REPROVA, 'liso_teto': TETO_LISO,
+       'relatorio': str(_arq_rel) if _rel else None,
        'quadros_vazios': ruins_vazio, 'trechos_parados': parados, 'quadros_lisos': lisos, 'motivo': motivo, 'aviso': aviso,
        'sheet': str(sheet), 'sheet_marcados': str(sheet_m) if sheet_m else None}
 (out / f'qa-viral-{video.stem}.json').write_text(json.dumps(rel, indent=1, ensure_ascii=False))
 # cópia ao lado do vídeo: o enviar_bot_v3.mjs acha sozinha (<video>.qa.json) e põe o veredito na mensagem do bot
 Path(str(video) + '.qa.json').write_text(json.dumps(rel, indent=1, ensure_ascii=False))
-print(json.dumps({k: rel[k] for k in ('vazio_max', 'vazio_medio', 'motivo', 'aviso', 'sheet_marcados')}, ensure_ascii=False))
-print('REPROVADO' if not ok else 'APROVADO COM AVISO' if lisos else 'APROVADO')
+print(json.dumps({k: rel[k] for k in ('vazio_max', 'vazio_medio', 'liso_pct', 'relatorio', 'motivo', 'aviso', 'sheet_marcados')}, ensure_ascii=False))
+print(pct_txt + (' (sem relatório do build: rosto/mapa contam)' if not _rel else ''))
+print(('REPROVADO: ' + motivo) if not ok else 'APROVADO COM AVISO' if rel['aviso'] else 'APROVADO')
 sys.exit(0 if ok else 1)

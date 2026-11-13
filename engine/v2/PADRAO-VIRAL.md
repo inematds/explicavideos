@@ -40,9 +40,15 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
      - `cinetica` só por cima de imagem, nunca sobre preto, e no máximo ~1/3 das peças;
      - número da prova vira `bignum`;
      - avatar abre em meia tela (`rosto`) no gancho e depois vai para o canto.
-  4. **Portões que barram de verdade:**
-     - `critico_chamada.py` com nota < 7 depois de 2 rodadas: PARA e reescreve com outro gatilho, não segue;
-     - `qa_viral` com área lisa em mais de metade do vídeo: não publica, olha a folha e refaz o visual.
+  4. **Portões que barram de verdade** (implementado na 2.27.11, 13/11/2026):
+     - `critico_chamada.py` com nota < 7 depois de 2 rodadas: PARA e reescreve com outro gatilho, não segue. O script sai
+       com código ≠ 0 ("chamada fraca: reescreva com outro gatilho"), a fase ficha do bot para com ERRO e `bot/avatar.sh`
+       roda o mesmo crítico antes do envio ao estúdio. Escape consciente, só com ordem do Nei: `CRITICO_SEGUE=1`;
+     - `qa_viral` com área lisa em mais de metade do vídeo: não publica, olha a folha e refaz o visual. Conta o tempo dos
+       quadros com mais de 60% de área lisa (`--liso-reprova`), fora de rosto, mapa e vídeo cheio (relatório do build);
+       acima de 50% (`--teto-liso`) reprova o 16:9 com "área lisa em X% do vídeo". No nível 0,40 do aviso o vídeo bom
+       (ia-no-bolso, 54%) não se separa dos /swarm; no 0,60 passa com 39% e o swarm-ficha reprova com 52%. No 9:16 só avisa
+       (bom 51%, ruins 61–63%; `--reprova-916` liga). Gráficos ainda entram na conta.
 - **Uma ideia só**, 45–75 s. A 1ª frase diz o fato mais forte com o sujeito ("O maior prédio da história…").
 - **Quadro 0 = capa**: imagem forte + o número/promessa mais forte, sem fade (vira thumbnail).
 - Promessa do que vem ("no fim, o que isso muda pra você") nos primeiros 8 s.
@@ -90,7 +96,8 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   sem FREESOUND_API_KEY.
 
 ## QA (`engine/v2/qa_viral.py`, reprova)
-- Quadro com > 40% de área lisa (fundo vazio), amostra a cada 0,5 s.
+- Quadro com > 40% de área lisa (fundo vazio), amostra a cada 0,5 s: aviso. Quadros com > 60% somando mais de 50% do
+  vídeo (fora de rosto/mapa/vfull): reprova no 16:9 (2.27.11, Retenção item 4).
 - Avatar que se move (16:9, 2.24.11): `"av"` no shot troca posição/tamanho do avatar até o próximo `"av"`. Em shot com texto, número ou gráfico, só `dir`, `mini` ou `alto-dir` (as poses `-esq`, `grande` e `meia` cobriram título, cinética e número no quadro de 27/10/2026); alternar entre elas dá o movimento, e o tamanho grande fica com o `rosto`.
 - Trecho > 2 s sem mudança visual (fora de gráfico; gráfico até 9 s).
 - Folha de quadros (`verification/sheet-viral-*.jpg`) sempre gerada e olhada antes de entregar.

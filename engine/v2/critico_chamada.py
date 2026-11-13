@@ -8,8 +8,12 @@ primeiros 15 s eu sei o problema, que é comigo, por que importa e o nome da sol
 Uso: critico_chamada.py <pasta> [--roteiro arquivo]   (lê roteiro-pt.json, yt.txt, chamada.json)
 Grava <pasta>/chamada-critica.json (com hash da entrada: mudou o roteiro, critica de novo). Chama `claude -p` pela
 assinatura (como o r7ex.py plano). Sai 0 se passou (nota ≥ 7 e as 5 perguntas sim), 1 se não passou, 2 se o crítico
-não respondeu. NÃO bloqueia o avatar: quem chama decide (a ficha reescreve até 2 vezes e depois segue com a nota no
-RESUMO.md; lição 21/10: estilo vira sugestão, o Nei decide se refaz).
+não respondeu.
+
+BARRA (2.27.11, Nei 13/11/2026 "aplica", PADRAO-VIRAL Retenção item 4): até a 2.26 a ficha reescrevia 2 vezes e seguia
+com nota < 7; os /swarm passaram assim com nota 5 e foram reprovados no ar. Agora quem chama para no código ≠ 0
+(`bot/avatar.sh` roda este portão antes do envio ao estúdio; a fase ficha para com ERRO depois de 2 rodadas).
+Escape consciente: CRITICO_SEGUE=1 imprime o aviso e sai 0 (só quando o Nei mandou seguir com a nota que está).
 """
 import argparse
 import hashlib
@@ -18,6 +22,9 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+
+PERGUNTAS = ("problema", "comigo", "importa", "nome", "manchete")
+SEGUE = os.environ.get("CRITICO_SEGUE") == "1"   # escape consciente (docstring)
 
 PEDIDO = """Você é uma pessoa de 35 a 50 anos rolando o feed do YouTube/Instagram. Usa ChatGPT ou outra IA no trabalho,
 não é programador, tem pouco tempo e pula vídeo que não fala da sua vida nos primeiros segundos.
@@ -80,10 +87,13 @@ def main():
             int(c["nota"])
         except Exception as e:
             print(f"erro: crítico da chamada não respondeu direito: {str(e)[:160]} {r.stderr[-160:]}")
+            if SEGUE:
+                print("CRITICO_SEGUE=1: sigo sem a nota do crítico (escape consciente)")
+                sys.exit(0)
             sys.exit(2)
         c["hash"] = h
         arq.write_text(json.dumps(c, ensure_ascii=False, indent=1))
-    sim = [k for k in ("problema", "comigo", "importa", "nome", "manchete") if c.get(k)]
+    sim = [k for k in PERGUNTAS if c.get(k)]
     ok = int(c["nota"]) >= 7 and len(sim) == 5
     print(f"crítico da chamada: nota {c['nota']} · sim: {', '.join(sim) or 'nenhuma'}"
           + (f" · jargão: {', '.join(c.get('jargao') or [])}" if c.get("jargao") else "")
@@ -92,7 +102,11 @@ def main():
         print(f"melhorar: {c.get('melhorar', '')}")
         if c.get("manchete_melhor"):
             print(f"manchete: {c['manchete_melhor']}")
-        print("chamada fraca (nota < 7 ou alguma pergunta 'não'): reescreva a abertura/título")
+        print("chamada fraca: reescreva com outro gatilho (ver PADRAO-VIRAL Retenção)"
+              f" — nota {c['nota']} (precisa ≥ 7) e 'não' em: {', '.join(k for k in PERGUNTAS if not c.get(k)) or 'nenhuma'}")
+        if SEGUE:
+            print("CRITICO_SEGUE=1: sigo com a chamada fraca (escape consciente; registre a nota no RESUMO.md)")
+            sys.exit(0)
         sys.exit(1)
     print("chamada forte")
 

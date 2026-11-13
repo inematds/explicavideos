@@ -50,9 +50,11 @@ for cfg in "$B/v2.json" "$B/v2-916.json"; do
         || fim "som $FMT falhou: $(tail -2 "$V/som.log" | tr '\n' ' ')"
     fi
   fi
-  QA=0; if [ "$PERFIL" != aula ] || [ $FMT = 9x16 ]; then
-    (cd "$EV" && python3 engine/v2/qa_viral.py "$F" --saida="$V/verification") > "$V/qa.log" 2>&1; QA=$?; fi
-  [ $QA = 0 ] || fim "QA reprovou o $FMT: $(tail -3 "$V/qa.log" | tr '\n' ' ' | cut -c1-300) — vídeo em $F, nada publicado"
+  # 2.27.11: o relatório do build tira rosto/mapa/vfull da conta da área lisa (> 50% do 16:9 reprova)
+  QA=0; REL=(); [ -s "$V/verification/build-v2-pt-b01.json" ] && REL=(--relatorio="$V/verification/build-v2-pt-b01.json")
+  if [ "$PERFIL" != aula ] || [ $FMT = 9x16 ]; then
+    (cd "$EV" && python3 engine/v2/qa_viral.py "$F" --saida="$V/verification" "${REL[@]}") > "$V/qa.log" 2>&1; QA=$?; fi
+  [ $QA = 0 ] || fim "QA reprovou o $FMT: $(tail -2 "$V/qa.log" | tr '\n' ' ' | cut -c1-300) — vídeo em $F, nada publicado"
   DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$F" | cut -d. -f1)
   log "$FMT pronto: ${DUR}s"
 

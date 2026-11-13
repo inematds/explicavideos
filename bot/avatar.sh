@@ -27,6 +27,10 @@ MIN=$(( (CH + 799) / 800 ))
 if [ -z "$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))[0].get('id',''))" "$M")" ] \
    && [ ! -s "$O/verification/submit-pt-01.log" ]; then
   python3 "$EV/engine/v2/checar_chamada.py" "$B" || fim "chamada reprovada (acima); regra ~/projetos/inema-design/regras/chamada.md"
+  # 2.27.11 (Nei 13/11/2026 "aplica"): o crítico da atenção BARRA (nota < 7 = não grava avatar). Mesma pasta = mesmo hash
+  # da fase ficha, então lê chamada-critica.json sem novo claude -p. Escape consciente: CRITICO_SEGUE=1.
+  python3 "$EV/engine/v2/critico_chamada.py" "$B"; rc=$?
+  [ $rc = 0 ] || fim "$([ $rc = 2 ] && echo 'crítico da chamada não respondeu' || echo 'chamada fraca: reescreva com outro gatilho (ver PADRAO-VIRAL Retenção)'); avatar não enviado"
 fi
 
 # O comando do Nei no bot é o OK do avatar desta produção (Nei, 22/10/2026).
