@@ -44,6 +44,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
+> 2.30.11: **crítico pergunta `entrega`** (Nei 17/11/2026 sobre o fim-universidade-v2 no ar: "o que falou no vídeo é o óbvio… voltando atrás, como era feito antes, prova oral"). `paga` só via se o fecho responde ao título; agora o corpo tem de cumprir a promessa da isca com algo novo, não com o óbvio nem volta ao método antigo. Calibrado: o v2 (prova oral/portfólio) barra em `entrega` (nota 7), o v3 (6 mudanças com tecnologia + a conta) passa com 8, 3/3.
+
 > 2.29.11: **crítico da chamada revisto** (D23, Nei 17/11/2026: "pode ser ele o problema"; "isca faz parte do jogo"). Lia a abertura cortada em 45 palavras (no meio da frase) e decidia com 1 leitura (24 de 40 críticas deram exatamente 7). Agora: abertura até o fim da frase; 3 leituras em paralelo (`CRITICO_VOTOS`), maioria por pergunta e nota mediana; persona do `publico` do `pedido.json`; perguntas novas `escada` (uma linha que sobe, não sumário) e `paga` (o fecho responde a provocação); a isca não baixa a nota. Calibrado em 3 casos conhecidos: abertura do lives11 (sumário) e escrita-e-engenharia barradas, a escada do Nei passa com 8.
 
 > 2.28.11: **câmera parada** (Nei 16/11/2026, "zoom in e out rápido parece a tela tremida, na mesma imagem"): no perfil viral a foto fica com escala fixa (≤ 1,06) e os `pontos` não mexem mais na câmera; diagrama sem câmera; saída de bloco sem pulo de escala; URL do fim sem pulsar. `engine/v2/tremida.py` mede aproximar/afastar rápido (serve para qualquer motor) e o `qa_viral` reprova acima de 4; teto da área lisa 50% → 40%.

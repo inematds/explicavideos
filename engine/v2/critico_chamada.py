@@ -25,6 +25,10 @@ do jogo… faz a pessoa parar para ver e aí continuamos provocando a escada"). 
 - persona fixa de escritório para todo canal: agora `publico` do pedido.json (versionado na pasta), padrão o de sempre;
 - não punia sumário (o lives11 passou com 9) e punia a isca: agora pergunta `escada` (uma linha que sobe, não sumário)
   e `paga` (o fecho responde a provocação), e a provocação forte NÃO baixa a nota se é verdade e o fecho paga.
+2.30.11 (Nei 17/11/2026, sobre o fim-universidade-v2 já no ar: "o que falou no vídeo é o óbvio, mas não tem a ver com a
+tecnologia e sim voltando atrás, como era feito antes, prova oral"): `paga` só conferia se o fecho responde ao
+título; o v2 respondeu "não acabou" e passou com resposta velha. Nova pergunta `entrega`: o corpo cumpre a promessa
+da isca com algo novo, não com o óbvio nem com volta ao método antigo.
 A persona e o pedido só mudam neste arquivo ou no pedido.json, nunca num script da sessão (chamada.md §3.7).
 """
 import argparse
@@ -36,7 +40,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PERGUNTAS = ("problema", "comigo", "importa", "nome", "manchete", "escada", "paga")
+PERGUNTAS = ("problema", "comigo", "importa", "nome", "manchete", "escada", "paga", "entrega")
 SEGUE = os.environ.get("CRITICO_SEGUE") == "1"   # escape consciente (docstring)
 VOTOS = max(1, int(os.environ.get("CRITICO_VOTOS", "3")))
 PERSONA = ("uma pessoa de 35 a 50 anos rolando o feed do YouTube/Instagram. Usa ChatGPT ou outra IA no trabalho, "
@@ -77,6 +81,10 @@ julgar jargão e lista):
    cada uma com um assunto = sumário = false. Liste em "frases" o papel de cada frase dos 15 s.
 7. paga: se o título ou a 1ª frase provocam (pergunta ou tese forte), o FECHO responde com todas as letras? Sem
    provocação: true.
+8. entrega: o CORPO e o fecho entregam o que a abertura prometeu, com algo que eu não saberia dizer sozinho? Leia a
+   fala completa. Se a isca fala de mudança, tecnologia ou futuro e a resposta é voltar a método antigo (prova oral,
+   proibir, vigiar, "explique sua decisão", portfólio) ou um conselho óbvio que já existia antes da novidade = false.
+   Teste: cada passo da resposta seria possível sem a novidade da isca? Se quase todos sim = false.
 A 1ª fala é frase completa, como se fala com alguém (quem faz o quê, em que condição), ou slogan comprimido que eu
 tenho que decifrar? Slogan ('nunca mais diz pronto sem prova') = nota ≤ 6; frase de gente ('o seu agente nunca mais vai
 dizer pronto se não tiver provado. É isso que este método faz. Vou explicar como.') é o certo.
@@ -86,7 +94,7 @@ diga se a fala vira catálogo (lista de mais de 3 itens). Nota 0–10: "eu conti
 
 Responda SÓ com JSON numa linha:
 {{"problema": true|false, "comigo": true|false, "importa": true|false, "nome": true|false, "manchete": true|false,
-"frases": ["<frase curta> → prova|agrava|promessa|outro assunto"], "escada": true|false, "paga": true|false, "nota": 0-10,
+"frases": ["<frase curta> → prova|agrava|promessa|outro assunto"], "escada": true|false, "paga": true|false, "entrega": true|false, "nota": 0-10,
 "jargao": ["..."], "catalogo": true|false, "melhorar": "<abertura reescrita em 1-2 frases, na voz do Nei, ou vazio se nota >= 9>", "manchete_melhor": "<manchete clara, até 9 palavras, ou vazio>",
 "resumo": "<uma frase>"}}"""
 
