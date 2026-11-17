@@ -21,7 +21,7 @@ Pelo bot (2.21.11, 22/10/2026): o Nei manda `/explicavideo <assunto, formato, ca
 | B1 | Entende o pedido (formato, canal, estilo), pesquisa, escreve a **chamada** (`chamada.json`: dor/desejo, núcleo, método, gatilho) e o roteiro de 1 bloco, gera as configs e prepara o bloco | fase `ficha`: [prompts/bot-ficha.md](prompts/bot-ficha.md) → `engine/v2/checar_chamada.py` → `bot/configs.py` → `explica.py prepare` | 🤖 `claude -p` |
 | B2 | Portão da chamada (reprova abertura sem dor/desejo, método sem nome, título de inventário, CTA "comenta PALAVRA"/"me pede o link") e crítico da atenção `critico_chamada.py` (nota < 7 BARRA, 2.27.11; escape `CRITICO_SEGUE=1`); envia o bloco ao estúdio HeyGen, baixa pela API de leitura, roda o v1 (render + transcrição) no `explica.slice` | fase `avatar`: `bot/avatar.sh <pasta>` | ⚙️ script |
 | B3 | Imagens pelo Codex, visual v2 no tempo da fala, `build_block --strict` | fase `visual`: [prompts/bot-visual.md](prompts/bot-visual.md) + `bot/imagens.py` | 🤖 `claude -p` |
-| B4 | Render de cada formato, som, `qa_viral` (reprova tela vazia, parada e, no 16:9, área lisa em mais de 50% do vídeo, 2.27.11), publica no(s) canal(is) com o yt-pubx, link no inemaytbot, arquivo no v3, `BOT-FIM.md` no chat | fase `entrega`: `bot/entrega.sh <pasta>` | ⚙️ script |
+| B4 | Render de cada formato, som, `qa_viral` (reprova tela vazia, parada e, no 16:9, área lisa em mais de 40% do vídeo e tremida de câmera, 2.28.11), publica no(s) canal(is) com o yt-pubx, link no inemaytbot, arquivo no v3, `BOT-FIM.md` no chat | fase `entrega`: `bot/entrega.sh <pasta>` | ⚙️ script |
 
 A pasta do pedido fica em `textos/EV<n>/` (fora do git); a produção, em `~/projetos/output/<id>/`. Vídeo longo (mais de 1 bloco), EN/ES, portal e tópico no Telegram continuam pela sessão, como abaixo.
 
@@ -43,6 +43,8 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 `prepare` não sobrescreve produções já iniciadas. `start` lança cinco serviços persistentes; não interrompe os já ativos. Não reinicie uma submissão `needs_review`: confira primeiro se existe um ID no HeyGen. A produção em andamento já está preparada; use `status`, não `prepare`.
 
 ## Formato v2: animação explicativa (2.0.0)
+
+> 2.28.11: **câmera parada** (Nei 16/11/2026, "zoom in e out rápido parece a tela tremida, na mesma imagem"): no perfil viral a foto fica com escala fixa (≤ 1,06) e os `pontos` não mexem mais na câmera; diagrama sem câmera; saída de bloco sem pulo de escala; URL do fim sem pulsar. `engine/v2/tremida.py` mede aproximar/afastar rápido (serve para qualquer motor) e o `qa_viral` reprova acima de 4; teto da área lisa 50% → 40%.
 
 > 2.27.11: **portões que barram** (Nei 13/11/2026, "aplica"; PADRAO-VIRAL, Retenção item 4). `critico_chamada.py` com nota < 7 sai com erro ("chamada fraca: reescreva com outro gatilho"): a fase ficha para depois de 2 rodadas e `bot/avatar.sh` roda o mesmo crítico antes do envio ao estúdio (escape consciente: `CRITICO_SEGUE=1`). `qa_viral` soma o tempo dos quadros com mais de 60% de área lisa, fora de rosto, mapa e vídeo cheio (relatório do build, que agora vai pelo `entrega.sh` ou é achado sozinho): mais de 50% do vídeo reprova o 16:9 ("área lisa em X% do vídeo"); no 9:16 só avisa. Calibragem: ia-no-bolso 39% passa, swarm-ficha 52% reprova.
 

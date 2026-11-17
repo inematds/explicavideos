@@ -21,17 +21,13 @@
     if (ve) { wrap.insertBefore(ve, im); im.remove(); im = ve; ve.classList.add('vr-img'); }   // clipe .mp4 (voo 3D) no lugar da foto
     h(wrap, 'div', 'vr-grain', '');
     h(wrap, 'div', 'vr-shade' + (opt && opt.dark ? ' dark' : ''), '');
-    const pts = [{ t, f: s.focus || [0.5, 0.5], z: (s.zoom || [1.05, 1.18])[0] }].concat((s.pontos || []).map((p) => ({ t: p.at, f: p.focus || [0.5, 0.5], z: p.zoom || 1.15 })));
-    const endZ = (s.zoom || [1.05, 1.18])[1];
-    const pos = (f, z) => ({ scale: z, xPercent: (0.5 - f[0]) * (z - 1) * 100, yPercent: (0.5 - f[1]) * (z - 1) * 100 });
-    c.tl.set(im, pos(pts[0].f, pts[0].z), 0);
-    pts.forEach((p, i) => {
-      const nx = pts[i + 1];
-      const t1 = nx ? nx.t : c.T1 + 0.6;
-      if (i > 0) c.tl.to(im, Object.assign(pos(p.f, p.z), { duration: 0.55, ease: 'expo.out' }), p.t);
-      const zEnd = nx ? p.z + 0.04 : Math.max(p.z + 0.04, endZ);
-      c.tl.to(im, Object.assign(pos(p.f, zEnd), { duration: Math.max(0.4, t1 - p.t - (i > 0 ? 0.55 : 0)), ease: 'none' }), p.t + (i > 0 ? 0.55 : 0));
-    });
+    // 2.28.11 (Nei 16/11/2026, "zoom in e outro rápido, parece a tela tremida — na mesma imagem"): CÂMERA PARADA.
+    // Antes cada "ponto" saltava a 1,18 em 0,55 s e o seguinte voltava (afasta/aproxima 3–7× na mesma foto).
+    // Agora: escala fixa (o menor valor de s.zoom, teto 1,06), foco fixo; s.pontos e s.zoom não movem mais a câmera.
+    const zz = s.zoom || [1, 1];
+    const z = Math.max(1, Math.min(1.06, Math.min(zz[0], zz[1])));
+    const f = s.focus || [0.5, 0.5];
+    c.tl.set(im, { scale: z, xPercent: (0.5 - f[0]) * (z - 1) * 100, yPercent: (0.5 - f[1]) * (z - 1) * 100 }, 0);
     return wrap;
   }
 
@@ -435,7 +431,7 @@
     const url = wide ? h(box, 'div', 'vr-url side', `left:1120px;top:230px`, rich(s.url || '**inema.club**'))
       : h(box, 'div', 'vr-url', `top:${sy + pw * 0.5625 + 50}px`, rich(s.url || '**inema.club**'));
     c.tl.fromTo(url, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, def(s.url_at, t + 0.4));
-    c.tl.to(url, { scale: 1.06, duration: 0.5, yoyo: true, repeat: 5, ease: 'sine.inOut' }, def(s.url_at, t + 0.4) + 0.5);
+    // 2.28.11: sem pulsar (cresce/encolhe 5×) — efeito "respirando" reprovado pelo Nei
     if (s.sub) { const sb = wide ? h(box, 'div', 'vr-usub side', `left:1120px;top:370px`, rich(s.sub)) : h(box, 'div', 'vr-usub', `top:${sy + pw * 0.5625 + 170}px`, rich(s.sub)); c.tl.fromTo(sb, { opacity: 0 }, { opacity: 1, duration: 0.4 }, def(s.sub_at, t + 0.7)); }
   };
 })();

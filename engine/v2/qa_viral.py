@@ -2,7 +2,7 @@
 """QA do perfil viral (PADRAO-VIRAL.md): reprova vídeo com tela vazia ou parada.
 
 Uso: qa_viral.py <video.mp4> [--saida=<pasta>] [--relatorio=<build.json>] [--vazio=0.90] [--liso=0.40] [--parado=2.0]
-                 [--liso-reprova=0.60] [--teto-liso=0.50] [--reprova-916]
+                 [--liso-reprova=0.60] [--teto-liso=0.40] [--reprova-916] [--tremida-max=2]
 - em cada quadro (amostra a cada 0,5 s, reduzido a 192 px de largura), fração de blocos 8×8 lisos (desvio-padrão < 6 em cinza).
 - vazio (REPROVA): mais de 90% liso = tela de uma cor só (ex.: carimbo sem keep vira tela preta).
 - liso (AVISO, 15/10/2026): mais de 40% liso. Antes reprovava, mas foto escura boa (rio, céu, fumaça) mede 0,5–0,63 e painel
@@ -16,6 +16,11 @@ Uso: qa_viral.py <video.mp4> [--saida=<pasta>] [--relatorio=<build.json>] [--vaz
   51% e os ruins 61–63%: lá só avisa (--reprova-916 liga). Gráficos (ranking, linha…) ainda entram na conta.
 - grava a folha de quadros (sheet-viral-<nome>.jpg), a dos momentos marcados (sheet-marcados-<nome>.jpg, com o segundo
   escrito) e o relatório JSON ao lado; cópia em <video>.qa.json, que o enviar_bot_v3.mjs lê para pôr o veredito na mensagem.
+- teto da área lisa 0,50 → 0,40 (2.28.11, Nei 16/11/2026): o "fim do software" passou com 48,4% de tela preta com caixinhas e foi
+  reprovado pelo Nei; os bons da calibragem medem 6–39%.
+- tremida (REPROVA, 2.28.11, Nei 16/11/2026 "zoom in e out rápido parece a tela tremida — na mesma imagem"): tremida.py conta
+  as inversões rápidas de escala (sobe e desce ≥ 1,2% em 0,5 s, 2 quadros seguidos, fora de fade); mais de --tremida-max (2)
+  reprova, 1–2 avisa. Calibragem 17/11: fim-software antigo 3, mesmo vídeo com câmera parada 0, rtex 0, r7ex 0.
 Saída: APROVADO / APROVADO COM AVISO (código 0) · REPROVADO (código 1)."""
 import json, subprocess, sys
 from pathlib import Path
@@ -28,7 +33,7 @@ opt = {a.split('=')[0]: a.split('=')[1] for a in sys.argv[1:] if a.startswith('-
 video = Path(args[0])
 out = Path(opt.get('--saida', video.parent))
 LIM_VAZIO, LIM_LISO, LIM_PARADO, PASSO = float(opt.get('--vazio', 0.90)), float(opt.get('--liso', 0.40)), float(opt.get('--parado', 2.0)), 0.5
-LIM_LISO_REPROVA, TETO_LISO = float(opt.get('--liso-reprova', 0.60)), float(opt.get('--teto-liso', 0.50))
+LIM_LISO_REPROVA, TETO_LISO = float(opt.get('--liso-reprova', 0.60)), float(opt.get('--teto-liso', 0.40))
 
 dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(video)],
                            capture_output=True, text=True).stdout)
@@ -135,17 +140,28 @@ if marc:
     sheet_m = out / f'sheet-marcados-{video.stem}.jpg'
     img.save(sheet_m, quality=85)
 
+# 2.28.11: tremida de câmera (medidor comum aos motores)
+TREM_MAX = int(opt.get('--tremida-max', 2))
+_tr = subprocess.run([sys.executable, str(Path(__file__).with_name('tremida.py')), str(video), '--max=999'], capture_output=True, text=True)
+try:
+    tremidas = json.loads(_tr.stdout.splitlines()[0]) if _tr.stdout.startswith('{') else {'tremidas': 0, 'em_s': []}
+except (ValueError, IndexError):
+    tremidas = {'tremidas': 0, 'em_s': []}
+trem_n, trem_s = tremidas['tremidas'], ', '.join(f'{x:g} s' for x in tremidas['em_s'][:12])
+
 seg = lambda tr: ', '.join(f'{a:g}–{b:g} s' for a, b in tr)
-ok = not ruins_vazio and not parados and not liso_reprova
+ok = not ruins_vazio and not parados and not liso_reprova and trem_n <= TREM_MAX
 pct_txt = f'área lisa em {liso_pct * 100:.0f}% do vídeo'
 motivo = '; '.join(([f'tela vazia (uma cor só) em {seg(trechos(ruins_vazio))}'] if ruins_vazio else [])
                    + ([f'tela parada em {seg(parados)}'] if parados else [])
                    + ([f'{pct_txt} (teto {TETO_LISO * 100:.0f}%, quadros > {LIM_LISO_REPROVA:g} lisos): olhe a folha dos '
-                       'marcados e refaça o visual (PADRAO-VIRAL Retenção)'] if liso_reprova else []))
+                       'marcados e refaça o visual (PADRAO-VIRAL Retenção)'] if liso_reprova else [])
+                   + ([f'tremida de câmera (aproxima/afasta rápido) {trem_n}× em {trem_s}'] if trem_n > TREM_MAX else []))
 aviso = '; '.join(([f'área lisa (foto escura ou painel vazio?) em {seg(trechos(lisos))}'] if lisos else [])
-                  + ([f'{pct_txt} (acima do teto de {TETO_LISO * 100:.0f}%; no 9:16 só avisa)'] if liso_pct > TETO_LISO and not liso_reprova else []))
+                  + ([f'{pct_txt} (acima do teto de {TETO_LISO * 100:.0f}%; no 9:16 só avisa)'] if liso_pct > TETO_LISO and not liso_reprova else [])
+                  + ([f'possível tremida (ou troca de cartão) em {trem_s}'] if 0 < trem_n <= TREM_MAX else []))
 rel = {'video': str(video), 'dur': round(dur, 2), 'ok': ok, 'vazio_max': round(max(vazios), 2), 'vazio_medio': round(float(np.mean(vazios)), 2),
-       'liso_pct': round(liso_pct, 3), 'liso_reprova_nivel': LIM_LISO_REPROVA, 'liso_teto': TETO_LISO,
+       'liso_pct': round(liso_pct, 3), 'tremidas': trem_n, 'tremidas_em_s': tremidas['em_s'], 'liso_reprova_nivel': LIM_LISO_REPROVA, 'liso_teto': TETO_LISO,
        'relatorio': str(_arq_rel) if _rel else None,
        'quadros_vazios': ruins_vazio, 'trechos_parados': parados, 'quadros_lisos': lisos, 'motivo': motivo, 'aviso': aviso,
        'sheet': str(sheet), 'sheet_marcados': str(sheet_m) if sheet_m else None}

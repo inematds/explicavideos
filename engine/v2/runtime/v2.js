@@ -104,10 +104,10 @@
       const out = Math.min(S.dur - 0.4, Math.max(b.t1, built[b.j].first + 0.15));
       if (shots[b.j].cont) { tl.set(b.box, { opacity: 0 }, built[b.j].first + 0.04); return; }
       if (shots[built.indexOf(b)].calm) { tl.to(b.box, { opacity: 0, duration: 0.6, ease: 'sine.inOut' }, Math.max(b.t0 + 0.4, built[b.j].first)); return; }
-      tl.to(b.box, { opacity: 0, scale: 1.035, filter: 'blur(8px)', duration: 0.32, ease: 'power2.in' }, Math.max(b.t0 + 0.4, out - 0.34));
+      tl.to(b.box, { opacity: 0, filter: 'blur(8px)', duration: 0.32, ease: 'power2.in' }, Math.max(b.t0 + 0.4, out - 0.34));
     });
     if (S.dur > 1 && shots.some((x) => x.calm)) tl.to(stage, { opacity: 0, duration: 0.35, ease: 'sine.inOut' }, S.dur - 0.35);
-    else if (S.dur > 1) tl.to(stage, { opacity: 0, scale: 1.08, filter: 'blur(10px)', duration: 0.3, ease: 'power2.in' }, S.dur - 0.3);
+    else if (S.dur > 1) tl.to(stage, { opacity: 0, filter: 'blur(10px)', duration: 0.3, ease: 'power2.in' }, S.dur - 0.3);
     tl.eventCallback('onUpdate', () => renders.forEach((f) => f()));
     renders.forEach((f) => f());
     window.__timelines[id] = tl;
@@ -826,14 +826,8 @@
           const on = !ids.length || (ids.includes(e.de) && ids.includes(e.para)) || (ids.length === 1 && (ids.includes(e.de) || ids.includes(e.para)));
           c.tl.to([e.p, e.lb].filter(Boolean), { opacity: on ? 1 : 0.22, duration: 0.45 }, t);
         });
-        if (ids.length === 1 && node[ids[0]]) {
-          const nd = node[ids[0]], z = 1.16;
-          c.tl.to(world, { scale: z, x: CX - nd.cx * z, y: CY - nd.cy * z, duration: 0.9, ease: 'power2.inOut' }, t);
-        } else if (ids.length > 1) {
-          const sel = ids.map((id) => node[id]).filter(Boolean);
-          const mx = sel.reduce((a, nd) => a + nd.cx, 0) / sel.length, my = sel.reduce((a, nd) => a + nd.cy, 0) / sel.length, z = 1.08;
-          c.tl.to(world, { scale: z, x: CX - mx * z, y: CY - my * z, duration: 0.9, ease: 'power2.inOut' }, t);
-        } else c.tl.to(world, { scale: 1, x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, t);
+        // 2.28.11 (Nei 16/11/2026): câmera do diagrama PARADA — o foco é só opacidade/brilho; antes aproximava 1,16 e voltava
+        // a cada foco (vai e vem).
       }
       if (ps.pacote) {
         const e = edge[ps.pacote.de + '>' + ps.pacote.para];

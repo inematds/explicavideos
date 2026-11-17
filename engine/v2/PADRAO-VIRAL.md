@@ -46,7 +46,7 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
        roda o mesmo crítico antes do envio ao estúdio. Escape consciente, só com ordem do Nei: `CRITICO_SEGUE=1`;
      - `qa_viral` com área lisa em mais de metade do vídeo: não publica, olha a folha e refaz o visual. Conta o tempo dos
        quadros com mais de 60% de área lisa (`--liso-reprova`), fora de rosto, mapa e vídeo cheio (relatório do build);
-       acima de 50% (`--teto-liso`) reprova o 16:9 com "área lisa em X% do vídeo". No nível 0,40 do aviso o vídeo bom
+       acima de 40% (`--teto-liso`, era 50% até a 2.28.11) reprova o 16:9 com "área lisa em X% do vídeo". No nível 0,40 do aviso o vídeo bom
        (ia-no-bolso, 54%) não se separa dos /swarm; no 0,60 passa com 39% e o swarm-ficha reprova com 52%. No 9:16 só avisa
        (bom 51%, ruins 61–63%; `--reprova-916` liga). Gráficos ainda entram na conta.
 - **Uma ideia só**, 45–75 s. A 1ª frase diz o fato mais forte com o sujeito ("O maior prédio da história…").
@@ -74,7 +74,7 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   condados), `pinos` [{lon, lat, txt, at, sub, sub_at}]. O qa_viral não mede área lisa nos trechos de mapa.
 - **Cor da imagem**: luz neutra, branco que parece branco, uma cor forte de destaque; nada de "paleta âmbar", "luz dourada" ou objeto dourado em toda cena (o gerador do Codex já puxa para o amarelo). O âmbar da marca fica só no texto e nas peças desenhadas. Depois de gerar: `refazvideo/ferramentas/cor_neutra.py corrigir media/*.png` (corrige amarelo > 18, guarda `-amarela`).
 - **Recorte de leitura** (`foto` com `"leitura": true`, 2.22.11, 23/10/2026): print de tela do original (em inglês) + tradução PT grande desenhada na imagem (`src` 16:9 e `src_916`); vale o teto do gráfico (até 9 s), não os 2 s. Molde: `~/projetos/output/explica-vZD4PmureWM/media/recortar.py`.
-- **Imagem** (`foto`): sempre em movimento (pan + zoom ≤ 1,25 + leve parallax de camadas), com vinheta e grão.
+- **Imagem** (`foto`): câmera PARADA desde a 2.28.11 (Nei 16/11/2026: zoom que entra e sai rápido na mesma imagem = tela tremida). Escala fixa = o menor valor de `zoom`, teto 1,06; `pontos` não movem mais a câmera (o destaque vai no texto/legenda). Movimento vem da troca de imagem, nunca de aproximar/afastar a mesma. Vinheta e grão continuam. Diagrama também sem câmera (foco só por opacidade). `qa_viral` reprova mais de 4 tremidas (`tremida.py`).
 - **Avatar** (D8 do inema-design, 15/10/2026): **nunca em tela cheia** — no máximo meia tela. 16:9 = caixa no canto
   inferior direito; `rosto` cresce até a metade direita. 9:16 = metade de baixo; `rosto` = metade de baixo. Com
   `"avatar_916": "pip"` + `"pip_cena": N` na config: capa sem avatar → meio tamanho até a cena N → PiP pequeno no canto
