@@ -10,9 +10,7 @@ import critico_chamada as CC  # noqa: E402
 def pasta_com_critica(d, nota, sim=True):
     p = Path(d)
     (p / 'roteiro-pt.json').write_text(json.dumps([{'speech': 'Você perde uma semana por mês.', 'labels': ['VOCÊ PERDE UMA SEMANA']}]))
-    fala = 'Você perde uma semana por mês.'
-    pedido = CC.PEDIDO.format(titulo='(sem título ainda)', manchete='VOCÊ PERDE UMA SEMANA', abertura=fala, fala=fala,
-                              nucleo='(sem chamada.json)', metodo='nenhum')
+    pedido = CC.montar(p, json.loads((p / 'roteiro-pt.json').read_text()))
     c = {k: sim for k in CC.PERGUNTAS}
     c.update(nota=nota, resumo='teste', hash=hashlib.sha1(pedido.encode()).hexdigest())
     (p / 'chamada-critica.json').write_text(json.dumps(c))
@@ -47,6 +45,28 @@ class CriticoBarra(unittest.TestCase):
             r = roda(pasta_com_critica(d, 8))
             self.assertEqual(r.returncode, 0)
             self.assertIn('chamada forte', r.stdout)
+
+
+class CriticoD23(unittest.TestCase):
+    def test_abertura_ate_o_fim_da_frase(self):
+        w = ('um ' * 44 + 'fim. depois vem mais').split()
+        self.assertTrue(CC.abertura(w).endswith('fim.'))
+        self.assertEqual(len(CC.abertura(('x ' * 100).split()).split()), 75)
+
+    def test_maioria_e_mediana(self):
+        base = {k: True for k in CC.PERGUNTAS}
+        v = [dict(base, nota=7), dict(base, nota=8, importa=False), dict(base, nota=6, manchete=False)]
+        c = CC.juntar(v)
+        self.assertTrue(c['importa']) ; self.assertTrue(c['manchete']); self.assertEqual(c['nota'], 7)
+        self.assertFalse(CC.juntar([dict(base, nota=8, escada=False)] * 2 + [dict(base, nota=8)])['escada'])
+
+    def test_persona_do_pedido(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d)
+            (p / 'pedido.json').write_text(json.dumps({'publico': 'um estudante universitário'}))
+            self.assertIn('Você é um estudante universitário.', CC.montar(p, [{'speech': 'Oi.', 'labels': []}]))
+            (p / 'pedido.json').unlink()
+            self.assertIn(CC.PERSONA, CC.montar(p, [{'speech': 'Oi.', 'labels': []}]))
 
 
 class QaAreaLisa(unittest.TestCase):
