@@ -29,6 +29,9 @@ do jogo… faz a pessoa parar para ver e aí continuamos provocando a escada"). 
 tecnologia e sim voltando atrás, como era feito antes, prova oral"): `paga` só conferia se o fecho responde ao
 título; o v2 respondeu "não acabou" e passou com resposta velha. Nova pergunta `entrega`: o corpo cumpre a promessa
 da isca com algo novo, não com o óbvio nem com volta ao método antigo.
+2.31.11 (D29, Nei 18/11/2026, aprovou o público por canal): canal técnico era julgado por quem só usa ChatGPT e reprovava
+só em `comigo` (Zelador no lives7). Agora vale `publico` do pedido.json; sem ele, PUBLICO_CANAL pelo 1º canal do pedido que
+estiver na tabela; sem canal na tabela, a persona padrão.
 A persona e o pedido só mudam neste arquivo ou no pedido.json, nunca num script da sessão (chamada.md §3.7).
 """
 import argparse
@@ -45,6 +48,11 @@ SEGUE = os.environ.get("CRITICO_SEGUE") == "1"   # escape consciente (docstring)
 VOTOS = max(1, int(os.environ.get("CRITICO_VOTOS", "3")))
 PERSONA = ("uma pessoa de 35 a 50 anos rolando o feed do YouTube/Instagram. Usa ChatGPT ou outra IA no trabalho, "
            "não é programador")
+PUBLICO_CANAL = {   # D29: só canal de público definido; mudar aqui exige commit com o motivo
+    "lives7": ("uma pessoa de 30 a 50 anos que já deixa automações, agentes de IA ou scripts rodando no próprio computador "
+               "e quer que funcionem sem precisar ficar vigiando; não precisa ser programador profissional"),
+    "lives4": "uma pessoa que trabalha com tecnologia e usa ferramentas de IA para programar, como Claude Code ou Codex",
+}
 
 PEDIDO = """Você é {persona}. Tem pouco tempo e pula vídeo que não fala da sua vida nos primeiros segundos.
 Você não sabe como este vídeo foi feito. Julgue só o que está abaixo.
@@ -107,6 +115,12 @@ def abertura(palavras, minimo=40, teto=75):
     return " ".join(palavras[:teto])
 
 
+def persona_de(ped):
+    """pedido.json > tabela do canal > padrão (D29)."""
+    canal = next((c for c in ped.get("canais") or [] if c in PUBLICO_CANAL), None)
+    return ped.get("publico") or PUBLICO_CANAL.get(canal) or PERSONA
+
+
 def montar(pasta, cenas):
     p = Path(pasta)
     fala = " ".join(str(c.get("speech") or "") for c in cenas)
@@ -115,7 +129,7 @@ def montar(pasta, cenas):
     ch = json.loads((p / "chamada.json").read_text()) if (p / "chamada.json").exists() else {}
     ped = json.loads((p / "pedido.json").read_text()) if (p / "pedido.json").exists() else {}
     manchete = " · ".join(str(x) for x in (cenas[0].get("labels") or [])) if cenas else ""
-    return PEDIDO.format(persona=ped.get("publico") or PERSONA, titulo=titulo, manchete=manchete or "(sem)",
+    return PEDIDO.format(persona=persona_de(ped), titulo=titulo, manchete=manchete or "(sem)",
                          abertura=abertura(fala.split()), fecho=str(cenas[-1].get("speech") or "") if cenas else "",
                          fala=fala, nucleo=ch.get("nucleo") or "(sem chamada.json)", metodo=ch.get("metodo") or "nenhum")
 

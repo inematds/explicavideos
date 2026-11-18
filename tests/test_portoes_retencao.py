@@ -60,6 +60,11 @@ class CriticoD23(unittest.TestCase):
         self.assertTrue(c['importa']) ; self.assertTrue(c['manchete']); self.assertEqual(c['nota'], 7)
         self.assertFalse(CC.juntar([dict(base, nota=8, escada=False)] * 2 + [dict(base, nota=8)])['escada'])
 
+    def test_publico_por_canal(self):
+        self.assertEqual(CC.persona_de({'canais': ['lives1', 'lives7']}), CC.PUBLICO_CANAL['lives7'])
+        self.assertEqual(CC.persona_de({'canais': ['lives7'], 'publico': 'x'}), 'x')
+        self.assertEqual(CC.persona_de({'canais': ['lives1']}), CC.PERSONA)
+
     def test_persona_do_pedido(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d)
