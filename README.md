@@ -44,7 +44,7 @@ journalctl --user -u explica-oswork-completo-submit -n 20 --no-pager
 
 ## Formato v2: animação explicativa (2.0.0)
 
-> 2.31.11: **público do crítico por canal** (D29, Nei 18/11/2026). `critico_chamada.py` usa `publico` do `pedido.json`; sem ele, a tabela `PUBLICO_CANAL` (hoje lives7 e lives4); sem canal na tabela, a persona padrão.
+> 2.31.12: **público do crítico por canal** (D29, Nei 18/11/2026). `critico_chamada.py` usa `publico` do `pedido.json`; sem ele, a tabela `PUBLICO_CANAL`, com os canais de público único do mapa aprovado (lives2, lives4, lives7, lives8, lives11 e lives24); nos outros, a persona padrão.
 >
 > 2.30.11: **crítico pergunta `entrega`** (Nei 17/11/2026 sobre o fim-universidade-v2 no ar: "o que falou no vídeo é o óbvio… voltando atrás, como era feito antes, prova oral"). `paga` só via se o fecho responde ao título; agora o corpo tem de cumprir a promessa da isca com algo novo, não com o óbvio nem volta ao método antigo. Calibrado: o v2 (prova oral/portfólio) barra em `entrega` (nota 7), o v3 (6 mudanças com tecnologia + a conta) passa com 8, 3/3.
 

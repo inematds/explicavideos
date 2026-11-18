@@ -29,7 +29,7 @@ do jogo… faz a pessoa parar para ver e aí continuamos provocando a escada"). 
 tecnologia e sim voltando atrás, como era feito antes, prova oral"): `paga` só conferia se o fecho responde ao
 título; o v2 respondeu "não acabou" e passou com resposta velha. Nova pergunta `entrega`: o corpo cumpre a promessa
 da isca com algo novo, não com o óbvio nem com volta ao método antigo.
-2.31.11 (D29, Nei 18/11/2026, aprovou o público por canal): canal técnico era julgado por quem só usa ChatGPT e reprovava
+2.31.12 (D29, Nei 18/11/2026, aprovou o público por canal): canal técnico era julgado por quem só usa ChatGPT e reprovava
 só em `comigo` (Zelador no lives7). Agora vale `publico` do pedido.json; sem ele, PUBLICO_CANAL pelo 1º canal do pedido que
 estiver na tabela; sem canal na tabela, a persona padrão.
 A persona e o pedido só mudam neste arquivo ou no pedido.json, nunca num script da sessão (chamada.md §3.7).
@@ -48,10 +48,14 @@ SEGUE = os.environ.get("CRITICO_SEGUE") == "1"   # escape consciente (docstring)
 VOTOS = max(1, int(os.environ.get("CRITICO_VOTOS", "3")))
 PERSONA = ("uma pessoa de 35 a 50 anos rolando o feed do YouTube/Instagram. Usa ChatGPT ou outra IA no trabalho, "
            "não é programador")
-PUBLICO_CANAL = {   # D29: só canal de público definido; mudar aqui exige commit com o motivo
-    "lives7": ("uma pessoa de 30 a 50 anos que já deixa automações, agentes de IA ou scripts rodando no próprio computador "
-               "e quer que funcionem sem precisar ficar vigiando; não precisa ser programador profissional"),
-    "lives4": "uma pessoa que trabalha com tecnologia e usa ferramentas de IA para programar, como Claude Code ou Codex",
+PUBLICO_CANAL = {   # D29: canais de público único no mapa aprovado pelo Nei (promoavatar/docs/publicos.md, 18/11/2026);
+    # canal com mais de um público usa a persona padrão. Mudar aqui exige commit com o motivo.
+    "lives2": ("dono de negócio, autônomo ou prestador de serviço que quer gastar menos, vender mais e sair da operação"),
+    "lives24": ("dono de negócio, autônomo ou prestador de serviço que quer gastar menos, vender mais e sair da operação"),
+    "lives11": "uma pessoa com emprego ou carreira que quer usar IA para ampliar o que já faz, sem trocar de profissão",
+    "lives4": "uma pessoa que já mexe com tecnologia e quer construir sistemas, não só testar ferramentas",
+    "lives7": "uma pessoa que já deixa agentes, robôs ou rotinas de IA fazendo tarefas sozinhos; não precisa ser programadora",
+    "lives8": "uma pessoa que quer criar site, app ou ferramenta com IA, sem saber programar",
 }
 
 PEDIDO = """Você é {persona}. Tem pouco tempo e pula vídeo que não fala da sua vida nos primeiros segundos.
