@@ -100,6 +100,8 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   sem FREESOUND_API_KEY.
 
 ## QA (`engine/v2/qa_viral.py`, reprova)
+- **Apelo (2.33.12, Nei 19/11/2026), o portão mais importante:** nos primeiros 3 s, manchete em letras ENORMES que para o feed (pergunta, versus, número, nome forte; rótulo de conceito como "CUSTO POR ENTREGA" reprova); imagens que mostram o assunto de verdade (produto, demo, print, placar), nunca escritório/papel/calculadora genéricos; fala fraca exige visual impressionante e provocativo; pelo menos 2 de 4 públicos (canal, jovem, executivo, dona de casa) param; nota ≥ 7. Juiz `claude -p` sobre a folha dos 3 s e a do vídeo inteiro.
+- Técnico (`engine/v2/qa_tecnico.py`, roda antes):
 - Quadro com > 40% de área lisa (fundo vazio), amostra a cada 0,5 s: aviso. Quadros com > 60% somando mais de 50% do
   vídeo (fora de rosto/mapa/vfull): reprova no 16:9 (2.27.11, Retenção item 4).
 - Avatar que se move (16:9, 2.24.11): `"av"` no shot troca posição/tamanho do avatar até o próximo `"av"`. Em shot com texto, número ou gráfico, só `dir`, `mini` ou `alto-dir` (as poses `-esq`, `grande` e `meia` cobriram título, cinética e número no quadro de 27/10/2026); alternar entre elas dá o movimento, e o tamanho grande fica com o `rosto`.

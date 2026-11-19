@@ -21,7 +21,7 @@ Por el bot (2.21.11, 22/10/2026): Nei envía `/explicavideo <tema, formato, cana
 | B1 | Entiende el pedido (formato, canal, estilo), investiga, escribe un guion de 1 bloque, genera las configs y prepara el bloque | fase `ficha`: [prompts/bot-ficha.md](prompts/bot-ficha.md) → `bot/configs.py` → `explica.py prepare` | 🤖 `claude -p` |
 | B2 | Envía el bloque al estudio de HeyGen, descarga por la API de solo lectura, corre el v1 (render + transcripción) en `explica.slice` | fase `avatar`: `bot/avatar.sh <carpeta>` | ⚙️ script |
 | B3 | Imágenes con Codex, visual v2 al ritmo del habla, `build_block --strict` | fase `visual`: [prompts/bot-visual.md](prompts/bot-visual.md) + `bot/imagens.py` | 🤖 `claude -p` |
-| B4 | Render de cada formato, sonido, `qa_viral`, publica en el/los canal(es) con yt-pubx, enlace al inemaytbot, archivo al bot v3, `BOT-FIM.md` en el chat | fase `entrega`: `bot/entrega.sh <carpeta>` | ⚙️ script |
+| B4 | Render de cada formato, sonido, `qa_viral` (2.33.12: chequeo técnico `qa_tecnico` y juez de atractivo — titular enorme que detiene el feed en los primeros 3 s, imágenes que muestran el tema, 4 públicos), publica en el/los canal(es) con yt-pubx, enlace al inemaytbot, archivo al bot v3, `BOT-FIM.md` en el chat | fase `entrega`: `bot/entrega.sh <carpeta>` | ⚙️ script |
 
 La carpeta del pedido queda en `textos/EV<n>/` (fuera de git); la producción, en `~/projetos/output/<id>/`. Videos largos (más de 1 bloque), EN/ES, el portal y los temas de Telegram siguen por sesión, como abajo.
 

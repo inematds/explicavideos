@@ -89,13 +89,13 @@ class QaAreaLisa(unittest.TestCase):
 
     def test_liso_reprova_16x9_e_avisa_9x16(self):
         with tempfile.TemporaryDirectory() as d:
-            r = subprocess.run([sys.executable, str(V2 / 'qa_viral.py'), str(self.video(d, 640, 360)), f'--saida={d}', '--tremida-max=999'],
+            r = subprocess.run([sys.executable, str(V2 / 'qa_tecnico.py'), str(self.video(d, 640, 360)), f'--saida={d}', '--tremida-max=999'],
                                capture_output=True, text=True, timeout=120)
             self.assertEqual(r.returncode, 1, r.stdout)
             self.assertIn('área lisa em', r.stdout)
             rel = json.loads(Path(d, 'qa-viral-liso-640x360.json').read_text())
             self.assertGreater(rel['liso_pct'], 0.5)
-            r = subprocess.run([sys.executable, str(V2 / 'qa_viral.py'), str(self.video(d, 360, 640)), f'--saida={d}', '--tremida-max=999'],
+            r = subprocess.run([sys.executable, str(V2 / 'qa_tecnico.py'), str(self.video(d, 360, 640)), f'--saida={d}', '--tremida-max=999'],
                                capture_output=True, text=True, timeout=120)
             self.assertEqual(r.returncode, 0, r.stdout)
             self.assertIn('no 9:16 só avisa', r.stdout)

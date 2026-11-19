@@ -21,7 +21,7 @@ Through the bot (2.21.11, 2026-10-22): Nei sends `/explicavideo <subject, format
 | B1 | Reads the request (format, channel, style), researches, writes a 1-block script, writes the configs and prepares the block | `ficha` phase: [prompts/bot-ficha.md](prompts/bot-ficha.md) → `bot/configs.py` → `explica.py prepare` | 🤖 `claude -p` |
 | B2 | Sends the block to the HeyGen studio, downloads through the read-only API, runs v1 (render + transcription) in `explica.slice` | `avatar` phase: `bot/avatar.sh <folder>` | ⚙️ script |
 | B3 | Images from Codex, v2 visuals timed to the speech, `build_block --strict` | `visual` phase: [prompts/bot-visual.md](prompts/bot-visual.md) + `bot/imagens.py` | 🤖 `claude -p` |
-| B4 | Renders each format, sound, `qa_viral`, publishes to the channel(s) with yt-pubx, link to inemaytbot, file to bot v3, `BOT-FIM.md` in the chat | `entrega` phase: `bot/entrega.sh <folder>` | ⚙️ script |
+| B4 | Renders each format, sound, `qa_viral` (2.33.12: technical check `qa_tecnico` plus an appeal judge — huge feed-stopping headline in the first 3 s, images that show the subject, 4 audiences), publishes to the channel(s) with yt-pubx, link to inemaytbot, file to bot v3, `BOT-FIM.md` in the chat | `entrega` phase: `bot/entrega.sh <folder>` | ⚙️ script |
 
 The request folder is `textos/EV<n>/` (not in git); the production is in `~/projetos/output/<id>/`. Long videos (more than 1 block), EN/ES, the portal and Telegram topics still go through a session, as below.
 
