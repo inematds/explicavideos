@@ -39,6 +39,13 @@ Com 9:16: `~/projetos/output/cancelei-anim/v2-916/visual-v2/pt-b01.json` (usa `s
 4. **Visual** em `visual-v2/pt-b01.json` da saída de cada formato (o MESMO arquivo nos dois; no 9:16 use
    `src_916` com a `capa-v`). Regras: shot `capa` em `"@start"` no quadro 0, troca a cada 1,5–3 s, gráfico
    até 9 s, nenhuma moldura vazia > 3 s, avatar nunca em tela cheia, todo número com `fonte`.
+   **Manchetes grandes (Nei, 19/11/2026: "durante o vídeo temos que ter manchetes grandes para manter atenção,
+   não só imagens e falas"):** a `capa` do quadro 0 traz DESENHADA a tese em letra enorme (frase-dor curta em cima,
+   a tese em 2–4 palavras gigantes embaixo, ex.: "A IA VAI TIRAR TEU SALÁRIO, MAS NÃO TUAS CONTAS" / "FIM DO
+   CAPITALISMO"), e a 1ª frase falada casa com ela. Depois, **no máximo a cada 10 s uma manchete grande** sobre
+   imagem: `capitulo` com `size` ≥ 100, `foto` com `titulo` grande ou `cinetica` com `size` ≥ 90, 2–5 palavras
+   em maiúsculas, a ideia do trecho (não o rótulo do gráfico). A tese volta como manchete perto do fecho.
+   Imagem-manchete que o Nei pedir vai na abertura, nunca escondida no meio.
 5. `EXPLICAVIDEOS_CONFIG={{pasta}}/<config> python3 engine/v2/build_block.py 1 --strict` para cada formato,
    até passar com 0 avisos (corrija deixas que não casaram, shots sobrepostos, lacunas). Até 5 tentativas;
    não passou → `ERRO: build strict — <o que sobrou>`.

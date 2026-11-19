@@ -51,6 +51,10 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
        (bom 51%, ruins 61–63%; `--reprova-916` liga). Gráficos ainda entram na conta.
 - **Uma ideia só**, 45–75 s. A 1ª frase diz o fato mais forte com o sujeito ("O maior prédio da história…").
 - **Quadro 0 = capa**: imagem forte + o número/promessa mais forte, sem fade (vira thumbnail).
+- **Manchetes grandes do começo ao fim** (Nei, 19/11/2026, "fim do capitalismo": "o modelo não vende"; o melhor
+  trecho era a imagem com "FIM DO CAPITALISMO" escrito enorme, que estava aos 50 s). Capa = frase-dor curta em cima +
+  tese gigante embaixo, desenhada na arte. Depois, manchete grande (`capitulo` size ≥ 100, `foto` com `titulo`,
+  `cinetica` size ≥ 90; 2–5 palavras) no máximo a cada 10 s, sobre imagem. Imagem e fala sozinhas não seguram.
 - Promessa do que vem ("no fim, o que isso muda pra você") nos primeiros 8 s.
 - Todo número com fonte; número sem fonte sai do roteiro. Fecho: cursos grátis no inema.club.
 - Números por extenso na fala (o Whisper escreve algarismo; ver FALHAS 11/10).
