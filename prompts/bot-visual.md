@@ -46,6 +46,9 @@ Com 9:16: `~/projetos/output/cancelei-anim/v2-916/visual-v2/pt-b01.json` (usa `s
    imagem: `capitulo` com `size` ≥ 100, `foto` com `titulo` grande ou `cinetica` com `size` ≥ 90, 2–5 palavras
    em maiúsculas, a ideia do trecho (não o rótulo do gráfico). A tese volta como manchete perto do fecho.
    Imagem-manchete que o Nei pedir vai na abertura, nunca escondida no meio.
+   **Legenda e gráficos (Nei, 19/11/2026)** — leia em `PADRAO-VIRAL.md`: manchete nunca na faixa da legenda nem duas
+   empilhadas; gráfico/diagrama inteiro no quadro, no ar ≥ 6 s, crescendo no lugar (números entrando embaixo, um a um)
+   em vez de trocar de tela. Confira nos quadros do render (um a cada 2 s) antes do recibo.
 5. `EXPLICAVIDEOS_CONFIG={{pasta}}/<config> python3 engine/v2/build_block.py 1 --strict` para cada formato,
    até passar com 0 avisos (corrija deixas que não casaram, shots sobrepostos, lacunas). Até 5 tentativas;
    não passou → `ERRO: build strict — <o que sobrou>`.

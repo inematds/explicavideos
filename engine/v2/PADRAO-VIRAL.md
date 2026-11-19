@@ -55,6 +55,18 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
   trecho era a imagem com "FIM DO CAPITALISMO" escrito enorme, que estava aos 50 s). Capa = frase-dor curta em cima +
   tese gigante embaixo, desenhada na arte. Depois, manchete grande (`capitulo` size ≥ 100, `foto` com `titulo`,
   `cinetica` size ≥ 90; 2–5 palavras) no máximo a cada 10 s, sobre imagem. Imagem e fala sozinhas não seguram.
+- **Manchete nunca na faixa da legenda, e uma por vez** (Nei, 19/11/2026, lives11 "fim do capitalismo": "a legenda
+  está sobre a manchete"). No 9:16 a legenda ocupa a faixa de baixo ao lado do avatar (y ≈ 1590–1760 px) e, enquanto a
+  capa cheia está na tela, o meio do quadro (y ≈ 1020–1190): a capa desenhada e as manchetes terminam ACIMA dessas
+  faixas (manchete até y ≈ 1450). Duas manchetes empilhadas (cinética + título de foto ao mesmo tempo) não: uma sai
+  antes da outra entrar.
+- **Gráfico e diagrama ficam no ar e crescem no lugar** (Nei, 19/11/2026: "quando coloca um gráfico ele não pode
+  sumir rápido; pode ficar no ar e os números aparecerem embaixo, assim dá tempo da pessoa ver"). O gráfico fica
+  inteiro dentro do quadro (nó de diagrama com x entre 0,12 e 0,88, nada cortado na borda) e na tela por ≥ 6 s, até o
+  fim do trecho que fala dele. O ritmo de 1,5–3 s vem do que ENTRA nele (cada barra, cada número embaixo, um a um, no
+  tempo da fala, e `cont` de zoom), não de trocar por outra tela. A barra/número que é a conclusão aparece inteira e
+  fica ≥ 2 s antes de qualquer troca. Dois gráficos seguidos sobre o mesmo dado = um só, com o segundo número entrando
+  embaixo do primeiro.
 - Promessa do que vem ("no fim, o que isso muda pra você") nos primeiros 8 s.
 - Todo número com fonte; número sem fonte sai do roteiro. Fecho: cursos grátis no inema.club.
 - Números por extenso na fala (o Whisper escreve algarismo; ver FALHAS 11/10).
