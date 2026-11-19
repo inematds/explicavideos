@@ -5,6 +5,9 @@
 .viral.v916 .v2-fit,.viral.v916 .v2-stage,.viral.v916 .v2-shot{width:1080px;height:1150px;transform:none!important}
 .viral.v916.pipfull .v2-fit,.viral.v916.pipfull .v2-stage,.viral.v916.pipfull .v2-shot{height:1920px}   /* avatar_916 "pip": cena no quadro inteiro */
 .viral .v2-shot{perspective:1400px}
+/* diagrama no 9:16 (Nei 19/11/2026, lives11: diagrama cortado na borda): o diagrama é desenhado na área de 1446 px
+   do 16:9; no palco de 1080 px ele vazava 1,3x pela direita. Escala para caber inteiro, centrado. */
+.viral.v916 .dg-clip{transform-origin:0 0;transform:translate(0,40px) scale(.747)}
 .viral #bg .bg-grad{background:radial-gradient(1200px 800px at 50% 40%,#1a1408 0%,#07070b 60%,#020203 100%)}
 /* avatar: 16:9 = janela grande no canto; 9:16 = metade de baixo. "rosto" cresce para tela cheia (index) */
 .viral .pip{left:1300px;top:600px;width:580px;height:440px;border-radius:30px;box-shadow:0 0 0 4px rgba(255,194,58,.9),0 24px 70px rgba(0,0,0,.7)}

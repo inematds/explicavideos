@@ -63,6 +63,7 @@ SHOT_TYPES |= VIRAL_TYPES
 # 2.17 (Nei 21/10/2026): a regra de 2 s vale para IMAGEM; gráfico animado pode ficar mais tempo para dar para ler
 GRAFICOS = {'linha', 'colunas', 'ranking', 'barra', 'escala', 'mapa'}
 GRAFICO_MAX_S = 9.0
+GRAFICO_MIN_S = 6.0   # Nei 19/11/2026: gráfico não some rápido
 # perfil interface (2.15, AUTHORING.md "Perfil interface"): peças do runtime/interface.js. Valem em qualquer perfil;
 # o build só carrega interface.css/js quando o perfil é "interface" ou alguma delas aparece (roteiro antigo não muda).
 IFACE_TYPES = {'tokens', 'probs', 'arcos', 'etapas'}
@@ -553,7 +554,10 @@ def viral_index(idx, rostos, fontes, marca, selo, capa=None, pip_t=None, pip_mov
           'R.forEach(([a,b])=>{const s0=(P!==null&&a>=P)?cn(a):(pz(a)?PR[pz(a)]:sm);tl.fromTo("#pip",Object.assign({},s0),Object.assign({duration:.35,ease:"expo.out",immediateRender:false},big),a);'
           'tl.fromTo("#pip",Object.assign({},big),Object.assign({duration:.3,ease:"expo.inOut",immediateRender:false},s0),Math.max(a+.4,b-.3));});'
           'R.forEach(([a,b,t,ta],i)=>{if(!t)return;tl.fromTo("#rt"+i,{opacity:0,scale:1.4},{opacity:1,scale:1,duration:.3,ease:"back.out(2)",immediateRender:false},ta);tl.to("#rt"+i,{opacity:0,duration:.2},Math.max(ta+.3,b-.25));});'
-          + ('tl.fromTo("#capa-cheia",{opacity:1,scale:1},{scale:1.06,duration:%.3f,ease:"none",immediateRender:true},0);tl.to("#capa-cheia",{opacity:0,duration:.25},%.3f);' % (max(.3, capa[1] - .25), max(0, capa[1] - .25)) if capa else '') +
+          + ('tl.fromTo("#capa-cheia",{opacity:1,scale:1},{scale:1.06,duration:%.3f,ease:"none",immediateRender:true},0);tl.to("#capa-cheia",{opacity:0,duration:.25},%.3f);' % (max(.3, capa[1] - .25), max(0, capa[1] - .25)) if capa else '')
+          # Nei 19/11/2026 (lives11 "fim do capitalismo": "a legenda está sobre a manchete"): no 9:16, enquanto a capa
+          # cheia está na tela, a legenda fica embaixo (y H-330), fora da manchete desenhada; volta ao lugar quando a capa sai
+          + ('if(v9){tl.fromTo("#caps",{top:H-330},{top:1020,duration:.25,ease:"expo.inOut",immediateRender:true},%.3f);}' % max(0, capa[1] - .25) if capa else '') +
           'F.forEach(([a,b],i)=>{tl.fromTo("#ft"+i,{opacity:0,y:-8},{opacity:1,y:0,duration:.25},a);tl.to("#ft"+i,{opacity:0,duration:.2},Math.max(a+.3,b-.2));});'
           '})();</script>') % (json.dumps(rostos), json.dumps([[a, b] for a, b, _ in fontes]), json.dumps(pip_t), json.dumps(pip_moves or []), json.dumps(poses or []))
     return idx.replace('</body></html>', js + '\n</body></html>')
@@ -764,6 +768,20 @@ def build(part, strict=False, spec_path=None, out=None):
             gaps = [(a, g) for a, g in gaps if not (no_grafico(a) and g <= GRAFICO_MAX_S)]
         for a, g in gaps:
             warnings.append(f'cena {n}: {g}s sem mudança visual a partir de {a}s (limite {limit}s)')
+        if viral:
+            # Nei 19/11/2026 ("quando coloca um gráfico ele não pode sumir rápido; pode ficar no ar e os números
+            # aparecerem embaixo"): gráfico/diagrama fica ≥ GRAFICO_MIN_S na tela (ou até o fim da cena); o ritmo vem
+            # do que entra nele (itens, cont), não de trocar de tela
+            for i, sh in enumerate(shots):
+                if sh['type'] not in GRAFICOS | {'diagrama'} or sh.get('cont') or sh.get('keep'):
+                    continue
+                j = i + 1
+                while j < len(shots) and (shots[j].get('cont') or shots[j].get('keep')):
+                    j += 1
+                fim = shots[j]['at'] if j < len(shots) else sdur
+                if fim - sh['at'] < min(GRAFICO_MIN_S, sdur - sh['at']) - 0.05:
+                    warnings.append(f'cena {n}: shot {i} ({sh["type"]}) fica só {fim - sh["at"]:.1f}s na tela (mín. {GRAFICO_MIN_S:.0f}s): '
+                                    'deixe o gráfico no ar e faça os números entrarem nele, em vez de trocar de tela')
         sid = f'scene-{n:03d}'
         S = {'lang': lang, 'n': n, 'total': total, 'chapter': sc['chapter'], 'title': sc['title'], 'takeaway': sc.get('takeaway') if entry is None or entry.get('takeaway', True) is not False else None,
              'dur': sdur, 'shots': shots, 'reel': bool(reel), 'header': (entry or {}).get('header')}  # True liga no reel; False tira o cabeçalho da cena no 16:9 (2.13.10)
