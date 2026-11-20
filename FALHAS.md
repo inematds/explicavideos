@@ -1,5 +1,34 @@
-| data | o que quebrou | menor correção | prompt ou infra |
+| 2026-11-20 | EV187/EV188 (tornado, lives10) pararam sem aviso ao v3: EV187 reprovado no QA (capa 2 s + rosto tela cheia = tremida) e EV188 com hyperframes check morto por SIGTERM na fase visual | falha de fluxo vinda do v3 avisa o v3; check com --timeout maior; rosto logo após a capa vira foto/cinética | infra + prompt |
+| 2026-11-20 | EV187: o snapshot aos 22 s tentou extrair um quadro da foto após o fim do clipe durante a transição | segurar o último quadro por mais 1 s e conferir com ffprobe a duração montada de cada clipe | infra |
+| 2026-11-20 | EV187 permaneceu Draft após Submit; aviso genérico 30% foi interpretado como progresso | Confirmar Draft em Projetos e retomar o mesmo card uma vez; saída do editor e RESULT confirmaram envio | infra |
+| 2026-11-20 | Visual 16:9: rótulo de troca NÃO CONFIRMADO foi cortado na caixa inicial PRONTO | usar DÚVIDA, que cabe na caixa, e conferir o quadro de 182 s | prompt |
+| 2026-11-20 | Três shots novos herdaram fundo de arquivo em trechos de fábrica e limpeza | vincular src explicitamente ao fundo da própria cena no gerador da produção | prompt |
+| 2026-11-19 | 9:16 viral: legenda no meio durante a capa cheia (sobre a manchete), diagrama 1,3x maior que o palco (cortado), gráfico sumia em 2 s | legenda embaixo na capa; .dg-clip scale .747; strict GRAFICO_MIN_S=6 | infra + prompt |
+| 2026-11-19 | Gerador visual do lives11 recebeu SIGTERM no shell antes de concluir uma imagem | retomar idempotente em unidade systemd de usuário com teto de 30 min e 8 GB | infra |
+| 2026-11-19 | Emissor do vídeo recusou o v3 por nome antigo inemav3bot; token atual identifica inemav3xbot | cópia local do emissor validando o nome atual; envio confirmado msg 5, sem alterar token ou destino | infra |
+| 2026-11-18 | Cartões e subtítulo do visual do agente perderam contraste sobre foto | cor branca no subtítulo e fundo escuro fixo no número da etapa, apenas nas composições desta produção | prompt |
+| 2026-11-18 | Visual 16:9 do agente: CTA sem src causou 404 undefined e selo encostou na legenda | trocar CTA por keyword com fundo da cena e remover selo redundante | prompt |
+| 2026-11-18 | Troca de rótulo no diagrama do boleto excedeu a caixa, dimensionada pelo rótulo inicial | limitar o texto novo ao comprimento do rótulo original (NÃO CONFIRA / CONTA) | prompt |
+| 2026-11-18 | Geração de imagens do boleto não persistiu após shell com &/nohup encerrar | executar em sessão persistente com yield, mantendo o log em arquivo | infra |
+| 2026-11-18 | Gerador visual do boleto 9:16 parou por parêntese extra no print final | remover o parêntese e executar novamente | prompt |
+| 2026-11-18 | `qa_viral` aprovou dois vídeos viral com manchete da capa sob o avatar, legenda sobre texto de clipe/tela e clipes em inglês (filme-de-lancamento) | conferir quadro 0 e folha a cada 4 s antes da fila; texto em quadro fora de x>=1300 e y>=880 (`enquadrar_textos.py`) | infra |
+| 2026-11-18 | Capa do GPT-6.2 lives4 saiu com a etiqueta sob a legenda e depois com o título sob a faixa do topo (2 refações) | pedir no `itens.json` da capa: nada de texto nos 12% de cima nem abaixo de 76% da altura | prompt |
+| 2026-11-18 | `hyperframes check` reprovou `content_overlap` no topo: diagrama com `keep` e a foto de baixo tinham `fonte` ao mesmo tempo (GPT-6.2 lives4) | `fonte` só no shot de base | prompt |
+| 2026-11-18 | Visual Nomad 9:16: dois subtítulos de capítulo encostaram no PiP a 73% da altura | limitar os subtítulos a frases curtas na área central; manter as deixas | prompt |
+| 2026-11-18 | `heygen-studio.mjs` contou 0 cards de TEMPLATE-AVATAR16 com a página Projetos ainda em esqueleto (GPT-6.2 lives4); o envio parou sem criar vídeo, mas ficou marcado como ambíguo | esperar os cards carregarem antes de contar | infra |
+| 2026-11-18 | Fase visual do /explicavideo manda usar `capa`/`bignum`/`foto` e deixas "como a transcrição escreveu", mas o perfil `aula` não carrega o viral.js e o `find_cue` casa com o roteiro (Zelador, lives7) | usar `hook`, `media`, `keyword`, `counter` e deixas do roteiro; falta o prompt da fase distinguir aula de viral | prompt |
 | 2026-11-18 | Crítico da chamada reprovou canal técnico só em "comigo" (Zelador, lives7), com persona de quem só usa ChatGPT | tabela de público por canal no `critico_chamada.py` (D29) | prompt |
+| 2026-11-18 | imersao-jarvis-3d: Whisper perdeu a frase "abriu o evento… não estava bom" (106,9–110,8 s; "andou" esticada 2,4 s), corte da cena 6 e legenda até 2,5 s adiantados | visual abre a cena 6 em REPROVADO; proteção a fazer: build avisar palavra > 2 s ou buraco > 2 s na transcrição | infra |
+| 2026-11-17 | universidade v3: lives11 recusou início do upload em duas tentativas (uploadLimitExceeded) | preservar lives1/MP4/SRT e retomar só upload após liberação da cota; Telegram não iniciado | infra |
+| 2026-11-17 | ffprobe de quadros foi iniciado enquanto MP4 ainda era escrito (moov ausente) | aguardar término do FFmpeg antes de extrair; 16 quadros extraídos e vistos | prompt |
+| 2026-11-17 | mix v3 ficou com pico −0,89 dBTP apesar do ganho −0,8 | aplicar −1,3 dB ao mix-base; medido −14,89 LUFS/−1,43 dBTP | infra |
+| 2026-11-17 | check visual v3: rótulo da seta da conta invadiu nós | remover apenas rótulo da seta; balança e perguntas mantêm a informação | prompt |
+| 2026-11-17 | build estrito v3: último intervalo 2,1 s após interpolação do ritmo | acrescentar deixa literal final “ou para tecnologia”; novo build zero warnings | prompt |
+| 2026-11-17 | setup_output da v3 rodou sem config explícita e o build ficou sem manifesto | repetir setup com EXPLICAVIDEOS_CONFIG no próprio comando; build da v3 passou | prompt |
+| data | o que quebrou | menor correção | prompt ou infra |
+| 2026-11-17 | yt-pubx cortou “programas” no título de 103 caracteres do dry-run | Retirar somente “já ” dos metadados para fechar 100 caracteres | infra |
+| 2026-11-17 | QA v2 encontrou foto parada 59,5–62 s e mix com pico −0,58 dBTP | Mostrar período 2021–2025 na deixa e reduzir ganho de áudio final em 0,8 dB | infra |
+| 2026-11-17 | Build estrito v2 reprovou pausas dos diagramas copiados sem marcação de leitura | Reaplicar leitura=true dos diagramas já revisados no v1 | infra |
 | 2026-11-17 | fim-universidade (lives11) passou com abertura-sumário (6 assuntos em ~20 s, "milhares" no lugar de 12.200); crítico deu 9/10 porque a sessão trocou a persona e mandou "preservar a pergunta de capa" | D23 em inema-design/regras/chamada.md: escada, número exato, resposta ao título no fecho, crítico intocável na sessão. Proteção que falta: critico_chamada.py recusar persona/pedido alterado e julgar sumário vs escada | prompt |
 | 2026-11-16 | fim-software-escritorio revisão 5 quadros reprovou OIT coberta por avatar e fecho sem chamada | mini explícito por foto de leitura, conter imagem no runtime local e fecho cinético nas deixas; mesmo avatar | prompt |
 | 2026-11-16 | Zoom vai e vem na mesma foto (pontos do viral.js saltavam a 1,18 e voltavam) = tela tremida; Nei reprovou o fim-software | câmera parada (escala fixa ≤ 1,06), pontos sem câmera, diagrama sem câmera; tremida.py no qa_viral (> 4 reprova) | infra |
@@ -114,3 +143,4 @@
 | 2026-09-23 | Fonte forçada alargou texto do SVG | Preservar fonte original dos diagramas | prompt |
 | 2026-09-23 | Browser sem XServer antes de abrir página | Xvfb supervisionado e preflight xdpyinfo | infra |
 | 2026-09-23 | Criação de guia/assets antes da pasta pai | Usar mkdir com parents=True | infra |
+| 2026-11-19 | Gerador visual local falhou por titulo_at duplicado em dict | Sobrescrever chave por união de dicionários | infra |
