@@ -10,11 +10,14 @@
   "source_repo": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM",
   "output": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM/v2-916",
   "v1_output": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM/v1",
-  "languages": ["pt"],
+  "languages": [
+    "pt"
+  ],
   "github_repo": "inematds/explicavideos",
   "release_tag": "video-outubro-negro",
   "hyperframes": "0.8.77",
   "marca": "INEMA · SEGURANÇA",
   "selo_topo": "AGORA",
-  "capa_segura": true
+  "capa_segura": true,
+  "reel_profiles": "/home/nmaldaner/projetos/output/explica-vZD4PmureWM/reel-profiles-longo.json"
 }

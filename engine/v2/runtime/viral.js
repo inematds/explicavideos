@@ -203,6 +203,8 @@
       const vy = by + bh / 2 - (v916 ? 30 : (G ? 42 : 34)), vf = G ? ';font-size:74px;line-height:84px' : '';
       const val = h(box, 'div', 'vr-rval' + (r.hl ? ' hl' : ''), dentro ? `right:${W - (bx + bwi) + 18}px;top:${vy}px;color:#111;text-shadow:none${vf}`
         : `left:${fim}px;top:${vy}px${vf}`);
+      // "cor" no item (07/11/2026, notas do negocios-com-ia): pinta a barra e o valor (ex.: técnica vermelha, mercado amarela, dura verde)
+      if (r.cor && !r.hl) { bar.style.background = r.cor; bar.style.boxShadow = `0 0 30px ${r.cor}`; if (!dentro) val.style.color = r.cor; }
       const st = { v: 0 };
       if (r.txt) val.innerHTML = esc(r.txt).replace(/\^(\d+)/g, '<sup>$1</sup>');
       else c.render(() => { val.innerHTML = `${s.pre ? esc(s.pre) : ''}${fmt(st.v, s.dec)}${s.unid ? `<small>${esc(s.unid)}</small>` : ''}`; });

@@ -148,7 +148,7 @@ class Timing:
             if lo is None and hi is None:
                 self.t.append(0.0)
             elif lo is None:
-                self.t.append(words[mp[hi]]['start'] - 0.3 * (hi - i))
+                self.t.append(max(0.0, words[mp[hi]]['start'] - 0.3 * (hi - i)))   # nunca antes do 0 da fala
             elif hi is None:
                 self.t.append(words[mp[lo]]['end'] + 0.3 * (i - lo - 1))
             else:

@@ -9,6 +9,7 @@ export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 B=$(realpath "${1:?uso: entrega.sh <pasta-do-bot>}")
 EV=${EXPLICAVIDEOS:-$HOME/projetos/explicavideos}
 YT=${YTPUBX:-$HOME/projetos/yt-pubx/yt-pubx}
+X3=${X3_CLI:-$HOME/projetos/yt-pub-x3/yt-pub-x3}   # Nei, 18/11/2026: canal do x3 recebe pela fila dele (YouTube e redes)
 BOTV3=${BOTV3:-$HOME/projetos/refazvideo/ferramentas/enviar_bot_v3.mjs}
 log(){ echo "$(date +%H:%M:%S) $*"; }
 fim(){ echo "erro: $*"; exit 1; }
@@ -70,9 +71,23 @@ for cfg in "$B/v2.json" "$B/v2-916.json"; do
         # ≥ 1 h entre publicações da mesma produção (Nei 12/11/2026); INTERVALO_PUB=0 desliga
         ULT=$(cat "$OUT/.ultima-publicacao" 2>/dev/null || echo 0); FALTA=$(( ULT + ${INTERVALO_PUB:-3600} - $(date +%s) ))
         # a espera não segura a trava de render (fd 9 do nivel-serie/roda.sh): 13/11 o lives4-a dormiu 54 min com ela e parou as outras cadeias
+        [ -n "${X3_FILA:-}" ] && FALTA=0   # fila do x3: quem espaça é o x3 (vigia sem prazo, Nei 18/11/2026)
         [ "$FALTA" -gt 0 ] && { log "espero ${FALTA}s antes de publicar o $FMT (1 h entre publicações)"
           T9=; [ -e /proc/$$/fd/9 ] && flock -u 9 2>/dev/null && T9=1; sleep "$FALTA"; [ -n "$T9" ] && flock 9; }
-        timeout 2400 "$YT" publicar "$F" --canal "$C" --title "$TF" --contexto "$CTX" "${CARQ[@]}" "${THUMB[@]}" "${AVULSO[@]}" >"$OUT/publicar-$C-$FMT.log" 2>&1
+        if [ -f "$(dirname "$X3")/canais/$C.yaml" ]; then
+          CAPA=(); [ $FMT = 16x9 ] && [ -s "$E/thumb.jpg" ] && CAPA=(--capa "$E/thumb.jpg")
+          if [ -n "${X3_FILA:-}" ]; then   # só entra na fila; o link vem quando o x3 publicar
+            ITEMX3="$OUT/x3-item-$C-$FMT.txt"
+            [ -s "$ITEMX3" ] || { timeout 900 "$X3" enviar-arquivo "$F" --canal "$C" --titulo "$TF" --contexto "$CTX" "${CARQ[@]}" "${CAPA[@]}" \
+              --quando fila --origem "explicavideo/$ID-$FMT" >"$OUT/publicar-$C-$FMT.log" 2>&1
+              grep -o 'na fila: item [0-9]*' "$OUT/publicar-$C-$FMT.log" | grep -o '[0-9]*$' > "$ITEMX3" || rm -f "$ITEMX3"; }
+          else
+          timeout 2600 "$X3" enviar-arquivo "$F" --canal "$C" --titulo "$TF" --contexto "$CTX" "${CARQ[@]}" "${CAPA[@]}" \
+            --quando agora --origem "explicavideo/$ID-$FMT" --esperar 2400 >"$OUT/publicar-$C-$FMT.log" 2>&1
+          fi
+        else
+          timeout 2400 "$YT" publicar "$F" --canal "$C" --title "$TF" --contexto "$CTX" "${CARQ[@]}" "${THUMB[@]}" "${AVULSO[@]}" >"$OUT/publicar-$C-$FMT.log" 2>&1
+        fi
         YID=$(grep 'Publicado:' "$OUT/publicar-$C-$FMT.log" | grep -o 'watch?v=[A-Za-z0-9_-]*\|shorts/[A-Za-z0-9_-]*' | tail -1 | sed 's#.*[=/]##')  # só upload real, nunca o aviso de "já publicado"
       fi
       [ -n "$YID" ] && [ -z "${SEM_ENVIO:-}" ] && { echo "$YID" > "$MARCA"; date +%s > "$OUT/.ultima-publicacao"; }
@@ -82,6 +97,8 @@ for cfg in "$B/v2.json" "$B/v2-916.json"; do
       LINHAS+=("- $FMT · ${DUR}s · $C: $U")
       [ -s "$MARCA.avisado" ] || { ytbot "Publicado no $C — $TIT ($FMT, $(date +%d/%m/%Y)):
 $U" && echo ok > "$MARCA.avisado"; }
+    elif [ -n "${X3_FILA:-}" ] && [ -s "$OUT/x3-item-$C-$FMT.txt" ]; then
+      LINHAS+=("- $FMT · ${DUR}s · $C: na fila do x3, item $(cat "$OUT/x3-item-$C-$FMT.txt")")
     else
       MOT=$(grep -h -i 'erro\|error\|quota\|limit' "$OUT/publicar-$C-$FMT.log" 2>/dev/null | tail -1 | cut -c1-160)
       FALHAS+=("- $FMT · $C: NÃO publicado ($MOT)")
