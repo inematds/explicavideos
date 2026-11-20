@@ -26,6 +26,9 @@ MIN=$(( (CH + 799) / 800 ))
 # "comenta PALAVRA"/"me pede o link". Só antes do 1º envio (retomada com id já enviado não é barrada).
 if [ -z "$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))[0].get('id',''))" "$M")" ] \
    && [ ! -s "$O/verification/submit-pt-01.log" ]; then
+  # 2.34.12 (Nei 20/11/2026, EV#187–191): sem PLANO que use o material e caiba no teto, não grava avatar.
+  # Escape consciente, só com ordem do Nei: MATERIAL_SEGUE=1.
+  python3 "$EV/engine/v2/checar_material.py" plano "$B" || fim "plano reprovado (acima): refaça o plano.json/fala na ficha; avatar não enviado"
   python3 "$EV/engine/v2/checar_chamada.py" "$B" || fim "chamada reprovada (acima); regra ~/projetos/inema-design/regras/chamada.md"
   # 2.27.11 (Nei 13/11/2026 "aplica"): o crítico da atenção BARRA (nota < 7 = não grava avatar). Mesma pasta = mesmo hash
   # da fase ficha, então lê chamada-critica.json sem novo claude -p. Escape consciente: CRITICO_SEGUE=1.

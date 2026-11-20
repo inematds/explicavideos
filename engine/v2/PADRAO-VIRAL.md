@@ -49,7 +49,8 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
        acima de 40% (`--teto-liso`, era 50% até a 2.28.11) reprova o 16:9 com "área lisa em X% do vídeo". No nível 0,40 do aviso o vídeo bom
        (ia-no-bolso, 54%) não se separa dos /swarm; no 0,60 passa com 39% e o swarm-ficha reprova com 52%. No 9:16 só avisa
        (bom 51%, ruins 61–63%; `--reprova-916` liga). Gráficos ainda entram na conta.
-- **Uma ideia só**, 45–75 s. A 1ª frase diz o fato mais forte com o sujeito ("O maior prédio da história…").
+- **Uma ideia só**, 45–75 s (teto 100 s; mais só se o Nei pediu a duração — briefing de outro agente não conta;
+  ~1.080 caracteres de fala por minuto, medido). A 1ª frase diz o fato mais forte com o sujeito ("O maior prédio da história…").
 - **Quadro 0 = capa**: imagem forte + o número/promessa mais forte, sem fade (vira thumbnail).
 - **Manchetes grandes do começo ao fim** (Nei, 19/11/2026, "fim do capitalismo": "o modelo não vende"; o melhor
   trecho era a imagem com "FIM DO CAPITALISMO" escrito enorme, que estava aos 50 s). Capa = frase-dor curta em cima +
@@ -99,7 +100,11 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 - **Imagens**: uma por momento, sem repetir; dado de lugar vira mapa real (satélite NASA HLS via GIBS, anotado).
 - **Marca**: faixa fina no topo (INEMA · assunto · fonte do dado da vez). Legenda grande, 1–3 palavras, palavra
   falada em âmbar.
-- Sem vídeo de terceiros nem b-roll pago por padrão (imagens locais/Codex).
+- Sem vídeo de terceiros nem b-roll pago por padrão (imagens locais/Codex). **Exceção (2.34.12, Nei 20/11/2026,
+  EV#187–191):** o material do FATO que o pedido trouxe ou que a ficha captou (`bot/captar.py` → `material.json`:
+  vídeo/foto do link que o Nei mandou, foto principal das notícias, com crédito) entra e manda no vídeo: ≥ 35% da tela,
+  do começo ao fim (`checar_material.py`). Mesma foto em outro trecho = outro recorte (arquivo novo cortado com
+  `ffmpeg -vf crop=…`), já que a câmera da `foto` é parada.
 
 ## Som
 - **Sem efeitos no meio** (D7, 15/10/2026): `som_viral.py --sem-efeitos` = só voz + trilha baixa.
