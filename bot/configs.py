@@ -52,7 +52,10 @@ def main():
           "marca": p["marca"], **({"selo_topo": p["selo_topo"]} if p.get("selo_topo") else {})}
     gravados = [("v1.json", v1)]
     if "16x9" in formatos:
-        gravados.append(("v2.json", {**v2, "output": str(out / "v2"), "aspect": "16:9"}))
+        # capa parada até o fim da 1ª frase também no 16:9 (Nei 20/11/2026, EV#187/188: "não apareceu uma imagem
+        # de capa" — sem isto a capa sumia na 1ª troca, em 1,5–2,5 s); aula não tem capa de gancho
+        gravados.append(("v2.json", {**v2, "output": str(out / "v2"), "aspect": "16:9",
+                                     **({} if p.get("perfil") == "aula" else {"capa_segura": True})}))
     if "9x16" in formatos:
         gravados.append(("v2-916.json", {**v2, "profile_visual": "viral", "output": str(out / "v2-916"),
                                          "aspect": "9:16", "avatar_916": "pip", "pip_cena": 2, "pip_move": True,

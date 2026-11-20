@@ -36,6 +36,10 @@ Com 9:16: `~/projetos/output/cancelei-anim/v2-916/visual-v2/pt-b01.json` (usa `s
    e escreva o visual enquanto elas saem. Prefira as peças desenhadas por código (`bignum`, `ranking`,
    `colunas`, `linha`, `mapa`, `escala`, `cinetica`, `carimbo`) para número e comparação — não precisam
    de imagem. Imagem que falhou → troque o shot por uma peça desenhada.
+3b. **Capa com a foto real (Nei, 20/11/2026, EV#187/188).** Se o pedido traz foto REAL do fato (anexo do Nei, `facebook-*.jpg`,
+   fonte apurada), a capa é ESSA foto em tela cheia, com crédito, e a manchete grande desenhada por cima diz a TESE/proteção
+   (ex.: "COMO SE PROTEGER DE UM TORNADO"), nunca uma instrução de serviço ("mande o CEP") nem uma ilustração no lugar da foto.
+   Caixa de texto não cobre mais que um terço da foto. Ilustração na capa só quando não há foto real.
 4. **Visual** em `visual-v2/pt-b01.json` da saída de cada formato (o MESMO arquivo nos dois; no 9:16 use
    `src_916` com a `capa-v`). Regras: shot `capa` em `"@start"` no quadro 0, troca a cada 1,5–3 s, gráfico
    até 9 s, nenhuma moldura vazia > 3 s, avatar nunca em tela cheia, todo número com `fonte`.
