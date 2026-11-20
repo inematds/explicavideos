@@ -50,9 +50,13 @@ PERSONA = ("uma pessoa de 35 a 50 anos rolando o feed do YouTube/Instagram. Usa 
            "não é programador")
 PUBLICO_CANAL = {   # D29: canais de público único no mapa aprovado pelo Nei (promoavatar/docs/publicos.md, 18/11/2026);
     # canal com mais de um público usa a persona padrão. Mudar aqui exige commit com o motivo.
-    "lives2": ("dono de negócio, autônomo ou prestador de serviço que quer gastar menos, vender mais e sair da operação"),
+    # Nei, 20/11/2026: lives1/2/3/11/12 com público próprio (promoavatar/docs/publicos.md, "Público de cada canal").
+    "lives1": "uma pessoa da comunidade INEMA que já acompanha o canal, quer novidade e se sentir parte",
+    "lives2": "um gestor que quer saber de novidades de jurídico, contabilidade e financeiro",
+    "lives3": "uma pessoa que quer aprender IA e está começando, não é programadora",
+    "lives12": "um profissional liberal de qualquer área (advogado, médico, contador, arquiteto, dentista) que não é de tecnologia",
     "lives24": ("dono de negócio, autônomo ou prestador de serviço que quer gastar menos, vender mais e sair da operação"),
-    "lives11": "uma pessoa com emprego ou carreira que quer usar IA para ampliar o que já faz, sem trocar de profissão",
+    "lives11": "uma pessoa que gosta de visão de futuro e quer saber para onde o trabalho e a IA estão indo",
     "lives4": "uma pessoa que já mexe com tecnologia e quer construir sistemas, não só testar ferramentas",
     "lives7": "uma pessoa que já deixa agentes, robôs ou rotinas de IA fazendo tarefas sozinhos; não precisa ser programadora",
     "lives8": "uma pessoa que quer criar site, app ou ferramenta com IA, sem saber programar",
