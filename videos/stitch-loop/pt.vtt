@@ -1,0 +1,325 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.460
+Você colocou sua loja no ar.
+
+2
+00:00:01.460 --> 00:00:03.020
+O cliente escolhe o produto,
+
+3
+00:00:03.020 --> 00:00:04.740
+chega ao pagamento e desiste.
+
+4
+00:00:04.740 --> 00:00:06.780
+Enquanto você trabalha na próxima função,
+
+5
+00:00:06.780 --> 00:00:08.660
+a mesma tela continua perdendo vendas.
+
+6
+00:00:08.660 --> 00:00:11.020
+O Google Labs lançou o Stitch Loop,
+
+7
+00:00:11.020 --> 00:00:13.240
+um agente experimental que acompanha seu produto
+
+8
+00:00:13.240 --> 00:00:14.480
+depois do lançamento.
+
+9
+00:00:14.480 --> 00:00:16.440
+Ele junta sinais de uso com o
+
+10
+00:00:16.440 --> 00:00:18.960
+código, prepara uma mudança para você revisar
+
+11
+00:00:18.960 --> 00:00:20.600
+e, depois que ela entra no ar,
+
+12
+00:00:20.600 --> 00:00:22.320
+acompanha o efeito.
+
+13
+00:00:22.320 --> 00:00:24.240
+Vou seguir uma compra do começo ao
+
+14
+00:00:24.240 --> 00:00:24.520
+fim.
+
+15
+00:00:24.520 --> 00:00:26.120
+No final você vai ver qual número
+
+16
+00:00:26.120 --> 00:00:28.020
+diz se valeu mexer na tela.
+
+17
+00:00:28.020 --> 00:00:30.100
+Primeiro, conecte o repositório e os dados
+
+18
+00:00:30.100 --> 00:00:31.780
+que explicam o caminho da compra.
+
+19
+00:00:31.780 --> 00:00:33.260
+Pode ser o evento que marca a
+
+20
+00:00:33.260 --> 00:00:34.220
+entrada no checkout,
+
+21
+00:00:34.220 --> 00:00:36.080
+o registro de erro do formulário e
+
+22
+00:00:36.080 --> 00:00:37.580
+o evento de pagamento confirmado.
+
+23
+00:00:37.580 --> 00:00:39.720
+A meta é reduzir a desistência entre
+
+24
+00:00:39.720 --> 00:00:41.240
+a entrada no checkout e a compra
+
+25
+00:00:41.240 --> 00:00:41.880
+concluída.
+
+26
+00:00:41.880 --> 00:00:43.840
+Se os abandonos aparecem com frequência no
+
+27
+00:00:43.840 --> 00:00:45.680
+celular, depois do campo de endereço,
+
+28
+00:00:45.680 --> 00:00:47.220
+o agente pode trazer esse sinal como
+
+29
+00:00:47.220 --> 00:00:49.500
+evidência e sugerir onde investigar.
+
+30
+00:00:49.500 --> 00:00:51.040
+A vantagem é ter um ponto de
+
+31
+00:00:51.040 --> 00:00:52.990
+partida que você consegue conferir nos dados.
+
+32
+00:00:52.990 --> 00:00:54.680
+Segundo, compare as alternativas.
+
+33
+00:00:54.680 --> 00:00:56.100
+No nosso checkout,
+
+34
+00:00:56.100 --> 00:00:58.280
+uma é simplificar o formulário de endereço.
+
+35
+00:00:58.280 --> 00:01:00.760
+Outra é melhorar a explicação quando um
+
+36
+00:01:00.760 --> 00:01:01.600
+campo dá erro.
+
+37
+00:01:01.600 --> 00:01:03.400
+Você escolhe uma direção.
+
+38
+00:01:03.400 --> 00:01:05.460
+O Stitch Loop prepara a mudança num
+
+39
+00:01:05.460 --> 00:01:07.780
+ambiente isolado e abre um pull request
+
+40
+00:01:07.780 --> 00:01:08.640
+no GitHub.
+
+41
+00:01:08.640 --> 00:01:11.240
+Quando couber, ele inclui imagens ou vídeo
+
+42
+00:01:11.240 --> 00:01:11.960
+da mudança.
+
+43
+00:01:11.960 --> 00:01:14.360
+Na revisão, abra a tela em tamanho
+
+44
+00:01:14.360 --> 00:01:17.180
+de celular, confira o formulário e teste
+
+45
+00:01:17.180 --> 00:01:19.020
+se o pagamento continua funcionando.
+
+46
+00:01:19.020 --> 00:01:21.000
+A decisão de incorporar a mudança é
+
+47
+00:01:21.000 --> 00:01:21.260
+sua.
+
+48
+00:01:21.260 --> 00:01:22.220
+Terceiro,
+
+49
+00:01:22.220 --> 00:01:24.440
+depois de publicar a mudança aprovada,
+
+50
+00:01:24.440 --> 00:01:25.880
+volte àquela meta.
+
+51
+00:01:25.880 --> 00:01:27.820
+O número é a proporção de compras
+
+52
+00:01:27.820 --> 00:01:28.780
+concluídas
+
+53
+00:01:28.780 --> 00:01:30.900
+entre as pessoas que entraram no checkout.
+
+54
+00:01:30.900 --> 00:01:32.620
+Olhe esse número no celular,
+
+55
+00:01:32.620 --> 00:01:35.240
+com um período e uma amostra comparáveis.
+
+56
+00:01:35.240 --> 00:01:37.460
+Se o preenchimento ficou mais fácil e
+
+57
+00:01:37.460 --> 00:01:38.580
+a taxa de compra subiu,
+
+58
+00:01:38.580 --> 00:01:40.260
+você tem um sinal para investigar.
+
+59
+00:01:40.260 --> 00:01:42.260
+Se o formulário parece melhor e a
+
+60
+00:01:42.260 --> 00:01:43.680
+taxa ficou no mesmo lugar,
+
+61
+00:01:43.680 --> 00:01:46.180
+o agente pode continuar buscando outras causas.
+
+62
+00:01:46.180 --> 00:01:48.080
+Ele segue acompanhando a meta para sinalizar
+
+63
+00:01:48.080 --> 00:01:49.240
+se a métrica voltar a cair.
+
+64
+00:01:49.240 --> 00:01:51.700
+O Google anunciou ciclos prontos de segurança,
+
+65
+00:01:51.700 --> 00:01:53.520
+latência e acessibilidade.
+
+66
+00:01:53.520 --> 00:01:55.440
+A conversão do nosso checkout é um
+
+67
+00:01:55.440 --> 00:01:57.000
+exemplo de objetivo que a equipe pode
+
+68
+00:01:57.000 --> 00:01:57.600
+definir.
+
+69
+00:01:57.600 --> 00:01:59.820
+O produto está em fase experimental e
+
+70
+00:01:59.820 --> 00:02:01.620
+o acesso foi anunciado por lista de
+
+71
+00:02:01.620 --> 00:02:04.320
+espera, com prioridade para usuários elegíveis do
+
+72
+00:02:04.320 --> 00:02:05.680
+Google AI Ultra.
+
+73
+00:02:05.680 --> 00:02:07.780
+A ideia que vale levar é esta.
+
+74
+00:02:07.780 --> 00:02:09.260
+Você escolhe o objetivo,
+
+75
+00:02:09.260 --> 00:02:11.380
+o agente traz evidência e prepara a
+
+76
+00:02:11.380 --> 00:02:13.380
+mudança, e a métrica do produto ajuda
+
+77
+00:02:13.380 --> 00:02:15.640
+a decidir a próxima rodada.
+
+78
+00:02:15.680 --> 00:02:17.680
+Qual parte do seu aplicativo você colocaria
+
+79
+00:02:17.680 --> 00:02:18.560
+nesse ciclo primeiro?
+
+80
+00:02:18.560 --> 00:02:20.500
+É esse tipo de experimento que a
+
+81
+00:02:20.500 --> 00:02:22.773
+gente acompanha no inema ponto club.

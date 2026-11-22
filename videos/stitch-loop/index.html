@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stitch Loop — encontre onde seu app perde clientes | INEMA</title>
+<meta name="description" content="Veja como o agente experimental do Google usa dados de produção para sugerir uma correção no checkout, abrir um pull request e medir o resultado após a aprovação da equipe.">
+<link rel="canonical" href="https://inematds.github.io/explicavideos/videos/stitch-loop/">
+<style>
+:root{color-scheme:dark;background:#0c1320;color:#eeeff2;font:1rem/1.6 system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0}main{max-width:66rem;margin:auto;padding:2rem 1.25rem 3rem}
+nav{margin-bottom:2rem}h1{font-size:clamp(1.8rem,5vw,3.3rem);letter-spacing:-.035em;line-height:1.1;max-width:26ch;margin:0}
+p{max-width:70ch}a{color:#a8caff;text-underline-offset:.2em}
+video{width:100%;height:auto;aspect-ratio:16/9;display:block;background:#080d17;border:1px solid #374361;border-radius:.75rem}
+ul{padding:0;list-style:none;display:grid;gap:.5rem}button{width:100%;display:block;text-align:left;min-height:2.8rem;padding:.55rem .8rem;background:#151f31;border:1px solid #374361;border-radius:.5rem;color:inherit;font:inherit;cursor:pointer}button:hover{background:#243451}time{display:inline-block;min-width:4rem;color:#a8caff;font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid #a8caff;outline-offset:3px}
+</style>
+</head>
+<body><main>
+<nav aria-label="Navegação"><a href="https://inema.club/videos/">Vídeos do INEMA</a></nav>
+<h1>Stitch Loop — encontre onde seu app perde clientes</h1>
+<p>Veja como o agente experimental do Google usa dados de produção para sugerir uma correção no checkout, abrir um pull request e medir o resultado após a aprovação da equipe.</p>
+<p>Português · 2 min 23 s</p>
+<video controls playsinline preload="metadata" poster="capa.jpg">
+  <source src="https://github.com/inematds/explicavideos/releases/download/video-stitch-loop-20261122/stitch-loop-pt.mp4" type="video/mp4">
+  <track kind="subtitles" src="pt.vtt" srclang="pt-BR" label="Português">
+</video>
+<p><a href="https://github.com/inematds/explicavideos/releases/download/video-stitch-loop-20261122/stitch-loop-pt.mp4">Baixar MP4</a> · <a href="pt.vtt">Ler legendas</a> · <a href="https://blog.google/innovation-and-ai/models-and-research/google-labs/stitch-loop/">Anúncio do Google Labs</a></p>
+<h2>Capítulos</h2>
+<ul><li><button type="button" data-time="0.0"><time>00:00</time> O abandono no checkout</button></li>
+<li><button type="button" data-time="28.02"><time>00:28</time> Passo 1 de 3</button></li>
+<li><button type="button" data-time="52.58"><time>00:52</time> Passo 2 de 3</button></li>
+<li><button type="button" data-time="81.26"><time>01:21</time> Passo 3 de 3</button></li>
+<li><button type="button" data-time="109.24"><time>01:49</time> O que vem no Stitch Loop</button></li></ul>
+<script>
+const video = document.querySelector('video');
+document.querySelectorAll('button[data-time]').forEach(button => {
+  button.addEventListener('click', () => {
+    const seek = () => { video.currentTime = Number(button.dataset.time); video.play().catch(() => {}); };
+    if (video.readyState > 0) seek();
+    else { video.addEventListener('loadedmetadata', seek, { once: true }); video.load(); }
+  });
+});
+</script>
+</main></body></html>
