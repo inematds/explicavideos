@@ -19,7 +19,7 @@ PAL_15S = 45         # ~15 s de fala a ~180 palavras/min
 PAL_25S = 75          # ~25 s: a dor/desejo em "você" tem de aparecer até aqui (erro); até 15 s é o ideal (aviso)
 PAL_METODO = 60       # ~20 s: o nome do método (quando houver) é dito até aqui
 FORMATOS = {"acusacao", "promessa", "perda", "contrario", "numero", "estatistica", "pergunta", "nome", "noticia",
-            "terceiro", "provocacao"}
+            "terceiro", "provocacao", "produto"}   # produto: D30, Nei 24/11/2026
 VOCE = re.compile(r"\b(voc[eê]s?|seus?|suas?|te|teu|tua|contigo)\b", re.I)
 ABERTURA_PROIBIDA = re.compile(r"^\W*(imagin[ae]|pense|neste v[ií]deo|nesse v[ií]deo|hoje (vamos|eu vou)|voc[eê] sabia|"
                                r"sabia que|eu fiz|eu criei|eu testei|ent[aã]o\b|neste momento)", re.I)
