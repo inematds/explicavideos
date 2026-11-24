@@ -52,6 +52,7 @@ padrão. Nasceu do TeraFab (11/10/2026), que saiu com cara de slide e o Nei repr
 - **Uma ideia só**, 45–75 s (teto 100 s; mais só se o Nei pediu a duração — briefing de outro agente não conta;
   ~1.080 caracteres de fala por minuto, medido). A 1ª frase diz o fato mais forte com o sujeito ("O maior prédio da história…").
 - **Quadro 0 = capa**: imagem forte + o número/promessa mais forte, sem fade (vira thumbnail).
+  **Capa ≥ 3 s (D30, 2.35.12, Nei 24/11/2026):** a capa fica parada no mínimo 3 s; o build avisa (e o `--strict` barra) se a deixa do 2º shot cair antes. Vídeo de ferramenta: `chamada.json` `"formato": "produto"` (nome + ganho + lista, sem história).
 - **Manchetes grandes do começo ao fim** (Nei, 19/11/2026, "fim do capitalismo": "o modelo não vende"; o melhor
   trecho era a imagem com "FIM DO CAPITALISMO" escrito enorme, que estava aos 50 s). Capa = frase-dor curta em cima +
   tese gigante embaixo, desenhada na arte. Depois, manchete grande (`capitulo` size ≥ 100, `foto` com `titulo`,

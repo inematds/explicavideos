@@ -36,7 +36,7 @@ A persona e o pedido só mudam neste arquivo ou no pedido.json, nunca num script
 """
 import argparse
 import hashlib
-import json
+import json, time
 import os
 import statistics
 import subprocess
@@ -44,6 +44,10 @@ import sys
 from pathlib import Path
 
 PERGUNTAS = ("problema", "comigo", "importa", "nome", "manchete", "escada", "paga", "entrega")
+# Nei, 21/11/2026: por uns dias o crítico só AVALIA e registra; não reprova (sai 0). Passou a data, volta a barrar.
+OBSERVAR_ATE = os.environ.get("CRITICO_OBSERVAR_ATE", "2026-11-28")
+OBSERVAR = time.strftime("%Y-%m-%d") <= OBSERVAR_ATE and os.environ.get("CRITICO_OBSERVAR") != "0"
+REGISTRO = Path(__file__).resolve().parents[2] / "registro-critico-chamada.jsonl"
 SEGUE = os.environ.get("CRITICO_SEGUE") == "1"   # escape consciente (docstring)
 VOTOS = max(1, int(os.environ.get("CRITICO_VOTOS", "3")))
 PERSONA = ("uma pessoa de 35 a 50 anos rolando o feed do YouTube/Instagram. Usa ChatGPT ou outra IA no trabalho, "
@@ -137,9 +141,23 @@ def montar(pasta, cenas):
     ch = json.loads((p / "chamada.json").read_text()) if (p / "chamada.json").exists() else {}
     ped = json.loads((p / "pedido.json").read_text()) if (p / "pedido.json").exists() else {}
     manchete = " · ".join(str(x) for x in (cenas[0].get("labels") or [])) if cenas else ""
-    return PEDIDO.format(persona=persona_de(ped), titulo=titulo, manchete=manchete or "(sem)",
-                         abertura=abertura(fala.split()), fecho=str(cenas[-1].get("speech") or "") if cenas else "",
-                         fala=fala, nucleo=ch.get("nucleo") or "(sem chamada.json)", metodo=ch.get("metodo") or "nenhum")
+    txt = PEDIDO.format(persona=persona_de(ped), titulo=titulo, manchete=manchete or "(sem)",
+                        abertura=abertura(fala.split()), fecho=str(cenas[-1].get("speech") or "") if cenas else "",
+                        fala=fala, nucleo=ch.get("nucleo") or "(sem chamada.json)", metodo=ch.get("metodo") or "nenhum")
+    return txt + (PRODUTO if ch.get("formato") == "produto" else "")
+
+
+# D30 (Nei, 24/11/2026): vídeo de ferramenta abre pelo produto, curto e direto, sem história. "as pessoas querem um
+# produto, e aí a solução"; "quando fala openbot, mesmo não sabendo, chama atenção"; "é informação e não venda".
+PRODUTO = """
+
+ESTE VÍDEO É DE PRODUTO (formato produto, D30). Ajuste a leitura:
+- "comigo" = eu QUERO esse produto depois da 1ª frase? (o nome do produto + o ganho já bastam; não exija cena da minha vida).
+- O nome do produto e os termos dele (ferramenta, servidor, WhatsApp, agente) NÃO contam como jargão.
+- Lista de benefícios curta e direta é o formato certo: "catalogo" só se passar de 5 itens soltos sem prova.
+- "escada" = cada frase acrescenta um benefício ou a prova dele. Sem provocação: "paga" = true.
+- Abrir com cena/historinha antes do produto baixa a nota (nota ≤ 6): o produto vem nos 2 primeiros segundos.
+- Não peça ressalva de licença, custo ou "não testado": é informação, não venda."""
 
 
 def juntar(votos):
@@ -174,6 +192,20 @@ def criticar(pedido):
     return juntar(votos)
 
 
+def registrar(pasta, c, h):
+    """Uma linha por avaliação (dedupe por hash do pedido) em explicavideos/registro-critico-chamada.jsonl."""
+    try:
+        if REGISTRO.exists() and h in REGISTRO.read_text():
+            return
+        lin = {"data": time.strftime("%Y-%m-%d %H:%M:%S"), "pasta": str(pasta), "hash": h, "nota": c.get("nota"),
+               **{k: bool(c.get(k)) for k in PERGUNTAS}, "jargao": c.get("jargao"), "catalogo": c.get("catalogo"),
+               "resumo": c.get("resumo"), "melhorar": c.get("melhorar"), "modo": "observar" if OBSERVAR else "barra"}
+        with open(REGISTRO, "a") as f:
+            f.write(json.dumps(lin, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("pasta")
@@ -197,11 +229,16 @@ def main():
         c["hash"] = h
         arq.write_text(json.dumps(c, ensure_ascii=False, indent=1))
     sim = [k for k in PERGUNTAS if c.get(k)]
+    registrar(p, c, h)
     ok = int(c["nota"]) >= 7 and len(sim) == len(PERGUNTAS)
     nv = len(c.get("votos") or []) or 1
     print(f"crítico da chamada ({nv} leitura{'s' if nv > 1 else ''}): nota {c['nota']} · sim: {', '.join(sim) or 'nenhuma'}"
           + (f" · jargão: {', '.join(c.get('jargao') or [])}" if c.get("jargao") else "")
           + (" · CATÁLOGO" if c.get("catalogo") else "") + f" — {c.get('resumo', '')}")
+    if not ok and OBSERVAR:
+        print(f"OBSERVAÇÃO (modo observar até {OBSERVAR_ATE}): nota {c['nota']}, 'não' em "
+              f"{', '.join(k for k in PERGUNTAS if not c.get(k)) or 'nenhuma'}; registrado, NÃO barra. melhorar: {c.get('melhorar', '')}")
+        sys.exit(0)
     if not ok:
         print(f"melhorar: {c.get('melhorar', '')}")
         if c.get("manchete_melhor"):

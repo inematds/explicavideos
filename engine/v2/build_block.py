@@ -64,6 +64,7 @@ SHOT_TYPES |= VIRAL_TYPES
 GRAFICOS = {'linha', 'colunas', 'ranking', 'barra', 'escala', 'mapa'}
 GRAFICO_MAX_S = 9.0
 GRAFICO_MIN_S = 6.0   # Nei 19/11/2026: gráfico não some rápido
+CAPA_MIN_S = float(os.environ.get('CAPA_MIN_S', '3.0'))   # D30, Nei 24/11/2026: "a capa tem que esperar no mínimo 3 segundos como manchete"
 # perfil interface (2.15, AUTHORING.md "Perfil interface"): peças do runtime/interface.js. Valem em qualquer perfil;
 # o build só carrega interface.css/js quando o perfil é "interface" ou alguma delas aparece (roteiro antigo não muda).
 IFACE_TYPES = {'tokens', 'probs', 'arcos', 'etapas'}
@@ -755,7 +756,10 @@ def build(part, strict=False, spec_path=None, out=None):
             limit = 10
             ts = [0.0] + all_times(shots) + [sdur - 2]
         gaps = [(round(a, 1), round(b - a, 1)) for a, b in zip(ts, ts[1:]) if b - a > limit]
-        if viral and k == 0 and CFG.get('capa_segura') and len(shots) > 1 and shots[0]['type'] == 'capa':
+        if viral and k == 0 and len(shots) > 1 and shots[0]['type'] in OPENERS and shots[1]['at'] < CAPA_MIN_S - 0.05:
+            warnings.append(f'cena {n}: a capa fica só {shots[1]["at"]:.1f}s (mín. {CAPA_MIN_S:.0f}s, D30): ponha a deixa do 2º shot '
+                            f'numa palavra dita depois de {CAPA_MIN_S:.0f}s')
+        if viral and k == 0 and len(shots) > 1 and shots[0]['type'] in OPENERS and (CFG.get('capa_segura') or shots[0]['type'] == 'hook'):
             # "capa_segura" (Nei 15/10/2026: "o texto inicial tem que ficar mais segundos aberto"): a capa parada
             # de propósito não conta como trecho sem troca
             gaps = [(a, g) for a, g in gaps if a >= shots[1]['at'] - 0.05]
