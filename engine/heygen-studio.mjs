@@ -35,7 +35,8 @@ const TEMPLATE = arg('template', 'TEMPLATE-AVATAR');
 const SECO = process.argv.includes('--seco');   // para tudo antes do "Enviar"
 const FALA = (() => {
   const f = arg('fala-arquivo');
-  return f ? readFileSync(f, 'utf8').trim() : '';
+  // fala SEMPRE em uma linha: com quebras o estúdio narra só o 1º bloco (Falso Gemini 22/11 = 18,9 s; tcj integrais 23/11 = 11 s)
+  return f ? readFileSync(f, 'utf8').replace(/\s+/g, ' ').trim() : '';
 })();
 
 if (!TITULO || !PERFIL || !FALA) {
