@@ -53,8 +53,30 @@ for cfg in "$B/v2.json" "$B/v2-916.json"; do
   fi
   # 2.27.11: o relatório do build tira rosto/mapa/vfull da conta da área lisa (> 50% do 16:9 reprova)
   QA=0; REL=(); [ -s "$V/verification/build-v2-pt-b01.json" ] && REL=(--relatorio="$V/verification/build-v2-pt-b01.json")
-  if [ "$PERFIL" != aula ] || [ $FMT = 9x16 ]; then
+  # Nei 26/11/2026: formato já publicado (ou já na fila do x3) em todos os canais não passa de novo pelo QA nem manda 🔵
+  # (25/11: a retentativa do 9:16 refazia a entrega do 16:9 já no ar e mandava "publicado igual" falso no v3)
+  JA=1; for C in $CANAIS; do [ -s "$OUT/youtube-$C-$FMT.txt" ] || { [ -n "${X3_FILA:-}" ] && [ -s "$OUT/x3-item-$C-$FMT.txt" ]; } || JA=; done
+  [ -n "$JA" ] && log "$FMT já publicado/na fila em $CANAIS — pulo o QA"
+  if [ -z "$JA" ] && { [ "$PERFIL" != aula ] || [ $FMT = 9x16 ]; }; then
     (cd "$EV" && python3 engine/v2/qa_viral.py "$F" --saida="$V/verification" --pasta="$OUT" "${REL[@]}") > "$V/qa.log" 2>&1; QA=$?; fi
+  # Nei 21/11/2026 (vale para TODA produção): QA técnico ok + nota do apelo ≥ 6 (acima de 5) na 3ª tentativa em diante
+  # sai igual, avisa o v3 (🔵) e registra em wifi/revisor-falhas.md. Tentativa = reprovações do apelo contadas em
+  # $OUT/qa-tentativas.txt (ou QA_TENTATIVA, se o chamador contar e for maior). Desligar: QA_ACEITA_NOTA_MIN=99.
+  if [ $QA != 0 ] && grep -q "qa técnico: APROVADO" "$V/qa.log" 2>/dev/null; then
+    CT=$(cat "$OUT/qa-tentativas.txt" 2>/dev/null || echo 0); CT=$((CT+1)); echo "$CT" > "$OUT/qa-tentativas.txt"
+    TENT=$CT; [ "${QA_TENTATIVA:-0}" -gt "$TENT" ] && TENT=$QA_TENTATIVA
+    MINN=${QA_ACEITA_NOTA_MIN:-6}; DESDE=${QA_ACEITA_A_PARTIR:-3}
+    NOTA=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1])).get('viral',{}).get('nota',0))" "$F.qa.json" 2>/dev/null || echo 0)
+    if [ "$TENT" -ge "$DESDE" ] && [ "${NOTA:-0}" -ge "$MINN" ]; then
+      MOT=$(grep -o "REPROVADO no apelo:.*" "$V/qa.log" | cut -c1-250)
+      log "$FMT: QA do apelo com nota $NOTA na tentativa $TENT — sai igual (regra do Nei, 21/11/2026)"
+      python3 "$HOME/projetos/wifi/scripts/revisor-nota.py" registra --fluxo "${FLUXO_QA:-explicavideo}" --item "$ID" --quem revisor --veredito reprovado \
+        --nota "$NOTA" --motivo "publicado igual na tentativa $TENT: $MOT" --detalhe-arquivo "$V/qa.log" \
+        --correcao "aceito pela regra nota ≥ $MINN a partir da tentativa $DESDE" >/dev/null 2>&1
+      bash "$HOME/projetos/wifi/scripts/avisa-v3.sh" "🔵 $ID ($FMT): QA do apelo deu nota $NOTA (precisa 7) na tentativa $TENT — publicado igual, pela regra. $MOT" >/dev/null 2>&1
+      QA=0
+    fi
+  fi
   [ $QA = 0 ] || fim "QA reprovou o $FMT: $(tail -2 "$V/qa.log" | tr '\n' ' ' | cut -c1-300) — vídeo em $F, nada publicado"
   DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$F" | cut -d. -f1)
   log "$FMT pronto: ${DUR}s"
