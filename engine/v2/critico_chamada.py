@@ -43,7 +43,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PERGUNTAS = ("problema", "comigo", "importa", "nome", "manchete", "escada", "paga", "entrega")
+PERGUNTAS = ("problema", "comigo", "importa", "nome", "manchete", "escada", "paga", "entrega", "virada")
 # Nei, 21/11/2026: por uns dias o crítico só AVALIA e registra; não reprova (sai 0). Passou a data, volta a barrar.
 OBSERVAR_ATE = os.environ.get("CRITICO_OBSERVAR_ATE", "2026-11-28")
 OBSERVAR = time.strftime("%Y-%m-%d") <= OBSERVAR_ATE and os.environ.get("CRITICO_OBSERVAR") != "0"
@@ -89,9 +89,6 @@ Responda às perguntas pensando no título e nos primeiros 15 s (o fecho é para
 julgar jargão e lista):
 1. problema: eu já sei qual é o problema ou a novidade?
 2. comigo: eu sinto que é COMIGO (minha dor ou meu desejo), não um assunto técnico dos outros?
-   Se eu JÁ vivo esse assunto e a abertura passa mais de 2 frases me descrevendo a dor que eu já conheço, em vez de
-   me mostrar como parar de perder ("pare de perder tokens"), o jeito antigo que eu ainda uso ou quem de peso resolveu,
-   isso não me prende = false (D32).
 3. importa: eu sei por que isso importa para mim (o que eu perco ou ganho), ou me prometeram mostrar isso?
 4. nome: se há método, eu já ouvi o NOME da solução? (sem método: responda true)
 5. manchete: lendo SÓ a manchete da capa, sem som, eu entendo a informação (quem + o que acontece)? Enigmática
@@ -108,6 +105,7 @@ julgar jargão e lista):
    fala completa. Se a isca fala de mudança, tecnologia ou futuro e a resposta é voltar a método antigo (prova oral,
    proibir, vigiar, "explique sua decisão", portfólio) ou um conselho óbvio que já existia antes da novidade = false.
    Teste: cada passo da resposta seria possível sem a novidade da isca? Se quase todos sim = false.
+9. virada: {virada}
 A 1ª fala é frase completa, como se fala com alguém (quem faz o quê, em que condição), ou slogan comprimido que eu
 tenho que decifrar? Slogan ('nunca mais diz pronto sem prova') = nota ≤ 6; frase de gente ('o seu agente nunca mais vai
 dizer pronto se não tiver provado. É isso que este método faz. Vou explicar como.') é o certo.
@@ -117,7 +115,7 @@ diga se a fala vira catálogo (lista de mais de 3 itens). Nota 0–10: "eu conti
 
 Responda SÓ com JSON numa linha:
 {{"problema": true|false, "comigo": true|false, "importa": true|false, "nome": true|false, "manchete": true|false,
-"frases": ["<frase curta> → prova|agrava|promessa|outro assunto"], "escada": true|false, "paga": true|false, "entrega": true|false, "nota": 0-10,
+"frases": ["<frase curta> → prova|agrava|promessa|outro assunto"], "escada": true|false, "paga": true|false, "entrega": true|false, "virada": true|false, "nota": 0-10,
 "jargao": ["..."], "catalogo": true|false, "melhorar": "<abertura reescrita em 1-2 frases, na voz do Nei, ou vazio se nota >= 9>", "manchete_melhor": "<manchete clara, até 9 palavras, ou vazio>",
 "resumo": "<uma frase>"}}"""
 
@@ -128,6 +126,30 @@ def abertura(palavras, minimo=40, teto=75):
         if palavras[i].endswith((".", "?", "!")):
             return " ".join(palavras[:i + 1])
     return " ".join(palavras[:teto])
+
+
+# D32 (D20 revista, Nei 27/11/2026): "como as pessoas já sabem do assunto, não é a dor que move, e sim o desejo, a
+# provocação, a perda… 'para de perder tokens'… é a dor pelo outro lado". Padrão por canal = inema-design chamada.md §2f.
+SABE_CANAL = {"lives1": True, "lives4": True, "lives7": True,
+              "lives2": False, "lives8": False, "lives12": False, "lives24": False}   # lives3/lives11: pelo assunto
+VIRADA_SABE = ("EU JÁ VIVO ESSE ASSUNTO (uso, gasto, sofro com ele). A abertura e o título pegam a dor pelo OUTRO LADO "
+               "— o que eu paro de perder/pagar/esperar (\"pare de perder tokens\", \"nunca mais vai sentir falta dos "
+               "seus tokens\"), o jeito antigo que eu ainda uso (\"você ainda usa do jeito antigo\") ou quem de peso já "
+               "resolveu (\"os engenheiros da Anthropic mostraram como…\")? true. Se gasta mais de 2 frases me "
+               "descrevendo a dor que eu já conheço, ou abre com dúvida morna/rótulo neutro que não promete eu parar de "
+               "perder nada = false. Em \"melhorar\" e \"manchete_melhor\", a 1ª frase é do tipo parar de perder, jeito "
+               "antigo ou autoridade; NUNCA comece descrevendo o problema que eu já sofro (\"seu agente diz que está "
+               "pronto e tem defeito\" = errado; \"nunca mais deixe defeito ir para o ar\" = certo).")
+VIRADA_LEIGO = "eu ainda não vivo esse assunto (sou leigo nele): responda true."
+VIRADA_TALVEZ = "se eu já vivo esse assunto: " + VIRADA_SABE + " Se o assunto é novo para mim: true."
+
+
+def sabe_de(ch, ped):
+    """chamada.json > padrão do canal (D32). None = não dá para saber (lives3/lives11 sem o campo)."""
+    v = str(ch.get("publico_ja_sabe") or "").strip().lower().replace("ã", "a")
+    if v in ("sim", "nao"):
+        return v == "sim"
+    return next((SABE_CANAL[c] for c in ped.get("canais") or [] if c in SABE_CANAL), None)
 
 
 def persona_de(ped):
@@ -146,7 +168,8 @@ def montar(pasta, cenas):
     manchete = " · ".join(str(x) for x in (cenas[0].get("labels") or [])) if cenas else ""
     txt = PEDIDO.format(persona=persona_de(ped), titulo=titulo, manchete=manchete or "(sem)",
                         abertura=abertura(fala.split()), fecho=str(cenas[-1].get("speech") or "") if cenas else "",
-                        fala=fala, nucleo=ch.get("nucleo") or "(sem chamada.json)", metodo=ch.get("metodo") or "nenhum")
+                        fala=fala, nucleo=ch.get("nucleo") or "(sem chamada.json)", metodo=ch.get("metodo") or "nenhum",
+                        virada={True: VIRADA_SABE, False: VIRADA_LEIGO, None: VIRADA_TALVEZ}[sabe_de(ch, ped)])
     return txt + (PRODUTO if ch.get("formato") == "produto" else "")
 
 

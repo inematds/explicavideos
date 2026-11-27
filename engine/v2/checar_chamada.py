@@ -37,6 +37,21 @@ CTA_PROIBIDO = re.compile(r"\bcoment[ae]\s+a\s+palavra\b|\bme\s+pe[cd]e\s+o\s+li
 INEMA = re.compile(r"inema\s*(\.|ponto)\s*club", re.I)
 
 
+SABE_CANAL = {"lives1": True, "lives4": True, "lives7": True,
+              "lives2": False, "lives8": False, "lives12": False, "lives24": False}   # D32; lives3/lives11 pelo assunto
+
+
+def _canais(p):
+    try:
+        return json.loads((Path(p) / "pedido.json").read_text()).get("canais") or []
+    except (OSError, ValueError):
+        return []
+
+
+def _padrao_canal(p):
+    return next((SABE_CANAL[c] for c in _canais(p) if c in SABE_CANAL), None)
+
+
 def norm(s):
     return re.sub(r"\s+", " ", s.lower()).strip()
 
@@ -76,9 +91,11 @@ def checar(pasta, roteiro=None, sem_titulo=False):
         if not sabe:
             avisos.append("chamada.json sem 'publico_ja_sabe' (sim|nao): quem assiste já vive o assunto? "
                           "com 'sim', abra pela perda virada (chamada.md §2f)")
-        elif sabe not in ("sim", "nao"):
+        elif sabe in ("sim", "nao") and _padrao_canal(p) not in (None, sabe == "sim"):
+            avisos.append(f"publico_ja_sabe='{sabe}' contraria o padrão do canal ({_canais(p)}): confira (chamada.md §2f)")
+        if sabe and sabe not in ("sim", "nao"):
             erros.append("chamada.publico_ja_sabe: 'sim' ou 'nao'")
-        elif sabe == "sim" and (ch.get("dor_ou_desejo") == "dor" or ch.get("formato") in DOR_DESCRITA) \
+        if sabe == "sim" and (ch.get("dor_ou_desejo") == "dor" or ch.get("formato") in DOR_DESCRITA) \
                 and not str(ch.get("por_que_dor") or "").strip():
             erros.append("público já sabe do assunto e a chamada descreve a dor (dor_ou_desejo=dor ou formato "
                          f"'{ch.get('formato')}'): pegue a dor pelo outro lado — fim_da_perda ('Pare de perder tokens'), "
