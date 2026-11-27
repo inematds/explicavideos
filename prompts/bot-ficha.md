@@ -78,11 +78,14 @@ tela em cada trecho (2c), e só então escreve a fala para caber nesse plano.
 2b. **CHAMADA** em `{{pasta}}/chamada.json`, ANTES do roteiro. Leia `~/projetos/inema-design/regras/chamada.md`.
    "Não adianta estar claro e correto se não chama atenção, não mexe na dor ou desejo" (Nei, 12/11/2026):
    ```json
-   {"dor_ou_desejo": "dor|desejo", "quem": "<a pessoa, em 'você'>",
+   {"publico_ja_sabe": "sim|nao", "dor_ou_desejo": "dor|desejo", "por_que_dor": "<só se sim + dor descrita>",
+    "quem": "<a pessoa, em 'você'>",
     "nucleo": "<1 frase: o que a pessoa ganha ou deixa de perder, em língua de gente; nunca 'N técnicas/dicas'>",
     "por_que_importa": "<o que custa hoje, concreto>", "metodo": "<nome do método/kit que o vídeo entrega, ou null>",
-    "formato": "<acusacao | promessa | perda | contrario | numero | pergunta | nome | noticia | terceiro | provocacao>"}
+    "formato": "<fim_da_perda | contrario | autoridade | promessa | produto | acusacao | perda | numero | pergunta | nome | noticia | terceiro | provocacao>"}
    ```
+   Quem já sabe do assunto (`publico_ja_sabe: sim`, D32): a dor vem pelo outro lado — "Pare de perder tokens",
+   "Você ainda usa do jeito antigo", "Os engenheiros da Anthropic mostraram como…"; dor descrita só com `por_que_dor`.
    Se as regras do vigia trazem uma estrutura (A, B, C…), a chamada vem ANTES dela e manda nela: a estrutura
    que for inventário do kit vira o meio do vídeo, nunca a abertura nem o título.
 3. **Roteiro** em `{{pasta}}/roteiro-pt.json`, escrito PARA CABER no plano: uma cena por trecho (ou dois trechos

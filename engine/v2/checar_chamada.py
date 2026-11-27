@@ -19,7 +19,9 @@ PAL_15S = 45         # ~15 s de fala a ~180 palavras/min
 PAL_25S = 75          # ~25 s: a dor/desejo em "você" tem de aparecer até aqui (erro); até 15 s é o ideal (aviso)
 PAL_METODO = 60       # ~20 s: o nome do método (quando houver) é dito até aqui
 FORMATOS = {"acusacao", "promessa", "perda", "contrario", "numero", "estatistica", "pergunta", "nome", "noticia",
-            "terceiro", "provocacao", "produto"}   # produto: D30, Nei 24/11/2026
+            "terceiro", "provocacao", "produto",   # produto: D30, Nei 24/11/2026
+            "fim_da_perda", "autoridade"}          # D32 (D20 revista), Nei 27/11/2026
+DOR_DESCRITA = {"acusacao", "perda"}   # com publico_ja_sabe=sim só entram com por_que_dor (chamada.md §2f)
 VOCE = re.compile(r"\b(voc[eê]s?|seus?|suas?|te|teu|tua|contigo)\b", re.I)
 ABERTURA_PROIBIDA = re.compile(r"^\W*(imagin[ae]|pense|neste v[ií]deo|nesse v[ií]deo|hoje (vamos|eu vou)|voc[eê] sabia|"
                                r"sabia que|eu fiz|eu criei|eu testei|ent[aã]o\b|neste momento)", re.I)
@@ -69,6 +71,19 @@ def checar(pasta, roteiro=None, sem_titulo=False):
             erros.append("chamada.dor_ou_desejo: 'dor' ou 'desejo'")
         if ch.get("formato") and ch["formato"] not in FORMATOS:
             erros.append(f"chamada.formato '{ch['formato']}': um de {sorted(FORMATOS)}")
+        # D32 (27/11/2026): quem já sabe do assunto não precisa ouvir a dor descrita; a dor vem pelo outro lado
+        sabe = str(ch.get("publico_ja_sabe") or "").strip().lower().replace("ã", "a")
+        if not sabe:
+            avisos.append("chamada.json sem 'publico_ja_sabe' (sim|nao): quem assiste já vive o assunto? "
+                          "com 'sim', abra pela perda virada (chamada.md §2f)")
+        elif sabe not in ("sim", "nao"):
+            erros.append("chamada.publico_ja_sabe: 'sim' ou 'nao'")
+        elif sabe == "sim" and (ch.get("dor_ou_desejo") == "dor" or ch.get("formato") in DOR_DESCRITA) \
+                and not str(ch.get("por_que_dor") or "").strip():
+            erros.append("público já sabe do assunto e a chamada descreve a dor (dor_ou_desejo=dor ou formato "
+                         f"'{ch.get('formato')}'): pegue a dor pelo outro lado — fim_da_perda ('Pare de perder tokens'), "
+                         "contrario ('você ainda usa do jeito antigo') ou autoridade — ou justifique em 'por_que_dor' "
+                         "(chamada.md §2f, D32)")
         if ch.get("nucleo") and INVENTARIO.search(ch["nucleo"]):
             erros.append(f"chamada.nucleo é inventário ('{INVENTARIO.search(ch['nucleo']).group(0)}'): diga o que a "
                          "pessoa ganha ou deixa de perder, não quantas peças tem")

@@ -89,6 +89,9 @@ Responda às perguntas pensando no título e nos primeiros 15 s (o fecho é para
 julgar jargão e lista):
 1. problema: eu já sei qual é o problema ou a novidade?
 2. comigo: eu sinto que é COMIGO (minha dor ou meu desejo), não um assunto técnico dos outros?
+   Se eu JÁ vivo esse assunto e a abertura passa mais de 2 frases me descrevendo a dor que eu já conheço, em vez de
+   me mostrar como parar de perder ("pare de perder tokens"), o jeito antigo que eu ainda uso ou quem de peso resolveu,
+   isso não me prende = false (D32).
 3. importa: eu sei por que isso importa para mim (o que eu perco ou ganho), ou me prometeram mostrar isso?
 4. nome: se há método, eu já ouvi o NOME da solução? (sem método: responda true)
 5. manchete: lendo SÓ a manchete da capa, sem som, eu entendo a informação (quem + o que acontece)? Enigmática
