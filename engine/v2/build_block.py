@@ -392,15 +392,20 @@ def all_times(shots, words=True, effects=True):
     return sorted(ts)
 
 
-def srt(caps, min_cue):
+def srt(caps, min_cue, max_words=None):
     """SRT sem sobreposição: o cue dura ao menos min_cue, mas nunca passa do início do próximo."""
     cues = []   # [início, fim, texto] — grupos com início coincidente viram um cue só (nunca fim ≤ início)
     for g in caps:
         s0, text = g['s'], ' '.join(w['w'] for w in g['w'])
         if cues and s0 < cues[-1][0] + 0.05:
-            cues[-1][2] += ' ' + text
-            cues[-1][1] = max(cues[-1][1], g['e'])
-            continue
+            if max_words and len((cues[-1][2] + ' ' + text).split()) > max_words:
+                # 2.35.15 (27/11/2026, cofre casaresiliente): juntar passaria do teto de palavras do QA;
+                # o grupo vira cue próprio, logo depois do anterior (metade da duração dele, até 0,4 s)
+                s0 = cues[-1][0] + max(0.05, min(0.4, (cues[-1][1] - cues[-1][0]) / 2))
+            else:
+                cues[-1][2] += ' ' + text
+                cues[-1][1] = max(cues[-1][1], g['e'])
+                continue
         if cues:
             cues[-1][1] = min(cues[-1][1], s0)
         cues.append([s0, max(g['e'], s0 + min_cue), text])
@@ -827,7 +832,8 @@ def build(part, strict=False, spec_path=None, out=None):
     report['mapas'] = mapas   # o qa_viral não mede 'área lisa' em mapa (oceano/terra sólidos são informação)
     report['reel_profile'] = reel and {'name': reel['name'], 'contract_version': reel['version']}
     (dest / 'index.html').write_text(idx)
-    (dest / 'captions.srt').write_text(srt(caps, reel['captions']['min_cue_s'] if reel else 0.5))
+    (dest / 'captions.srt').write_text(srt(caps, reel['captions']['min_cue_s'] if reel else 0.5,
+                                          max_words=3 if viral else (reel['captions']['max_words'] if reel else None)))
     (dest / 'alignment.json').write_text(json.dumps(align, indent=2))
     (dest / 'hyperframes.json').write_text(json.dumps({'$schema': 'https://hyperframes.heygen.com/schema/hyperframes.json', 'paths': {'blocks': 'compositions', 'assets': 'assets'}, 'media': {'autoProxy': True}, 'authoringSkill': 'general-video'}, indent=2))
     hv = CFG.get('hyperframes', '0.8.77')

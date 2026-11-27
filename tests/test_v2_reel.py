@@ -82,6 +82,12 @@ class Reel(unittest.TestCase):
         self.assertEqual(txt.count('-->'), 2)
         self.assertIn('a b', txt)
 
+    def test_srt_coincident_groups_respect_max_words(self):
+        caps = [{'s': 1.0, 'e': 1.6, 'w': [{'w': 'sua'}, {'w': 'garagem?'}]}, {'s': 1.0, 'e': 2.0, 'w': [{'w': 'A'}, {'w': 'tese'}, {'w': 'completa'}]}]
+        txt = B.srt(caps, 0.5, max_words=3)
+        self.assertEqual(txt.count('-->'), 2)
+        self.assertTrue(all(len(l.split()) <= 3 for l in txt.splitlines() if l and '-->' not in l and not l.isdigit()))
+
     def test_reel_requires_vertical(self):
         with self.assertRaises(B.BuildError):
             B.reel_of({'reel_profile': 'divulgacao'}) and B.aspect_of({'aspect': '4:3'})
